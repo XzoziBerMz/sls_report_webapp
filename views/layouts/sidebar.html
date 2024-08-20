@@ -1,0 +1,41 @@
+{{- define "sidebar" -}}
+<div  class="app-sidebar-logo px-8" id="kt_app_sidebar_logo">
+	<div id="logo-title" class="w-100 text-center">
+		<span style="font-family: 'Lato', sans-serif;font-weight:700;" class="h1 text-success">Hello owrld</span>
+	</div>
+</div>
+<div class="app-sidebar-menu overflow-hidden flex-column-fluid">
+
+   
+		<div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
+			<div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
+				<div class="menu-item">
+					<div id="text-dashboard" class="menu-content pb-2">
+						<span class="menu-section text-muted text-uppercase fs-8 ls-1">Dashboard</span>
+					</div>
+				</div>
+				
+
+				<div class="menu-item " :class="{active:currentPage === 'home'}">
+					<a class="menu-link " href="/">
+						<span class="menu-icon">
+							<span class="svg-icon svg-icon-2">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<path opacity="0.3" d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z" fill="black" />
+									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z" fill="black" />
+								</svg>
+							</span>
+							
+						</span>
+						<span class="menu-title">Home</span>
+					</a>
+				</div>
+
+			</div>
+
+			
+
+		</div>
+</div>
+
+{{- end -}}
