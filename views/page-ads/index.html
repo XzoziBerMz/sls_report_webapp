@@ -1,0 +1,487 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-ads/css/index.css">
+    <!--end::custom css for this page-->
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column bg-dark" data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+
+                                <div>
+                                    <h1>ADS : as of 18 Aug 2024</h1>
+                                </div>
+
+                                <div class="mt-8">
+                                    <div class="position-relative card p-5">
+                                        <img class="position-absolute top-0 start-0 rounded-circle translate-middle"
+                                            src="./page-ads/images/tiktok.webp" alt="" width="40" height="40">
+                                        <div>
+                                            <div class="table-responsive border rounded-4">
+                                                <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                                    <thead>
+                                                        <tr class="fw-bold fs-5">
+                                                            <th class="min-w-100px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-calendar3"></i>
+                                                                    <span>วันที่</span>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-200px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-type flex-shrink-1"></i>
+                                                                    <div class="row w-100 ms-2">
+                                                                        <span>ชื่อ</span>
+                                                                        <span>ADS</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-type"></i>
+                                                                    <div class="row">
+                                                                        <span>สินค้า</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-toggles"></i>
+                                                                    <div class="row">
+                                                                        <span>สถานะ</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-cash-stack"></i>
+                                                                    <div class="row">
+                                                                        <span>ค่าใช้จ่ายทั้งหมด</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-cash-stack"></i>
+                                                                    <div class="row">
+                                                                        <span>งบประมาณ</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-150px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-cash-stack"></i>
+                                                                    <div class="row">
+                                                                        <span>รายได้รวม(ร้านค้า)</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-200px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-cash-stack"></i>
+                                                                    <div class="row">
+                                                                        <span>ต้นทุนต่อการซื้อ(ร้านค้า)</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-50px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row">
+                                                                        <span>#</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-150px align-middle">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row">
+                                                                        <span>โน๊ต</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="fs-6">
+                                                        <tr>
+                                                            <td>Tiger Nixon</td>
+                                                            <td>System Architect</td>
+                                                            <td>Edinburgh</td>
+                                                            <td>61</td>
+                                                            <td>2011/04/25</td>
+                                                            <td>$320,800</td>
+                                                            <td>$320,800</td>
+                                                            <td>$320,800</td>
+                                                            <td>$320,800</td>
+                                                            <td>$320,800</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-control="select2">
+                                                        <option></option>
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                                <ul class="pagination">
+                                                    <li class="page-item previous disabled"><a href="#" class="page-link"><i class="previous"></i></a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                    <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                    <li class="page-item next"><a href="#" class="page-link"><i class="next"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gap-5 px-3 mt-5">
+                                    <div class="card p-5 col-6">
+                                        <div class="table-responsive border rounded-4">
+                                            <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                                <thead>
+                                                    <tr class="fw-bold fs-4 ">
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>วันที่</span>
+                                                                <i class="bi-funnel"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-200px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>ร้าน</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>ค่าแอด</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>รายได้แอด</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>รายได้รวม</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>0.00%</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="fs-6">
+                                                    <tr>
+                                                        <td>Tiger Nixon</td>
+                                                        <td>System Architect</td>
+                                                        <td>Edinburgh</td>
+                                                        <td>61</td>
+                                                        <td>2011/04/25</td>
+                                                        <td>$320,800</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div>
+                                                <select class="form-select w-80px h-35px" data-control="select2">
+                                                    <option></option>
+                                                    <option value="10" selected>10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <ul class="pagination">
+                                                <li class="page-item previous disabled"><a href="#" class="page-link"><i class="previous"></i></a></li>
+                                                <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                <li class="page-item next"><a href="#" class="page-link"><i class="next"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card p-5 col">
+                                        <div class="fs-2 fw-bolder w-100 mt-0 my-3 text-center">
+                                            <span>Tiktok Live</span>
+                                        </div>
+                                        <div class="table-responsive border rounded-4">
+                                            <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                                <thead>
+                                                    <tr class="fw-bold fs-4 ">
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>วันที่</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-200px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>ค่าใช้จ่ายทั้งหมด</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>รายได้รวม(ร้านค่า)</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                        <th class="min-w-100px">
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center">
+                                                                <span>ช่องทาง</span>
+                                                                <i class="bi-filter"></i>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="fs-6">
+                                                    <tr>
+                                                        <td>Tiger Nixon</td>
+                                                        <td>System Architect</td>
+                                                        <td>Edinburgh</td>
+                                                        <td>61</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div>
+                                                <select class="form-select w-80px h-35px" data-control="select2">
+                                                    <option></option>
+                                                    <option value="10" selected>10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <ul class="pagination">
+                                                <li class="page-item previous disabled"><a href="#" class="page-link"><i class="previous"></i></a></li>
+                                                <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                <li class="page-item next"><a href="#" class="page-link"><i class="next"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card p-5 mt-5">
+                                    <div class="table-responsive border rounded-4">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fw-bold fs-4 ">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-calendar3"></i>
+                                                            <span>วันที่</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-type flex-shrink-1"></i>
+                                                            <div class="row w-100 ms-2">
+                                                                <span>ชื่อ</span>
+                                                                <span>ADS</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-type"></i>
+                                                            <div class="row">
+                                                                <span>สินค้า</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-toggles"></i>
+                                                            <div class="row">
+                                                                <span>สถานะ</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>ค่าใช้จ่ายทั้งหมด</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>งบประมาณ</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>รายได้รวม(ร้านค้า)</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>ต้นทุนต่อการซื้อ(ร้านค้า)</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-around align-items-center">
+                                                            <i class="bi-type flex-shrink-1"></i>
+                                                            <div class="row w-100 ms-2">
+                                                                <span>กลุ่มเป้าหมาย</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <tr>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>System Architect</td>
+                                                    <td>Edinburgh</td>
+                                                    <td>61</td>
+                                                    <td>2011/04/25</td>
+                                                    <td>$320,800</td>
+                                                    <td>$320,800</td>
+                                                    <td>$320,800</td>
+                                                    <td>$320,800</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <select class="form-select w-80px h-35px" data-control="select2">
+                                                <option></option>
+                                                <option value="10" selected>10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                        <ul class="pagination">
+                                            <li class="page-item previous disabled"><a href="#" class="page-link"><i class="previous"></i></a></li>
+                                            <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                            <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                            <li class="page-item next"><a href="#" class="page-link"><i class="next"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-ads/js/services.js" type="module"> </script>
+<script src="/page-ads/js/index.js" type="module"> </script>
+
+</html>
