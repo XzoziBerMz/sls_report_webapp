@@ -1,0 +1,21 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "product": "SOY ช็อค",
+            "channel_list": [
+                {
+                    "channel": "LineOA"
+                },
+                {
+                    "channel": "TikTok2"
+                },
+                {
+                    "channel": "TikTok3"
+                }
+            ]
+        }
+    ],
+    "total": 100
+}
