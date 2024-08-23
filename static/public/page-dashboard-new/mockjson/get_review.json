@@ -11,7 +11,9 @@
             "about_chat": "ตอบกลับแชทในกล่องข้อความเรียบร้อย",
             "violation": "ไม่พบการละเมิด",
             "notification_matter": "-",
-            "product_approval": "ขออนุมัติคำขอ 1 รายการ"
+            "product_approval": "ขออนุมัติคำขอ 1 รายการ",
+            "caretaker": "DREAM"
+            
         },
         {
             "date": "04/08/2024",
@@ -22,7 +24,8 @@
             "about_chat": "ตอบกลับแชทในกล่องข้อความเรียบร้อย",
             "violation": "ไม่พบการละเมิด",
             "notification_matter": "-",
-            "product_approval": "ขออนุมัติคำขอ 1 รายการ"
+            "product_approval": "ขออนุมัติคำขอ 1 รายการ",
+            "caretaker": "KIM"
         }
     ],
     "total": 100

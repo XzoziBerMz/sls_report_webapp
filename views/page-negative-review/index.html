@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <title>{{.WebAppPageTitle}}</title>
     <meta charset="utf-8" />
@@ -7,7 +8,7 @@
     {{- template "resource-css" -}}
     <link rel="stylesheet" href="/page-negative-review/css/index.css">
     <!--end::custom css for this page-->
-  
+
 </head>
 
 <body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
@@ -15,8 +16,8 @@
     data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
     data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
 
-    <div class=" d-flex justify-content-center align-items-center vh-100 flex-column gap-2 login-box" id="kt_app_root">
-        <div  class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
             <!-- HEADER -->
             <div id="kt_app_header" class="app-header bg-4461F2">
                 {{- template "header" . -}}
@@ -35,26 +36,136 @@
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-                            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
-                                <div class="page-title d-flex flex-column justify-content-center flex-wrap">
-                                       {{.title}}
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+
+                                <h1 class="fs-1 fw-bolder">รีวิว เชิงลบ</h1>
+
+                                <div class="card p-10 mt-3 w-100">
+                                    <div class="pb-2">
+                                        <h1 class="required fs-4">ช่องทาง</h1>
+                                    </div>
+
+
+
+                                    <form id="kt_docs_formvalidation_text" class="form" action="#" autocomplete="off">
+                                        <div class="row w-550px fv-row">
+                                            <div class="col-3">
+                                                <label class="form-check form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="radio" name="radio_input"
+                                                        value="1" />
+                                                    <span class="form-check-label text-dark">TT1</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-3">
+                                                <label class="form-check form-check-custom form-check-solid">
+                                                    <input class="form-check-input" type="radio" name="radio_input"
+                                                        value="2" />
+                                                    <span class="form-check-label text-dark">TT2</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row mt-5">
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องอัพเดทรีวิวเชิงลบ</label>
+                                                        <input type="text" name="text_input1"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องอัพเดทรีวิวที่เป็นกลาง</label>
+                                                        <input type="text" name="text_input2"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องการตอบกลับกล่องข้อความ</label>
+                                                        <input type="text" name="text_input3"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องการตอบกลับแชทครีเอเตอร์</label>
+                                                        <input type="text" name="text_input4"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องการละเมิด</label>
+                                                        <select class="form-select" name="select_input"
+                                                            data-control="select2" data-placeholder="Select an option">
+                                                            <option></option>
+                                                            <option value="1">Option 1</option>
+                                                            <option value="2">Option 2</option>
+                                                            <option value="3">Option 3</option>
+                                                            <option value="4">Option 4</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องการแจ้งเตือน</label>
+                                                        <input type="text" name="text_input5"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">เรื่องคำขออนุมัติสินค้า</label>
+                                                        <input type="text" name="text_input6"
+                                                            class="form-control form-control mb-3 mb-lg-0"
+                                                            placeholder="" value="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <button id="kt_docs_formvalidation_text_submit" type="submit"
+                                                    class="btn btn-primary w-25">
+                                                    <span class="indicator-label">Submit</span>
+                                                    <span class="indicator-progress">
+                                                        กรอกข้อมูลสำเร็จ <span
+                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                
                 </div>
+
             </div>
-
-
-
         </div>
+
+
+
+    </div>
     </div>
 </body>
 <script>
-    window.csrfToken = {{.csrf_token}};
+    window.csrfToken = {{.csrf_token }};
 </script>
 {{- template "resource-js" -}}
-    <script src="/page-negative-review/js/services.js" type="module"> </script>
-    <script src="/page-negative-review/js/index.js" type="module"> </script>
+<script src="/page-negative-review/js/services.js" type="module"> </script>
+<script src="/page-negative-review/js/index.js" type="module"> </script>
+
 </html>
