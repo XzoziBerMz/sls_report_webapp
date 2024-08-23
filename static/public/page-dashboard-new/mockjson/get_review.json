@@ -12,6 +12,17 @@
             "violation": "ไม่พบการละเมิด",
             "notification_matter": "-",
             "product_approval": "ขออนุมัติคำขอ 1 รายการ"
+        },
+        {
+            "date": "04/08/2024",
+            "shop": "TT4",
+            "negative_review": "ไม่มีรีวิวเชิงลบ",
+            "unbiased_review": "2",
+            "about_box": "ตอบกลับแชทในกล่องข้อความเรียบร้อย",
+            "about_chat": "ตอบกลับแชทในกล่องข้อความเรียบร้อย",
+            "violation": "ไม่พบการละเมิด",
+            "notification_matter": "-",
+            "product_approval": "ขออนุมัติคำขอ 1 รายการ"
         }
     ],
     "total": 100

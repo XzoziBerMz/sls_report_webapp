@@ -1,0 +1,15 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "code": "1",
+            "name": "AM ดรีมซี่"
+        },
+        {
+            "code": "2",
+            "name": "AM คิมซี่"
+        }
+    ],
+    "total": 100
+}

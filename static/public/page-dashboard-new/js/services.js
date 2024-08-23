@@ -37,6 +37,7 @@
         //     headers: { "x-auth-token": window.csrfToken }
         // });
     }
+
     function getReview(body = {}) {
         console.log(window.csrfToken)
         return axios.get(`/page-dashboard-new/mockjson/get_review.json`)
@@ -47,6 +48,18 @@
         //     headers: { "x-auth-token": window.csrfToken }
         // });
     }
+
+    function getReviewTb2(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjson/get_reviewTb2.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getReview,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+
     function getCaretaker(body = {}) {
         console.log(window.csrfToken)
         return axios.get(`/page-dashboard-new/mockjson/get_caretaker.json`)
@@ -57,12 +70,120 @@
         //     headers: { "x-auth-token": window.csrfToken }
         // });
     }
+    function getChannel(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjson/select_channel.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getProduct(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjson/select_product.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getBy(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjson/select_by.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getDao(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjson/select_kae_dao.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getTikTok(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_tiktok.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getLaz(body = {}) {
+        console.log(window.csrfToken)
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_laz.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getShoppee(body = {}) {
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_shoppee.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getFb(body = {}) {
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_fb.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getLine(body = {}) {
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_line.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+    function getOrder (body = {}) {
+        return axios.get(`/page-dashboard-new/mockjsonApp/get_amount_order .json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+
 
     const services = {
         getReview,
+        getReviewTb2,
         getCaretaker,
         getClip,
         getProductChannel,
+        getChannel,
+        getProduct,
+        getBy,
+        getDao,
+        getTikTok,
+        getLaz,
+        getShoppee,
+        getFb,
+        getLine,
+        getOrder,
     };
     window.services = services;
 })(jQuery, window, axios);

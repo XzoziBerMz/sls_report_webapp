@@ -1,0 +1,19 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "name_tiktok": "Marwllsoy24",
+            "nunber_tiktok": "1"
+        },
+        {
+            "name_tiktok": "Lookjeab789",
+            "nunber_tiktok": "1"
+        },
+        {
+            "name_tiktok": "Marwell",
+            "nunber_tiktok": "-"
+        }
+    ],
+    "total": 100
+}

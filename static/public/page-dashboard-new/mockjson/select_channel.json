@@ -1,0 +1,15 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "code": "1",
+            "name": "TikTok1"
+        },
+        {
+            "code": "2",
+            "name": "TikTok2"
+        }
+    ],
+    "total": 100
+}
