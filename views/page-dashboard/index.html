@@ -1,0 +1,456 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-dashboard/css/index.css">
+    <!--end::custom css for this page-->
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column bg-dark" data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid flex-stack">
+
+                                <div class="mb-15 d-flex align-items-center">
+                                    <div>
+                                        <img width="60" height="60"
+                                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABaFBMVEX////m5uYAAAD/1LVFHgDMzMwAKVIpEgAAOnOoajzoPVcDUZ6PWzSOjo6YYTeJVzK0s7NzSCjZ2dju7u7KysrT09Pk5OQNAAD/27uZmJdMSkiJiIcqEwBVU1EzFgANBgD/XXVZOCAJMF06GQBBHAC/M0cWCAVeGSJmZWP/rLIIGTAiDwCsq6ocDAAZCwAwLCp7eXjqUWj/ubM9Ojixk33pRl/ct5wJIkIqIRrNNkxtWkz/4cDoO1WTJzbwyKpGQ0ILFCMAPnsAR4tiYF8cGBV1c3KKc2F8Z1c4LSUACQDrXnOzlX5ZST3nx7EANWoMDRMJFysLDxknSm25g1s3IxTIpo0iGRMxDRAlBwiMMz9HOjB4LDajO0q9RFXQS1//Zn3/e5HDW2l9Q0jWWmsAJRoWHiOoLj9CEBZTKw7/yrRIMS//tbPSs55HMiJpHCYPNVwvPEweKjwbM00sLjQlXZYnHQ2DXUKYbU3bPg+WAAAQVklEQVR4nO2ci18aVxbHy0EegZBOGIYZBBlFQiwgjwpilKBEfMQY0CTa1m7Sdrtp2u0jm+528+/vuffOE8Y4iehc9zO/iFFnBu53zrnnnvuazz7z5cuXL1++fPny5cuXL1++fPny5cuXL1++fPny9f8nURKqmUQikamm0l6XZfpKVrfBpnpDEL0u1PSUzKrINNvICKkkSkoJmZ06+UvV65JNR8IKWiyRElEBTeTntLCDkI2A18W7tIQBYoRMOFNIKcwCLN1sxiTaLxMQ7VzWX0JYPbNel/ISymLxDT5kS6YEVEqycIqhWZAlrwv6iRLrMJvUSMSAkJ01I+lgKSPpkGL1ppoxhQ4qatZLkagCy7n8Iiqfj5RIe5HQ8MX0LMx6XdpPEFomJTK+KjYNy/nijFWLORmjjKQxZmFw41rHDNTTDFBAvvyMgxYrADvaSXg/blhMzcCm5oHb5/ARFZGxqt0HgBtlRQFWGCBWxsp5fNSOMmwHNMSB16X+CCVhwIqdAVj8ECAqAgMacdBRN70ut3sBJLUAUruAD5UHCIns7BvTaMyBoBVZLV5MOLMIQGOqOAcpr4vuTgI0ROaitUjEBSFBpDZPA3hddndilRBDR60YieTcIdZFdknD68K7UZb5aBrkGSR0h5iHHc1Pb0CrKMIsLewsRlFCGIkUXSBW2G2RYNvr8l+sBqRY7EfjMcLIuS2+RTJQ114C/odwmAkDsjxjECLjhXZchCwz4o7XABepSt0N4yhp6RcjhnKLF0DWIM1qotcEF6leorUQSjMaYS5nUuYXi+dyMiNiOOV8eCrNylll2XYesVS1ErErl8vnsaM4zloC6t68dxUzLM7MAi00mq+kkp5vxFE5W/XMM//e4dxNZ6khkkBzGdLgw1lwn+Q258mSmMMSMz/fqRtss1IuatUwB4eKsodmdMG4rN0drvPvJB2aQU/TnZQQBpXVtQ8x5g03pR6uct2JEkAghazLmpNGIrCnBINBpUWqY+S8+qhHU3p7trmuiBmQaDyM6JG0Ai1CGFSUFtpRPQdSQ6R9ErHB9XBGg+ZeEmsrSNmXYTXIpCirWB9BrlWw9RjnZI4KcyxZSHqN8QFt02CRooR56qSnStCQEjzZW6MjwnKttrxcIawaLA03pToLUyGvMT6guQGZVhJIKC0yE7YshNSSvZPW3uGpOfytshBEg6l2Nc/NxWY9M4C5LCFkJlyzA2qUyoYS7K2enDxp7R4CywiI1SuDTB02s7wSSlVUHeCr+wB611A2aqGjFKqTfYpYJJ1E+Jpc3cB3EnjrCicHmtN98938/NdISKqXCicOJpzkPIMKjacV+HZ+fv4r7Z346guHAP72qtls3gcs4vxLWCTpTG28Ep6nHqjUiBV69St4ie/06ltQvaayCqBJCjd/v8TKmKdRZs8dYFDZJUbMa4RNeIXfv/v+h8ccdYar8HJeJ2y3kbBC2vozl4DEiCQ3J4TtdpsRfj8//3eOmv4dcvOxcO37pW4s1r1HklAVem4Bg8o+kGa/AjG8+gHcQ8yD+e9/4CioLsnzMaIuJYwhYa7ithJqbkrafkoYQ8Jut33Q/O4VCF6DGVqCCUIZ9NIrq6s9xbFZ7K2usgPKCfFrNLtG2GzGmgftHx/zRNht2wkjsKtB7dHQvztJaD3Qo52rGiN8/GOzeRBrN/myYTfWthHqGXcPYK/1pLUOJ+MWfEIP7MEa/ZWGGo3wH/e6B81mF6szX4QE0SSUWbqmHK4HNzY2FGcvVfBQ8JC0KRtrck4j7CLhQTN20I1xR4iIBmFNbwuxou0ur58TX1Z/f/EEqyn5cQ8quRwhbDcf/ONlu4s25JAw1rYQ6pFUWV9KZpcdw2oPBGn0RLsTALVKDd+m2XwALw8ODujbcEcYa+uEqpFyr74WxRQ8cfLS9aooboOi2RM7GRhLu4QQ28Mup4Rdk1Br7pXWtoh92nUnQgiJ4sAcAwiW4DGG0APSHtJ345PwNDZGuAsZQSUDbpOClVQDzCCrwKCOtsNm8F6MY8JSWyPUi92irZ6zDUkP3+xB9qD++KDdJbGUa0LS9N+Dkk6IIURVK+fUQzwUAePIyUCFNiKil/JH2ICYWQ/bNJb2TA5ZNscyetqLGQ3vhJG9Krvq75gaHbR1wu5PHA1JpeBh14w07XtQsQxf7K6tm72Mp0R6HV092zeNu7Evv6jH0AUMwq94GhrehJ+6RHoszVn80pbQ9ExA+yGlB7nKoKn3LVB/QMZrLIsw6r95iHqDLVqs+/Bx0Ui83QpD0mLk8Y9t4px/4Dt9I/M2353Vxo/ePIj9BLWfS8ZI8C9fon5xgrIdUc5Of16o//MB5tvahgx+wowubR0UUXHmhV4Rf/2CygHxF3bkV+atv8HvCws5sgtDWwLmNc65Sifocr2innozjC++nCT8UjtE0hnshKzNFGcqaqIxqHuNcKGSdNaiorcXBORXBtjraUlojx778lcNXSG9xd8X8CJZFFf4J2wAmZ0vTo4lYga320OH7LXGsjgFm0Y641iBG0HIFprMVBxG9PcxTdsfYENvGbghP22csWnxm0Eo6Mu6YX+iwVBayAinreCT3Zbusfi1sTfIz9wcwk0wpuV3NyYQld5qb+OEjUFt0EkofO3Ci59vDqG20ISV1ynhJkOHX71qvnoDey2mvYGaZ6rdhEizBOYqoJLj3JMygDaZAXhjTJKWzPlS/gkD1s0HedkJcRXTdEL4E2RCqZAUIl+6UgFxhaPZCiftWEw4Q0axWxN1cZVk6XR2oyo6aJPvldB2E9KB+sPemBl78AfpgHQfwlKWKJG1qc735pltiwnZ8tka0GbeWg8PaffoAajgKJW3ToVVEkTsJoxEcqoMsH5i7Qr2VLj/8A9QZbkzUscWDbEYzO9K6DqY5dTWBy/L4WEZIc92n6wGyTA+toBkmRsg37Aflmv64iFzkWKR3yWmVesuNa3g6mgY7UffljUXPD2tETpVLReiqOGWbKyLMi/NcTQEZZO29Nnqo2jCzpCg9KPDERyun+3vnx2ur4OMfyAqdEwjWu6OzNMIjUWbljCjAebUUZgai9gLTpWnT3/77enTfdD/VghvGTXRsi9jkc9gkwEjWhQrdE63UlPlskHYL8AZXSJ0COG+QdiR1VqFLW5bNhErHE3hG5LMnXg5MgpcqcmyPJI74XBUR+zA3oay0YKyDhgNh8MyxlSZQOZUSySWOWwUQffRvEqExd4KRzsyMgwNxCNMcX6D42jUSliOho8oJLlMr4yL/G23ZFtIZoo5E6/f71PCgkk0ghOMMoaGhPAIz4sWCCReCTpjjqvRUiIB24ASdhIoH8WjfkkIwxYkGWQLcIERkjP70fAWY4QI2YpRhDWvkcZV3a6r9Z051pL39ZpH6qHppvQPfZOQ4Bt/6PeHHcJY15pOPpfsN0DuRE2EfoESWqyGhHYnRStbzsfj0BCFRCOb4WdWxqo6lC18pMTykd1NbYTESctWryVXlGHFa4zztQI2e0SHhcIIwlYj2ryUmDB8LPet9wRPCfOLmAGj9JikEQMRE3UsRkSvVWVLc0+q4Va4UBgOra7d4S6M6oJjPWawwodpNTsyjYjmIZ1C7T4MLXcAzzAh+8ecpqUZKLAy9odhUyPaXoQ1wHoWMpsaIjusmqda0js+jbgGGmDBAohGLGulR++rBzKQERliwXJU11B7B/7aQqKkZhqbBVEqsxIBXEmLhFCcw8yUnXUs208e6jWRx20zCdAadnuZ9ZpW6JDHnVBCsnnrXcFSSy1i1XgLEl7jOKjOnNTuo9SII/L9iO7xZoRkU/prJxOi+ugEqgwcDgsHgCWYw4kyUyNu0V1bOiHZofjayYSkKhZkGWMNbxtKyBhNWd7qO5gQjQgIuCIGLIRkD95rJxNiqyHLj+J9Dnd0b0O8QKw4WWY0FXpdIGAjpM+usQdSTQQwHudsxwwRdOJxTMkmnZT4KQzS44QEceRwrkoB4x3uGn0JhliuIz1DsWvEHj9jJyTh5s+JU7fkKAGMD4G35/BlgN56WXUALFuoLITk+S5vJxw6TAHjj7hLa2aBFqxvi45vnz17hv+xx+tMEopVOBpDlEdxTdyNe5NqSOuPxU/fIt6zt+FjugndgTCA+VvYhrgl93VC3ioiq4bEu+Rjo7xI9+ztsw57fJATYUDCYGNBxNujA3JXEbVqiCqYRkQ8ZFRV6/wnzUtNJaBjQdySHxmEvFVErIbRAhVWpTLVu3L5X+/K7/4Nc5Yp0MQ2bNtmREGlZzLJxwVdUd4qIozG5zmX5RrZlO48CepGI64qYgpgriolLUonL6OUkJkFnqYuRABh7FnIIvnn8HhkdwqFJKnK03z+ivYsVhvhJZROhZBR4GfMLcQe02XHu4wJKWFIanCzVr9hpJ0WwsuIEYZS3KysWanbkC7LZxBKA17cdDBreyT55SF1wk1enkqrzlkfs275flnCWV6eqmAjnKaX8kgoTgWRY0JxGhbkkFDWCadjQf4IRbARTrMecpK3peDKIg0nyXdWG84mWdqnZ2rOhHysVlhhj1kLTCfKUBmEfCQ1ANZYOg2lQzohF73gEIzVwykQGjbkoneRAcNLr4CQh+GoORgt0R79FRAew5zXeCj4899zrpt6MnyTdk+4xcO4cBKeHbuth2mJFD0lXcRo2nDIwYR+Ff5Td0mYNjb/XIBoEI4ecTBTugTxwZK7Wmhubwq5JIQ4LHkN+FntKE6fjnyxkhbC5AfPNAjl+FHNa0ARCnGX7aFli1pIcmvDgufJtwB9t4TuZSHse765pAHxKyWMez6iWD92TSilzI2Urr00fuzx2iERwq4JkxZCl5EGCcMeV8QURN176ae0FvGox73gBJn7dUv48S0+kLlgbxfxbZIlGO4jjZa1XXgrLIRxjzfP0CUYHxNLMfO++CQbobfJtyQPP5LQlWyE3ibf1cqjKyd8VPIy+V76K37lhPG/vEy+/3p3DYTv/vIOMF0qXANhoeTd5nWh1L8Gwn7Nu+Q7yxYkXjFh3MORb5J2XwOhh8m3tuTyqgm9a/MDULgaQm28Qyf0bmtCCKJXQyjZCaOeje2noH8lhJqTGoR9zzpQ+sLgKRPqnSwpqRF6uFwYyldAqFdCSUrOMcKyd72LLNC9A1v1pDQtmeONoVCy/pq8fdjLmeBtkDvDRx0wR2CmJikkpeDPR8OO7M0Gocxr24rlHeniIn8soSTtrFmfJPX6OqcSAwC1BYsqUJ0qInXXpHC6b/2QGlxjswhw95ZNAJnk9BgRT0omMwD2D7l7fbP6O+OAt+6osJIQpqUUvjKzoN4Z+5TPr+3JQ/DizviH31r49G0HE1LJpv21hfGPuHXrxTUZMQkLtycI8Q7fnYr++1/ydff988lPQD+9nkGpENy9fdvh86ej58/J67kTIBJeT4IaQBteFeLzW85sTAvXFU0HcJvozvT1/j17Oes2XNe6bwFDze2r0Pv37+l356N3XlzfbGkDlu9+Pn29f0++8H/Ho3eXr3OytDrFtsHUSHudp+sd+xYSU1cG/yXoy1Fez+f78uXLly9fvnz58uXLly9fvnz58uXLly9fvnz5ukj/A7Ebx8CIqyWZAAAAAElFTkSuQmCC"
+                                            alt="">
+                                    </div>
+                                    <div>
+                                        <h1 class="align-bottom">ABMIN : of 4 Aug 2024</h1>
+                                    </div>
+                                </div>
+
+                                <div class="row w-100 mb-10 d-flex">
+                                    <div class="col-2 d-flex">
+                                        <div class="card p-5 position-relative w-100 d-flex flex-column"
+                                            style="background:#f4ae56;">
+                                            <div
+                                                class="card border box-shadow3 h-75px w-150px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
+                                                <h1 class="text-center fs-26">ลงคริป</h1>
+                                            </div>
+                                            <div class="row mt-15">
+                                                <span class="text-white fs-20 fw-500">สินค้า : SOY ช็อค</span>
+                                                <span class="text-dark fs-20 fw-500">ช่องทาง : LienOA</span>
+                                                <span class="text-dark fs-20 fw-500">ช่องทาง : Tiktok2</span>
+                                                <span class="text-dark fs-20 fw-500">ช่องทาง : Tiktok3</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 d-flex">
+                                        <div class="card p-5 position-relative w-100 d-flex flex-column"
+                                            style="background:#53a99e;">
+                                            <div
+                                                class="card border box-shadow3 h-75px w-200px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
+                                                <h1 class="text-center fs-26">ติดตาม ครีเอเตอร์</h1>
+                                            </div>
+                                            <div class="row mt-15">
+                                                <span class="text-white fs-20 fw-500">สินค้า : -</span>
+                                                <span class="text-white fs-20 fw-500">ช่องทาง : -</span>
+                                                <span class="text-white fs-20 fw-500">จำนวน : - คน</span>
+                                                <span class="text-white fs-20 fw-500">ลิงค์คลิป : -</span>
+                                                <span class="text-white fs-20 fw-500">เจนโค๊ด : -</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 d-flex">
+                                        <div class="card p-5 position-relative w-100 d-flex flex-column"
+                                            style="background:#53a99e;">
+                                            <div
+                                                class="card border box-shadow3 h-75px w-300px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
+                                                <h1 class="text-center fs-26">รีวิว เชิงลบ</h1>
+                                            </div>
+                                            <!-- T1 -->
+                                            <div class="table-responsive mt-10">
+                                                <table class="table table-bordered">
+                                                    <thead style="background: #bcd5ad;">
+                                                        <tr class="fw-bold fs-12 text-gray-800">
+                                                            <th class="text-center align-middle position-relative">
+                                                                วันที่
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">ร้าน
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องอัพเดทรีวิวเชิงลบ
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องอัพเดทรีวิวที่เป็นกลาง
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องการตอบกลับกล่องข้อความ
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องการตอบกลับแชทครีเอเตอร์
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องการละเมิด
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องการแจ้งเตือน
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เรื่องคำขออนุมัติสินค้า
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-start align-middle position-relative">
+                                                                ผู้ดูแล
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody style="background: #FFFF;">
+                                                        <template v-for="(item, index) in 5">
+                                                            <tr class="fs-14">
+                                                                <td class="text-center align-middle">04/08/2024</td>
+                                                                <td class="text-center align-middle">TT4</td>
+                                                                <td class="text-center align-middle">ไม่มีรีวิวเชิงลบ
+                                                                </td>
+                                                                <td class="text-center align-middle">2</td>
+                                                                <td class="text-center align-middle">
+                                                                    ตอบกลับแชทในกล่องข้อความเรียบร้อย</td>
+                                                                <td class="text-center align-middle">
+                                                                    ตอบกลับแชทในกล่องข้อความเรียบร้อย</td>
+                                                                <td class="text-center align-middle">ไม่พบการละเมิด</td>
+                                                                <td class="text-center align-middle">-</td>
+                                                                <td class="text-center align-middle">ขออนุมัติคำขอ 1
+                                                                    รายการ</td>
+                                                                <td class="text-start align-middle">
+                                                                    <div>
+                                                                        <select name="select2_input" id="select2_input"
+                                                                            data-hide-search="true"
+                                                                            class="form-select w-100px h-25px "
+                                                                            data-control="select2" data-placeholder="">
+                                                                            <option></option>
+                                                                            <option value="1">DREAM</option>
+                                                                            <option value="2">KIM</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                                <div class="d-flex justify-content-end">
+                                                    <ul class="pagination">
+                                                        <li class="page-item previous disabled"><a href="#"
+                                                                class="page-link"><i class="previous"></i></a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                        <li class="page-item active"><a href="#" class="page-link">2</a>
+                                                        </li>
+                                                        <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">4</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                        <li class="page-item next"><a href="#" class="page-link"><i
+                                                                    class="next"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- T2 -->
+                                            <div class="table-responsive mt-10">
+                                                <table class="table table-bordered">
+                                                    <thead style="background: #bcd5ad;">
+                                                        <tr class="fw-bold fs-12 text-gray-800">
+                                                            <th class="text-center align-middle position-relative">Date
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th
+                                                                class="text-center align-middle w-50px position-relative">
+                                                                ออเดอร์
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                ขื่อTTลูกค้า
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">เบอร์
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                เหตุผล
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                ช่องทาง
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                สินค้า
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">Noto
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-center align-middle position-relative">
+                                                                By(คอมเฟิร์ม)
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                            <th class="text-start align-middle position-relative">
+                                                                ตามแก้ดาว
+                                                                <i class="bi bi-filter position-absolute"
+                                                                    style="right: 5px; bottom: 5px;"></i>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody style="background: #FFFF;">
+                                                        <template v-for="(item, index) in 5">
+                                                            <tr class="fs-14">
+                                                                <td class="text-center align-middle">04/08/2024</td>
+                                                                <td class="text-center align-middle">-</td>
+                                                                <td class="text-center align-middle">duangrat2023</td>
+                                                                <td class="text-center align-middle">ไม่สามารถดูเบอร์ได้
+                                                                </td>
+                                                                <td class="text-center align-middle min-w-100px">2
+                                                                    ดาว/ส่งของเร็ว บริการดี แพ็คของมาดี ไม่มีเสียหาย
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <div>
+                                                                        <select name="select2_channel"
+                                                                            data-hide-search="true" id="select2_channel"
+                                                                            class="form-select w-75px h-25px"
+                                                                            data-control="select2" data-placeholder="">
+                                                                            <option></option>
+                                                                            <option value="1">DREAM</option>
+                                                                            <option value="2">KIM</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <div>
+                                                                        <select name="select2_product"
+                                                                            data-hide-search="true" id="select2_product"
+                                                                            class="form-select w-100px h-25px"
+                                                                            data-control="select2" data-placeholder="">
+                                                                            <option></option>
+                                                                            <option value="1">DREAM</option>
+                                                                            <option value="2">KIM</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-center align-middle min-w-100px">
+                                                                    โทรแล้วไม่รับ/รอลูกค้าตอบแชท</td>
+                                                                <td class="text-center align-middle">
+                                                                    <div>
+                                                                        <select name="select2_BY" id="select2_BY"
+                                                                            data-hide-search="true"
+                                                                            class="form-select w-100px h-25px"
+                                                                            data-control="select2" data-placeholder="">
+                                                                            <option></option>
+                                                                            <option value="1">DREAM</option>
+                                                                            <option value="2">KIM</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="text-start align-middle">
+                                                                    <div>
+                                                                        <select name="select2_star" id="select2_star"
+                                                                            data-hide-search="true"
+                                                                            class="form-select w-100px h-25px"
+                                                                            data-control="select2" data-placeholder="">
+                                                                            <option></option>
+                                                                            <option value="1">DREAM</option>
+                                                                            <option value="2">KIM</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                                <div class="d-flex justify-content-end">
+                                                    <ul class="pagination">
+                                                        <li class="page-item previous disabled"><a href="#"
+                                                                class="page-link"><i class="previous"></i></a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                        <li class="page-item active"><a href="#" class="page-link">2</a>
+                                                        </li>
+                                                        <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">4</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                        <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                        <li class="page-item next"><a href="#" class="page-link"><i
+                                                                    class="next"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- mb -->
+                                <div class="row w-100 d-flex">
+                                    <div class="col-2 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="h-50px w-50px position-absolute top-0 start-50 translate-middle">
+                                                <img class="icon-img" src="/assets/media/images/iconTikTok.png" alt="">
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Marwllsoy24</span>
+                                                    <span class="text-305 fw-bolder fs-14">1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="h-50px w-50px position-absolute top-0 start-50 translate-middle">
+                                                <img class="icon-img" src="/assets/media/images/Lazada.jpg.png" alt="">
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Good Sup</span>
+                                                    <span class="text-305 fw-bolder fs-14">1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="h-50px w-50px position-absolute top-0 start-50 translate-middle">
+                                                <img class="icon-img" src="/assets/media/images/shopping.png" alt="">
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">ข้าวปั้น</span>
+                                                    <span class="text-305 fw-bolder fs-14">1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="h-50px w-50px position-absolute top-0 start-50 translate-middle">
+                                                <img class="icon-img" src="/assets/media/images/facebook.png" alt="">
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Myorder</span>
+                                                    <span class="text-305 fw-bolder fs-14">1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="h-50px w-50px position-absolute top-0 start-50 translate-middle">
+                                                <img class="icon-img" src="/assets/media/images/Line.png" alt="">
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Line OA</span>
+                                                    <span class="text-305 fw-bolder fs-14">1</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 d-flex">
+                                        <div class="card box-shadow29 p-5 position-relative w-100 d-flex flex-column"
+                                            style="background: #f4f4f4;">
+                                            <div
+                                                class="card border box-shadow3 h-50px w-100px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
+                                                <h1 class="text-center fs-24">อื่นๆ</h1>
+                                            </div>
+                                            <div class="row mt-5">
+                                                <div class="d-flex justify-content-between">
+                                                    <ul>
+                                                        <li class="text-dark fw-bolder fs-14">ยืนยัน order (1,079)</li>
+                                                        <li class="text-dark fw-bolder fs-14">ยืนยัน order (1,079)</li>
+                                                        <li class="text-dark fw-bolder fs-14">ยืนยัน order (1,079)</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-dashboard/js/services.js" type="module"> </script>
+<script src="/page-dashboard/js/index.js" type="module"> </script>
+
+</html>

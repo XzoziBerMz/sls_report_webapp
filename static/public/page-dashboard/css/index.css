@@ -1,0 +1,71 @@
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-16 {
+    font-size: 16px;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-24 {
+    font-size: 24px;
+}
+
+.fs-26 {
+    font-size: 26px;
+}
+
+.fs-30 {
+    font-size: 30px;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.box-shadow3 {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.box-shadow29 {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.text-305 {
+    color: #305dae;
+}
+
+.icon-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+.select2-selection__rendered {
+    font-size: 12px !important;
+}
+
+.page-link {
+    color: #FFFFFF !important;
+}
+
+.page-link.active,
+.active>.page-link {
+    background-color: #f4ae56;
+}
+
+.page-link:hover {
+    background-color: #3d756e;
+}
+
+/* .select-mod1 {
+    background-color: #a52115 !important;
+    color: #FFFFFF !important;
+} */

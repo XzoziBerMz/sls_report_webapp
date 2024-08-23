@@ -1,0 +1,15 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "product": "SOY ช็อค",
+            "channel_list": [
+                {
+                    "channel": "LineOA"
+                }
+            ]
+        }
+    ],
+    "total": 100
+}

@@ -34,6 +34,9 @@ func main() {
 	app.Get("/ads", render.AdsPage)
 	app.Get("/chat", render.ChatPage)
 	app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
+	app.Get("/dashboard", render.DashboardPage)
+	app.Get("/dashboard-new", render.DashboardNewPage)
+	app.Get("/negativ-review", render.NegativeReviewPage)
 	app.Listen(":8000")
 
 }

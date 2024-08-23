@@ -1,0 +1,11 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "name_laz": "Good Sup",
+            "nunber_laz": "1"
+        }
+    ],
+    "total": 100
+}
