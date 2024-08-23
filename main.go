@@ -34,6 +34,7 @@ func main() {
 	app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Get("/dashboard", render.DashboardPage)
 	app.Get("/dashboard-new", render.DashboardNewPage)
+	app.Get("/negativ-review", render.NegativeReviewPage)
 	app.Listen(":8000")
 
 }
