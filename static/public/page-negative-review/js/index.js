@@ -120,7 +120,7 @@
 
                                     // Show popup confirmation
                                     Swal.fire({
-                                        text: "Form has been successfully submitted!",
+                                        text: "กรอกข้อมูล สำเร็จ!",
                                         icon: "success",
                                         buttonsStyling: false,
                                         confirmButtonText: "Ok, got it!",
