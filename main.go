@@ -30,7 +30,9 @@ func main() {
 	app.Static("/", "./static/public")
 
 	app.Get("/", render.HomePage)
+	app.Get("/login", render.LoginPage)
 	app.Get("/ads", render.AdsPage)
+	app.Get("/chat", render.ChatPage)
 	app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Listen(":8000")
 
