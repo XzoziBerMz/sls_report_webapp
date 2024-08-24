@@ -11,29 +11,37 @@
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
-            }
+                dataMatterViolation: [],
+                dataInputChannel: [],
+            };
         },
         methods: {
             async init() {
                 let self = this;
             },
-
+            async loadData() {
+                try {
+                    const responseGetMatterViolation = await services.getMatterViolation();
+                    const dataMatterViolation = responseGetMatterViolation?.data.data || [];
+                    this.dataMatterViolation = dataMatterViolation;
+                } catch (error) {
+                    console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
+                }
+                try {
+                    const responseGetInputChannel = await services.getInputChannel();
+                    const dataInputChannel = responseGetInputChannel?.data.data || [];
+                    this.dataInputChannel = dataInputChannel;
+                } catch (error) {
+                    console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
+                }
+            },
+            
             validateForm() {
-                // Define form element
                 const form = document.getElementById('kt_docs_formvalidation_text');
-
-                // Init form validation rules
                 const validator = FormValidation.formValidation(
                     form,
                     {
                         fields: {
-                            'radio_input': {
-                                validators: {
-                                    notEmpty: {
-                                        message: 'ช่องทาง ต้องมีข้อมูล'
-                                    }
-                                }
-                            },
                             'text_input1': {
                                 validators: {
                                     notEmpty: {
@@ -94,52 +102,79 @@
                         }
                     }
                 );
-
-                // Submit button handler
+            
                 const submitButton = document.getElementById('kt_docs_formvalidation_text_submit');
                 submitButton.addEventListener('click', function (e) {
                     e.preventDefault();
-
-                    // Validate form before submit
-                    if (validator) {
-                        validator.validate().then(function (status) {
-                            if (status == 'Valid') {
-                                // Show loading indication
-                                submitButton.setAttribute('data-kt-indicator', 'on');
-
-                                // Disable button to avoid multiple click
-                                submitButton.disabled = true;
-
-                                // Simulate form submission
-                                setTimeout(function () {
-                                    // Remove loading indication
-                                    submitButton.removeAttribute('data-kt-indicator');
-
-                                    // Enable button
-                                    submitButton.disabled = false;
-
-                                    // Show popup confirmation
-                                    Swal.fire({
-                                        text: "กรอกข้อมูล สำเร็จ!",
-                                        icon: "success",
-                                        buttonsStyling: false,
-                                        confirmButtonText: "Ok, got it!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary"
-                                        }
-                                    });
-
-                                    //form.submit(); // Submit form
-                                }, 1000);
-                            }
-                        });
+                    const radioInputs = document.querySelectorAll('input[type="radio"]');
+                    const radioError = document.getElementById('radio_input_error');
+            
+                    const radioSelected = Array.from(radioInputs).find(radio => radio.checked) ? true : false;
+                    if (!radioSelected) {
+                        radioError.style.display = 'block';
+                    } else {
+                        radioError.style.display = 'none';
                     }
+            
+                    validator.validate().then(function (status) {
+                        if (status === 'Valid' && radioSelected) {
+                            // Show loading indication
+                            submitButton.setAttribute('data-kt-indicator', 'on');
+                            submitButton.disabled = true;
+            
+                            // Simulate form submission
+                            setTimeout(function () {
+                                // Remove loading indication
+                                submitButton.removeAttribute('data-kt-indicator');
+                                submitButton.disabled = false;
+            
+                                // Show success popup
+                                Swal.fire({
+                                    text: "กรอกข้อมูล สำเร็จ!",
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary"
+                                    }
+                                }).then(() => {
+                                    // Reset form fields
+                                    form.reset();
+            
+                                    // Uncheck all radio buttons
+                                    radioInputs.forEach(radio => radio.checked = false);
+            
+                                    // Hide radio error message
+                                    radioError.style.display = 'none';
+                                });
+            
+                                // Uncomment the following line to actually submit the form
+                                // form.submit();
+                            }, 1000);
+                        } else {
+                            // Show error popup if form is invalid
+                            Swal.fire({
+                                text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-danger"
+                                }
+                            });
+                        }
+                    });
                 });
             }
+
+
         },
         mounted() {
             let self = this;
-            self.validateForm();
+            self.loadData();
+            self.$nextTick(() => {
+                self.validateForm();
+            });
         }
     });
 

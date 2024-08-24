@@ -5,17 +5,28 @@
         
     }
     
-    function getPokemon (body = {}) {
-        console.log( window.csrfToken)
-        return axios({
-            method: 'post',
-            url: endpoint.getPokemon,
-            data: {...body},
-            headers: {"X-Csrf-Token":window.csrfToken}
-        });
+    function getMatterViolation (body = {}) {
+        return axios.get(`/page-negative-review/mockjson/get_matter_violation.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
     }
+    function getInputChannel (body = {}) {
+        return axios.get(`/page-negative-review/mockjson/get_input_channel.json`)
+        // return axios({
+        //     method: 'post',
+        //     url: endpoint.getCaretaker,
+        //     data: { ...body },
+        //     headers: { "x-auth-token": window.csrfToken }
+        // });
+    }
+
     const services = {
-        getPokemon,
+        getMatterViolation,
+        getInputChannel,
     };
     window.services = services;
 })(jQuery, window, axios);

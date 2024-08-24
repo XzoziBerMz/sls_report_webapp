@@ -1,0 +1,19 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "channel": "TT1"
+        },
+        {
+            "channel": "TT2"
+        },
+        {
+            "channel": "TT3"
+        },
+        {
+            "channel": "TT4"
+        }
+    ],
+    "total": 100
+}
