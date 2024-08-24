@@ -14,17 +14,24 @@ var KTSigninGeneral = function() {
 			form,
 			{
 				fields: {					
-					'email': {
+					// 'email': {
+                    //     validators: {
+                    //         regexp: {
+                    //             regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    //             message: 'The value is not a valid email address',
+                    //         },
+					// 		notEmpty: {
+					// 			message: 'Email address is required'
+					// 		}
+					// 	}
+					// },
+                    'username': {
                         validators: {
-                            regexp: {
-                                regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                message: 'The value is not a valid email address',
-                            },
-							notEmpty: {
-								message: 'Email address is required'
-							}
-						}
-					},
+                            notEmpty: {
+                                message: 'The username is required'
+                            }
+                        }
+                    }, 
                     'password': {
                         validators: {
                             notEmpty: {
@@ -80,11 +87,11 @@ var KTSigninGeneral = function() {
                             }
                         }).then(function (result) {
                             if (result.isConfirmed) { 
-                                form.querySelector('[name="email"]').value= "";
+                                form.querySelector('[name="username"]').value= "";
                                 form.querySelector('[name="password"]').value= "";  
                                                               
                                 //form.submit(); // submit form
-                                var redirectUrl = form.getAttribute('data-kt-redirect-url');
+                                var redirectUrl = `./ads`;
                                 if (redirectUrl) {
                                     location.href = redirectUrl;
                                 }
@@ -124,11 +131,11 @@ var KTSigninGeneral = function() {
                                         
                     // Check axios library docs: https://axios-http.com/docs/intro 
                     axios.post('/your/ajax/login/url', {
-                        email: form.querySelector('[name="email"]').value, 
+                        username: form.querySelector('[name="username"]').value, 
                         password: form.querySelector('[name="password"]').value 
                     }).then(function (response) {
                         if (response) {
-                            form.querySelector('[name="email"]').value= "";
+                            form.querySelector('[name="username"]').value= "";
                             form.querySelector('[name="password"]').value= "";  
 
                             const redirectUrl = form.getAttribute('data-kt-redirect-url');
@@ -139,7 +146,7 @@ var KTSigninGeneral = function() {
                         } else {
                             // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                             Swal.fire({
-                                text: "Sorry, the email or password is incorrect, please try again.",
+                                text: "Sorry, the username or password is incorrect, please try again.",
                                 icon: "error",
                                 buttonsStyling: false,
                                 confirmButtonText: "Ok, got it!",
@@ -184,7 +191,7 @@ var KTSigninGeneral = function() {
             
             handleValidation();
             handleSubmitDemo(); // used for demo purposes only, if you use the below ajax version you can uncomment this one
-            //handleSubmitAjax(); // use for ajax submit
+            // handleSubmitAjax(); // use for ajax submit
         }
     };
 }();

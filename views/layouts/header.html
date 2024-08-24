@@ -1,21 +1,21 @@
 {{- define "header" -}}
 {{$pathCommonAssets := .CommonBasePath}}
 
-<div style="background:rgb(60, 138, 60);" class="app-container  container-fluid d-flex align-items-stretch justify-content-between"
+<div class="app-container  container-fluid d-flex align-items-stretch justify-content-between"
     id="kt_app_header_container">
-    <div class="d-flex align-items-center d-lg-none ms-n3 me-1 me-md-2" title="Show sidebar menu">
+    <div class="d-flex align-items-center  ms-n3 me-1 me-md-2" title="Show sidebar menu">
         <div class="btn btn-icon btn-active-color-primary w-35px h-35px"
             id="kt_app_sidebar_mobile_toggle">
-            <i class="ki-outline ki-abstract-14 fs-2 fs-md-1 "></i>
+            <i class="text-white ki-outline ki-abstract-14 fs-2 fs-md-1 "></i>
         </div>
     </div>
-    <div style="background:rgb(60, 138, 60);" class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-        <a href="?page=index" class="d-lg-none">
+    <!-- <div style="background:rgb(60, 138, 60);" class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+        <a href="?page=index" class="">
             <div>
              <span style="font-family: 'Lato', sans-serif;font-weight:700;" class="topic h1">IMOBEL</span>
             </div>
         </a>
-    </div>
+    </div> -->
     <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
 
         <div data-kt-swapper="true" data-kt-swapper-mode="{default: 'prepend', lg: 'prepend'}"
