@@ -1,0 +1,218 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-key-order/css/index.css">
+    <!--end::custom css for this page-->
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column bg-dark" data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <h1 class="fs-1 fw-bolder">คีย์ Order</h1>
+                                <div class="card p-10 mt-3 w-100">
+                                    <div class="d-flex justify-content-end">
+                                        <div data-kt-search-keypress="true" data-kt-search-min-length="2"
+                                            data-kt-search-enter="true" data-kt-search-layout="inline">
+                                            <form data-kt-search-element="form" class="w-100 position-relative"
+                                                autocomplete="off">
+                                                <input type="hidden" />
+                                                <div class="input-container">
+                                                    <input type="text"
+                                                        class="form-control form-control-lg form-control-solid px-10"
+                                                        name="search" value="" placeholder="ค้นหา.."
+                                                        data-kt-search-element="input" />
+                                                    <i class="bi bi-search"></i>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive border rounded-4">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fw-bold fs-4 ">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>วันที่</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>ชื่อลุกค้า</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>ชื่อสินค้า</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>หมายเลขคำสั่งซื้อ</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>ช่องทาง</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>หมายเหตุ</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <span>user</span>
+                                                            <i class="bi-chevron-down"></i>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                            </tfoot>
+                                            <tbody class="fs-6">
+                                                <template v-for="(item, index) in dataOrder" :key="index">
+                                                    <tr>
+                                                        <td class="text-start align-middle" v-text="item.date"></td>
+                                                        <td class="text-start align-middle" v-text="item.customer_name">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.product_name">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.order_number">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.channel"></td>
+                                                        <td class="text-start align-middle" v-text="item.number"></td>
+                                                        <td class="text-start align-middle" v-text="item.user"></td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                            <tfoot class="tfoot-bordered">
+                                                <td class="align-top w-200px">
+                                                    <div class="row">
+                                                        <div class="form-floating mb-7 ">
+                                                            <input type="email" class="form-control" id="floatingInputFrom" placeholder=""/>
+                                                            <label for="floatingInput">From</label>
+                                                        </div>
+                                                        <div class="form-floating mb-7 ">
+                                                            <input type="email" class="form-control" id="floatingInputTo" placeholder=""/>
+                                                            <label for="floatingInput">To</label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInput" placeholder=""/>
+                                                        <label for="floatingInput">ชื่อลูกค้า</label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInputNameP" placeholder=""/>
+                                                        <label for="floatingInput">สินค้า</label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInputNameN" placeholder=""/>
+                                                        <label for="floatingInput">หมายเลขคำสั่งซื้อ</label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInputNameC" placeholder=""/>
+                                                        <label for="floatingInput">ช่องทาง</label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInputNameQ" placeholder=""/>
+                                                        <label for="floatingInput">หมายเหตุ</label>
+                                                    </div>
+                                                </td>
+                                                <td class="align-top w-200px">
+                                                    <div class="form-floating mb-7 ">
+                                                        <input type="email" class="form-control" id="floatingInputUser" placeholder=""/>
+                                                        <label for="floatingInput">user</label>
+                                                    </div>
+                                                </td>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                data-control="select2">
+                                                <option value="10" selected>10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                        <ul class="pagination">
+                                            <li class="page-item previous disabled"><a href="#" class="page-link"><i
+                                                        class="previous"></i></a></li>
+                                            <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                            <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                            <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                            <li class="page-item next"><a href="#" class="page-link"><i
+                                                        class="next"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-key-order/js/services.js" type="module"> </script>
+<script src="/page-key-order/js/index.js" type="module"> </script>
+
+</html>
