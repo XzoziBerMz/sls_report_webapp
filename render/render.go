@@ -27,3 +27,10 @@ func LoginPage(c *fiber.Ctx) error {
 		"title": "auth",
 	}, c)
 }
+
+func ImportVideoPage(c *fiber.Ctx) error {
+
+	return Render("page-video/index", fiber.Map{
+		"title": "auth",
+	}, c)
+}

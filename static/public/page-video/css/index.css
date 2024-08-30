@@ -1,0 +1,109 @@
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-16 {
+    font-size: 16px;
+}
+.fs-18 {
+    font-size: 18px;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-24 {
+    font-size: 24px;
+}
+
+.fs-26 {
+    font-size: 26px;
+}
+
+.fs-30 {
+    font-size: 30px;
+}
+.fs-36 {
+    font-size: 36px;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.box-shadow3 {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.box-shadow29 {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+.box-shadow2 {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.text-305 {
+    color: #305dae;
+}
+
+.icon-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+.select2-selection__rendered {
+    font-size: 12px !important;
+}
+
+.br-30 {
+    border-radius: 30px;
+}
+
+.form-check-input[type=radio] {
+    border: black 1px !important;
+}
+
+.swal2-popup .swal2-html-container, .swal2-popup .swal2-content {
+    font-size: 1.9rem !important;
+}
+.invalid-feedback {
+    color: #F1416C !important;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-container i {
+    position: absolute;
+    left: 10px; /* Adjust as needed */
+    z-index: 1;
+}
+
+.input-container input {
+    padding-left: 40px; /* Adjust based on the icon size */
+}
+
+.tfoot-bordered {
+    border-top: 1px solid #F3F3F3 !important; /* Adjust color and thickness as needed */
+}
+
+.form-control {
+    border-top: none; /* ซ่อนเส้นขอบด้านบน */
+    border-left: none; /* ซ่อนเส้นขอบด้านซ้าย */
+    border-right: none; /* ซ่อนเส้นขอบด้านขวา */
+    border-bottom: 1px solid #ced4da; /* แสดงเส้นขอบด้านล่าง */
+    border-radius: 0; /* ทำให้มุมของเส้นขอบเป็นมุมตรง */
+}
+
+.pointer { 
+    cursor: pointer;
+}

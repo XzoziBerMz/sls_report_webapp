@@ -38,6 +38,7 @@ func main() {
 	app.Get("/dashboard-new", render.DashboardNewPage)
 	app.Get("/key-order", render.KeyOrderPage)
 	app.Get("/negativ-review", render.NegativeReviewPage)
+	app.Get("/video", render.ImportVideoPage)
 	app.Listen(":8000")
 
 }
