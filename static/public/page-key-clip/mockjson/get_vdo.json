@@ -1,0 +1,19 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "product": "SOY ช็อค"
+        },
+        {
+            "product": "SOY วานิลลา"
+        },
+        {
+            "product": "SOY ธรรมชาติ"
+        },
+        {
+            "product": "อริน"
+        }
+    ],
+    "total": 100
+}

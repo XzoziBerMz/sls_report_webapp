@@ -3,12 +3,13 @@
     "message": "success",
     "data": [
         {
-            "code": "1",
-            "name": "พบการละเมิด"
+            "channel": "SOY ช็อค"
         },
         {
-            "code": "2",
-            "name": "ไม่พบการละเมิด"
+            "channel": "SOY วานิลลา"
+        },
+        {
+            "channel": "อริน"
         }
     ],
     "total": 100

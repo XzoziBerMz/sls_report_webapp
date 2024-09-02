@@ -1,0 +1,19 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "channel": "Tiktok1"
+        },
+        {
+            "channel": "Tiktok2"
+        },
+        {
+            "channel": "Tiktok3"
+        },
+        {
+            "channel": "Tiktok4"
+        }
+    ],
+    "total": 100
+}
