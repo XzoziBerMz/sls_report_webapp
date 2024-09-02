@@ -1,0 +1,15 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "code": "1",
+            "name": "พบการละเมิด"
+        },
+        {
+            "code": "2",
+            "name": "ไม่พบการละเมิด"
+        }
+    ],
+    "total": 100
+}

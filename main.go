@@ -39,6 +39,7 @@ func main() {
 	app.Get("/key-order", render.KeyOrderPage)
 	app.Get("/negativ-review", render.NegativeReviewPage)
 	app.Get("/video", render.ImportVideoPage)
+	app.Get("/product-order", render.ProductOrderwPage)
 	app.Listen(":8000")
 
 }

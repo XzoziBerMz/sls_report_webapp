@@ -13,6 +13,8 @@
                 filtered: [],
                 dataMatterViolation: [],
                 dataInputChannel: [],
+
+                
             };
         },
         methods: {
@@ -152,7 +154,7 @@
                                 // form.submit();
                             }, 1000);
                         } else {
-                            // Show error popup if form is invalid
+                           
                             Swal.fire({
                                 text: "กรุณากรอกข้อมูลให้ครบถ้วน",
                                 icon: "error",
