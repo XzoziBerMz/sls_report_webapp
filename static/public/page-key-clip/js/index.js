@@ -18,7 +18,7 @@
                     channel: "",
                     product: "",
                     vdo: "",
-                    remark: ""
+                    // remark: ""
                 },
                 errors: {}
             }
@@ -73,12 +73,12 @@
                 if (!this.form.product) {
                     this.errors.product = 'กรุณาเลือกสินค้า';
                 }
-                if (!this.form.vdo) {
-                    this.errors.vdo = 'กรุณากรอกลิ้งค์ VDO';
-                }
-                if (!this.form.remark) {
-                    this.errors.remark = 'กรุณากรอกหมายเหตุ';
-                }
+                // if (!this.form.vdo) {
+                //     this.errors.vdo = 'กรุณากรอกลิ้งค์ VDO';
+                // }
+                // if (!this.form.remark) {
+                //     this.errors.remark = 'กรุณากรอกหมายเหตุ';
+                // }
         
                 // If there are no errors, return true
                 return Object.keys(this.errors).length === 0;
@@ -107,7 +107,7 @@
                             date: "",
                             channel: "",
                             product: "",
-                            vdo: "",
+                            // vdo: "",
                             remark: ""
                         };
         
