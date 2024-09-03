@@ -14,6 +14,7 @@
                 form: {
                     date: "",
                     product: "",
+                    nameproduct: "",
                     orderNumber: "",
                     channel: "",
                     remark: ""
@@ -48,6 +49,9 @@
                 }
                 if (!this.form.product) {
                     this.errors.product = 'กรุณากรอกสินค้า';
+                }
+                if (!this.form.nameproduct) {
+                    this.errors.nameproduct = 'กรุณากรอกชื่อสินค้า';
                 }
                 if (!this.form.orderNumber) {
                     this.errors.orderNumber = 'กรุณากรอกหมายเลขคำสั่งซื้อ';

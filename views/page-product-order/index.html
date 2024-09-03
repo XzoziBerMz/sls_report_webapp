@@ -61,7 +61,16 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class="required fw-semibold fs-4 mb-2">สินค้า</label>
+                                                        <label class="required fw-semibold fs-4 mb-2">ชื่อลูกค้า</label>
+                                                        <input type="text" name="text_input2"
+                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
+                                                            v-model="form.nameproduct" @input="handleInput('nameproduct')" />
+                                                        <span v-text="errors.nameproduct" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="fv-row mb-10">
+                                                        <label class="required fw-semibold fs-4 mb-2">ลูกค้า</label>
                                                         <input type="text" name="text_input2"
                                                             class="form-control form-control mb-3 mb-lg-0 h-50px"
                                                             v-model="form.product" @input="handleInput('product')" />
