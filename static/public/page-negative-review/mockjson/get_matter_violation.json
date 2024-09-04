@@ -3,13 +3,16 @@
     "message": "success",
     "data": [
         {
-            "channel": "SOY ช็อค"
+            "code": "1",
+            "name": "ทดสอบ"
         },
         {
-            "channel": "SOY วานิลลา"
+            "code": "2",
+            "name": "SOY วานิลลา"
         },
         {
-            "channel": "อริน"
+            "code": "3",
+            "name": "อริน"
         }
     ],
     "total": 100
