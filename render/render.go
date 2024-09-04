@@ -14,6 +14,13 @@ func AdsPage(c *fiber.Ctx) error {
 	}, c)
 }
 
+func AdsFormPage(c *fiber.Ctx) error {
+
+	return Render("page-ads-form/index", fiber.Map{
+		"title": "auth",
+	}, c)
+}
+
 func ChatPage(c *fiber.Ctx) error {
 
 	return Render("page-chat/index", fiber.Map{

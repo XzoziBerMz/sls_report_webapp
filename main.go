@@ -32,6 +32,7 @@ func main() {
 	app.Get("/", render.HomePage)
 	app.Get("/login", render.LoginPage)
 	app.Get("/ads", render.AdsPage)
+	app.Get("/ads-form", render.AdsFormPage)
 	app.Get("/chat", render.ChatPage)
 	app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Get("/dashboard", render.DashboardPage)
