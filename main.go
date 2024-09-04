@@ -41,6 +41,7 @@ func main() {
 	app.Get("/video", render.ImportVideoPage)
 	app.Get("/product-order", render.ProductOrderwPage)
 	app.Get("/key-clip", render.KeyClipPage)
+	app.Get("/negative-details", render.NegativeDetailsPage)
 	app.Listen(":8000")
 
 }
