@@ -44,16 +44,15 @@
 
                                     <form id="kt_docs_formvalidation_text" class="form" action="#" autocomplete="off">
                                         <div class="row w-550px fv-row g-3">
-                                            <template v-for="(item, indx) in dataInputChannel" :key="indx">
+                                            <template v-for="(channel, index) in dataInputChannel" :key="index">
                                                 <div class="col-3">
                                                     <label class="form-check form-check-custom form-check-solid">
-                                                        <input class="form-check-input" type="radio" name="radio_input"
-                                                            :value="indx" />
-                                                        <span class="form-check-label text-dark"
-                                                            v-text="item.channel"></span>
+                                                        <input class="form-check-input" type="radio" name="radio_input" :value="channel" />
+                                                        <span class="form-check-label text-dark" v-text="channel"></span>
                                                     </label>
                                                 </div>
                                             </template>
+                                            
                                             <!-- Validation message for radio buttons -->
                                             <div class="col-12">
                                                 <span id="radio_input_error" class="text-danger"
@@ -100,19 +99,19 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label
-                                                            class="required fw-semibold fs-4 mb-2">เรื่องการละเมิด</label>
+                                                        <label class="required fw-semibold fs-4 mb-2">เรื่องการละเมิด</label>
                                                         <select class="form-select h-50px" name="select_input"
                                                             data-control="select2"
                                                             data-placeholder="เลือก เรื่องการละเมิด"
                                                             data-hide-search="true">
                                                             <option></option>
-                                                            <option v-for="(option, index) in dataMatterViolation"
-                                                                :key="index" :value="option.code" v-text="option.name">
+                                                            <option v-for="(option, index) in dataMatterViolation" :key="index" :value="option.code" v-text="option.name">
+                                                             
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
                                                         <label

@@ -39,16 +39,11 @@
                                 <h1 class="fs-1 fw-bolder">คีย์ Order</h1>
                                 <div class="card p-10 mt-3 w-100">
                                     <div class="d-flex justify-content-end">
-                                        <div data-kt-search-keypress="true" data-kt-search-min-length="2"
-                                            data-kt-search-enter="true" data-kt-search-layout="inline">
-                                            <form data-kt-search-element="form" class="w-100 position-relative"
-                                                autocomplete="off">
+                                        <div data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="true" data-kt-search-layout="inline">
+                                            <form data-kt-search-element="form" class="w-100 position-relative" autocomplete="off">
                                                 <input type="hidden" />
                                                 <div class="input-container">
-                                                    <input type="text"
-                                                        class="form-control form-control-lg form-control-solid px-10"
-                                                        name="search" value="" placeholder="ค้นหา.."
-                                                        data-kt-search-element="input" />
+                                                    <input type="text" class="form-control form-control-lg px-10" name="search" v-model="search" placeholder="ค้นหา.." data-kt-search-element="input" @blur="onSearchInput" />
                                                     <i class="bi bi-search"></i>
                                                 </div>
                                             </form>
@@ -56,66 +51,65 @@
                                     </div>
                                     <div class="table-responsive border rounded-4">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
-                                            <thead>
-                                                <tr class="fw-bold fs-4 ">
-                                                    <th class="min-w-100px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>วันที่</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>ชื่อลุกค้า</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>ชื่อสินค้า</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>หมายเลขคำสั่งซื้อ</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>ช่องทาง</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>หมายเหตุ</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-100px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span>user</span>
-                                                            <i class="bi-chevron-down"></i>
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                                            <tr class="fw-bold fs-4">
+                                                <th class="min-w-100px align-middle" @click="sortData('p_date')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>วันที่</span>
+                                                        <i :class="getSortIcon('p_date')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-200px align-middle" @click="sortData('customer_name')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>ชื่อลุกค้า</span>
+                                                        <i :class="getSortIcon('customer_name')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-200px align-middle" @click="sortData('product')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>ชื่อสินค้า</span>
+                                                        <i :class="getSortIcon('product')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-200px align-middle" @click="sortData('order_no')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>หมายเลขคำสั่งซื้อ</span>
+                                                        <i :class="getSortIcon('order_no')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-200px align-middle" @click="sortData('chanel')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>ช่องทาง</span>
+                                                        <i :class="getSortIcon('chanel')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-200px align-middle" @click="sortData('note')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>หมายเหตุ</span>
+                                                        <i :class="getSortIcon('note')"></i>
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-100px align-middle" @click="sortData('user')">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>user</span>
+                                                        <i :class="getSortIcon('user')"></i>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
                                             <tfoot>
                                             </tfoot>
                                             <tbody class="fs-6">
-                                                <template v-for="(item, index) in dataOrder" :key="index">
+                                                <template v-for="(item, index) in dataOrderManual" :key="index">
                                                     <tr>
-                                                        <td class="text-start align-middle" v-text="item.date"></td>
+                                                        <td class="text-start align-middle" v-text="item.p_date"></td>
                                                         <td class="text-start align-middle" v-text="item.customer_name">
                                                         </td>
-                                                        <td class="text-start align-middle" v-text="item.product_name">
+                                                        <td class="text-start align-middle" v-text="item.product">
                                                         </td>
-                                                        <td class="text-start align-middle" v-text="item.order_number">
+                                                        <td class="text-start align-middle" v-text="item.order_no">
                                                         </td>
-                                                        <td class="text-start align-middle" v-text="item.channel"></td>
-                                                        <td class="text-start align-middle" v-text="item.number"></td>
+                                                        <td class="text-start align-middle" v-text="item.chanel"></td>
+                                                        <td class="text-start align-middle" v-text="item.note"></td>
                                                         <td class="text-start align-middle" v-text="item.user"></td>
                                                     </tr>
                                                 </template>
@@ -182,27 +176,27 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                data-control="select2">
-                                                <option value="10" selected>10</option>
+                                            <select class="form-select w-80px h-35px" v-model="perPage" @change="loadData">
+                                                <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
                                             </select>
+                                            
                                         </div>
                                         <ul class="pagination">
-                                            <li class="page-item previous disabled"><a href="#" class="page-link"><i
-                                                        class="previous"></i></a></li>
-                                            <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                            <li class="page-item active"><a href="#" class="page-link">2</a></li>
-                                            <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                            <li class="page-item "><a href="#" class="page-link">...</a></li>
-                                            <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                            <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                            <li class="page-item next"><a href="#" class="page-link"><i
-                                                        class="next"></i></a></li>
+                                            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage - 1)"><i class="previous"></i></a>
+                                            </li>
+                                            <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                                                <a href="#" class="page-link" @click.prevent="goToPage(page)" v-text="page"></a>
+                                            </li>
+                                            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage + 1)"><i class="next"></i></a>
+                                            </li>
                                         </ul>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>

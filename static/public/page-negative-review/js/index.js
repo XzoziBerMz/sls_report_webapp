@@ -13,31 +13,62 @@
                 filtered: [],
                 dataMatterViolation: [],
                 dataInputChannel: [],
+                dataKeyReview: [],
 
-                
+
             };
         },
         methods: {
             async init() {
                 let self = this;
             },
+
             async loadData() {
+
                 try {
                     const responseGetMatterViolation = await services.getMatterViolation();
                     const dataMatterViolation = responseGetMatterViolation?.data.data || [];
-                    this.dataMatterViolation = dataMatterViolation;
+                    this.dataMatterViolation = dataMatterViolation.map((item, index) => ({
+                        code: index, // or any unique value if available
+                        name: item
+                    }));
+                    console.log(this.dataMatterViolation); // Debugging line
                 } catch (error) {
                     console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
                 }
+
                 try {
                     const responseGetInputChannel = await services.getInputChannel();
                     const dataInputChannel = responseGetInputChannel?.data.data || [];
                     this.dataInputChannel = dataInputChannel;
                 } catch (error) {
-                    console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
+                    console.warn('🌦️ ~ loadDataSelect ~ error:', error);
                 }
+
             },
-            
+
+            // async loadDataPost() {
+            //     try {
+            //         let data = {
+            //             "search": "",
+            //             // "start_at": "2023-01-01",
+            //             // "end_at": "2024-08-23 10:09:22",
+            //             "by": [],
+            //             "channel": [],
+            //             "action": [],
+            //             "page": 1,
+            //             "per_page": 10,
+            //             "order": "user",
+            //             "order_by": "desc"
+            //         }
+            //         const responseGetKeyReview = await services.getKeyReview(data);
+            //         const dataKeyReview = responseGetKeyReview?.data.data || [];
+            //         this.dataKeyReview = dataKeyReview;
+            //     } catch (error) {
+            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
+            //     }
+            // },
+
             validateForm() {
                 const form = document.getElementById('kt_docs_formvalidation_text');
                 const validator = FormValidation.formValidation(
@@ -104,32 +135,32 @@
                         }
                     }
                 );
-            
+
                 const submitButton = document.getElementById('kt_docs_formvalidation_text_submit');
                 submitButton.addEventListener('click', function (e) {
                     e.preventDefault();
                     const radioInputs = document.querySelectorAll('input[type="radio"]');
                     const radioError = document.getElementById('radio_input_error');
-            
+
                     const radioSelected = Array.from(radioInputs).find(radio => radio.checked) ? true : false;
                     if (!radioSelected) {
                         radioError.style.display = 'block';
                     } else {
                         radioError.style.display = 'none';
                     }
-            
+
                     validator.validate().then(function (status) {
                         if (status === 'Valid' && radioSelected) {
                             // Show loading indication
                             submitButton.setAttribute('data-kt-indicator', 'on');
                             submitButton.disabled = true;
-            
+
                             // Simulate form submission
                             setTimeout(function () {
                                 // Remove loading indication
                                 submitButton.removeAttribute('data-kt-indicator');
                                 submitButton.disabled = false;
-            
+
                                 // Show success popup
                                 Swal.fire({
                                     text: "กรอกข้อมูล สำเร็จ!",
@@ -142,19 +173,19 @@
                                 }).then(() => {
                                     // Reset form fields
                                     form.reset();
-            
+
                                     // Uncheck all radio buttons
                                     radioInputs.forEach(radio => radio.checked = false);
-            
+
                                     // Hide radio error message
                                     radioError.style.display = 'none';
                                 });
-            
+
                                 // Uncomment the following line to actually submit the form
                                 // form.submit();
                             }, 1000);
                         } else {
-                           
+
                             Swal.fire({
                                 text: "กรุณากรอกข้อมูลให้ครบถ้วน",
                                 icon: "error",
@@ -174,6 +205,7 @@
         mounted() {
             let self = this;
             self.loadData();
+            // self.loadDataPost();
             self.$nextTick(() => {
                 self.validateForm();
             });

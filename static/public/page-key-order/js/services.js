@@ -4,6 +4,19 @@
          getPokemon:`/get-pokemon`,
         
     }
+
+    function getOrderManual(body = {}) {
+
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/order/filter-manual`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
+    }
+
     
     function getOrder (body = {}) {
         return axios.get(`/page-key-order/mockjson/get_order.json`)
@@ -16,6 +29,7 @@
     }
     const services = {
         getOrder,
+        getOrderManual,
     };
     window.services = services;
 })(jQuery, window, axios);

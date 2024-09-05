@@ -1,32 +1,52 @@
 
-(function($, window, axios) {
+(function ($, window, axios) {
+
+    const basePath = 'http://127.0.0.1:4444'
     const endpoint = {
-         getPokemon:`/get-pokemon`,
-        
+         getKeyReview:`/api/v1/review/filter-negative`,
+        // getKeyReview: `/negatvie-list`,
+
     }
-    
-    function getMatterViolation (body = {}) {
-        return axios.get(`/page-negative-review/mockjson/get_matter_violation.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+
+    function getKeyReview(body = {}) {
+
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/review/filter-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
     }
-    function getInputChannel (body = {}) {
-        return axios.get(`/page-negative-review/mockjson/get_input_channel.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+
+    function getMatterViolation(body = {}) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/review/list-infraction-daily`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
+    }
+
+    function getInputChannel(body = {}) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/review/list-channel-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
     }
 
     const services = {
         getMatterViolation,
         getInputChannel,
+
+        getKeyReview,
     };
     window.services = services;
 })(jQuery, window, axios);

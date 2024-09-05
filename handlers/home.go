@@ -25,3 +25,23 @@ func GetPokemonApiHandler(c *fiber.Ctx) error {
 		"data": resp,
 	})
 }
+
+func GetNegativeApiHandler(c *fiber.Ctx) error {
+	sv, err := services.New(services.CustomConfigFileOption())
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "internet server error",
+			"status":  fiber.StatusInternalServerError,
+		})
+	}
+	resp, err := sv.GetNegativeList()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "internet server error",
+			"status":  fiber.StatusInternalServerError,
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": resp,
+	})
+}

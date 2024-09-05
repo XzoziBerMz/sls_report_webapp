@@ -21,3 +21,18 @@ func (sv *service) GetUser() (map[string]interface{}, error) {
 	return res, nil
 
 }
+func (sv *service) GetNegativeList() (map[string]interface{}, error) {
+
+	client := resty.New()
+	res := map[string]interface{}{}
+	resp, err := client.R().
+		SetHeader("Content-Type", "application/json").
+		SetResult(&res). // or SetResult(AuthSuccess{}).
+		Get("http://localhost:4444/api/v1/review/filter-negative")
+	if err != nil {
+		return res, err
+	}
+	fmt.Println(resp.Status())
+	return res, nil
+
+}

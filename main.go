@@ -34,15 +34,19 @@ func main() {
 	app.Get("/ads", render.AdsPage)
 	app.Get("/ads-form", render.AdsFormPage)
 	app.Get("/chat", render.ChatPage)
-	app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
-	app.Get("/dashboard", render.DashboardPage)
-	app.Get("/dashboard-new", render.DashboardNewPage)
+	// app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
+	app.Get("/dashboard", render.DashboardNewPage)
+	app.Get("/dashboard-new", render.DashboardPage)
 	app.Get("/key-order", render.KeyOrderPage)
 	app.Get("/negativ-review", render.NegativeReviewPage)
 	app.Get("/video", render.ImportVideoPage)
 	app.Get("/product-order", render.ProductOrderwPage)
 	app.Get("/key-clip", render.KeyClipPage)
 	app.Get("/negative-details", render.NegativeDetailsPage)
+
+
+	app.Post("/negatvie-list", handlers.GetNegativeApiHandler)
+
 	app.Listen(":8000")
 
 }

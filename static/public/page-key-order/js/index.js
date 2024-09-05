@@ -1,77 +1,82 @@
 (function ($, window, Vue, axios) {
     'use strict';
 
-
-
     const app = Vue.createApp({
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 1,
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
                 dataOrder: [],
-                
+                dataOrderManual: [],
+                perPage: 10,
+                totalPages: 1,
+                sortField: 'user', // Default sort field
+                sortOrder: 'asc'   // Default sort order
             }
         },
-        computed: {
-
-        },
         methods: {
-            async init() {
-                let self = this
-
-            },
-
-            async loadDataOrder() {
-                const self = this;
+            async loadData() {
                 try {
                     let data = {
-                        page: 1,
-                        per_page: 100,
-                    }
-                    let responseGetOrder = await services.getOrder();
-                    const dataOrder = responseGetOrder?.data.data || [];
-                    self.dataOrder = dataOrder;
+                        search: this.search,
+                        customer: '',
+                        product: '',
+                        order_no: '',
+                        chanel: '',
+                        note: '',
+                        user: '',
+                        page: this.currentPage,
+                        per_page: +this.perPage,
+                        order: this.sortField,
+                        order_by: this.sortOrder
+                    };
 
+                    // Make API call to fetch order data
+                    const responseGetOrderManual = await services.getOrderManual(data);
+                    const response = responseGetOrderManual?.data || {};
+                    this.dataOrderManual = response.data || [];
+
+                    // Calculate total pages based on the total items returned by the API
+                    const totalItems = response.total || 0;
+                    this.totalPages = Math.ceil(totalItems / +this.perPage);
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn("Error loading data:", error);
                 }
             },
-
-            // getPokemon:async function (){
-            //   const self = this;
-            //   try {
-            //       showLoading();
-            //       const response = await services.getPokemon({})
-            //       if (response){
-            //           console.log(response)
-            //           closeLoading();
-
-            //       }
-
-            //   }catch(err){
-            //       closeLoading();
-            //       Msg("errorMsg",'error');
-
-            //   }finally{
-
-            //   }
-            // }
-
+            onSearchInput() {
+                console.log("Search input changed to:", this.search); // Debugging line
+                this.currentPage = 1; // Reset to the first page on new search
+                this.loadData();
+            },
+            goToPage(page) {
+                if (page < 1 || page > this.totalPages) return;
+                this.currentPage = page;
+                this.loadData();
+            },
+            sortData(field) {
+                // Toggle sort order if the same field is clicked
+                if (this.sortField === field) {
+                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortField = field;
+                    this.sortOrder = 'asc';
+                }
+                this.loadData();
+            },
+            getSortIcon(field) {
+                if (this.sortField !== field) return '';
+                return this.sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down';
+            }
         },
-
         mounted: function () {
-            let self = this
-               self.loadDataOrder()
-            //    self.getPokemon()
-            console.log("ok")
+            this.loadData();
+            console.log("Component mounted and data loaded");
         }
-
-
     });
 
     const vue = app.mount("#kt_app_root");
