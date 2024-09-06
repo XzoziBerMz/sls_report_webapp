@@ -1,5 +1,6 @@
 (function ($, window, Vue, axios) {
     'use strict';
+    const token_header = getCookie('token');
 
     const app = Vue.createApp({
         data: function () {
@@ -16,7 +17,8 @@
                 perPage: 10,
                 totalPages: 1,
                 sortField: 'user', // Default sort field
-                sortOrder: 'asc'   // Default sort order
+                sortOrder: 'asc',   // Default sort order
+                token_header: token_header || '',
             }
         },
         methods: {
@@ -37,7 +39,7 @@
                     };
 
                     // Make API call to fetch order data
-                    const responseGetOrderManual = await services.getOrderManual(data);
+                    const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
                     const response = responseGetOrderManual?.data || {};
                     this.dataOrderManual = response.data || [];
 

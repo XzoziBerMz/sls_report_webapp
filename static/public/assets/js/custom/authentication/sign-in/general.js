@@ -130,7 +130,7 @@ var KTSigninGeneral = function() {
                     submitButton.disabled = false;
                                         
                     // Check axios library docs: https://axios-http.com/docs/intro 
-                    axios.post('/your/ajax/login/url', {
+                    axios.post('http://127.0.0.1:4444/api/v1/login', {
                         username: form.querySelector('[name="username"]').value, 
                         password: form.querySelector('[name="password"]').value 
                     }).then(function (response) {
@@ -138,11 +138,12 @@ var KTSigninGeneral = function() {
                             form.querySelector('[name="username"]').value= "";
                             form.querySelector('[name="password"]').value= "";  
 
-                            const redirectUrl = form.getAttribute('data-kt-redirect-url');
-                            
-                            if (redirectUrl) {
-                                location.href = redirectUrl;
-                            }
+                            // const redirectUrl = form.getAttribute('data-kt-redirect-url');
+                            const token = response.data.data.token;
+                            document.cookie = `token=${token}; path=/; max-age=3600; secure; samesite=strict`;
+                            // if (redirectUrl) {
+                                window.location.href = '/ads';
+                            // }
                         } else {
                             // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/
                             Swal.fire({
@@ -190,8 +191,8 @@ var KTSigninGeneral = function() {
             submitButton = document.querySelector('#kt_sign_in_submit');
             
             handleValidation();
-            handleSubmitDemo(); // used for demo purposes only, if you use the below ajax version you can uncomment this one
-            // handleSubmitAjax(); // use for ajax submit
+            // handleSubmitDemo(); // used for demo purposes only, if you use the below ajax version you can uncomment this one
+            handleSubmitAjax(); // use for ajax submit
         }
     };
 }();

@@ -1,11 +1,11 @@
 
-(function($, window, axios) {
+(function ($, window, axios) {
     const endpoint = {
-         getPokemon:`/get-pokemon`,
-        
+        getPokemon: `/get-pokemon`,
+
     }
 
-    function getOrderManual(body = {}) {
+    function getOrderManual(body = {}, token) {
 
         return axios({
             method: 'post',
@@ -13,12 +13,12 @@
             // url: endpoint.getKeyReview,
             // url: basePath + endpoint.getKeyReview,
             data: { ...body },
-            headers: {}
+            headers: { "x-auth-token": token }
         });
     }
 
-    
-    function getOrder (body = {}) {
+
+    function getOrder(body = {}) {
         return axios.get(`/page-key-order/mockjson/get_order.json`)
         // return axios({
         //     method: 'post',

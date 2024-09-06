@@ -36,7 +36,7 @@ func main() {
 	app.Get("/chat", render.ChatPage)
 	// app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Get("/dashboard", render.DashboardNewPage)
-	app.Get("/dashboard-new", render.DashboardPage)
+	// app.Get("/dashboard-new", render.DashboardPage)
 	app.Get("/key-order", render.KeyOrderPage)
 	app.Get("/negativ-review", render.NegativeReviewPage)
 	app.Get("/video", render.ImportVideoPage)

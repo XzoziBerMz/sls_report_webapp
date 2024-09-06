@@ -5,17 +5,20 @@
         
     }
     
-    function getPokemon (body = {}) {
-        console.log( window.csrfToken)
+    function getInsert(body = {}, token) {
+
         return axios({
             method: 'post',
-            url: endpoint.getPokemon,
-            data: {...body},
-            headers: {"X-Csrf-Token":window.csrfToken}
+            url: `http://127.0.0.1:4444/api/v1/chat/daily-insert`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
         });
     }
+
     const services = {
-        getPokemon,
+        getInsert,
     };
     window.services = services;
 })(jQuery, window, axios);

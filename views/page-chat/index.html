@@ -46,110 +46,103 @@
                                         <span>ลงบันทึก จำนวนแชททุกร้าน</span>
                                     </div>
                                     <div class="row g-10 mt-0 mb-3" fv-id="validator_form">
-                                        <template v-for="item in dataList">
-                                            <div class="col-2 fv-row">
-                                                <div class="">
-                                                    <label :for="item.name" class="required form-label"
-                                                        v-text="item.name"></label>
-                                                    <input type="text" :name="item.name" :id="item.name"
-                                                        class="form-control form-control-solid" placeholder="" />
-                                                </div>
-                                            </div>
-                                        </template>
-                                        <!-- <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Lookjeab</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Example input" />
-                                            </div>
+                                        <div class="col-2 fv-row">
+                                            <label class="required form-label">Marwellsoy24</label>
+                                            <input @input="clearError('marwellsoy24')" v-model="formData.marwellsoy24" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.marwellsoy24" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Good Sup</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">Lookjeab</label>
+                                            <input @input="clearError('lookjeab')" v-model="formData.lookjeab" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.lookjeab" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">SOMchai</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">Good Sup</label>
+                                            <input @input="clearError('goodSup')" v-model="formData.goodSup" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.goodSup" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">ข้าวปั้น</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">SOMchai</label>
+                                            <input @input="clearError('somchai')" v-model="formData.somchai" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.somchai" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">มีมง</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">ข้าวปั้น</label>
+                                            <input @input="clearError('kaopan')" v-model="formData.kaopan" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.kaopan" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Marwell224</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">มีมง</label>
+                                            <input @input="clearError('meemong')" v-model="formData.meemong" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.meemong" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">TT5</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">Marwell224</label>
+                                            <input @input="clearError('marwell224')" v-model="formData.marwell224" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.marwell224" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Little Cactus</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">TT5</label>
+                                            <input @input="clearError('tt5')" v-model="formData.tt5" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.tt5" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">KETO Food</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">Little Cactus</label>
+                                            <input @input="clearError('littleCactus')" v-model="formData.littleCactus" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.littleCactus" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">อาหารเสริมดี จ๋า</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">KETO Food</label>
+                                            <input @input="clearError('ketoFood')" v-model="formData.ketoFood" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.ketoFood" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">marinee_y</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">อาหารเสริมดี จ๋า</label>
+                                            <input @input="clearError('supplement')" v-model="formData.supplement" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.supplement" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">TT6</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">marinee_y</label>
+                                            <input @input="clearError('marineeY')" v-model="formData.marineeY" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.marineeY" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Myorder</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
+                                            <label class="required form-label">TT6</label>
+                                            <input @input="clearError('tt6')" v-model="formData.tt6" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.tt6" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
-                                            <div class="">
-                                                <label for="exampleFormControlInput1" class="required form-label">Line oa</label>
-                                                <input type="text" class="form-control form-control-solid" placeholder="Example input" />
-                                            </div>
-                                        </div> -->
-                                    </div>
-                                    <div class="w-100 d-flex justify-content-end align-items-center">
-                                        <button class="btn btn-primary w-200px" @click="savePage()">Submit</button>
+                                            <label class="required form-label">Myorder</label>
+                                            <input @input="clearError('myorder')" v-model="formData.myorder" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.myorder" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-2 fv-row">
+                                            <label class="required form-label">Line OA</label>
+                                            <input @input="clearError('lineOa')" v-model="formData.lineOa" type="number"
+                                                class="form-control form-control-solid" />
+                                            <span v-text="errors.lineOa" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="w-100 d-flex justify-content-end align-items-center">
+                                            <button class="btn btn-primary w-200px" @click="savePage()">Submit</button>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
