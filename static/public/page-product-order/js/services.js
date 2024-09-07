@@ -4,30 +4,23 @@
          getPokemon:`/get-pokemon`,
         
     }
-    
-    
-    function getMatterViolation (body = {}) {
-        return axios.get(`/page-negative-review/mockjson/get_matter_violation.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+
+    function getInsertOrderManualHandler(body = {}, token) {
+
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/order/insert-manual`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
-    function getInputChannel (body = {}) {
-        return axios.get(`/page-negative-review/mockjson/get_input_channel.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
-    }
+    
 
     const services = {
-        getMatterViolation,
-        getInputChannel,
+        getInsertOrderManualHandler,
+      
     };
     window.services = services;
 })(jQuery, window, axios);

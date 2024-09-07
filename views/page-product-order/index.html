@@ -38,27 +38,15 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <h1 class="fs-1 fw-bolder">คีย์ order</h1>
                                 <div class="card p-10 mt-3 w-100">
-                                    <form id="kt_docs_formvalidation_text" class="form" @submit="handleSubmit"
-                                        autocomplete="off">
+                                    <form id="kt_docs_formvalidation_text" class="form" @submit="handleSubmit" autocomplete="off">
                                         <div>
                                             <div class="row mt-5">
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class="required fw-semibold fs-4 mb-2">วันที่</label>
-                                                        <div class="input-group w-100" id="kt_td_picker_simple"
-                                                            data-td-target-input="nearest"
-                                                            data-td-target-toggle="nearest">
-                                                            <input id="kt_td_picker_basic_input" type="text"
-                                                                class="form-control" v-model="form.date"
-                                                                @input="handleInput('date')"
-                                                                data-td-target="#kt_td_picker_basic" />
-                                                            <span class="input-group-text"
-                                                                data-td-target="#kt_td_picker_basic"
-                                                                data-td-toggle="datetimepicker">
-                                                                <i class="ki-duotone ki-calendar fs-2"><span
-                                                                        class="path1"></span><span
-                                                                        class="path2"></span></i>
-                                                            </span>
+                                                        <label class="fw-semibold fs-4 mb-2">วันที่</label>
+                                                        <div class="input-group w-100" id="kt_td_picker_simple" data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                            <input id="kt_td_picker_basic_input" type="text" class="form-control" v-model="form.date" @input="handleInput('date')" />
+                                                            <span class="input-group-text" data-td-target="#kt_td_picker_basic" data-td-toggle="datetimepicker"><i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i></span>
                                                         </div>
                                                         <span v-text="errors.date" class="text-danger"></span>
                                                     </div>
@@ -66,65 +54,47 @@
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
                                                         <label class="required fw-semibold fs-4 mb-2">ชื่อลูกค้า</label>
-                                                        <input type="text" name="text_input2"
-                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                            v-model="form.nameproduct"
-                                                            @input="handleInput('nameproduct')" />
+                                                        <input type="text" name="text_input2" class="form-control form-control mb-3 mb-lg-0 h-50px" v-model="form.nameproduct" @input="handleInput('nameproduct')" />
                                                         <span v-text="errors.nameproduct" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class="required fw-semibold fs-4 mb-2">ลูกค้า</label>
-                                                        <input type="text" name="text_input2"
-                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                            v-model="form.product" @input="handleInput('product')" />
+                                                        <label class="required fw-semibold fs-4 mb-2">สินค้า</label>
+                                                        <input type="text" name="text_input2" class="form-control form-control mb-3 mb-lg-0 h-50px" v-model="form.product" @input="handleInput('product')" />
                                                         <span v-text="errors.product" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label
-                                                            class="required fw-semibold fs-4 mb-2">หมายเลขคำสั่งซื้อ</label>
-                                                        <input type="text" name="text_input3"
-                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                            v-model="form.orderNumber"
-                                                            @input="handleInput('orderNumber')" />
+                                                        <label class="required fw-semibold fs-4 mb-2">หมายเลขคำสั่งซื้อ</label>
+                                                        <input type="text" name="text_input3" class="form-control form-control mb-3 mb-lg-0 h-50px" v-model="form.orderNumber" @input="handleInput('orderNumber')" />
                                                         <span v-text="errors.orderNumber" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
                                                         <label class="required fw-semibold fs-4 mb-2">ช่องทาง</label>
-                                                        <input type="text" name="text_input4"
-                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                            v-model="form.channel" @input="handleInput('channel')" />
+                                                        <input type="text" name="text_input4" class="form-control form-control mb-3 mb-lg-0 h-50px" v-model="form.channel" @input="handleInput('channel')" />
                                                         <span v-text="errors.channel" class="text-danger"></span>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class="required fw-semibold fs-4 mb-2">หมายเหตุ</label>
-                                                        <input type="text" name="text_input5"
-                                                            class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                            v-model="form.remark" @input="handleInput('remark')" />
+                                                        <label class="fw-semibold fs-4 mb-2">หมายเหตุ</label>
+                                                        <input type="text" name="text_input5" class="form-control form-control mb-3 mb-lg-0 h-50px" v-model="form.remark" @input="handleInput('remark')" />
                                                         <span v-text="errors.remark" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center">
-                                                <button id="kt_docs_formvalidation_text_submit" type="submit"
-                                                    class="btn btn-primary w-25">
+                                                <button id="kt_docs_formvalidation_text_submit" type="submit" class="btn btn-primary w-25">
                                                     <span class="indicator-label">Submit</span>
-                                                    <span class="indicator-progress">
-                                                        กรอกข้อมูลสำเร็จ <span
-                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                                    </span>
                                                 </button>
                                             </div>
                                         </div>
                                     </form>
+                                    
 
 
                                 </div>

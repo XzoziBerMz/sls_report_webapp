@@ -27,25 +27,25 @@
             async init() {
                 let self = this;
             },
-
             async loadData() {
-                const self = this;
+                showLoading();
                 try {
-                    const response = await services.getChannel(this.token_header);
-                    // แมพข้อมูลที่ได้มา และกำหนดให้กับ dataChannel
-                    this.dataChannel = response?.data?.data || [];
+                    // Make parallel API calls to fetch channel and video data
+                    const [responseChannel, responseVdo] = await Promise.all([
+                        services.getChannel(this.token_header),
+                        services.getvdo(this.token_header)
+                    ]);
+            
+                    // Assign the response data to the respective variables
+                    this.dataChannel = responseChannel?.data?.data || [];
+                    this.dataVdo = responseVdo?.data?.data || [];
                 } catch (error) {
-                    console.warn('🌦️ ~ onClickSearch ~ error:', error);
-                }
-                
-                try {
-                    const responseGetVdo = await services.getvdo(this.token_header);
-                    // แมพข้อมูลที่ได้มา และกำหนดให้กับ dataChannel
-                    this.dataVdo = responseGetVdo?.data?.data || [];
-                } catch (error) {
-                    console.warn('🌦️ ~ onClickSearch ~ error:', error);
+                    console.warn('🌦️ ~ loadData ~ error:', error);
+                } finally {
+                    closeLoading();
                 }
             },
+            
 
             async DefaultData() {
                 const self = this;
@@ -82,6 +82,7 @@
             
                 if (this.validateForm()) {
                     try {
+                        showLoading();
                         let data = {
                             "product": this.form.product || "",  
                             "note": this.form.remark || "", 
@@ -109,12 +110,14 @@
             
                             console.log("Form submitted successfully!");
                         }
-            
+                        closeLoading()
                     } catch (error) {
                         console.warn("Error submitting form:", error.response?.data || error.message);
+                        closeLoading()
                     }
                 } else {
                     console.log("Form validation failed.");
+                    closeLoading()
                 }
             },
             

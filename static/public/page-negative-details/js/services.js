@@ -4,40 +4,47 @@
          getPokemon:`/get-pokemon`,
         
     }
-    
 
-    function getChannel (body = {}) {
-        return axios.get(`/page-key-clip/mockjson/get_channel.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+    
+    function getInsertReviewDailyHandler(body = {}, token) {
+
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/review/insert-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
-    function getvdo (body = {}) {
-        return axios.get(`/page-key-clip/mockjson/get_vdo.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+
+    function getChannel(body = {}) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/channel/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
     }
-    function getEditStars (body = {}) {
-        return axios.get(`/page-negative-details/mockjson/get_edit_stars.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+
+    function getProduct (body = {}) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/product/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: {}
+        });
     }
+
 
     const services = {
-        getvdo,
+        getProduct,
         getChannel,
-        getEditStars,
+        getInsertReviewDailyHandler,
     };
     window.services = services;
 })(jQuery, window, axios);

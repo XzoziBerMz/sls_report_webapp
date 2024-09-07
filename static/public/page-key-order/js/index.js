@@ -88,6 +88,7 @@
             },
             async loadData() {
                 try {
+                    showLoading();
                     let data = {
                         search: this.search,
                         customer: this.customer || '', // Bind the search fields
@@ -110,8 +111,10 @@
         
                     const totalItems = response.total || 0;
                     this.totalPages = Math.ceil(totalItems / +this.perPage);
+                    closeLoading()
                 } catch (error) {
                     console.warn("Error loading data:", error);
+                    closeLoading()
                 }
             },
             onSearchInput() {

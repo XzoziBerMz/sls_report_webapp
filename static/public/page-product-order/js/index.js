@@ -1,6 +1,6 @@
 (function ($, window, Vue, axios) {
     'use strict';
-
+    const token_header = getCookie('token');
     const app = Vue.createApp({
         data: function () {
             return {
@@ -11,13 +11,15 @@
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
+                token_header: token_header || '',
+                dataInsertOrderManualHandler: [],
                 form: {
-                    date: "",
+                    // date: "",
                     product: "",
                     nameproduct: "",
                     orderNumber: "",
                     channel: "",
-                    remark: ""
+                  
                 },
                 errors: {}
             }
@@ -26,30 +28,28 @@
             async init() {
                 let self = this;
             },
-
+        
             async DefaultData() {
                 const self = this;
                 self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
                     static: true,
                     enableTime: true,
                     disableMobile: "true",
-                    dateFormat: "Y-m-d H:i",
+                    dateFormat: "Y-m-d",
                     onChange: function (selectedDates, dateStr, instance) {
                         self.form.date = dateStr; // Update date in form data
                         delete self.errors.date; // Remove validation error for date field
                     },
                 });
-            },
-
-            
-
-
+            }
+            ,
+        
             validateForm() {
                 this.errors = {};
-
-                if (!this.form.date) {
-                    this.errors.date = 'กรุณาเลือกวันที่';
-                }
+        
+                // if (!this.form.date) {
+                //     this.errors.date = 'กรุณาเลือกวันที่';
+                // }
                 if (!this.form.product) {
                     this.errors.product = 'กรุณากรอกสินค้า';
                 }
@@ -62,57 +62,73 @@
                 if (!this.form.channel) {
                     this.errors.channel = 'กรุณากรอกช่องทาง';
                 }
-                if (!this.form.remark) {
-                    this.errors.remark = 'กรุณากรอกหมายเหตุ';
-                }
-
+                // if (!this.form.remark) {
+                //     this.errors.remark = 'กรุณากรอกหมายเหตุ';
+                // }
+        
                 return Object.keys(this.errors).length === 0;
             },
-
-            handleInput(field) {
-                delete this.errors[field];
-            },
-
+        
             async handleSubmit(event) {
                 event.preventDefault();
-                if (this.validateForm()) {
-                    // Form is valid
-                    Swal.fire({
-                        text: "กรอกข้อมูล สำเร็จ!",
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(() => {
-                        // Reset form fields
-                        this.form = {
-                            date: "",
-                            product: "",
-                            orderNumber: "",
-                            channel: "",
-                            remark: ""
-                        };
-                        this.errors = {}; // Clear errors
-                    });
-
-                    // You can add your axios post request here to submit the form data
-
-                } else {
-                    // Form is invalid
-                    Swal.fire({
-                        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-danger"
-                        }
-                    });
+                
+                if (!this.validateForm()) {
+                    console.error("กรุณากรอกข้อมูลให้ครบถ้วน");
+                    return;
                 }
+            
+                try {
+                    // Log the form data
+                    console.log('Form data:', this.form);
+                    showLoading();
+                    let data = {
+                        "customer_name": this.form.nameproduct,
+                        "product": this.form.product,
+                        "order_no": this.form.orderNumber,
+                        "user": this.form.nameproduct,  // Assuming 'user' is the same as 'nameproduct'
+                        "p_date": this.form.date,
+                        "chanel": this.form.channel,
+                        "note": this.form.remark
+                    };
+            
+                    // Log the data being sent
+                    console.log('Data being sent:', data);
+            
+                    const response = await services.getInsertOrderManualHandler(data, this.token_header);
+                    const responseData = response.data || {};
+                    this.dataInsertOrderManualHandler = responseData.data || [];
+                    
+                    const totalItems = responseData.total || 0;
+                    this.totalPages = Math.ceil(totalItems / +this.perPage);
+                    closeLoading()
+                    // Form is valid
+                    console.log("กรอกข้อมูล สำเร็จ!");
+                    
+                    // Reset form fields and errors
+                    this.form = {
+                        date: "",
+                        product: "",
+                        nameproduct: "",
+                        orderNumber: "",
+                        channel: "",
+                        remark: ""
+                    };
+                    this.errors = {};
+                    console.error("สำเร็จ");
+                    
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                    closeLoading()
+                }
+            },
+            
+        
+            handleInput(field) {
+           
+                this.errors[field] = ''; 
             }
         },
+        
 
         mounted: function () {
             let self = this;

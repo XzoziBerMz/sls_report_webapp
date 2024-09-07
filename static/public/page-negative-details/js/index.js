@@ -1,6 +1,6 @@
 (function ($, window, Vue, axios) {
     'use strict';
-
+    const token_header = getCookie('token');
     const app = Vue.createApp({
         data: function () {
             return {
@@ -8,12 +8,14 @@
                 currentPage: window.currentPage,
                 authstatus: window.authstatus,
                 datas: [],
+                token_header: token_header || '',
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
                 dataChannel: [],
-                dataVdo: [],
-                dataEditStars: [],
+                dataProduct: [],
+                dataDailyHandler: [],
+             
                 form: {
                     date: "",
                     channel: "",
@@ -23,6 +25,49 @@
                     note: "",
                     editstars: ""
                 },
+                dataEditStars: [
+                    {
+                      id: 1,
+                      name: "ติดตามดาว",
+                    },
+                    {
+                      id: 2,
+                      name: "รอติดต้อเบอร์",
+                    },
+                    {
+                      id: 3,
+                      name: "ติดต่อไม่ได้/ไม่ได้รัยสาย",
+                    },
+                    {
+                      id: 4,
+                      name: "ลูกค้าไม่ตอบแชท",
+                    },
+                    {
+                      id: 5,
+                      name: "ลูกค้าแก้ไม่ได้แล้ว",
+                    },
+                    {
+                      id: 6,
+                      name: "แก้ไขกาวแล้ว",
+                    },
+                    {
+                      id: 7,
+                      name: "ยังไม่ได้แก้ไข",
+                    },
+                    {
+                      id: 8,
+                      name: "ไม่รับสายครั้งที่ 1",
+                    },
+                    {
+                      id: 9,
+                      name: "ไม่รับสายครั้งที่ 2",
+                    },
+                    {
+                      id: 10,
+                      name: "ไม่รับสายครั้งที่ 3",
+                    },
+                  ],
+           
                 errors: {}
             }
         },
@@ -33,28 +78,28 @@
 
             async loadData() {
                 const self = this;
+                showLoading();
                 try {
-                    let responseGetChannel = await services.getChannel();
-                    const dataChannel = responseGetChannel?.data?.data || [];
-                    this.dataChannel = dataChannel;
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseGetVdo = await services.getvdo();
-                    const dataVdo = responseGetVdo?.data.data || [];
-                    self.dataVdo = dataVdo;
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseGetEditStars = await services.getEditStars();
+                    const [responseGetChannel, responseGetProduct] = await Promise.all([
+                        services.getChannel(),
+                        services.getProduct()
+                    ]);
+            
+                    const dataChannel = responseGetChannel?.data.data || [];
+                    self.dataChannel = dataChannel;
+            
+                    const dataProduct = responseGetProduct?.data.data  || [];
+                    self.dataProduct = dataProduct;
+            
+                    // เรียก API ที่สามแยกต่างหาก
+                    const responseGetEditStars = await services.getEditStars(); // สมมติว่า API นี้มีอยู่
                     const dataEditStars = responseGetEditStars?.data.data || [];
                     self.dataEditStars = dataEditStars;
-
+            
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn('🌦 ~ loadData ~ error:', error);
+                } finally {
+                    closeLoading();
                 }
             },
 
@@ -64,7 +109,7 @@
                     static: true,
                     enableTime: true,
                     disableMobile: "true",
-                    dateFormat: "Y-m-d H:i",
+                    dateFormat: "Y-m-d",
                     onChange: function (selectedDates, dateStr, instance) {
                         self.form.date = dateStr; // Update date in form data
                         delete self.errors.date; // Remove validation error for date field
@@ -74,7 +119,6 @@
 
             validateForm() {
                 this.errors = {};
-        
                 if (!this.form.date) {
                     this.errors.date = 'กรุณาเลือกวันที่';
                 }
@@ -102,54 +146,80 @@
                 return Object.keys(this.errors).length === 0;
             },
 
+            handleInputNumber(field) {
+                if (field === 'phone_number') {
+                    // จำกัดเฉพาะตัวเลขและจำนวนตัวเลขไม่เกิน 10 ตัว
+                    this.form.phone_number = this.form.phone_number.replace(/\D/g, '').slice(0, 10);
+                }
+                delete this.errors[field]; // Remove the error message for this field
+                // อาจจะเพิ่ม logic สำหรับตรวจสอบ errors ที่นี่
+            },
+
             handleInput(field) {
                 delete this.errors[field]; // Remove the error message for this field
             },
-
             async handleSubmit(event) {
                 event.preventDefault();
-                
+            
                 if (this.validateForm()) {
-                    // Form is valid, proceed with submission
-                    Swal.fire({
-                        text: "กรอกข้อมูล สำเร็จ!",
-                        icon: "success",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }).then(() => {
-                        // Reset form fields
+                    console.log("กรอกข้อมูล สำเร็จ!");
+                    
+                    try {
+                        showLoading();
+                        // Create a data object with the correct field names as expected by the backend
+                        let data = {
+                            customer_name: this.form.nameTT || "",
+                            phone_no: this.form.phone_number || "",
+                            case_detail: this.form.additional_notes || "",
+                            channel: this.form.channel || "", // Use 'chanel' instead of 'channel' to match backend
+                            product: this.form.product || "",
+                            note: this.form.note || "",
+                            action: this.form.editstars || "",
+                            date: this.form.date || ""
+                        };
+                        
+            
+                        // Log data and headers for debugging
+                        console.log("Sending data:", data);
+                        console.log("Token header:", this.token_header);
+            
+                        // Send the data using your service
+                        const responseGetDailyHandler = await services.getInsertReviewDailyHandler(data, this.token_header);
+                        const response = responseGetDailyHandler?.data || {};
+                        this.dataDailyHandler = response.data || [];
+            
+                        const totalItems = response.total || 0;
+                        this.totalPages = Math.ceil(totalItems / +this.perPage);
+            
+                        // Clear the form after submission
                         this.form = {
                             date: "",
                             channel: "",
                             product: "",
                             nameTT: "",
-                            phone_number: ""
+                            phone_number: "",
+                            note: "",
+                            editstars: "",
+                            additional_notes: ""
                         };
-        
-                        // Reset the errors object
+            
+                        // Clear errors and any flatpickr values
                         this.errors = {};
-                        
-                        // Reset the date picker
                         this.flatpickr_dp_from_date.clear();
-        
-                        // Add any additional logic you need after successful submission
-                    });
+                        closeLoading()
+                    } catch (error) {
+                        console.warn("Error loading data:", error.response ? error.response.data : error.message);
+                        closeLoading()
+                    }
                 } else {
-                    // Form is invalid, show an error message
-                    Swal.fire({
-                        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-danger"
-                        }
-                    });
+                    console.log("กรุณากรอกข้อมูลให้ครบถ้วน");
+                    closeLoading()
                 }
             }
+            
+            
+            
+            
 
           
         },
