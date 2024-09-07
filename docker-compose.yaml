@@ -4,6 +4,6 @@ services:
     platform: linux/amd64
     build:
       context: ./
-    image: asia.gcr.io/sunteen-dev/sls/sls-report/app:v1.0.0
+    image: asia.gcr.io/sunteen-dev/sls/sls-report/app:v1.0.1
     ports:
       - 8000:8000
