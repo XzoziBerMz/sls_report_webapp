@@ -117,60 +117,62 @@
                                             <tfoot class="tfoot-bordered">
                                                 <td class="align-top w-200px">
                                                     <div class="row">
-                                                        <div class="form-floating mb-7 ">
-                                                            <input type="email" class="form-control"
-                                                                id="floatingInputFrom" placeholder="" />
-                                                            <label for="floatingInput">From</label>
+                                                        <div class="form-floating pt-2">
+                                                            <input
+                                                                id="kt_td_picker_basic_input"
+                                                                ref="fromDatePicker" 
+                                                                type="text"
+                                                                class="form-control"
+                                                                placeholder="From" />
                                                         </div>
-                                                        <div class="form-floating mb-7 ">
-                                                            <input type="email" class="form-control"
-                                                                id="floatingInputTo" placeholder="" />
-                                                            <label for="floatingInput">To</label>
+                                                        <div class="form-floating">
+                                                            <input
+                                                                id="kt_td_picker_basic_input_to"
+                                                                ref="toDatePicker" 
+                                                                type="text"
+                                                                class="form-control"
+                                                                placeholder="To" />
                                                         </div>
                                                     </div>
                                                 </td>
+                                                
                                                 <td class="align-top">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInput"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">ชื่อลูกค้า</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="customer" @blur="onSearchInput" class="form-control" id="floatingInputCustomer" placeholder=""/>
+                                                        <label for="floatingInputCustomer">ชื่อลูกค้า</label>
                                                     </div>
                                                 </td>
                                                 <td class="align-top">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInputNameP"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">สินค้า</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="product" @blur="onSearchInput" class="form-control" id="floatingInputProduct" placeholder=""/>
+                                                        <label for="floatingInputProduct">สินค้า</label>
                                                     </div>
                                                 </td>
                                                 <td class="align-top">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInputNameN"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">หมายเลขคำสั่งซื้อ</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control" id="floatingInputOrderNo" placeholder=""/>
+                                                        <label for="floatingInputOrderNo">หมายเลขคำสั่งซื้อ</label>
                                                     </div>
                                                 </td>
                                                 <td class="align-top">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInputNameC"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">ช่องทาง</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control" id="floatingInputChanel" placeholder=""/>
+                                                        <label for="floatingInputChanel">ช่องทาง</label>
                                                     </div>
                                                 </td>
                                                 <td class="align-top">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInputNameQ"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">หมายเหตุ</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="note" @blur="onSearchInput" class="form-control" id="floatingInputNote" placeholder=""/>
+                                                        <label for="floatingInputNote">หมายเหตุ</label>
                                                     </div>
                                                 </td>
                                                 <td class="align-top w-200px">
-                                                    <div class="form-floating mb-7 ">
-                                                        <input type="email" class="form-control" id="floatingInputUser"
-                                                            placeholder="" />
-                                                        <label for="floatingInput">user</label>
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="user" @blur="onSearchInput" class="form-control" id="floatingInputUser" placeholder=""/>
+                                                        <label for="floatingInputUser">user</label>
                                                     </div>
                                                 </td>
+                                                
                                             </tfoot>
                                         </table>
                                     </div>
