@@ -1,5 +1,6 @@
 (function ($, window, Vue, axios) {
     'use strict';
+    const token_header = getCookie('token');
 
     const app = Vue.createApp({
         data() {
@@ -14,8 +15,16 @@
                 dataMatterViolation: [],
                 dataInputChannel: [],
                 dataKeyReview: [],
+                token_header: token_header || '',
+                valueCheck: false,
 
-
+                review_negative: '',
+                review_independent: '',
+                reply_message: '',
+                reply_creator: '',
+                notification: '',
+                approve_request: '',
+                
             };
         },
         methods: {
@@ -24,9 +33,9 @@
             },
 
             async loadData() {
-
+                const self = this;
                 try {
-                    const responseGetMatterViolation = await services.getMatterViolation();
+                    const responseGetMatterViolation = await services.getMatterViolation(self.token_header);
                     const dataMatterViolation = responseGetMatterViolation?.data.data || [];
                     this.dataMatterViolation = dataMatterViolation.map((item, index) => ({
                         code: index, // or any unique value if available
@@ -38,7 +47,7 @@
                 }
 
                 try {
-                    const responseGetInputChannel = await services.getInputChannel();
+                    const responseGetInputChannel = await services.getInputChannel(self.token_header);
                     const dataInputChannel = responseGetInputChannel?.data.data || [];
                     this.dataInputChannel = dataInputChannel;
                 } catch (error) {
@@ -47,30 +56,52 @@
 
             },
 
-            // async loadDataPost() {
-            //     try {
-            //         let data = {
-            //             "search": "",
-            //             // "start_at": "2023-01-01",
-            //             // "end_at": "2024-08-23 10:09:22",
-            //             "by": [],
-            //             "channel": [],
-            //             "action": [],
-            //             "page": 1,
-            //             "per_page": 10,
-            //             "order": "user",
-            //             "order_by": "desc"
-            //         }
-            //         const responseGetKeyReview = await services.getKeyReview(data);
-            //         const dataKeyReview = responseGetKeyReview?.data.data || [];
-            //         this.dataKeyReview = dataKeyReview;
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            // },
+           async onSave() {
+                const self = this;
+
+                // Initialize validator once, if it hasn't been created
+                let validator = self.validator || self.validateForm();
+
+                // Reset and validate the form
+                // validator.resetForm(true);
+                validator.validate().then(async function (status) {
+                    if (status === 'Valid') {
+                        try {
+                            let data = {
+                                "chanel": "TT2",
+                                "review_negative": self.review_negative,
+                                "review_independent": self.review_independent,
+                                "reply_message": self.reply_message,
+                                "reply_creator": self.reply_creator,
+                                "infraction": $('#select_input option:selected').text(),
+                                "notification": self.notification,
+                                "approve_request": self.approve_request
+                            }
+                            const req = await services.createData(data, self.token_header)
+                            if (req.status === 200) {
+                                window.location.reload();
+                            }
+                        } catch (error) {
+                            console.log("🚀 ~ error:", error)
+                        }
+                    } else {
+                        // Form is not valid
+                        console.log("Form is not valid, please correct the errors.");
+                    }
+                }).catch(function (error) {
+                    console.error("Validation error:", error);
+                });
+
+                // Store the validator reference for future use
+                self.validator = validator;
+            },
 
             validateForm() {
                 const form = document.getElementById('kt_docs_formvalidation_text');
+                if (this.validator) {
+                    this.validator.resetForm();
+                    // this.validator.destroy();
+                }
                 const validator = FormValidation.formValidation(
                     form,
                     {
@@ -135,71 +166,17 @@
                         }
                     }
                 );
+                const radioInputs = document.querySelectorAll('input[type="radio"]');
+                const radioError = document.getElementById('radio_input_error');
 
-                const submitButton = document.getElementById('kt_docs_formvalidation_text_submit');
-                submitButton.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const radioInputs = document.querySelectorAll('input[type="radio"]');
-                    const radioError = document.getElementById('radio_input_error');
-
-                    const radioSelected = Array.from(radioInputs).find(radio => radio.checked) ? true : false;
-                    if (!radioSelected) {
-                        radioError.style.display = 'block';
-                    } else {
-                        radioError.style.display = 'none';
-                    }
-
-                    validator.validate().then(function (status) {
-                        if (status === 'Valid' && radioSelected) {
-                            // Show loading indication
-                            submitButton.setAttribute('data-kt-indicator', 'on');
-                            submitButton.disabled = true;
-
-                            // Simulate form submission
-                            setTimeout(function () {
-                                // Remove loading indication
-                                submitButton.removeAttribute('data-kt-indicator');
-                                submitButton.disabled = false;
-
-                                // Show success popup
-                                Swal.fire({
-                                    text: "กรอกข้อมูล สำเร็จ!",
-                                    icon: "success",
-                                    buttonsStyling: false,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary"
-                                    }
-                                }).then(() => {
-                                    // Reset form fields
-                                    form.reset();
-
-                                    // Uncheck all radio buttons
-                                    radioInputs.forEach(radio => radio.checked = false);
-
-                                    // Hide radio error message
-                                    radioError.style.display = 'none';
-                                });
-
-                                // Uncomment the following line to actually submit the form
-                                // form.submit();
-                            }, 1000);
-                        } else {
-
-                            Swal.fire({
-                                text: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                                icon: "error",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn btn-danger"
-                                }
-                            });
-                        }
-                    });
-                });
+                const radioSelected = Array.from(radioInputs).find(radio => radio.checked) ? true : false;
+                if (!radioSelected) {
+                    radioError.style.display = 'block';
+                } else {
+                    radioError.style.display = 'none';
+                }
+                return validator;
             }
-
 
         },
         mounted() {
@@ -207,7 +184,7 @@
             self.loadData();
             // self.loadDataPost();
             self.$nextTick(() => {
-                self.validateForm();
+                // self.validateForm();
             });
         }
     });
