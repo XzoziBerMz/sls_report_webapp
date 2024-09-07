@@ -29,6 +29,35 @@
                 token_header: token_header || '',
             }
         },
+
+        computed: {
+            paginationRange() {
+                let startPage, endPage;
+                const maxPages = 5; // Number of pages to show
+        
+                if (this.totalPages <= maxPages) {
+                    // If total pages are less than or equal to maxPages, show all pages
+                    startPage = 1;
+                    endPage = this.totalPages;
+                } else {
+                    // Calculate the start and end page numbers
+                    const halfMaxPages = Math.floor(maxPages / 2);
+                    if (this.currentPage <= halfMaxPages) {
+                        startPage = 1;
+                        endPage = maxPages;
+                    } else if (this.currentPage + halfMaxPages >= this.totalPages) {
+                        startPage = this.totalPages - maxPages + 1;
+                        endPage = this.totalPages;
+                    } else {
+                        startPage = this.currentPage - halfMaxPages;
+                        endPage = this.currentPage + halfMaxPages;
+                    }
+                }
+        
+                // Generate an array of pages to be displayed
+                return Array.from({ length: (endPage - startPage + 1) }, (_, i) => startPage + i);
+            }
+        },
         methods: {
 
             async DefaultData() {

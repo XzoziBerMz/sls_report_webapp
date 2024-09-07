@@ -4,30 +4,39 @@
          getPokemon:`/get-pokemon`,
         
     }
-    
 
-    function getChannel (body = {}) {
-        return axios.get(`/page-key-clip/mockjson/get_channel.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+    
+    function getInsertVdoHandler(body = {}, token) {
+
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/vdo/insert`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
-    function getvdo (body = {}) {
-        return axios.get(`/page-key-clip/mockjson/get_vdo.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getCaretaker,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+    
+    function getChannel (token) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/vdo/list-channel`,
+            headers: { "x-auth-token": token }
+        });
+    }
+    function getvdo (token) {
+        return axios({
+            method: 'get',
+            url: `http://127.0.0.1:4444/api/v1/vdo/list-product`,
+            headers: { "x-auth-token": token }
+        });
     }
 
     const services = {
-        getvdo,
         getChannel,
+        getvdo,
+        getInsertVdoHandler,
     };
     window.services = services;
 })(jQuery, window, axios);
