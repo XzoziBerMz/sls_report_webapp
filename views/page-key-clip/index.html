@@ -44,7 +44,7 @@
                                             <div class="row mt-5">
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class="required fw-semibold fs-4 mb-2">วันที่</label>
+                                                        <label class="required fw-semibold fs-4 mb-2">Date</label>
                                                         <div class="input-group w-100" id="kt_td_picker_simple"
                                                             data-td-target-input="nearest"
                                                             data-td-target-toggle="nearest">
@@ -63,25 +63,28 @@
                                                         <span v-text="errors.date" class="text-danger"></span>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-12">
                                                     <div class="fv-row mb-10">
                                                         <div class="row">
                                                             <label
                                                                 class="required fw-semibold fs-4 mb-2">ช่องทาง</label>
-                                                            <template v-for="(item, index) in dataChannel" :key="index">
-                                                                <div class="col-1">
-                                                                    <label
-                                                                        class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio"
-                                                                            v-model="form.channel" :value="item.channel"
-                                                                            name="radio_input"
-                                                                            @change="handleInput('channel')" />
-                                                                        <span class="form-check-label text-dark"
-                                                                            v-text="item.channel"></span>
-                                                                    </label>
-                                                                </div>
-                                                            </template>
+                                                                <template v-for="(item, index) in dataChannel" :key="index">
+                                                                    <div class="col-1">
+                                                                        <label class="form-check form-check-custom form-check-solid">
+                                                                            <input 
+                                                                                class="form-check-input" 
+                                                                                type="radio"
+                                                                                v-model="form.channel" 
+                                                                                :value="item"  
+                                                                                name="radio_input" 
+                                                                                @change="handleInput('channel')" 
+                                                                            />
+                                                                            <span class="form-check-label text-dark" v-text="item"></span> 
+                                                                        </label>
+                                                                    </div>
+                                                                </template>
+                                                                
+                                                                
                                                         </div>
                                                         <span v-text="errors.channel" class="text-danger"></span>
                                                     </div>
@@ -96,11 +99,11 @@
                                                                     <label
                                                                         class="form-check form-check-custom form-check-solid">
                                                                         <input class="form-check-input" type="radio"
-                                                                            v-model="form.product" :value="item.product"
+                                                                            v-model="form.product" :value="item"
                                                                             name="radio_input1"
                                                                             @change="handleInput('product')" />
                                                                         <span class="form-check-label text-dark"
-                                                                            v-text="item.product"></span>
+                                                                            v-text="item"></span>
                                                                     </label>
                                                                 </div>
                                                             </template>
@@ -108,36 +111,26 @@
                                                         <span v-text="errors.product" class="text-danger"></span>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
                                                         <label class="fw-semibold fs-4 mb-2">ลิ้งค์ VDO</label>
-                                                        <input type="text" name="vdo"
-                                                            class="form-control mb-3 mb-lg-0 h-50px" />
-
-                                                        <!-- <input type="text" name="vdo" class="form-control mb-3 mb-lg-0 h-50px" v-model="form.vdo" @input="handleInput('vdo')" />
-                                                        <span v-text="errors.vdo" class="text-danger"></span> -->
+                                                        <input type="text" name="vdo" class="form-control mb-3 mb-lg-0 h-50px" v-model="form.vdo" />
                                                     </div>
                                                 </div>
-
+                                                
                                                 <div class="col-6">
                                                     <div class="fv-row mb-10">
-                                                        <label class=" fw-semibold fs-4 mb-2">หมายเหตุ</label>
-                                                        <input type="text" name="remark"
-                                                            class="form-control mb-3 mb-lg-0 h-50px" />
-
-                                                        <!-- <input type="text" name="remark" class="form-control mb-3 mb-lg-0 h-50px" v-model="form.remark" @input="handleInput('remark')" />
-                                                        <span v-text="errors.remark" class="text-danger"></span> -->
+                                                        <label class="fw-semibold fs-4 mb-2">หมายเหตุ</label>
+                                                        <input type="text" name="remark" class="form-control mb-3 mb-lg-0 h-50px" v-model="form.remark" />
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            </div>
                                             <div class="d-flex justify-content-center">
                                                 <button id="kt_docs_formvalidation_text_submit" type="submit"
                                                     class="btn btn-primary w-25">
                                                     <span class="indicator-label">Submit</span>
-                                                    <span class="indicator-progress">กรอกข้อมูลสำเร็จ <span
-                                                            class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                              
                                                 </button>
                                             </div>
                                         </div>

@@ -188,15 +188,20 @@
                                         </div>
                                         <ul class="pagination">
                                             <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage - 1)"><i class="previous"></i></a>
+                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage - 1)">
+                                                    <i class="previous"></i>
+                                                </a>
                                             </li>
-                                            <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                                            <li class="page-item" v-for="page in paginationRange" :key="page" :class="{ active: currentPage === page }">
                                                 <a href="#" class="page-link" @click.prevent="goToPage(page)" v-text="page"></a>
                                             </li>
                                             <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage + 1)"><i class="next"></i></a>
+                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPage + 1)">
+                                                    <i class="next"></i>
+                                                </a>
                                             </li>
                                         </ul>
+                                        
                                     </div>
                                     
                                 </div>
