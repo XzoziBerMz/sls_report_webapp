@@ -1,8 +1,8 @@
 package main
 
 import (
-	"mai/handlers"
-	"mai/render"
+	"sls-report-app/handlers"
+	"sls-report-app/render"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -43,7 +43,6 @@ func main() {
 	app.Get("/product-order", render.ProductOrderwPage)
 	app.Get("/key-clip", render.KeyClipPage)
 	app.Get("/negative-details", render.NegativeDetailsPage)
-
 
 	app.Post("/negatvie-list", handlers.GetNegativeApiHandler)
 

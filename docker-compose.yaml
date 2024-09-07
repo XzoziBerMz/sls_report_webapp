@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  webapp:
+    platform: linux/amd64
+    build:
+      context: ./
+    image: asia.gcr.io/sunteen-dev/sls/sls-report/app:v1.0.0
+    ports:
+      - 8000:8000

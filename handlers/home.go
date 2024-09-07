@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"mai/services"
+	"sls-report-app/services"
 
 	"github.com/gofiber/fiber/v2"
 )

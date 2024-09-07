@@ -1,4 +1,4 @@
-module mai
+module sls-report-app
 
 go 1.20
 
