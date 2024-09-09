@@ -335,7 +335,8 @@
                                                 <tbody class="fs-6">
                                                     <template v-for="(item , index) in dataReview">
                                                         <tr>
-                                                            <td class="text-start align-middle" v-text="item.date"></td>
+                                                            <td class="text-start align-middle" v-text="formatDate(item.date)"></td>
+
                                                             <td class="text-center align-middle" v-text="item.chanel">
                                                             </td>
                                                             <td class="text-center align-middle"
@@ -509,6 +510,17 @@
                                                                     :class="getSortIconR2('action')"></i>
                                                             </div>
                                                         </th>
+                                                        <!-- <th class="min-w-100px align-middle">
+                                                            <div @click="sortTableR2('action')"
+                                                                class="d-flex justify-content-around align-items-center">
+                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
+                                                                <div class="row w-100 ms-2">
+                                                                    <span>แก้ไขดาว</span>
+                                                                </div>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIconR2('action')"></i>
+                                                            </div>
+                                                        </th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody class="fs-6">
@@ -534,6 +546,11 @@
                                                             </td>
                                                             <td class="text-center align-middle" v-text="item.action">
                                                             </td>
+                                                            <!-- <td class="text-center align-middle">
+                                                                <div>
+                                                          
+                                                                </div>
+                                                            </td> -->
                                                         </tr>
                                                     </template>
                                                 </tbody>
@@ -598,14 +615,26 @@
                                                     src="/assets/media/images/iconTikTok.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                                <template v-for="(item, index) in dataTikTok" :key="index">
+                                             
                                                     <div class="d-flex justify-content-between">
                                                         <span class="text-dark fw-bolder fs-14"
-                                                            v-text="item.name_tiktok"></span>
+                                                           >Marwllsoy24</span>
                                                         <span class="text-305 fw-bolder fs-14"
-                                                            v-text="item.nunber_tiktok"></span>
+                                                           v-text="dataDailySum.total_marwellsoy24"></span>
                                                     </div>
-                                                </template>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                           >Lookjeab789</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_lookjeab789"></span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                           >Marwell</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_marwell224"></span>
+                                                    </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -616,14 +645,32 @@
                                                     src="/assets/media/images/Lazada.jpg.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                                <template v-for="(item, index) in dataLaz" :key="index">
+                                               
                                                     <div class="d-flex justify-content-between">
                                                         <span class="text-dark fw-bolder fs-14"
-                                                            v-text="item.name_laz"></span>
+                                                            >Good Sup</span>
                                                         <span class="text-305 fw-bolder fs-14"
-                                                            v-text="item.nunber_laz"></span>
+                                                        v-text="dataDailySum.total_good_sup"></span>
                                                     </div>
-                                                </template>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                            >SOMchai</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_somchai" ></span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                            >Little Cactus</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_little_cactus"></span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                            >KETO Food</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_keto_food" ></span>
+                                                    </div>
+                                            
                                             </div>
                                         </div>
                                     </div>
@@ -634,14 +681,32 @@
                                                     src="/assets/media/images/shopping.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                                <template v-for="(item, index) in dataShopPee" :key="index">
+                                              
                                                     <div class="d-flex justify-content-between">
                                                         <span class="text-dark fw-bolder fs-14"
-                                                            v-text="item.name_shoppee"></span>
+                                                          >ข้าวปั้น</span>
                                                         <span class="text-305 fw-bolder fs-14"
-                                                            v-text="item.nunber_shoppee"></span>
+                                                        v-text="dataDailySum.total_keowpun"></span>
                                                     </div>
-                                                </template>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                          >อาหารเสริมมีมง</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_meemomg"></span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                          >อาหารเสริมดี จำ</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_serm_d"></span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                          >marinee</span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_marinee_y"></span>
+                                                    </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -652,14 +717,14 @@
                                                     src="/assets/media/images/facebook.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                                <template v-for="(item, index) in dataFb" :key="index">
+                                            
                                                     <div class="d-flex justify-content-between">
                                                         <span class="text-dark fw-bolder fs-14"
-                                                            v-text="item.name_fb"></span>
+                                                            >Myorder</span>
                                                         <span class="text-305 fw-bolder fs-14"
-                                                            v-text="item.nunber_fb"></span>
+                                                            v-text="dataDailySum.total_myorder"></span>
                                                     </div>
-                                                </template>
+                                           
                                             </div>
                                         </div>
                                     </div>
@@ -670,18 +735,18 @@
                                                     src="/assets/media/images/Line.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                                <template v-for="(item, index) in dataLine" :key="index">
+                                            
                                                     <div class="d-flex justify-content-between">
                                                         <span class="text-dark fw-bolder fs-14"
-                                                            v-text="item.name_line"></span>
+                                                           >Line OA</span>
                                                         <span class="text-305 fw-bolder fs-14"
-                                                            v-text="item.nunber_line"></span>
+                                                            v-text="dataDailySum.total_line_oa"></span>
                                                     </div>
-                                                </template>
+                                               
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-2 d-flex h-100">
+                                    <!-- <div class="col-2 d-flex h-100">
                                         <div class="card box-shadow29 br-30 p-3 position-relative w-100 d-flex">
                                             <div
                                                 class="card border box-shadow3 h-25px w-100px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
@@ -700,7 +765,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

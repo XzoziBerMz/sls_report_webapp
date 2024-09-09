@@ -62,6 +62,29 @@
             headers: { "x-auth-token": token }
         });
     }
+    function getDailySum(body = {},token) {
+        console.log(window.csrfToken)
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/chat/daily-sum`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
+    }
+
+    // function getUpdateActionReviewNegativeHandler(body = {},token) {
+    //     console.log(window.csrfToken)
+    //     return axios({
+    //         method: 'post',
+    //         url: `http://127.0.0.1:4444api/v1/review/update-action-negative`,
+    //         // url: endpoint.getKeyReview,
+    //         // url: basePath + endpoint.getKeyReview,
+    //         data: { ...body },
+    //         headers: { "x-auth-token": token }
+    //     });
+    // }
 
     function getTikTok(body = {}) {
         console.log(window.csrfToken)
@@ -131,7 +154,9 @@
         getShoppee,
         getFb,
         getLine,
+        getDailySum,
         getOrder,
+        // getUpdateActionReviewNegativeHandler,
     };
     window.services = services;
 })(jQuery, window, axios);

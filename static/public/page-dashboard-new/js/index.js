@@ -30,12 +30,14 @@
                 dataLine: [],
                 dataOrder: [],
                 dataClip: [],
-                totalItems: 0,     // Total items returned by the API
-                totalPagesreview: 0,     // Total items returned by the API
-                totalPagesreview2: 0,     // Total items returned by the API
-                column_order_by_r: 0,     // Total items returned by the API
-                totalItemsreview: 0,     // Total items returned by the API
-                totalItemsreview2: 0,     // Total items returned by the API
+                dataMatterUpdate: [],
+                dataDailySum: {},
+                totalItems: 0,
+                totalPagesreview: 0,
+                totalPagesreview2: 0,
+                column_order_by_r: 0,
+                totalItemsreview: 0,
+                totalItemsreview2: 0,
                 currentPage: 1,
                 currentPagereview2: 1,
                 currentPagereview: 1,
@@ -49,8 +51,12 @@
                 maxVisiblePages: 5,
                 column_order_by: '',
                 column_order_by_r: '',
+                column_order_by_r2: '',
                 order_sort: "desc",
                 order_sort_r: "desc",
+                order_sort_r2: "desc",
+                startDate: null,
+                endDate: null,
 
             }
         },
@@ -138,7 +144,7 @@
                         "chanel": [],
                         "save_by": [],
                         "page": page, // Pass the current page
-                        "per_page": Number(this.itemsPerPageScript), 
+                        "per_page": Number(this.itemsPerPageScript),
                         "order": this.column_order_by,
                         "order_by": this.order_sort
                     };
@@ -156,6 +162,21 @@
                     closeLoading();
                 }
             },
+            // async loadDataUpdate() {
+            //     const self = this;
+            //     try {
+            //         const responseGetMatterUpdate = await services.getUpdateActionReviewNegativeHandler(self.token_header);
+            //         const dataMatterUpdate = responseGetMatterUpdate?.data.data || [];
+            //         this.dataMatterUpdate = dataMatterUpdate.map((item, index) => ({
+            //             code: index, // or any unique value if available
+            //             name: item
+            //         }));
+            //         console.log(this.dataMatterViolation); // Debugging line
+            //     } catch (error) {
+            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
+            //     }
+
+            // },
             async sortTable(column) {
                 if (this.column_order_by === column) {
                     // สลับทิศทางการเรียงลำดับ
@@ -207,7 +228,7 @@
                 }
                 return self.order_sort_r === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
-    
+
             getSortIconR2(column) {
                 const self = this;
                 if (self.column_order_by_r2 !== column) {
@@ -315,14 +336,15 @@
 
             async loadDataApp() {
                 const self = this;
-                try {
-                    let responseGetTikTok = await services.getTikTok();
-                    const dataTikTok = responseGetTikTok?.data.data || [];
-                    self.dataTikTok = dataTikTok;
+                // try {
+                //     let responseGetTikTok = await services.getTikTok();
+                //     const dataTikTok = responseGetTikTok?.data.data || [];
+                //     self.dataTikTok = dataTikTok;
 
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
+                // } catch (error) {
+                //     console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                // }
+
                 try {
                     let responseGetLaz = await services.getLaz();
                     const dataLaz = responseGetLaz?.data.data || [];
@@ -364,6 +386,36 @@
                     console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
                 }
             },
+
+            async loadDailySum() {
+                try {
+                    showLoading();
+
+                    const currentDate = new Date().toISOString().slice(0, 10);
+                    let data = {
+                        "start_at": this.startDate,
+                        "end_at": currentDate
+                    };
+
+                    const responseGetDailySum = await services.getDailySum(data, this.token_header);
+                    const response = responseGetDailySum?.data || {};
+                    this.dataDailySum = response.data || {};
+                    console.log("🚀 ~ loadDailySum ~ this.dataDailySum:", this.dataDailySum)
+
+                    const totalItems = response.total || 0;
+                    this.totalPages = Math.ceil(totalItems / +this.perPage);
+                    closeLoading()
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                    closeLoading()
+                }
+            },
+
+            formatDate(date) {
+                // แปลงวันที่เป็นรูปแบบที่ต้องการ: ปี-เดือน-วัน
+                return new Date(date).toISOString().split('T')[0];
+            },
+
             formatNumber(amount) {
                 return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
@@ -376,17 +428,23 @@
                     await self.loadDataReview()
                     await self.loadDataReviewTb2()
                     await self.loadDataApp()
+                    await self.loadDailySum()
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)
 
                 } finally {
                     self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
                         static: true,
-                        enableTime: true,
+                        enableTime: false,
                         disableMobile: "true",
-                        dateFormat: "Y-m-d H:i",
-                        onChange: function (selectedDates, dateStr, instance) {
+                        dateFormat: "Y-m-d",
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            if (selectedDates.length) {
+                                // Assign the start and end dates based on the selected date range
+                                self.startDate = selectedDates[0].toISOString().slice(0, 10); // Start date: Y-m-d
+                                await self.loadDailySum()
 
+                            }
                         },
                     });
                 }
