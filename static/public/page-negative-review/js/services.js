@@ -40,7 +40,7 @@
   function getInputChannel(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/review/list-channel-negative`,
+      url: `https://sls-report-api.945.report/api/v1/channel/list`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       // data: { ...body },

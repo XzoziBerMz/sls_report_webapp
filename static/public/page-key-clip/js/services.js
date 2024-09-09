@@ -17,14 +17,14 @@
   function getChannel(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/vdo/list-channel`,
+      url: `https://sls-report-api.945.report/api/v1/channel/list`,
       headers: { "x-auth-token": token },
     });
   }
   function getvdo(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/vdo/list-product`,
+      url: `https://sls-report-api.945.report/api/v1/product/list`,
       headers: { "x-auth-token": token },
     });
   }
