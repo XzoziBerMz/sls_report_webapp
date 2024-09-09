@@ -75,11 +75,11 @@
                                                                                 class="form-check-input" 
                                                                                 type="radio"
                                                                                 v-model="form.channel" 
-                                                                                :value="item"  
+                                                                                :value="item.channel_name"  
                                                                                 name="radio_input" 
                                                                                 @change="handleInput('channel')" 
                                                                             />
-                                                                            <span class="form-check-label text-dark" v-text="item"></span> 
+                                                                            <span class="form-check-label text-dark" v-text="item.channel_name"></span> 
                                                                         </label>
                                                                     </div>
                                                                 </template>
@@ -99,11 +99,11 @@
                                                                     <label
                                                                         class="form-check form-check-custom form-check-solid">
                                                                         <input class="form-check-input" type="radio"
-                                                                            v-model="form.product" :value="item"
+                                                                            v-model="form.product" :value="item.product_name"
                                                                             name="radio_input1"
                                                                             @change="handleInput('product')" />
                                                                         <span class="form-check-label text-dark"
-                                                                            v-text="item"></span>
+                                                                            v-text="item.product_name"></span>
                                                                     </label>
                                                                 </div>
                                                             </template>

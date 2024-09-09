@@ -17,7 +17,8 @@
             }
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                // currentPage: window.currentPage,
+                currentPage: 'ads_form',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],

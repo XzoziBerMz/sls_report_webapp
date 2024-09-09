@@ -56,17 +56,17 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-4 ">
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div @click="sortTable('product')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>สินค้า</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down" :class="getSortIcon('product')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div @click="sortTable('chanel')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ช่องทาง</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down" :class="getSortIcon('chanel')"></i>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -77,7 +77,7 @@
                                                                 <td class="text-start align-middle"
                                                                     v-text="item.product"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.channel">
+                                                                    v-text="item.chanel">
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -85,10 +85,8 @@
                                                 </table>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div>
-                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        data-control="select2">
-                                                        <!-- <option></option> -->
+                                                <div v-if="dataClip.length > 0">
+                                                    <select class="form-select w-80px h-35px" @change="updatePerPage">
                                                         <option value="10" selected>10</option>
                                                         <option value="20">20</option>
                                                         <option value="50">50</option>
@@ -96,18 +94,20 @@
                                                     </select>
                                                 </div>
                                                 <ul class="pagination">
-                                                    <li class="page-item previous disabled"><a href="#"
-                                                            class="page-link"><i class="previous"></i></a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                                    <li class="page-item active"><a href="#" class="page-link">2</a>
+                                                    <li :class="['page-item', { disabled: currentPage === 1 }]"
+                                                        @click="changePage(currentPage - 1)">
+                                                        <a href="#" class="page-link"><i class="previous"></i></a>
                                                     </li>
-                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">...</a>
+                                                    <li v-for="page in pages" :key="page"
+                                                        :class="['page-item', { active: currentPage === page && page !== '...' }]"
+                                                        @click="changePage(page)">
+                                                        <a href="#" class="page-link" v-if="page !== '...'" v-text="page"></a>
+                                                        <span v-if="page === '...'">...</span>
                                                     </li>
-                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                                    <li class="page-item next"><a href="#" class="page-link"><i
-                                                                class="next"></i></a></li>
+                                                    <li :class="['page-item', { disabled: currentPage === totalPages }]"
+                                                        @click="changePage(currentPage + 1)">
+                                                        <a href="#" class="page-link"><i class="next"></i></a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -321,25 +321,25 @@
                                                     <template v-for="(item , index) in dataReview">
                                                         <tr>
                                                             <td class="text-start align-middle" v-text="item.date"></td>
-                                                            <td class="text-center align-middle" v-text="item.shop">
-                                                            </td>
-                                                            <td class="text-start align-middle"
-                                                                v-text="item.unbiased_review"></td>
-                                                            <td class="text-center align-middle"
-                                                                v-text="item.unbiased_review"></td>
-                                                            <td class="text-start align-middle" v-text="item.about_box">
-                                                            </td>
-                                                            <td class="text-start align-middle"
-                                                                v-text="item.about_chat">
-                                                            </td>
-                                                            <td class="text-start align-middle" v-text="item.violation">
+                                                            <td class="text-center align-middle" v-text="item.chanel">
                                                             </td>
                                                             <td class="text-center align-middle"
-                                                                v-text="item.notification_matter"></td>
+                                                                v-text="item.review_negative"></td>
+                                                            <td class="text-center align-middle"
+                                                                v-text="item.review_independent"></td>
+                                                            <td class="text-start align-middle" v-text="item.reply_message">
+                                                            </td>
                                                             <td class="text-start align-middle"
+                                                                v-text="item.reply_creator">
+                                                            </td>
+                                                            <td class="text-start align-middle" v-text="item.infraction">
+                                                            </td>
+                                                            <td class="text-center align-middle"
                                                                 v-text="item.product_approval"></td>
                                                             <td class="text-center align-middle"
-                                                                v-text="item.caretaker">
+                                                                v-text="item.approve_request"></td>
+                                                            <td class="text-center align-middle"
+                                                                v-text="item.user">
                                                             </td>
                                                         </tr>
                                                     </template>

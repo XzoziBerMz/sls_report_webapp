@@ -6,7 +6,8 @@
         data() {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                // currentPage: window.currentPage,
+                currentPage: 'negativ-review',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
@@ -79,7 +80,10 @@
                             }
                             const req = await services.createData(data, self.token_header)
                             if (req.status === 200) {
-                                window.location.reload();
+                                Msg("บันทึกสำเร็จ", 'success');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000)
                             }
                         } catch (error) {
                             console.log("🚀 ~ error:", error)

@@ -17,15 +17,16 @@
     // }
 
 
-    function getClip(body = {}) {
+    function getClip(body = {},token) {
         console.log(window.csrfToken)
-        return axios.get(`/page-dashboard-new/mockjson/get_clip.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getReview,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/vdo/filter`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
     function getProductChannel(body = {}) {
         console.log(window.csrfToken)
@@ -38,15 +39,16 @@
         // });
     }
 
-    function getReview(body = {}) {
+    function getReview(body = {},token) {
         console.log(window.csrfToken)
-        return axios.get(`/page-dashboard-new/mockjson/get_review.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getReview,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/review/filter-daily`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
 
     function getReviewTb2(body = {}) {

@@ -7,14 +7,14 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'video',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
                 dataOrder: [],
-                currentPage: 1,
+                currentPages: 1,
                 itemsPerPage: 10,
                 totalItems: 0,
                 column_order_by: "p_date",
@@ -43,7 +43,7 @@
             pages() {
                 const pages = [];
                 const maxPages = 5;
-                const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+                const startPage = Math.max(1, this.currentPages - Math.floor(maxPages / 2));
                 const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
@@ -120,7 +120,7 @@
             },
             changePage(page) {
                 if (page < 1 || page > this.totalPages) return;
-                this.currentPage = page;
+                this.currentPages = page;
                 this.loadDataOrder();
             },
             searchData(event) {
@@ -149,7 +149,7 @@
                         "product": productNames || [],
                         "chanel": channelNames || [],
                         "save_by": usersNames || [],
-                        "page": self.currentPage,
+                        "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage || 10),
                         "order": self.column_order_by,
                         "order_by": self.order_sort
@@ -271,7 +271,7 @@
             itemsPerPage: {
                 deep: true,
                 async handler(newValue) {
-                    this.currentPage = 1
+                    this.currentPages = 1
 
                     await this.loadDataOrder();
                 }
