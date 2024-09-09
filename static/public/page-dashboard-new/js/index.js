@@ -2,13 +2,14 @@
     'use strict';
 
 
-
+    const token_header = getCookie('token');
     const app = Vue.createApp({
         data: function () {
             return {
                 user: window.user || "",
                 currentPage: window.currentPage,
                 authstatus: window.authstatus,
+                token_header: token_header || '',
                 datas: [],
                 inventoryDetail: [],
                 search: "",
@@ -28,10 +29,60 @@
                 dataFb: [],
                 dataLine: [],
                 dataOrder: [],
+                dataClip: [],
+                totalItems: 0,     // Total items returned by the API
+                currentPage: 1,    // Current page (default is 1)
+                perPage: 10,
+                maxVisiblePages: 5,
+                column_order_by: '',
+                order_sort: "desc",
+
             }
         },
         computed: {
+            totalPages() {
+                return Math.ceil(this.totalItems / this.perPage);
+            },
+            visiblePages() {
+                let start = Math.max(1, this.currentPage - 2);
+                let end = Math.min(this.totalPages, this.currentPage + 2);
 
+                // Adjust start and end if there are fewer than 5 pages
+                if (end - start + 1 < this.maxVisiblePages) {
+                    if (this.currentPage <= 2) {
+                        end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
+                    } else if (this.currentPage >= this.totalPages - 2) {
+                        start = Math.max(1, end - this.maxVisiblePages + 1);
+                    }
+                }
+                const pages = [];
+                for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                }
+                return pages;
+            },
+            pages() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
+
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+
+                // Add ellipsis for start
+                // if (startPage > 1) {
+                //   pages.unshift('...');
+                // }
+
+                // // Add ellipsis for end
+                // if (endPage < this.totalPages) {
+                //   pages.push('...');
+                // }
+
+                return pages;
+            }
         },
         methods: {
             async init() {
@@ -40,21 +91,65 @@
 
 
             },
-            async loadDataClip() {
+            async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
-                    let data = {
-                        page: 1,
-                        per_page: 100,
-                    }
-                    let responseGetClip = await services.getClip();
-                    const dataClip = responseGetClip?.data.data || [];
-                    self.dataClip = dataClip;
+                    showLoading();
 
+                    let data = {
+                        "search": "",
+                        "product": [],
+                        "chanel": [],
+                        "save_by": [],
+                        "page": page, // Pass the current page
+                        "per_page": per_page, // Number of items per page
+                        "order": this.column_order_by,
+                        "order_by": this.order_sort
+                    };
+
+                    let responsegetClip = await services.getClip(data, self.token_header);
+                    const dataClip = responsegetClip?.data.data || [];
+                    self.dataClip = dataClip;
+                    self.totalItems = responsegetClip.data.total;
+                    self.perPage = per_page; // Update per_page value
+                    self.currentPage = page; // Set the current page
+
+                    closeLoading();
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn(`🌦️ ~ loadDataClip ~ error:`, error);
+                    closeLoading();
                 }
             },
+            async sortTable(column) {
+                if (this.column_order_by === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.order_sort = this.order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_order_by = column;
+                    this.order_sort = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.loadDataClip();
+            },
+            getSortIcon(column) {
+                const self = this;
+                if (self.column_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+            changePage(page) {
+                if (page !== this.currentPage && page > 0 && page <= this.totalPages) {
+                  this.loadDataClip(page, this.perPage);
+                }
+            },
+            updatePerPage(event) {
+                this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
+            },
+
+
+
             async loadDataProductChannel() {
                 const self = this;
                 try {
@@ -101,121 +196,8 @@
                     console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
                 }
             },
-            // async loadDataSelectAdmin() {
-            //     try {
-            //         const responseGetCaretaker = await services.getCaretaker();
-            //         const dataCaretaker = responseGetCaretaker?.data.data || [];
-            //         this.dataCaretaker = dataCaretaker
-            //         await this.initSelect();
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            // },
-
-            // async loadDataSelectChannel() {
-            //     try {
-            //         const responseGetChannel = await services.getChannel();
-            //         const dataChannel = responseGetChannel?.data.data || [];
-            //         this.dataChannel = dataChannel
-            //         await this.initSelectTb2();
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            //     try {
-            //         const responseGetProduct = await services.getProduct();
-            //         const dataProduct = responseGetProduct?.data.data || [];
-            //         this.dataProduct = dataProduct
-            //         await this.initSelectTb2();
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            //     try {
-            //         const responseGetBy = await services.getBy();
-            //         const dataBy = responseGetBy?.data.data || [];
-            //         this.dataBy = dataBy
-            //         await this.initSelectTb2();
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            //     try {
-            //         const responseGetDao = await services.getDao();
-            //         const dataDao = responseGetDao?.data.data || [];
-            //         this.dataDao = dataDao
-            //         await this.initSelectTb2();
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
-            // },
-
-            // initSelect() {
-            //     const self = this;
-            //     self.dataReview.forEach((list, index) => {
-            //         const selected = '#select_admin_' + index
-            //         $(selected).select2({
-            //             minimumResultsForSearch: -1,
-            //             allowClear: true,
-            //             placeholder: 'Select Caretaker',
-            //             data: self.dataCaretaker.map((item) => ({
-            //                 id: item.code,
-            //                 text: item.name
-            //             }))
-            //         })
-            //     });
-            // },
 
 
-
-            // initSelectTb2() {
-            //     const self = this;
-            //     self.dataReviewTb2.forEach((list, index) => {
-            //         const selected = '#select_channel_' + index
-            //         $(selected).select2({
-            //             minimumResultsForSearch: -1,
-            //             allowClear: true,
-            //             placeholder: 'Select Caretaker',
-            //             data: self.dataChannel.map((item) => ({
-            //                 id: item.code,
-            //                 text: item.name
-            //             }))
-            //         })
-            //     });
-            //     self.dataReviewTb2.forEach((list, index) => {
-            //         const selected = '#select_product_' + index
-            //         $(selected).select2({
-            //             minimumResultsForSearch: -1,
-            //             allowClear: true,
-            //             placeholder: 'Select Caretaker',
-            //             data: self.dataProduct.map((item) => ({
-            //                 id: item.code,
-            //                 text: item.name
-            //             }))
-            //         })
-            //     });
-            //     self.dataReviewTb2.forEach((list, index) => {
-            //         const selected = '#select_by_' + index
-            //         $(selected).select2({
-            //             minimumResultsForSearch: -1,
-            //             allowClear: true,
-            //             placeholder: 'Select Caretaker',
-            //             data: self.dataBy.map((item) => ({
-            //                 id: item.code,
-            //                 text: item.name
-            //             }))
-            //         })
-            //     });
-            //     self.dataReviewTb2.forEach((list, index) => {
-            //         const selected = '#select_dao_' + index
-            //         $(selected).select2({
-            //             minimumResultsForSearch: -1,
-            //             allowClear: true,
-            //             placeholder: 'Select Caretaker',
-            //             data: self.dataDao.map((item) => ({
-            //                 id: item.code,
-            //                 text: item.name
-            //             }))
-            //         })
-            //     });
-            // },
 
             async loadDataApp() {
                 const self = this;
@@ -283,52 +265,20 @@
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)
 
-                } finally { 
+                } finally {
                     self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
                         static: true,
                         enableTime: true,
                         disableMobile: "true",
                         dateFormat: "Y-m-d H:i",
                         onChange: function (selectedDates, dateStr, instance) {
-                            // const find_data = self.filters.find(
-                            //     (fitem) => fitem.field === "update_time"
-                            // );
-                            // const selectedDate = selectedDates[0];
-                            // const startOfDate = selectedDate
-                            //     ? moment(selectedDate).startOf("date").valueOf()
-                            //     : 0;
-    
-                            // // เพิ่ม 59 วินาทีในวันที่ถูกเลือก
-                            // const endOfDate = selectedDate
-                            //     ? moment(selectedDate).endOf("date").add(59, "seconds").valueOf()
-                            //     : 0;
-    
-                            // find_data.from_value = selectedDate ? startOfDate : 0;
-                            // self.flatpickr_dp_to_date.set("minDate", selectedDate ? moment(endOfDate) : null);
+
                         },
                     });
                 }
             }
 
-            // getPokemon:async function (){
-            //   const self = this;
-            //   try {
-            //       showLoading();
-            //       const response = await services.getPokemon({})
-            //       if (response){
-            //           console.log(response)
-            //           closeLoading();
 
-            //       }
-
-            //   }catch(err){
-            //       closeLoading();
-            //       Msg("errorMsg",'error');
-
-            //   }finally{
-
-            //   }
-            // }
 
         },
 
