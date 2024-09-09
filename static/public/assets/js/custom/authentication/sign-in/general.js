@@ -87,7 +87,7 @@ var KTSigninGeneral = (function () {
                 form.querySelector('[name="password"]').value = "";
 
                 //form.submit(); // submit form
-                var redirectUrl = `./ads`;
+                var redirectUrl = `./dashboard`;
                 if (redirectUrl) {
                   location.href = redirectUrl;
                 }
@@ -140,7 +140,7 @@ var KTSigninGeneral = (function () {
                 const token = response.data.data.token;
                 document.cookie = `token=${token}; path=/; max-age=3600; secure; samesite=strict`;
                 // if (redirectUrl) {
-                window.location.href = "/ads";
+                window.location.href = "/dashboard";
                 // }
               } else {
                 // Show error popup. For more info check the plugin's official documentation: https://sweetalert2.github.io/

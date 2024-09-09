@@ -10,3 +10,6 @@ body {
 .menu-item.active .menu-link .menu-title {
     color: #ffffff !important;
 }
+.menu-item.active .menu-link .menu-bullet {
+    color: #ffffff !important;
+}

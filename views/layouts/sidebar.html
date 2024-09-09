@@ -1,291 +1,130 @@
 {{- define "sidebar" -}}
-<div  class="app-sidebar-logo px-8" id="kt_app_sidebar_logo">
+<div class="app-sidebar-logo px-8" id="kt_app_sidebar_logo">
 	<div id="logo-title" class="w-100 text-center">
 		<span style="font-family: 'Lato', sans-serif;font-weight:700;" class="h1 text-success">Sls Report</span>
 	</div>
 </div>
 <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
 
-   
-		<div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: false}" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-offset="0">
-			<div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true">
-				<div class="menu-item">
-					<div id="text-dashboard" class="menu-content pb-2">
-						<span class="menu-section text-muted text-uppercase fs-8 ls-1">Dashboard</span>
+
+	<div class="hover-scroll-overlay-y my-5 my-lg-5" id="kt_aside_menu_wrapper" data-kt-scroll="true"
+		data-kt-scroll-activate="{default: false, lg: false}" data-kt-scroll-height="auto"
+		data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer" data-kt-scroll-wrappers="#kt_aside_menu"
+		data-kt-scroll-offset="0">
+		<div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
+			id="#kt_aside_menu" data-kt-menu="true">
+
+			<div class="menu-item menu-sub-indention menu-accordion"
+				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
+				data-kt-menu-trigger="click">
+				<a href="#" class="menu-link py-3">
+					<span class="menu-icon">
+						<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span
+								class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+					</span>
+					<span class="menu-title">Report</span>
+					<span class="menu-arrow"></span>
+				</a>
+				<div class="menu-sub menu-sub-accordion pt-3"
+					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order'}">
+					<div class="menu-item" :class="{active:currentPage === 'dashboard'}">
+						<a href="/dashboard" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-pie-chart"></i>
+							</span>
+							<span class="menu-title">Dashboard</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'ads'}">
+						<a href="/ads" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-badge-ad"></i>
+							</span>
+							<span class="menu-title">Ads</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'video'}">
+						<a href="/video" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-play-btn"></i>
+							</span>
+							<span class="menu-title">VDO</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'key-order'}">
+						<a href="/key-order" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-basket"></i>
+							</span>
+							<span class="menu-title">Order</span>
+						</a>
 					</div>
 				</div>
-				
-				<div class="menu-item menu-sub-indention menu-accordion" data-kt-menu-trigger="click">
-					<!--begin::Menu link-->
-					<a href="#" class="menu-link py-3">
-						<span class="menu-icon">
-							<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span class="path2"></span><span
-									class="path3"></span><span class="path4"></span></i>
-						</span>
-						<span class="menu-title">Example Link</span>
-						<span class="menu-arrow"></span>
-					</a>
-					<!--end::Menu link-->
-				
-					<!--begin::Menu sub-->
-					<div class="menu-sub menu-sub-accordion pt-3">
-						<!--begin::Menu item-->
-						<div class="menu-item">
-							<a href="#" class="menu-link py-3">
-								<span class="menu-bullet">
-									<span class="bullet bullet-dot"></span>
-								</span>
-								<span class="menu-title">Example Link</span>
-							</a>
-						</div>
-						<!--end::Menu item-->
-				
-						<!--begin::Menu item-->
-						<div class="menu-item">
-							<a href="#" class="menu-link py-3">
-								<span class="menu-bullet">
-									<span class="bullet bullet-dot"></span>
-								</span>
-								<span class="menu-title">Example Link</span>
-							</a>
-						</div>
-						<!--end::Menu item-->
-				
-						<!--begin::Menu item-->
-						<div class="menu-item menu-accordion" data-kt-menu-trigger="click">
-							<!--begin::Menu link-->
-							<a href="#" class="menu-link py-3">
-								<span class="menu-bullet">
-									<span class="bullet bullet-dot"></span>
-								</span>
-								<span class="menu-title">Example Link</span>
-								<span class="menu-arrow"></span>
-							</a>
-							<!--end::Menu link-->
-				
-							<!--begin::Menu sub-->
-							<div class="menu-sub menu-sub-accordion pt-3">
-								<!--begin::Menu item-->
-								<div class="menu-item">
-									<a href="#" class="menu-link py-3">
-										<span class="menu-bullet">
-											<span class="bullet bullet-dot"></span>
-										</span>
-										<span class="menu-title">Example Link</span>
-									</a>
-								</div>
-								<!--end::Menu item-->
-				
-								<!--begin::Menu item-->
-								<div class="menu-item">
-									<a href="#" class="menu-link py-3">
-										<span class="menu-bullet">
-											<span class="bullet bullet-dot"></span>
-										</span>
-										<span class="menu-title">Example Link</span>
-									</a>
-								</div>
-								<!--end::Menu item-->
-				
-								<!--begin::Menu item-->
-								<div class="menu-item">
-									<a href="#" class="menu-link py-3">
-										<span class="menu-bullet">
-											<span class="bullet bullet-dot"></span>
-										</span>
-										<span class="menu-title">Example Link</span>
-									</a>
-								</div>
-								<!--end::Menu item-->
-							</div>
-							<!--end::Menu sub-->
-						</div>
-						<!--end::Menu item-->
-				
-						<!--begin::Menu item-->
-						<div class="menu-item">
-							<a href="#" class="menu-link py-3">
-								<span class="menu-bullet">
-									<span class="bullet bullet-dot"></span>
-								</span>
-								<span class="menu-title">Example Link</span>
-							</a>
-						</div>
-						<!--end::Menu item-->
-					</div>
-					<!--end::Menu sub-->
-				</div>
-
-				<div class="menu-item " :class="{active:currentPage === 'ads'}">
-					<a class="menu-link " href="/ads">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3" d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z" fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z" fill="black" />
-								</svg>
-							</span>
-							
-						</span>
-						<span class="menu-title">Ads</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'ads_form'}">
-					<a class="menu-link " href="/ads-form">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3" d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z" fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z" fill="black" />
-								</svg>
-							</span>
-							
-						</span>
-						<span class="menu-title">Ads Form</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'chat'}">
-					<a class="menu-link " href="/chat">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Chat</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'dashboard'}">
-					<a class="menu-link " href="/dashboard">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Dachboard</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'key-order'}">
-					<a class="menu-link " href="/key-order">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Product Order</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'negativ-review'}">
-					<a class="menu-link " href="/negativ-review">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Negative Review</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'video'}">
-					<a class="menu-link " href="/video">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Video</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'product-order'}">
-					<a class="menu-link " href="/product-order">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Key Order</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'key-clip'}">
-					<a class="menu-link " href="/key-clip">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Key Clip</span>
-					</a>
-				</div>
-				<div class="menu-item " :class="{active:currentPage === 'negative-details'}">
-					<a class="menu-link " href="/negative-details">
-						<span class="menu-icon">
-							<span class="svg-icon svg-icon-2">
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-									<path opacity="0.3"
-										d="M20 21H3C2.4 21 2 20.6 2 20V10C2 9.4 2.4 9 3 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
-										fill="black" />
-									<path d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7Z"
-										fill="black" />
-								</svg>
-							</span>
-				
-						</span>
-						<span class="menu-title">Negative Detail</span>
-					</a>
-				</div>
-
 			</div>
-
-			
-
+			<div class="menu-item menu-sub-indention menu-accordion"
+				:class="{ hover: currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' }"
+				data-kt-menu-trigger="click">
+				<a href="#" class="menu-link py-3">
+					<span class="menu-icon">
+						<i class="bi-file-earmark-text fs-4"></i>
+					</span>
+					<span class="menu-title">Form Report</span>
+					<span class="menu-arrow"></span>
+				</a>
+				<div class="menu-sub menu-sub-accordion pt-3"
+					:class="{show:currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
+					<div class="menu-item" :class="{active:currentPage === 'ads_form'}">
+						<a href="/ads-form" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-badge-ad"></i>
+							</span>
+							<span class="menu-title">Ads</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'chat'}">
+						<a href="/chat" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-chat-dots"></i>
+							</span>
+							<span class="menu-title">แชท</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'key-clip'}">
+						<a href="/key-clip" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-play-btn"></i>
+							</span>
+							<span class="menu-title">VDO</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'product-order'}">
+						<a href="/product-order" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-basket"></i>
+							</span>
+							<span class="menu-title">Order</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'negativ-review'}">
+						<a href="/negativ-review" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-star"></i>
+							</span>
+							<span class="menu-title">รีวิว เชิงลบ</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'negative-details'}">
+						<a href="/negative-details" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-list-stars"></i>
+							</span>
+							<span class="menu-title">รายละเอียด รีวิวเชิงลบ</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
+	</div>
 </div>
 
 {{- end -}}
