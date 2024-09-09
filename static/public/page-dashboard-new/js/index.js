@@ -88,8 +88,6 @@
             async init() {
                 let self = this
 
-
-
             },
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
@@ -141,7 +139,7 @@
             },
             changePage(page) {
                 if (page !== this.currentPage && page > 0 && page <= this.totalPages) {
-                  this.loadDataClip(page, this.perPage);
+                    this.loadDataClip(page, this.perPage);
                 }
             },
             updatePerPage(event) {
@@ -167,18 +165,34 @@
             },
             async loadDataReview() {
                 const self = this;
-
                 try {
-                    let data = {
-                        page: 1,
-                        per_page: 100,
-                    }
-                    let responseGetAccount = await services.getReview();
-                    const dataReview = responseGetAccount?.data.data || [];
-                    self.dataReview = dataReview;
+                    showLoading();
 
+                    let data = {
+                        "search": "",
+                        // "start_at": "2023-01-01",
+                        // "end_at": "2024-08-15 08:56:02",
+                        "user": [],
+                        "infraction": [],
+                        "page": 1,
+                        "per_page": 100,
+                        "order": "user",
+                        "order_by": "desc",
+                        // "order": this.column_order_by,
+                        // "order_by": this.order_sort
+                    };
+
+                    let responsegetClip = await services.getReview(data, self.token_header);
+                    const dataReview = responsegetClip?.data.data || [];
+                    self.dataReview = dataReview;
+                    self.totalItems = responsegetClip.data.total;
+                    self.perPage = per_page;
+                    self.currentPage = page;
+
+                    closeLoading();
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
+                    closeLoading();
                 }
             },
             async loadDataReviewTb2() {
