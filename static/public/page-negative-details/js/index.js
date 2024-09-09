@@ -5,7 +5,8 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                // currentPage: window.currentPage,
+                currentPage: 'negative-details',
                 authstatus: window.authstatus,
                 datas: [],
                 token_header: token_header || '',

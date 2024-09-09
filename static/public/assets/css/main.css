@@ -1,12 +1,12 @@
-
-body{
+body {
     font-family: 'Poppins', 'Noto Sans Thai', sans-serif !important;
     background-color: #F5F7F8 !important;
 }
 
+.menu-item.active {
+    background-color: #6891FF !important;
+}
 
-
-
-
-
-  
+.menu-item.active .menu-link .menu-title {
+    color: #ffffff !important;
+}

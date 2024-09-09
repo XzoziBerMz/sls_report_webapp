@@ -5,7 +5,8 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'key-clip',
+                // currentPage: window.currentPage,
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
@@ -35,7 +36,7 @@
                         services.getChannel(this.token_header),
                         services.getvdo(this.token_header)
                     ]);
-            
+
                     // Assign the response data to the respective variables
                     this.dataChannel = responseChannel?.data?.data || [];
                     this.dataVdo = responseVdo?.data?.data || [];
@@ -45,7 +46,7 @@
                     closeLoading();
                 }
             },
-            
+
 
             async DefaultData() {
                 const self = this;
@@ -79,38 +80,35 @@
             },
             async handleSubmit(event) {
                 event.preventDefault();
-            
+
                 if (this.validateForm()) {
                     try {
                         showLoading();
                         let data = {
-                            "product": this.form.product || "",  
-                            "note": this.form.remark || "", 
+                            "product": this.form.product || "",
+                            "note": this.form.remark || "",
                             "link_vdo": this.form.vdo || "",
-                            "approved": "", 
-                            "approve_date": "", 
-                            "chanel": this.form.channel || "",  
-                            "date": this.form.date || ""  
+                            "approved": "",
+                            "approve_date": "",
+                            "chanel": this.form.channel || "",
+                            "date": this.form.date || ""
                         };
-            
-                        console.log("Submitting data:", data); 
-            
+
+                        console.log("Submitting data:", data);
+
                         // Call the service to handle the form submission
                         const responsegetInsertVdoHandler = await services.getInsertVdoHandler(data, this.token_header);
                         const response = responsegetInsertVdoHandler?.data || {};
-            
-                        if (response?.error) {
-                            console.error("API Error:", response.error);
-                        } else {
-                            // Update the dataInsertVdoHandler with response data
+
+                        if (response.code === 200) {
                             this.dataInsertVdoHandler = response.data || [];
-            
-                            // Reset the form and validation errors
-                            this.resetForm();
-            
-                            console.log("Form submitted successfully!");
+                            closeLoading()
+                            Msg("บันทึกสำเร็จ", 'success');
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000)
                         }
-                        closeLoading()
+
                     } catch (error) {
                         console.warn("Error submitting form:", error.response?.data || error.message);
                         closeLoading()
@@ -120,28 +118,28 @@
                     closeLoading()
                 }
             },
-            
-          
-             
-                resetForm() {
-                    this.form = {
-                        channel: "",
-                        product: "",
-                        vdo: "",
-                        remark: "",
-                        date: ""
-                    };
-            
-                    this.errors = {};
-            
-                    if (this.flatpickr_dp_from_date) {
-                        this.flatpickr_dp_from_date.clear();
-                    }
-            
+
+
+
+            resetForm() {
+                this.form = {
+                    channel: "",
+                    product: "",
+                    vdo: "",
+                    remark: "",
+                    date: ""
+                };
+
+                this.errors = {};
+
+                if (this.flatpickr_dp_from_date) {
+                    this.flatpickr_dp_from_date.clear();
                 }
-            
-            
-            
+
+            }
+
+
+
 
 
         },

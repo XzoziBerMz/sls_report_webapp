@@ -6,7 +6,8 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: 1,
+                currentPage: 'key-order',
+                currentPages: 1,
                 authstatus: window.authstatus,
                 datas: [],
                 from_date: "",
@@ -42,15 +43,15 @@
                 } else {
                     // Calculate the start and end page numbers
                     const halfMaxPages = Math.floor(maxPages / 2);
-                    if (this.currentPage <= halfMaxPages) {
+                    if (this.currentPages <= halfMaxPages) {
                         startPage = 1;
                         endPage = maxPages;
-                    } else if (this.currentPage + halfMaxPages >= this.totalPages) {
+                    } else if (this.currentPages + halfMaxPages >= this.totalPages) {
                         startPage = this.totalPages - maxPages + 1;
                         endPage = this.totalPages;
                     } else {
-                        startPage = this.currentPage - halfMaxPages;
-                        endPage = this.currentPage + halfMaxPages;
+                        startPage = this.currentPages - halfMaxPages;
+                        endPage = this.currentPages + halfMaxPages;
                     }
                 }
         
@@ -99,7 +100,7 @@
                         user: this.user || '',
                         "start_at": this.from_date ? this.from_date : null,
                         "end_at": this.to_date ? this.to_date : null,
-                        page: this.currentPage,
+                        page: this.currentPages,
                         per_page: +this.perPage,
                         order: this.sortField,
                         order_by: this.sortOrder
@@ -127,12 +128,12 @@
                     note: this.note,
                     user: this.user
                 }); // Debugging
-                this.currentPage = 1; // Reset to the first page on new search
+                this.currentPages = 1; // Reset to the first page on new search
                 this.loadData();      // Load data based on search input
             },
             goToPage(page) {
                 if (page < 1 || page > this.totalPages) return;
-                this.currentPage = page;
+                this.currentPages = page;
                 this.loadData();
             },
             sortData(field) {

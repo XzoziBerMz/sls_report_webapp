@@ -5,7 +5,8 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                // currentPage: window.currentPage,
+                currentPage: 'product-order',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
@@ -96,25 +97,29 @@
             
                     const response = await services.getInsertOrderManualHandler(data, this.token_header);
                     const responseData = response.data || {};
-                    this.dataInsertOrderManualHandler = responseData.data || [];
+                    if (responseData.code === 200) {
+                        this.dataInsertOrderManualHandler = responseData.data || [];
                     
-                    const totalItems = responseData.total || 0;
-                    this.totalPages = Math.ceil(totalItems / +this.perPage);
-                    closeLoading()
-                    // Form is valid
-                    console.log("กรอกข้อมูล สำเร็จ!");
+                        const totalItems = responseData.total || 0;
+                        this.totalPages = Math.ceil(totalItems / +this.perPage);
+                        closeLoading()
+                        // Form is valid
+                        Msg("บันทึกสำเร็จ", 'success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000)
+                    }
                     
                     // Reset form fields and errors
-                    this.form = {
-                        date: "",
-                        product: "",
-                        nameproduct: "",
-                        orderNumber: "",
-                        channel: "",
-                        remark: ""
-                    };
-                    this.errors = {};
-                    console.error("สำเร็จ");
+                    // this.form = {
+                    //     date: "",
+                    //     product: "",
+                    //     nameproduct: "",
+                    //     orderNumber: "",
+                    //     channel: "",
+                    //     remark: ""
+                    // };
+                    // this.errors = {};
                     
                 } catch (error) {
                     console.warn("Error loading data:", error);

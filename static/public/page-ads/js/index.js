@@ -7,13 +7,14 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                // currentPage: window.currentPage,
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
-                currentDate: ''
+                currentDate: '',
+                currentPage: 'ads'
 
 
             }

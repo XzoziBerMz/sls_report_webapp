@@ -5,7 +5,7 @@
         data: function () {
             return {
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'chat',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
