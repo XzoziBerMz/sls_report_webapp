@@ -21,14 +21,14 @@
     function getChannel (token) {
         return axios({
             method: 'get',
-            url: `http://127.0.0.1:4444/api/v1/vdo/list-channel`,
+            url: `http://127.0.0.1:4444/api/v1/channel/list`,
             headers: { "x-auth-token": token }
         });
     }
     function getvdo (token) {
         return axios({
             method: 'get',
-            url: `http://127.0.0.1:4444/api/v1/vdo/list-product`,
+            url: `http://127.0.0.1:4444/api/v1/product/list`,
             headers: { "x-auth-token": token }
         });
     }

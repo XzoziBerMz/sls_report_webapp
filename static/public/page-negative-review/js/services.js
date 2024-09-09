@@ -45,7 +45,7 @@
     function getInputChannel(token) {
         return axios({
             method: 'get',
-            url: `http://127.0.0.1:4444/api/v1/review/list-channel-negative`,
+            url: `http://127.0.0.1:4444/api/v1/channel/list`,
             // url: endpoint.getKeyReview,
             // url: basePath + endpoint.getKeyReview,
             // data: { ...body },
