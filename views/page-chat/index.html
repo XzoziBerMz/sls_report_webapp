@@ -48,91 +48,92 @@
                                     <div class="row g-10 mt-0 mb-3" fv-id="validator_form">
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Marwellsoy24</label>
-                                            <input @input="clearError('marwellsoy24')" v-model="formData.marwellsoy24" type="number"
-                                                class="form-control form-control-solid" />
+                                            <input @input="restrictToNumbers('marwellsoy24')" v-model="formData.marwellsoy24" type="text"
+                                              class="form-control form-control-solid" />
                                             <span v-text="errors.marwellsoy24" class="text-danger"></span>
-                                        </div>
+                                          </div>
+                                          
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Lookjeab</label>
-                                            <input @input="clearError('lookjeab')" v-model="formData.lookjeab" type="number"
+                                            <input @input="restrictToNumbers('lookjeab')" v-model="formData.lookjeab" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.lookjeab" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Good Sup</label>
-                                            <input @input="clearError('goodSup')" v-model="formData.goodSup" type="number"
+                                            <input @input="restrictToNumbers('goodSup')" v-model="formData.goodSup" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.goodSup" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">SOMchai</label>
-                                            <input @input="clearError('somchai')" v-model="formData.somchai" type="number"
+                                            <input @input="restrictToNumbers('somchai')" v-model="formData.somchai" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.somchai" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">ข้าวปั้น</label>
-                                            <input @input="clearError('kaopan')" v-model="formData.kaopan" type="number"
+                                            <input @input="restrictToNumbers('kaopan')" v-model="formData.kaopan" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.kaopan" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">มีมง</label>
-                                            <input @input="clearError('meemong')" v-model="formData.meemong" type="number"
+                                            <input @input="restrictToNumbers('meemong')" v-model="formData.meemong" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.meemong" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Marwell224</label>
-                                            <input @input="clearError('marwell224')" v-model="formData.marwell224" type="number"
+                                            <input @input="restrictToNumbers('marwell224')" v-model="formData.marwell224" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.marwell224" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">TT5</label>
-                                            <input @input="clearError('tt5')" v-model="formData.tt5" type="number"
+                                            <input @input="restrictToNumbers('tt5')" v-model="formData.tt5" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.tt5" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Little Cactus</label>
-                                            <input @input="clearError('littleCactus')" v-model="formData.littleCactus" type="number"
+                                            <input @input="restrictToNumbers('littleCactus')" v-model="formData.littleCactus" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.littleCactus" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">KETO Food</label>
-                                            <input @input="clearError('ketoFood')" v-model="formData.ketoFood" type="number"
+                                            <input @input="restrictToNumbers('ketoFood')" v-model="formData.ketoFood" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.ketoFood" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">อาหารเสริมดี จ๋า</label>
-                                            <input @input="clearError('supplement')" v-model="formData.supplement" type="number"
+                                            <input @input="restrictToNumbers('supplement')" v-model="formData.supplement" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.supplement" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">marinee_y</label>
-                                            <input @input="clearError('marineeY')" v-model="formData.marineeY" type="number"
+                                            <input @input="restrictToNumbers('marineeY')" v-model="formData.marineeY" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.marineeY" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">TT6</label>
-                                            <input @input="clearError('tt6')" v-model="formData.tt6" type="number"
+                                            <input @input="restrictToNumbers('tt6')" v-model="formData.tt6" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.tt6" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Myorder</label>
-                                            <input @input="clearError('myorder')" v-model="formData.myorder" type="number"
+                                            <input @input="restrictToNumbers('myorder')" v-model="formData.myorder" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.myorder" class="text-danger"></span>
                                         </div>
                                         <div class="col-2 fv-row">
                                             <label class="required form-label">Line OA</label>
-                                            <input @input="clearError('lineOa')" v-model="formData.lineOa" type="number"
+                                            <input @input="restrictToNumbers('lineOa')" v-model="formData.lineOa" type="text"
                                                 class="form-control form-control-solid" />
                                             <span v-text="errors.lineOa" class="text-danger"></span>
                                         </div>

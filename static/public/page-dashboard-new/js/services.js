@@ -51,16 +51,18 @@
         });
     }
 
-    function getReviewTb2(body = {}) {
+    function getReviewTb2(body = {},token) {
         console.log(window.csrfToken)
-        return axios.get(`/page-dashboard-new/mockjson/get_reviewTb2.json`)
-        // return axios({
-        //     method: 'post',
-        //     url: endpoint.getReview,
-        //     data: { ...body },
-        //     headers: { "x-auth-token": window.csrfToken }
-        // });
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444/api/v1/review/filter-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
     }
+
     function getTikTok(body = {}) {
         console.log(window.csrfToken)
         return axios.get(`/page-dashboard-new/mockjsonApp/get_tiktok.json`)

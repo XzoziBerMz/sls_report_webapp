@@ -31,11 +31,26 @@
                 dataOrder: [],
                 dataClip: [],
                 totalItems: 0,     // Total items returned by the API
-                currentPage: 1,    // Current page (default is 1)
-                perPage: 10,
+                totalPagesreview: 0,     // Total items returned by the API
+                totalPagesreview2: 0,     // Total items returned by the API
+                column_order_by_r: 0,     // Total items returned by the API
+                totalItemsreview: 0,     // Total items returned by the API
+                totalItemsreview2: 0,     // Total items returned by the API
+                currentPage: 1,
+                currentPagereview2: 1,
+                currentPagereview: 1,
+                perPagereview: 10,
+                perPagereview2: 10,
+                itemsPerPage: 10,
+                itemsPerPageScript: 10,
+                itemsPerPage2: 10,
+                itemsPerPagereview: 10,
+                itemsPerPagereview2: 10,
                 maxVisiblePages: 5,
                 column_order_by: '',
+                column_order_by_r: '',
                 order_sort: "desc",
+                order_sort_r: "desc",
 
             }
         },
@@ -71,18 +86,36 @@
                     pages.push(page);
                 }
 
-                // Add ellipsis for start
-                // if (startPage > 1) {
-                //   pages.unshift('...');
-                // }
-
-                // // Add ellipsis for end
-                // if (endPage < this.totalPages) {
-                //   pages.push('...');
-                // }
-
                 return pages;
-            }
+            },
+            pagesreview() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPagereview - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPagesreview, startPage + maxPages - 1);
+
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+                return pages;
+            },
+            pagesreview2() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPagereview2 - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPagesreview2, startPage + maxPages - 1);
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+                return pages;
+            },
+
+            totalPagesreview() {
+                return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
+            },
+            totalPagesreview2() {
+                return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
+            },
         },
         methods: {
             async init() {
@@ -92,7 +125,12 @@
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
-                    showLoading();
+
+                    $('#page_size_select_review_script').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsPerPageScript = selectedValue || 10
+                        await self.loadDataClip();
+                    })
 
                     let data = {
                         "search": "",
@@ -100,7 +138,7 @@
                         "chanel": [],
                         "save_by": [],
                         "page": page, // Pass the current page
-                        "per_page": per_page, // Number of items per page
+                        "per_page": Number(this.itemsPerPageScript), 
                         "order": this.column_order_by,
                         "order_by": this.order_sort
                     };
@@ -130,6 +168,31 @@
                 // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataClip();
             },
+            async sortTableR(column) {
+                if (this.column_order_by_r === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.order_sort_r = this.order_sort_r === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_order_by_r = column;
+                    this.order_sort_r = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.loadDataReview();
+            },
+            async sortTableR2(column) {
+                if (this.column_order_by_r2 === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.order_sort_r2 = this.order_sort_r2 === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_order_by_r2 = column;
+                    this.order_sort_r2 = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.loadDataReviewTb2();
+            },
+
             getSortIcon(column) {
                 const self = this;
                 if (self.column_order_by !== column) {
@@ -137,16 +200,42 @@
                 }
                 return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
+            getSortIconR(column) {
+                const self = this;
+                if (self.column_order_by_r !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort_r === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+    
+            getSortIconR2(column) {
+                const self = this;
+                if (self.column_order_by_r2 !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort_r2 === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+
             changePage(page) {
                 if (page !== this.currentPage && page > 0 && page <= this.totalPages) {
                     this.loadDataClip(page, this.perPage);
                 }
             },
+            changePagereview2(page) {
+                if (page !== this.currentPagereview2 && page > 0 && page <= this.totalPagesreview2) {
+                    this.currentPagereview2 = page;
+                    this.loadDataReviewTb2(page, this.perPagereview2);
+                }
+            },
+            changePagereview(page) {
+                if (page !== this.currentPagereview && page > 0 && page <= this.totalPagesreview) {
+                    this.currentPagereview = page;
+                    this.loadDataReview(page, this.perPagereview);
+                }
+            },
             updatePerPage(event) {
                 this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
             },
-
-
 
             async loadDataProductChannel() {
                 const self = this;
@@ -166,52 +255,63 @@
             async loadDataReview() {
                 const self = this;
                 try {
-                    showLoading();
+
+                    $('#page_size_select_review').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsPerPage = selectedValue || 10
+                        await self.loadDataReview();
+                    })
 
                     let data = {
                         "search": "",
-                        // "start_at": "2023-01-01",
-                        // "end_at": "2024-08-15 08:56:02",
                         "user": [],
                         "infraction": [],
-                        "page": 1,
-                        "per_page": 100,
-                        "order": "user",
-                        "order_by": "desc",
-                        // "order": this.column_order_by,
-                        // "order_by": this.order_sort
+                        "page": self.currentPagereview,
+                        "per_page": Number(this.itemsPerPage),
+                        "order": this.column_order_by_r,
+                        "order_by": this.order_sort_r
                     };
-
                     let responsegetClip = await services.getReview(data, self.token_header);
                     const dataReview = responsegetClip?.data.data || [];
                     self.dataReview = dataReview;
-                    self.totalItems = responsegetClip.data.total;
-                    self.perPage = per_page;
-                    self.currentPage = page;
+                    console.log("🚀 ~ loadDataReview ~ self.dataReview:", self.dataReview)
+                    self.totalPagesreview = responsegetClip.data.total;
 
-                    closeLoading();
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                    closeLoading();
                 }
             },
+
             async loadDataReviewTb2() {
                 const self = this;
                 try {
+
+                    $('#page_size_select_review2').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsPerPage2 = selectedValue || 10
+                        await self.loadDataReviewTb2();
+                    })
+
                     let data = {
-                        page: 1,
-                        per_page: 100,
-                    }
-                    let responseGetAccountTb2 = await services.getReviewTb2();
-                    const dataReviewTb2 = responseGetAccountTb2?.data.data || [];
+                        "search": "",
+                        "by": [],
+                        "channel": [],
+                        "action": [],
+                        "page": self.currentPagereview2,
+                        "per_page": Number(this.itemsPerPage2),
+                        "order": this.column_order_by_r2,
+                        "order_by": this.order_sort_r2
+                    };
+                    let responsegetTb2 = await services.getReviewTb2(data, self.token_header);
+                    const dataReviewTb2 = responsegetTb2?.data.data || [];
                     self.dataReviewTb2 = dataReviewTb2;
+                    console.log("🚀 ~ loadDataReview ~ self.dataReview:", self.dataReviewTb2)
+                    self.totalPagesreview2 = responsegetTb2.data.total;
 
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
                 }
             },
-
-
 
             async loadDataApp() {
                 const self = this;
@@ -291,8 +391,6 @@
                     });
                 }
             }
-
-
 
         },
 

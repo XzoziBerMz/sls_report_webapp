@@ -7,14 +7,14 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: 'video',
+                currentPage: window.currentPage,
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
                 dataOrder: [],
-                currentPages: 1,
+                currentPage: 1,
                 itemsPerPage: 10,
                 totalItems: 0,
                 column_order_by: "p_date",
@@ -31,6 +31,40 @@
                 modal_titles: '',
                 startFormDate: null,
                 endFormDate: null,
+                formData: {
+                    marwellsoy24: '',
+                    lookjeab: '',
+                    goodSup: '',
+                    somchai: '',
+                    kaopan: '',
+                    meemong: '',
+                    marwell224: '',
+                    tt5: '',
+                    littleCactus: '',
+                    ketoFood: '',
+                    supplement: '',
+                    marineeY: '',
+                    tt6: '',
+                    myorder: '',
+                    lineOa: '',
+                  },
+                  errors: {
+                    marwellsoy24: '',
+                    lookjeab: '',
+                    goodSup: '',
+                    somchai: '',
+                    kaopan: '',
+                    meemong: '',
+                    marwell224: '',
+                    tt5: '',
+                    littleCactus: '',
+                    ketoFood: '',
+                    supplement: '',
+                    marineeY: '',
+                    tt6: '',
+                    myorder: '',
+                    lineOa: '',
+                  }
             }
         },
         computed: {
@@ -43,7 +77,7 @@
             pages() {
                 const pages = [];
                 const maxPages = 5;
-                const startPage = Math.max(1, this.currentPages - Math.floor(maxPages / 2));
+                const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
                 const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
@@ -72,7 +106,7 @@
 
                     $('#page_size_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
-                        self.itemsPerPage = selectedValue || 10
+                        self.itemsPerP1age = selectedValue || 10
                         await self.loadDataOrder();
                     })
                 } catch (error) {
@@ -99,6 +133,18 @@
                     });
                 }
             },
+
+            restrictToNumbers(field) {
+                // กรองเฉพาะตัวเลข
+                this.formData[field] = this.formData[field].replace(/[^0-9]/g, '');
+                // ถ้ามีการกรอกข้อมูลแล้วให้ลบข้อความ error
+                if (this.formData[field]) {
+                  this.clearError(field);
+                }
+              },
+              clearError(field) {
+                this.errors[field] = '';
+              },
             async sortTable(column) {
                 if (this.column_order_by === column) {
                     // สลับทิศทางการเรียงลำดับ
@@ -120,7 +166,7 @@
             },
             changePage(page) {
                 if (page < 1 || page > this.totalPages) return;
-                this.currentPages = page;
+                this.currentPage = page;
                 this.loadDataOrder();
             },
             searchData(event) {
@@ -149,7 +195,7 @@
                         "product": productNames || [],
                         "chanel": channelNames || [],
                         "save_by": usersNames || [],
-                        "page": self.currentPages,
+                        "page": self.currentPage,
                         "per_page": parseInt(self.itemsPerPage || 10),
                         "order": self.column_order_by,
                         "order_by": self.order_sort
@@ -271,7 +317,7 @@
             itemsPerPage: {
                 deep: true,
                 async handler(newValue) {
-                    this.currentPages = 1
+                    this.currentPage = 1
 
                     await this.loadDataOrder();
                 }
