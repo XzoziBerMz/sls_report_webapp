@@ -9,3 +9,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.swal2-popup .swal2-html-container, .swal2-popup .swal2-content  {
+  font-size: 2.1rem !important;
+}

@@ -180,6 +180,11 @@
                         this.dataInsert = response.data || [];
 
                         this.clearFormData();
+                        
+                        Msg("บันทึกสำเร็จ", 'success');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000)
 
 
                     } catch (error) {
@@ -191,6 +196,7 @@
                     console.log("Form validation failed.");
                 }
             }
+
         },
         mounted() {
             console.log("ok");
