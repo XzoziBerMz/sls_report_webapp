@@ -48,9 +48,9 @@
             validateForm() {
                 this.errors = {};
         
-                // if (!this.form.date) {
-                //     this.errors.date = 'กรุณาเลือกวันที่';
-                // }
+                if (!this.form.date) {
+                    this.errors.date = 'กรุณาเลือกวันที่';
+                }
                 if (!this.form.product) {
                     this.errors.product = 'กรุณากรอกสินค้า';
                 }
