@@ -57,6 +57,16 @@
             headers: { "x-auth-token": token }
         });
     }
+    function getlog(body = {},token) {
+        return axios({
+            method: 'post',
+            url: basepath + `/api/v1/log/filter`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
+    }
 
     function getUpdateActionReviewNegativeHandler(body = {},token) {
         return axios({
@@ -77,6 +87,7 @@
         getReview,
         getProductChannel,
         getClip,
+        getlog,
     };
     window.services = services;
 })(jQuery, window, axios);

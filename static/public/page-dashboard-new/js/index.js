@@ -10,13 +10,14 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: 'key-order',
+                currentPage: 'dashboard',
                 authstatus: window.authstatus,
                 token_header: token_header || '',
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
+                datLog: [],
                 dataReview: [],
                 dataCaretaker: [],
                 dataClip: [],
@@ -45,16 +46,21 @@
                 column_order_by_r: 0,
                 totalItemsreview: 0,
                 totalItemsreview2: 0,
+                totallog: 0,
                 currentPages: 1,
                 currentPagereview2: 1,
+                currentPagelog: 1,
                 currentPagereview: 1,
                 perPagereview: 10,
                 perPagereview2: 10,
+                perPagelog: 10,
                 itemsPerPage: 10,
                 itemsPerPageScript: 10,
                 itemsPerPage2: 10,
+                itemsPerPageLog: 10,
                 itemsPerPagereview: 10,
                 itemsPerPagereview2: 10,
+                itemsPerPagelog: 10,
                 maxVisiblePages: 5,
                 column_order_by: '',
                 column_order_by_r: '',
@@ -129,6 +135,9 @@
             totalPagesreview2() {
                 return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
             },
+            totalPageLog() {
+                return Math.ceil(this.totallog / this.itemsPerPagelog);
+            },
             pages() {
                 const pages = [];
                 const maxPages = 5;
@@ -162,6 +171,16 @@
                 }
                 return pages;
             },
+            pagesLog() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPagelog - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPageLog, startPage + maxPages - 1);
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+                return pages;
+            },
         },
         methods: {
             ...window.webUtils.method || {},
@@ -184,6 +203,11 @@
                     const selectedValue = $(this).val(); // Get the selected value
                     self.itemsPerPage2 = selectedValue || 10
                     await self.loadDataReviewTb2();
+                })
+                $('#page_size_log').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.itemsPerPageLog = selectedValue || 10
+                    await self.editinghistory();
                 })
 
                 self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
@@ -291,6 +315,7 @@
                 await this.loadDataReviewTb2();
             },
 
+        
             getSortIcon(column) {
                 const self = this;
                 if (self.column_order_by !== column) {
@@ -323,6 +348,12 @@
                 if (page !== this.currentPagereview2 && page > 0 && page <= this.totalPagesreview2) {
                     this.currentPagereview2 = page;
                     this.loadDataReviewTb2(page, this.perPagereview2);
+                }
+            },
+            changePageLog(page) {
+                if (page !== this.currentPagelog && page > 0 && page <= this.totalPageLog) {
+                    this.currentPagelog = page;
+                    this.editinghistory(this.data_edit);
                 }
             },
             changePagereview(page) {
@@ -442,6 +473,9 @@
                     closeLoading()
                 }
             },
+            async loadLog() {
+             
+            },
 
             formatDate(date) {
                 // แปลงวันที่เป็นรูปแบบที่ต้องการ: ปี-เดือน-วัน
@@ -456,6 +490,30 @@
                 $('#staticBackdrop').modal('show');
                 this.data_edit = { ...data };
             },
+            async editinghistory(data) {
+                $('#editinghistory').modal('show');
+                // this.data_edit = { ...data };
+                this.data_edit = { ...data };
+                console.log("🚀 ~ editinghistory ~ this.data_edit:", this.data_edit)
+                try {
+                    let data = {
+                        "service": "sls_negative_detail",
+                        "id_ref": this.data_edit.id,
+                        "page": this.currentPagelog,
+                        "per_page":  Number(this.itemsPerPageLog),
+                    };
+
+                    const responseGetLog = await services.getlog(data, this.token_header);
+                    this.datLog = responseGetLog.data.data || {};
+                  
+                    this.totallog = responseGetLog.data.total;
+                    console.log("🚀 ~ editinghistory ~ self.totallog:", this.totallog)
+
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                }
+            },
+       
 
             async onSaveModal() {
                 try {
@@ -505,6 +563,7 @@
         mounted: function () {
             let self = this
             self.init()
+           
             self.DefaultData()
             console.log("ok")
         }
