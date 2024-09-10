@@ -127,7 +127,7 @@ var KTSigninGeneral = (function () {
 
           // Check axios library docs: https://axios-http.com/docs/intro
           axios
-            .post("https://sls-report-api.945.report/api/v1/login", {
+            .post(basepath + "/api/v1/login", {
               username: form.querySelector('[name="username"]').value,
               password: form.querySelector('[name="password"]').value,
             })

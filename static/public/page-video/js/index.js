@@ -113,26 +113,33 @@
                     console.log("🚀 ~ init ~ error:", error)
 
                 } finally {
-                    $("#floatingInputFrom").flatpickr({
+                    const fromDatePicker = $("#floatingInputFrom").flatpickr({
                         dateFormat: "d/m/Y",
                         maxDate: "today",
                         onChange: async function (selectedDates, dateStr, instance) {
-                            // Keep self.startFormDate in "Y-m-d" for data handling, but not for displaying in input
+                            // Set the date in "Y-m-d" format for backend use, but not for input display
                             self.startFormDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
 
-                            // Use set method to update maxDate of the existing instance of flatpickr for floatingInputTo
-                            $("#floatingInputTo").flatpickr().set('maxDate', selectedDates[0], "d/m/Y");
+                            // Update maxDate of the existing flatpickr instance for #floatingInputTo
+                            toDatePicker.set('maxDate', selectedDates[0]);
+
+                            if (self.endFormDate && new Date(self.startFormDate) > new Date(self.endFormDate)) {
+                                // Reset the input field for end date and clear the value
+                                toDatePicker.clear();
+                                self.endFormDate = ""; // Reset the variable holding end date
+                            }
 
                             await self.loadDataOrder();
                         }
                     });
 
-                    $("#floatingInputTo").flatpickr({
-                        dateFormat: "d/m/Y",
+                    // Initialize Flatpickr for the end date input
+                    const toDatePicker = $("#floatingInputTo").flatpickr({
+                        dateFormat: "d/m/Y", // Ensure this is set correctly
                         maxDate: "today",
                         onChange: async function (selectedDates, dateStr, instance) {
-                            // Keep self.endFormDate in "Y-m-d" for data handling, but not for displaying in input
-                            self.endFormDate = instance.formatDate(selectedDates[0], "Y-m-d");
+                            // Set the date in "Y-m-d" format for backend use, but not for input display
+                            self.endFormDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 23:59:59';
 
                             await self.loadDataOrder();
                         }

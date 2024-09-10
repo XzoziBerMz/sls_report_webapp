@@ -1,6 +1,6 @@
 (function ($, window, axios) {
   // const basepath = "https://sls-report-api.945.report";
-  const basepath = "http://127.0.0.1:4444";
+  // const basepath = "http://127.0.0.1:4444";
   const endpoint = {
     get_channel: `/api/v1/channel/list`,
     get_product: `/api/v1/product/list`,

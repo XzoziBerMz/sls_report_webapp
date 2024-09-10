@@ -8,7 +8,7 @@
   function createData(body = {}, token) {
     return axios({
       method: "post",
-      url: `https://sls-report-api.945.report/api/v1/review/insert-daily`,
+      url: basepath + `/api/v1/review/insert-daily`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -18,7 +18,7 @@
   function getKeyReview(body = {}) {
     return axios({
       method: "post",
-      url: `https://sls-report-api.945.report/api/v1/review/filter-negative`,
+      url: basepath + `/api/v1/review/filter-negative`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -29,7 +29,7 @@
   function getMatterViolation(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/review/list-infraction-daily`,
+      url: basepath + `/api/v1/review/list-infraction-daily`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       // data: { ...body },
@@ -40,7 +40,7 @@
   function getInputChannel(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/channel/list`,
+      url: basepath + `/api/v1/channel/list`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       // data: { ...body },

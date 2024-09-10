@@ -12,7 +12,9 @@ func HomePage(c *fiber.Ctx) error {
 		log.Println("token cookie not found")
 		return c.Redirect("/login")
 	}
+	basepath := c.Locals("Basepath").(string)
 	return Render("page-home/index", fiber.Map{
-		"title": "auth",
+		"title":    "auth",
+		"Basepath": basepath,
 	}, c)
 }

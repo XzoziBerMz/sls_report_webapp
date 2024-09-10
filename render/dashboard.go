@@ -12,7 +12,9 @@ func DashboardPage(c *fiber.Ctx) error {
 		log.Println("token cookie not found")
 		return c.Redirect("/login")
 	}
+	basepath := c.Locals("Basepath").(string)
 	return Render("page-dashboard/index", fiber.Map{
-		"title": "auth",
+		"title":    "auth",
+		"Basepath": basepath,
 	}, c)
 }

@@ -6,7 +6,7 @@
   function getInsertVdoHandler(body = {}, token) {
     return axios({
       method: "post",
-      url: `https://sls-report-api.945.report/api/v1/vdo/insert`,
+      url: basepath + `/api/v1/vdo/insert`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -17,14 +17,14 @@
   function getChannel(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/channel/list`,
+      url: basepath + `/api/v1/channel/list`,
       headers: { "x-auth-token": token },
     });
   }
   function getvdo(token) {
     return axios({
       method: "get",
-      url: `https://sls-report-api.945.report/api/v1/product/list`,
+      url: basepath + `/api/v1/product/list`,
       headers: { "x-auth-token": token },
     });
   }

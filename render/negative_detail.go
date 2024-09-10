@@ -12,7 +12,9 @@ func NegativeDetailsPage(c *fiber.Ctx) error {
 		log.Println("token cookie not found")
 		return c.Redirect("/login")
 	}
+	basepath := c.Locals("Basepath").(string)
 	return Render("page-negative-details/index", fiber.Map{
 		"title": "auth",
+		"Basepath": basepath,
 	}, c)
 }

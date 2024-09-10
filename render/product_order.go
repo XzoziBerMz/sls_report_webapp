@@ -14,7 +14,9 @@ func ProductOrderwPage(c *fiber.Ctx) error {
 		return c.Redirect("/login")
 	}
 	
+	basepath := c.Locals("Basepath").(string)
 	return Render("page-product-order/index", fiber.Map{
 		"title": "auth",
+		"Basepath": basepath,
 	}, c)
 }

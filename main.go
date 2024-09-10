@@ -1,7 +1,7 @@
 package main
 
 import (
-	"sls-report-app/handlers"
+	"sls-report-app/middleware"
 	"sls-report-app/render"
 	"time"
 
@@ -11,6 +11,9 @@ import (
 	"github.com/gofiber/template/html/v2"
 	"github.com/gofiber/utils"
 )
+
+const basepath = "https://sls-report-api.945.report"
+// const basepath = "http://127.0.0.1:4444"
 
 func main() {
 	engine := html.New("./views", ".html")
@@ -26,6 +29,8 @@ func main() {
 		Expiration:     1 * time.Hour,
 		KeyGenerator:   utils.UUID,
 	}))
+
+	app.Use(middleware.Basepath(basepath))
 
 	app.Static("/", "./static/public")
 
@@ -43,8 +48,6 @@ func main() {
 	app.Get("/product-order", render.ProductOrderwPage)
 	app.Get("/key-clip", render.KeyClipPage)
 	app.Get("/negative-details", render.NegativeDetailsPage)
-
-	app.Post("/negatvie-list", handlers.GetNegativeApiHandler)
 
 	app.Listen(":8000")
 

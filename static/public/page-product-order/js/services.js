@@ -6,7 +6,7 @@
   function getInsertOrderManualHandler(body = {}, token) {
     return axios({
       method: "post",
-      url: `https://sls-report-api.945.report/api/v1/order/insert-manual`,
+      url: basepath + `/api/v1/order/insert-manual`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
