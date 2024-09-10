@@ -74,7 +74,7 @@
                         self.from_date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
 
                         // Update maxDate of the existing flatpickr instance for #floatingInputTo
-                        toDatePicker.set('maxDate', selectedDates[0]);
+                        toDatePicker.set('minDate', selectedDates[0]);
 
                         if (self.to_date && new Date(self.from_date) > new Date(self.to_date)) {
                             // Reset the input field for end date and clear the value
@@ -91,6 +91,12 @@
                     onChange: async function (selectedDates, dateStr, instance) {
                         // Set the date in "Y-m-d" format for backend use, but not for input display
                         self.to_date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 23:59:59';
+
+                        if (self.from_date && new Date(self.to_date) < new Date(self.from_date)) {
+                            // Reset the start date input field and clear the value
+                            fromDatePicker.clear();
+                            self.from_date = ""; // Reset the variable holding start date
+                        }
 
                         await self.loadData();
                     }
