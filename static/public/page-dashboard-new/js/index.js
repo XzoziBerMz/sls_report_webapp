@@ -127,26 +127,7 @@
                 return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
             },
             totalPagesreview2() {
-                console.log("🚀 ~ totalPagesreview2 ~ Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2):", Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2))
                 return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
-            },
-            visiblePages() {
-                let start = Math.max(1, this.currentPages - 2);
-                let end = Math.min(this.totalPages, this.currentPages + 2);
-
-                // Adjust start and end if there are fewer than 5 pages
-                if (end - start + 1 < this.maxVisiblePages) {
-                    if (this.currentPages <= 2) {
-                        end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
-                    } else if (this.currentPages >= this.totalPages - 2) {
-                        start = Math.max(1, end - this.maxVisiblePages + 1);
-                    }
-                }
-                const pages = [];
-                for (let i = start; i <= end; i++) {
-                    pages.push(i);
-                }
-                return pages;
             },
             pages() {
                 const pages = [];
@@ -395,8 +376,7 @@
                     let responsegetClip = await services.getReview(data, self.token_header);
                     const dataReview = responsegetClip?.data.data || [];
                     self.dataReview = dataReview;
-                    console.log("🚀 ~ loadDataReview ~ self.dataReview:", self.dataReview)
-                    self.totalPagesreview = responsegetClip.data.total;
+                    self.totalItemsreview = responsegetClip.data.total;
 
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
@@ -433,7 +413,7 @@
                     const dataReviewTb2 = responsegetTb2?.data.data || [];
                     self.dataReviewTb2 = dataReviewTb2;
                     // this.totalItemsreview2
-                    self.totalPagesreview2 = responsegetTb2.data.total;
+                    self.totalItemsreview2 = responsegetTb2.data.total;
 
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
