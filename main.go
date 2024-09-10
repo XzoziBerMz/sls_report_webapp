@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"os"
 	"sls-report-app/middleware"
 	"sls-report-app/render"
 	"time"
@@ -10,12 +12,23 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
 	"github.com/gofiber/utils"
+	"github.com/joho/godotenv"
 )
 
-const basepath = "https://sls-report-api.945.report"
+// const basepath = "https://sls-report-api.945.report"
 // const basepath = "http://127.0.0.1:4444"
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	basepath := os.Getenv("BASEPATH")
+	if basepath == "" {
+		log.Fatal("BASEPATH is not set in the environment")
+	}
+
 	engine := html.New("./views", ".html")
 	app := fiber.New(fiber.Config{
 		Views: engine,
