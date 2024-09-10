@@ -10,7 +10,7 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'key-order',
                 authstatus: window.authstatus,
                 token_header: token_header || '',
                 datas: [],
@@ -34,15 +34,18 @@
                 dataLine: [],
                 dataOrder: [],
                 dataClip: [],
+                data_edit: [],
                 dataMatterUpdate: [],
+                dataUpdateAction: [],
                 dataDailySum: {},
                 totalItems: 0,
-                totalPagesreview: 0,
-                totalPagesreview2: 0,
+                perPage: 10,
+                // totalPagesreview: 0,
+                // totalPagesreview2: 0,
                 column_order_by_r: 0,
                 totalItemsreview: 0,
                 totalItemsreview2: 0,
-                currentPage: 1,
+                currentPages: 1,
                 currentPagereview2: 1,
                 currentPagereview: 1,
                 perPagereview: 10,
@@ -61,6 +64,7 @@
                 order_sort_r2: "desc",
                 startDate: null,
                 endDate: null,
+                selectedAction: '',
                 date_show: currentDateShow,
                 dataEditStars: [
                     {
@@ -85,7 +89,7 @@
                     },
                     {
                         id: 6,
-                        name: "แก้ไขกาวแล้ว",
+                        name: "แก้ไขดาวแล้ว",
                     },
                     {
                         id: 7,
@@ -93,15 +97,23 @@
                     },
                     {
                         id: 8,
-                        name: "ไม่รับสายครั้งที่ 1",
+                        name: "ไม่รับสายครั้งที่1",
                     },
                     {
                         id: 9,
-                        name: "ไม่รับสายครั้งที่ 2",
+                        name: "ไม่รับสายครั้งที่2",
                     },
                     {
                         id: 10,
-                        name: "ไม่รับสายครั้งที่ 3",
+                        name: "ไม่รับสายครั้งที่3",
+                    },
+                    {
+                        id: 11,
+                        name: "ติดตามเคสมากกว่า 3ครั้ง",
+                    },
+                    {
+                        id: 12,
+                        name: "ติดตามเคส",
                     },
                 ],
 
@@ -111,15 +123,22 @@
             totalPages() {
                 return Math.ceil(this.totalItems / this.perPage);
             },
+            totalPagesreview() {
+                return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
+            },
+            totalPagesreview2() {
+                console.log("🚀 ~ totalPagesreview2 ~ Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2):", Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2))
+                return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
+            },
             visiblePages() {
-                let start = Math.max(1, this.currentPage - 2);
-                let end = Math.min(this.totalPages, this.currentPage + 2);
+                let start = Math.max(1, this.currentPages - 2);
+                let end = Math.min(this.totalPages, this.currentPages + 2);
 
                 // Adjust start and end if there are fewer than 5 pages
                 if (end - start + 1 < this.maxVisiblePages) {
-                    if (this.currentPage <= 2) {
+                    if (this.currentPages <= 2) {
                         end = Math.min(this.totalPages, start + this.maxVisiblePages - 1);
-                    } else if (this.currentPage >= this.totalPages - 2) {
+                    } else if (this.currentPages >= this.totalPages - 2) {
                         start = Math.max(1, end - this.maxVisiblePages + 1);
                     }
                 }
@@ -132,7 +151,7 @@
             pages() {
                 const pages = [];
                 const maxPages = 5;
-                const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+                const startPage = Math.max(1, this.currentPages - Math.floor(maxPages / 2));
                 const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
@@ -161,13 +180,6 @@
                     pages.push(page);
                 }
                 return pages;
-            },
-
-            totalPagesreview() {
-                return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
-            },
-            totalPagesreview2() {
-                return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
             },
         },
         methods: {
@@ -221,6 +233,8 @@
                 self.startDate = formattedDate
             },
 
+            
+
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
@@ -250,7 +264,7 @@
                     self.dataClip = dataClip;
                     self.totalItems = responsegetClip.data.total;
                     self.perPage = per_page; // Update per_page value
-                    self.currentPage = page; // Set the current page
+                    self.currentPages = page; // Set the current page
 
                     closeLoading();
                 } catch (error) {
@@ -320,7 +334,7 @@
             },
 
             changePage(page) {
-                if (page !== this.currentPage && page > 0 && page <= this.totalPages) {
+                if (page !== this.currentPages && page > 0 && page <= this.totalPages) {
                     this.loadDataClip(page, this.perPage);
                 }
             },
@@ -393,7 +407,7 @@
                 const self = this;
                 try {
 
-         
+
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
@@ -418,23 +432,11 @@
                     let responsegetTb2 = await services.getReviewTb2(data, self.token_header);
                     const dataReviewTb2 = responsegetTb2?.data.data || [];
                     self.dataReviewTb2 = dataReviewTb2;
-                    console.log("🚀 ~ loadDataReview ~ self.dataReview:", self.dataReviewTb2)
+                    // this.totalItemsreview2
                     self.totalPagesreview2 = responsegetTb2.data.total;
 
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                }
-            },
-
-          
-            async loadDataBy() {
-                const self = this;
-
-                try {
-                    const dataEditStars = responseGetEditStars?.data.data || [];
-                    self.dataEditStars = dataEditStars;
-                } catch (error) {
-                    console.warn(`🌦️ ~ loadDataBy ~ error:`, error);
                 }
             },
 
@@ -454,8 +456,6 @@
                     this.dataDailySum = response.data || {};
                     console.log("🚀 ~ loadDailySum ~ this.dataDailySum:", this.dataDailySum)
 
-                    const totalItems = response.total || 0;
-                    this.totalPages = Math.ceil(totalItems / +this.perPage);
                     closeLoading()
                 } catch (error) {
                     console.warn("Error loading data:", error);
@@ -471,6 +471,37 @@
             formatNumber(amount) {
                 return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
+
+            modalEdit(data) {
+                $('#staticBackdrop').modal('show');
+                this.data_edit = { ...data };
+            },
+
+            async onSaveModal() {
+                try {
+                    let data = {
+                        "id": this.data_edit.id || '',
+                        "action": this.selectedAction || ""
+                    };
+                    let response = await services.getUpdateActionReviewNegativeHandler(data, this.token_header);
+                    console.log("🚀 ~ onSaveModal ~ response.code:", response.data.code);
+                    
+                    if (response.data.code === 200) {
+                        // เรียกใช้ loadDataReviewTb2 หลังจากบันทึกข้อมูลสำเร็จ
+                        await this.loadDataReviewTb2(); // ใช้ this แทน self
+                    }
+                    
+                    console.log("🚀 ~ onSaveModal ~ data:", data);
+                } catch (error) {
+                    console.log("🚀 ~ onSaveModal ~ error:", error);
+                }
+                
+                console.log("🚀 ~ onSaveModal ~ this.data_edit:", this.data_edit);
+                
+                // ปิดโมดัล
+                $('#staticBackdrop').modal('hide');
+            }
+            ,
 
             async DefaultData() {
                 const self = this;
@@ -493,13 +524,6 @@
 
         mounted: function () {
             let self = this
-            this.loadDataBy();
-            // self.loadDataClip()
-            // self.loadDataProductChannel()
-            // self.loadDataReview()
-            // self.loadDataReviewTb2()
-            // self.loadDataSelectAdmin()
-            // self.loadDataSelectChannel()
             self.init()
             self.DefaultData()
             console.log("ok")

@@ -5,13 +5,14 @@
     const app = Vue.createApp({
         data: function () {
             return {
+                ...window.webUtils.data || {},
                 user: window.user || "",
                 currentPage: 'key-order',
                 currentPages: 1,
                 authstatus: window.authstatus,
                 datas: [],
-                from_date: "",
-                to_date: "",
+                from_date: null,
+                to_date: null,
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
@@ -60,32 +61,63 @@
             }
         },
         methods: {
-
+            ...window.webUtils.method || {},
             async DefaultData() {
                 const self = this;
-                self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
-                    static: true,
-                    enableTime: true,
-                    disableMobile: "true",
-                    dateFormat: "Y-m-d",
-                    onChange: function (selectedDates, dateStr, instance) {
-                        self.from_date = dateStr; // Update from_date
-                        self.loadData();           // Trigger data loading
-                    },
+
+                const fromDatePicker = $("#kt_td_picker_basic_input").flatpickr({
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
+                    placeholder: "Select a date",
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        // Set the date in "Y-m-d" format for backend use, but not for input display
+                        self.from_date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
+
+                        // Update maxDate of the existing flatpickr instance for #floatingInputTo
+                        toDatePicker.set('maxDate', selectedDates[0]);
+
+                        if (self.to_date && new Date(self.from_date) > new Date(self.to_date)) {
+                            // Reset the input field for end date and clear the value
+                            toDatePicker.clear();
+                            self.to_date = ""; // Reset the variable holding end date
+                        }
+
+                        await self.loadData();
+                    }
                 });
+                const toDatePicker = $("#kt_td_picker_basic_input_to").flatpickr({
+                    dateFormat: "d/m/Y", // Ensure this is set correctly
+                    maxDate: "today",
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        // Set the date in "Y-m-d" format for backend use, but not for input display
+                        self.to_date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 23:59:59';
+
+                        await self.loadData();
+                    }
+                });
+                // self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
+                //     static: true,
+                //     enableTime: true,
+                //     disableMobile: "true",
+                //     dateFormat: "d/m/Y",
+                //     onChange: function (selectedDates, dateStr, instance) {
+                //         self.from_date = dateStr; // Update from_date
+                //         self.loadData();           // Trigger data loading
+                //     },
+                // });
             },
             async DefaultDataTO() {
                 const self = this;
-                self.flatpickr_dp_to_date = $("#kt_td_picker_basic_input_to").flatpickr({
-                    static: true,
-                    enableTime: true,
-                    disableMobile: "true",
-                    dateFormat: "Y-m-d",
-                    onChange: function (selectedDates, dateStr, instance) {
-                        self.to_date = dateStr; // Update to_date
-                        self.loadData();         // Trigger data loading
-                    },
-                });
+                // self.flatpickr_dp_to_date = $("#kt_td_picker_basic_input_to").flatpickr({
+                //     static: true,
+                //     enableTime: true,
+                //     disableMobile: "true",
+                //     dateFormat: "d/m/Y",
+                //     onChange: function (selectedDates, dateStr, instance) {
+                //         self.to_date = dateStr; // Update to_date
+                //         self.loadData();         // Trigger data loading
+                //     },
+                // });
             },
             async loadData() {
                 try {

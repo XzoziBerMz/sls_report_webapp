@@ -8,7 +8,9 @@
     {{- template "resource-css" -}}
     <link rel="stylesheet" href="/page-dashboard-new/css/index.css">
     <!--end::custom css for this page-->
-
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
 </head>
 
 <body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
@@ -119,20 +121,20 @@
                                                     </select>
                                                 </div>
                                                 <ul class="pagination">
-                                                    <li :class="['page-item', { disabled: currentPage === 1 }]"
-                                                        @click="changePage(currentPage - 1)">
-                                                        <a href="#" class="page-link"><i class="previous"></i></a>
+                                                    <li :class="['page-item', { disabled: currentPages === 1 }]"
+                                                        @click="changePage(currentPages - 1)">
+                                                        <span class="page-link"><i class="previous"></i></span>
                                                     </li>
                                                     <li v-for="page in pages" :key="page"
-                                                        :class="['page-item', { active: currentPage === page && page !== '...' }]"
+                                                        :class="['page-item', { active: currentPages === page && page !== '...' }]"
                                                         @click="changePage(page)">
-                                                        <a href="#" class="page-link" v-if="page !== '...'"
-                                                            v-text="page"></a>
+                                                        <span class="page-link" v-if="page !== '...'"
+                                                            v-text="page"></span>
                                                         <span v-if="page === '...'">...</span>
                                                     </li>
-                                                    <li :class="['page-item', { disabled: currentPage === totalPages }]"
-                                                        @click="changePage(currentPage + 1)">
-                                                        <a href="#" class="page-link"><i class="next"></i></a>
+                                                    <li :class="['page-item', { disabled: currentPages === totalPages }]"
+                                                        @click="changePage(currentPages + 1)">
+                                                        <span class="page-link"><i class="next"></i></span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -371,10 +373,10 @@
                                                                 v-text="item.reply_creator">
                                                             </td>
                                                             <td class="text-start align-middle"
-                                                                v-text="item.notification">
+                                                                v-text="item.infraction">
                                                             </td>
                                                             <td class="text-center align-middle"
-                                                                v-text="item.product_approval"></td>
+                                                                v-text="item.notification"></td>
                                                             <td class="text-center align-middle"
                                                                 v-text="item.approve_request"></td>
                                                             <td class="text-center align-middle" v-text="item.user">
@@ -399,18 +401,18 @@
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentPagereview === 1 }]"
                                                     @click="changePagereview(currentPagereview - 1)">
-                                                    <a href="#" class="page-link"><i class="previous"></i></a>
+                                                    <span class="page-link"><i class="previous"></i></span>
                                                 </li>
                                                 <li v-for="pageR in pagesreview" :key="pageR"
                                                     :class="['page-item', { active: currentPagereview === pageR && pageR !== '...' }]"
                                                     @click="changePagereview(pageR)">
-                                                    <a href="#" class="page-link" v-if="pageR !== '...'"
-                                                        v-text="pageR"></a>
+                                                    <span class="page-link" v-if="pageR !== '...'"
+                                                        v-text="pageR"></span>
                                                     <span v-if="pageR === '...'">...</span>
                                                 </li>
                                                 <li :class="['page-item', { disabled: currentPagereview === totalPagesreview }]"
                                                     @click="changePagereview(currentPagereview + 1)">
-                                                    <a href="#" class="page-link"><i class="next"></i></a>
+                                                    <span class="page-link"><i class="next"></i></span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -549,7 +551,8 @@
                                                 <tbody class="fs-6">
                                                     <template v-for="(item , index) in dataReviewTb2">
                                                         <tr>
-                                                            <td class="text-start align-middle" v-text="utilsConvDate(item.p_date)">
+                                                            <td class="text-start align-middle"
+                                                                v-text="utilsConvDate(item.p_date)">
                                                             </td>
                                                             <td class="text-center align-middle" v-text="item.Order">
                                                             </td>
@@ -572,8 +575,7 @@
                                                             <td class="text-center align-middle">
                                                                 <div>
                                                                     <button class="btn btn-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#staticBackdrop">
+                                                                        @click="modalEdit(item)">
                                                                         แก้ไข
                                                                     </button>
                                                                 </div>
@@ -597,18 +599,18 @@
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentPagereview2 === 1 }]"
                                                     @click="changePagereview2(currentPagereview2 - 1)">
-                                                    <a href="#" class="page-link"><i class="previous"></i></a>
+                                                    <span class="page-link"><i class="previous"></i></span>
                                                 </li>
-                                                <li v-for="pageR2 in pagesreview" :key="pageR2"
+                                                <li v-for="pageR2 in pagesreview2" :key="pageR2"
                                                     :class="['page-item', { active: currentPagereview2 === pageR2 && pageR2 !== '...' }]"
                                                     @click="changePagereview2(pageR2)">
-                                                    <a href="#" class="page-link" v-if="pageR2 !== '...'"
-                                                        v-text="pageR2"></a>
+                                                    <span class="page-link" v-if="pageR2 !== '...'"
+                                                        v-text="pageR2"></span>
                                                     <span v-if="pageR2 === '...'">...</span>
                                                 </li>
                                                 <li :class="['page-item', { disabled: currentPagereview2 === totalPagesreview2 }]"
                                                     @click="changePagereview2(currentPagereview2 + 1)">
-                                                    <a href="#" class="page-link"><i class="next"></i></a>
+                                                    <span class="page-link"><i class="next"></i></span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -773,17 +775,18 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">แก้ไข</h1>
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">แก้ไขดาว</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-
                         <div class="modal-body">
                             <div class="row">
                                 <div class="modal-body">
                                     <div class="row gap-5">
                                         <div class="col-4" v-for="item in dataEditStars" :key="item.id">
                                             <label class="form-check form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="radio" name="radio_input" />
+                                                <input class="form-check-input" type="radio" name="radio_input"
+                                                    :value="item.name" :checked="item.name === data_edit.action"
+                                                    v-model="selectedAction" />
                                                 <span class="form-check-label text-dark" v-text="item.name"></span>
                                             </label>
                                         </div>
@@ -791,14 +794,14 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">ตกลง</button>
+                            <button type="button" class="btn btn-primary" @click="onSaveModal">ตกลง</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </body>

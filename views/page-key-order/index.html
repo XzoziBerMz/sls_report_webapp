@@ -104,7 +104,8 @@
                                             <tbody class="fs-6">
                                                 <template v-for="(item, index) in dataOrderManual" :key="index">
                                                     <tr>
-                                                        <td class="text-start align-middle" v-text="item.p_date"></td>
+                                                        <td class="text-start align-middle" v-text="utilsConvDate(item.p_date)"></td>
+
                                                         <td class="text-start align-middle" v-text="item.customer_name">
                                                         </td>
                                                         <td class="text-start align-middle" v-text="item.product">
@@ -119,11 +120,10 @@
                                             </tbody>
                                             <tfoot class="tfoot-bordered">
                                                 <td class="align-top w-200px">
-                                                    <div class="row">
+                                                    <!-- <div class="row">
                                                         <div class="form-floating pt-2">
                                                             <input
                                                                 id="kt_td_picker_basic_input"
-                                                                ref="fromDatePicker" 
                                                                 type="text"
                                                                 class="form-control"
                                                                 placeholder="From" />
@@ -135,6 +135,18 @@
                                                                 type="text"
                                                                 class="form-control"
                                                                 placeholder="To" />
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                        <div class="form-floating ">
+                                                            <input type="date" class="form-control"
+                                                                id="kt_td_picker_basic_input" placeholder="" />
+                                                            <label for="floatingInput">From</label>
+                                                        </div>
+                                                        <div class="form-floating ">
+                                                            <input type="date" class="form-control"
+                                                                id="kt_td_picker_basic_input_to" placeholder="" />
+                                                            <label for="floatingInput">To</label>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -220,6 +232,7 @@
 </body>
 <script>
     window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
 <script src="/page-key-order/js/services.js" type="module"> </script>
