@@ -34,16 +34,36 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar pb-5">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid flex-stack">
-
-                                <div class="d-flex pb-3 align-items-end">
-                                    <div class="mt-3">
-                                        <img width="60" height="60" src="/assets/media/images/Remove-bg.png"
-                                            alt="Admin">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex pb-3 align-items-end">
+                                        <div class="mt-3">
+                                            <img width="60" height="60" src="/assets/media/images/Remove-bg.png"
+                                                alt="Admin">
+                                        </div>
+                                        <div class="ms-3">
+                                            <h1 class="fs-36 text-center  font-bold">ADMIN: as of <span
+                                                    v-text="date_show"></span> </h1>
+                                        </div>
                                     </div>
-                                    <div class="ms-3">
-                                        <h1 class="fs-36 text-center  font-bold">ADMIN: as of 4 Aug 2024</h1>
+                                    <div class="d-flex justify-content-end">
+
+                                        <div class="mt-5">
+                                            <div class="w-100 input-group" id="kt_td_picker_simple"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <input id="kt_td_picker_basic_input" type="text" class="form-control"
+                                                    data-td-target="#kt_td_picker_basic" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
+
+
                                 <!-- S1 -->
                                 <div class="row gap-5">
                                     <div class="col-6 card p-5">
@@ -89,8 +109,9 @@
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
                                                     <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        id="page_size_select_review_script" name="page_size_select_review_script"
-                                                        data-control="select2" v-model="itemsPerPageScript">
+                                                        id="page_size_select_review_script"
+                                                        name="page_size_select_review_script" data-control="select2"
+                                                        v-model="itemsPerPageScript">
                                                         <option value="10" selected>10</option>
                                                         <option value="20">20</option>
                                                         <option value="50">50</option>
@@ -335,8 +356,8 @@
                                                 <tbody class="fs-6">
                                                     <template v-for="(item , index) in dataReview">
                                                         <tr>
-                                                            <td class="text-start align-middle" v-text="formatDate(item.date)"></td>
-
+                                                            <td class="text-start align-middle"
+                                                                v-text="utilsConvDate(item.date)"></td>
                                                             <td class="text-center align-middle" v-text="item.chanel">
                                                             </td>
                                                             <td class="text-center align-middle"
@@ -350,7 +371,7 @@
                                                                 v-text="item.reply_creator">
                                                             </td>
                                                             <td class="text-start align-middle"
-                                                                v-text="item.infraction">
+                                                                v-text="item.notification">
                                                             </td>
                                                             <td class="text-center align-middle"
                                                                 v-text="item.product_approval"></td>
@@ -510,23 +531,25 @@
                                                                     :class="getSortIconR2('action')"></i>
                                                             </div>
                                                         </th>
-                                                        <!-- <th class="min-w-100px align-middle">
+                                                        <th class="min-w-100px align-middle">
                                                             <div @click="sortTableR2('action')"
                                                                 class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
+                                                                <i class="bi-type flex-shrink-1"></i>
+
+
                                                                 <div class="row w-100 ms-2">
                                                                     <span>แก้ไขดาว</span>
                                                                 </div>
                                                                 <i class="bi-chevron-down"
                                                                     :class="getSortIconR2('action')"></i>
                                                             </div>
-                                                        </th> -->
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="fs-6">
                                                     <template v-for="(item , index) in dataReviewTb2">
                                                         <tr>
-                                                            <td class="text-start align-middle" v-text="item.p_date">
+                                                            <td class="text-start align-middle" v-text="utilsConvDate(item.p_date)">
                                                             </td>
                                                             <td class="text-center align-middle" v-text="item.Order">
                                                             </td>
@@ -546,11 +569,15 @@
                                                             </td>
                                                             <td class="text-center align-middle" v-text="item.action">
                                                             </td>
-                                                            <!-- <td class="text-center align-middle">
+                                                            <td class="text-center align-middle">
                                                                 <div>
-                                                          
+                                                                    <button class="btn btn-danger"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#staticBackdrop">
+                                                                        แก้ไข
+                                                                    </button>
                                                                 </div>
-                                                            </td> -->
+                                                            </td>
                                                         </tr>
                                                     </template>
                                                 </tbody>
@@ -588,25 +615,7 @@
                                     </div>
                                 </div>
                                 <!-- Card App  -->
-                                <div class="d-flex justify-content-end">
 
-                                    <div class="mt-5">
-                                        <div class="w-100 input-group" id="kt_td_picker_simple"
-                                            data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                            <input id="kt_td_picker_basic_input" type="text" class="form-control"
-                                                data-td-target="#kt_td_picker_basic" />
-                                            <span class="input-group-text" data-td-target="#kt_td_picker_basic"
-                                                data-td-toggle="datetimepicker">
-                                                <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
-                                                        class="path2"></span></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="mb-0">
-                                        <label for="" class="form-label">Select date and time</label>
-                                        <input class="form-control form-control-solid" placeholder="Pick date & time" id="kt_datepicker_3"/>
-                                    </div> -->
-                                </div>
                                 <div class="row w-100 mt-12">
                                     <div class="col-2 d-flex  h-100">
                                         <div class=" box-shadow29 br-30 p-5 position-relative w-100">
@@ -615,26 +624,23 @@
                                                     src="/assets/media/images/iconTikTok.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                             
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                           >Marwllsoy24</span>
-                                                        <span class="text-305 fw-bolder fs-14"
-                                                           v-text="dataDailySum.total_marwellsoy24"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                           >Lookjeab789</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Marwllsoy24</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_marwellsoy24"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Lookjeab789</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_lookjeab789"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                           >Marwell</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Marwell</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_marwell224"></span>
-                                                    </div>
-                                               
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -645,32 +651,28 @@
                                                     src="/assets/media/images/Lazada.jpg.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                               
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                            >Good Sup</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Good Sup</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_good_sup"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                            >SOMchai</span>
-                                                        <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_somchai" ></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                            >Little Cactus</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">SOMchai</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_somchai"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Little Cactus</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_little_cactus"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                            >KETO Food</span>
-                                                        <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_keto_food" ></span>
-                                                    </div>
-                                            
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">KETO Food</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_keto_food"></span>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -681,32 +683,28 @@
                                                     src="/assets/media/images/shopping.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                              
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                          >ข้าวปั้น</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">ข้าวปั้น</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_keowpun"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                          >อาหารเสริมมีมง</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">อาหารเสริมมีมง</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_meemomg"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                          >อาหารเสริมดี จำ</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">อาหารเสริมดี จำ</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_serm_d"></span>
-                                                    </div>
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                          >marinee</span>
-                                                        <span class="text-305 fw-bolder fs-14"
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">marinee</span>
+                                                    <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_marinee_y"></span>
-                                                    </div>
-                                               
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -717,14 +715,13 @@
                                                     src="/assets/media/images/facebook.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                            
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                            >Myorder</span>
-                                                        <span class="text-305 fw-bolder fs-14"
-                                                            v-text="dataDailySum.total_myorder"></span>
-                                                    </div>
-                                           
+
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Myorder</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_myorder"></span>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -735,14 +732,13 @@
                                                     src="/assets/media/images/Line.png" alt="">
                                             </div>
                                             <div class="row mt-5">
-                                            
-                                                    <div class="d-flex justify-content-between">
-                                                        <span class="text-dark fw-bolder fs-14"
-                                                           >Line OA</span>
-                                                        <span class="text-305 fw-bolder fs-14"
-                                                            v-text="dataDailySum.total_line_oa"></span>
-                                                    </div>
-                                               
+
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">Line OA</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.total_line_oa"></span>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -772,12 +768,43 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">แก้ไข</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
 
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="modal-body">
+                                    <div class="row gap-5">
+                                        <div class="col-4" v-for="item in dataEditStars" :key="item.id">
+                                            <label class="form-check form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="radio" name="radio_input" />
+                                                <span class="form-check-label text-dark" v-text="item.name"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">ตกลง</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
 <script>
     window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
 <script src="/page-dashboard-new/js/services.js" type="module"> </script>

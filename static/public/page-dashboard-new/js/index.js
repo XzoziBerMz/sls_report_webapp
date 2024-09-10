@@ -1,11 +1,14 @@
 (function ($, window, Vue, axios) {
     'use strict';
 
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    const currentDateShow = new Date().toLocaleDateString('en-GB', options);
 
     const token_header = getCookie('token');
     const app = Vue.createApp({
         data: function () {
             return {
+                ...window.webUtils.data || {},
                 user: window.user || "",
                 currentPage: window.currentPage,
                 authstatus: window.authstatus,
@@ -19,6 +22,7 @@
                 dataClip: [],
                 dataProductChannel: [],
                 dataReviewTb2: [],
+                dataEditStars: [],
                 dataChannel: [],
                 dataProduct: [],
                 dataBy: [],
@@ -57,6 +61,49 @@
                 order_sort_r2: "desc",
                 startDate: null,
                 endDate: null,
+                date_show: currentDateShow,
+                dataEditStars: [
+                    {
+                        id: 1,
+                        name: "ติดตามดาว",
+                    },
+                    {
+                        id: 2,
+                        name: "รอติดต้อเบอร์",
+                    },
+                    {
+                        id: 3,
+                        name: "ติดต่อไม่ได้/ไม่ได้รัยสาย",
+                    },
+                    {
+                        id: 4,
+                        name: "ลูกค้าไม่ตอบแชท",
+                    },
+                    {
+                        id: 5,
+                        name: "ลูกค้าแก้ไม่ได้แล้ว",
+                    },
+                    {
+                        id: 6,
+                        name: "แก้ไขกาวแล้ว",
+                    },
+                    {
+                        id: 7,
+                        name: "ยังไม่ได้แก้ไข",
+                    },
+                    {
+                        id: 8,
+                        name: "ไม่รับสายครั้งที่ 1",
+                    },
+                    {
+                        id: 9,
+                        name: "ไม่รับสายครั้งที่ 2",
+                    },
+                    {
+                        id: 10,
+                        name: "ไม่รับสายครั้งที่ 3",
+                    },
+                ],
 
             }
         },
@@ -124,22 +171,71 @@
             },
         },
         methods: {
+            ...window.webUtils.method || {},
             async init() {
                 let self = this
 
+                $('#page_size_select_review_script').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.itemsPerPageScript = selectedValue || 10
+                    await self.loadDataClip();
+                })
+
+                $('#page_size_select_review').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.itemsPerPage = selectedValue || 10
+                    await self.loadDataReview();
+                })
+
+                $('#page_size_select_review2').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.itemsPerPage2 = selectedValue || 10
+                    await self.loadDataReviewTb2();
+                })
+
+                self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            // Assign the start and end dates based on the selected date range
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.startDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.startDate:", self.startDate);
+                            await self.DefaultData()
+
+                        }
+                    },
+                });
+                const currentDate = new Date();
+                const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ');
+                self.startDate = formattedDate
             },
+
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
 
-                    $('#page_size_select_review_script').on("change.custom", async function () {
-                        const selectedValue = $(this).val(); // Get the selected value
-                        self.itemsPerPageScript = selectedValue || 10
-                        await self.loadDataClip();
-                    })
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
 
                     let data = {
                         "search": "",
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedDateEnd,
                         "product": [],
                         "chanel": [],
                         "save_by": [],
@@ -162,21 +258,7 @@
                     closeLoading();
                 }
             },
-            // async loadDataUpdate() {
-            //     const self = this;
-            //     try {
-            //         const responseGetMatterUpdate = await services.getUpdateActionReviewNegativeHandler(self.token_header);
-            //         const dataMatterUpdate = responseGetMatterUpdate?.data.data || [];
-            //         this.dataMatterUpdate = dataMatterUpdate.map((item, index) => ({
-            //             code: index, // or any unique value if available
-            //             name: item
-            //         }));
-            //         console.log(this.dataMatterViolation); // Debugging line
-            //     } catch (error) {
-            //         console.warn(`🌦️ ~ loadDataSelect ~ error:`, error);
-            //     }
 
-            // },
             async sortTable(column) {
                 if (this.column_order_by === column) {
                     // สลับทิศทางการเรียงลำดับ
@@ -277,13 +359,17 @@
                 const self = this;
                 try {
 
-                    $('#page_size_select_review').on("change.custom", async function () {
-                        const selectedValue = $(this).val(); // Get the selected value
-                        self.itemsPerPage = selectedValue || 10
-                        await self.loadDataReview();
-                    })
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
 
                     let data = {
+
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedDateEnd,
                         "search": "",
                         "user": [],
                         "infraction": [],
@@ -307,13 +393,19 @@
                 const self = this;
                 try {
 
-                    $('#page_size_select_review2').on("change.custom", async function () {
-                        const selectedValue = $(this).val(); // Get the selected value
-                        self.itemsPerPage2 = selectedValue || 10
-                        await self.loadDataReviewTb2();
-                    })
+         
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
 
                     let data = {
+
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedDateEnd,
+
                         "search": "",
                         "by": [],
                         "channel": [],
@@ -334,56 +426,15 @@
                 }
             },
 
-            async loadDataApp() {
+          
+            async loadDataBy() {
                 const self = this;
-                // try {
-                //     let responseGetTikTok = await services.getTikTok();
-                //     const dataTikTok = responseGetTikTok?.data.data || [];
-                //     self.dataTikTok = dataTikTok;
-
-                // } catch (error) {
-                //     console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                // }
 
                 try {
-                    let responseGetLaz = await services.getLaz();
-                    const dataLaz = responseGetLaz?.data.data || [];
-                    self.dataLaz = dataLaz;
-
+                    const dataEditStars = responseGetEditStars?.data.data || [];
+                    self.dataEditStars = dataEditStars;
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseShoppee = await services.getShoppee();
-                    const dataShopPee = responseShoppee?.data.data || [];
-                    self.dataShopPee = dataShopPee;
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseFb = await services.getFb();
-                    const dataFb = responseFb?.data.data || [];
-                    self.dataFb = dataFb;
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseLine = await services.getLine();
-                    const dataLine = responseLine?.data.data || [];
-                    self.dataLine = dataLine;
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
-                }
-                try {
-                    let responseOrder = await services.getOrder();
-                    const dataOrder = responseOrder?.data.data || [];
-                    self.dataOrder = dataOrder;
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn(`🌦️ ~ loadDataBy ~ error:`, error);
                 }
             },
 
@@ -392,8 +443,9 @@
                     showLoading();
 
                     const currentDate = new Date().toISOString().slice(0, 10);
+                    const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
                     let data = {
-                        "start_at": this.startDate,
+                        "start_at": startDateFormatted,
                         "end_at": currentDate
                     };
 
@@ -427,26 +479,13 @@
                     await self.loadDataProductChannel()
                     await self.loadDataReview()
                     await self.loadDataReviewTb2()
-                    await self.loadDataApp()
+                    // await self.loadDataApp()
                     await self.loadDailySum()
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)
 
                 } finally {
-                    self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
-                        static: true,
-                        enableTime: false,
-                        disableMobile: "true",
-                        dateFormat: "Y-m-d",
-                        onChange: async function (selectedDates, dateStr, instance) {
-                            if (selectedDates.length) {
-                                // Assign the start and end dates based on the selected date range
-                                self.startDate = selectedDates[0].toISOString().slice(0, 10); // Start date: Y-m-d
-                                await self.loadDailySum()
 
-                            }
-                        },
-                    });
                 }
             }
 
@@ -454,13 +493,14 @@
 
         mounted: function () {
             let self = this
-            //    self.getPokemon()
+            this.loadDataBy();
             // self.loadDataClip()
             // self.loadDataProductChannel()
             // self.loadDataReview()
             // self.loadDataReviewTb2()
             // self.loadDataSelectAdmin()
             // self.loadDataSelectChannel()
+            self.init()
             self.DefaultData()
             console.log("ok")
         }

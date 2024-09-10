@@ -74,17 +74,17 @@
         });
     }
 
-    // function getUpdateActionReviewNegativeHandler(body = {},token) {
-    //     console.log(window.csrfToken)
-    //     return axios({
-    //         method: 'post',
-    //         url: `http://127.0.0.1:4444api/v1/review/update-action-negative`,
-    //         // url: endpoint.getKeyReview,
-    //         // url: basePath + endpoint.getKeyReview,
-    //         data: { ...body },
-    //         headers: { "x-auth-token": token }
-    //     });
-    // }
+    function getUpdateActionReviewNegativeHandler(body = {},token) {
+        console.log(window.csrfToken)
+        return axios({
+            method: 'post',
+            url: `http://127.0.0.1:4444api/v1/review/update-action-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token }
+        });
+    }
 
     function getTikTok(body = {}) {
         console.log(window.csrfToken)
