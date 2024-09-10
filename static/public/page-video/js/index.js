@@ -7,14 +7,14 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'video',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
                 dataOrder: [],
-                currentPage: 1,
+                currentPages: 1,
                 itemsPerPage: 10,
                 totalItems: 0,
                 column_order_by: "p_date",
@@ -47,8 +47,8 @@
                     tt6: '',
                     myorder: '',
                     lineOa: '',
-                  },
-                  errors: {
+                },
+                errors: {
                     marwellsoy24: '',
                     lookjeab: '',
                     goodSup: '',
@@ -64,7 +64,7 @@
                     tt6: '',
                     myorder: '',
                     lineOa: '',
-                  }
+                }
             }
         },
         computed: {
@@ -77,7 +77,7 @@
             pages() {
                 const pages = [];
                 const maxPages = 5;
-                const startPage = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
+                const startPage = Math.max(1, this.currentPages - Math.floor(maxPages / 2));
                 const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
@@ -116,18 +116,24 @@
                     $("#floatingInputFrom").flatpickr({
                         dateFormat: "d/m/Y",
                         maxDate: "today",
-                        onChange:async function (selectedDates, dateStr, instance) {
-                            self.startFormDate = instance.formatDate(selectedDates[0], "Y-m-d");
-                            $("#floatingInputTo").flatpickr().set('maxDate', selectedDates[0]);
-                            await self.loadDataOrder();
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            // Keep self.startFormDate in "Y-m-d" for data handling, but not for displaying in input
+                            self.startFormDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
 
+                            // Use set method to update maxDate of the existing instance of flatpickr for floatingInputTo
+                            $("#floatingInputTo").flatpickr().set('maxDate', selectedDates[0], "d/m/Y");
+
+                            await self.loadDataOrder();
                         }
                     });
+
                     $("#floatingInputTo").flatpickr({
                         dateFormat: "d/m/Y",
                         maxDate: "today",
-                        onChange:async function (selectedDates, dateStr, instance) {
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            // Keep self.endFormDate in "Y-m-d" for data handling, but not for displaying in input
                             self.endFormDate = instance.formatDate(selectedDates[0], "Y-m-d");
+
                             await self.loadDataOrder();
                         }
                     });
@@ -139,12 +145,12 @@
                 this.formData[field] = this.formData[field].replace(/[^0-9]/g, '');
                 // ถ้ามีการกรอกข้อมูลแล้วให้ลบข้อความ error
                 if (this.formData[field]) {
-                  this.clearError(field);
+                    this.clearError(field);
                 }
-              },
-              clearError(field) {
+            },
+            clearError(field) {
                 this.errors[field] = '';
-              },
+            },
             async sortTable(column) {
                 if (this.column_order_by === column) {
                     // สลับทิศทางการเรียงลำดับ
@@ -166,7 +172,7 @@
             },
             changePage(page) {
                 if (page < 1 || page > this.totalPages) return;
-                this.currentPage = page;
+                this.currentPages = page;
                 this.loadDataOrder();
             },
             searchData(event) {
@@ -195,7 +201,7 @@
                         "product": productNames || [],
                         "chanel": channelNames || [],
                         "save_by": usersNames || [],
-                        "page": self.currentPage,
+                        "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage || 10),
                         "order": self.column_order_by,
                         "order_by": self.order_sort
@@ -317,7 +323,7 @@
             itemsPerPage: {
                 deep: true,
                 async handler(newValue) {
-                    this.currentPage = 1
+                    this.currentPages = 1
 
                     await this.loadDataOrder();
                 }

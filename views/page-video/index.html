@@ -148,12 +148,12 @@
                                                     <td class="align-top w-200px">
                                                         <div class="row">
                                                             <div class="form-floating ">
-                                                                <input type="email" class="form-control"
+                                                                <input type="date" class="form-control"
                                                                     id="floatingInputFrom" placeholder="" />
                                                                 <label for="floatingInput">From</label>
                                                             </div>
                                                             <div class="form-floating ">
-                                                                <input type="email" class="form-control"
+                                                                <input type="date" class="form-control"
                                                                     id="floatingInputTo" placeholder="" />
                                                                 <label for="floatingInput">To</label>
                                                             </div>
@@ -212,17 +212,17 @@
                                         <ul class="pagination">
                                             <li :class="['page-item', { disabled: currentPages === 1 }]"
                                                 @click="changePage(currentPages - 1)">
-                                                <a href="#" class="page-link"><i class="previous"></i></a>
+                                                <p class="page-link"><i class="previous"></i></p>
                                             </li>
                                             <li v-for="page in pages" :key="page"
                                                 :class="['page-item', { active: currentPages === page && page !== '...' }]"
                                                 @click="changePage(page)">
-                                                <a href="#" class="page-link" v-if="page !== '...'" v-text="page"></a>
+                                                <p class="page-link" v-if="page !== '...'" v-text="page"></p>
                                                 <span v-if="page === '...'">...</span>
                                             </li>
                                             <li :class="['page-item', { disabled: currentPages === totalPages }]"
                                                 @click="changePage(currentPages + 1)">
-                                                <a href="#" class="page-link"><i class="next"></i></a>
+                                                <p class="page-link"><i class="next"></i></p>
                                             </li>
                                         </ul>
                                     </div>

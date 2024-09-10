@@ -82,8 +82,8 @@
                 showLoading();
                 try {
                     const [responseGetChannel, responseGetProduct] = await Promise.all([
-                        services.getChannel(),
-                        services.getProduct()
+                        services.getChannel(self.token_header),
+                        services.getProduct(self.token_header)
                     ]);
 
                     const dataChannel = responseGetChannel?.data.data || [];
@@ -91,11 +91,6 @@
 
                     const dataProduct = responseGetProduct?.data.data || [];
                     self.dataProduct = dataProduct;
-
-                    // เรียก API ที่สามแยกต่างหาก
-                    const responseGetEditStars = await services.getEditStars(); // สมมติว่า API นี้มีอยู่
-                    const dataEditStars = responseGetEditStars?.data.data || [];
-                    self.dataEditStars = dataEditStars;
 
                 } catch (error) {
                     console.warn('🌦 ~ loadData ~ error:', error);
