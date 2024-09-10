@@ -36,9 +36,10 @@
                     static: true,
                     enableTime: true,
                     disableMobile: "true",
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d/m/Y",
                     onChange: function (selectedDates, dateStr, instance) {
-                        self.form.date = dateStr; // Update date in form data
+                        self.form.date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00'; // Update date in form data
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", self.form.date)
                         delete self.errors.date; // Remove validation error for date field
                     },
                 });
@@ -79,6 +80,10 @@
                 }
             
                 try {
+
+                    console.log("🚀 ~ DefaultData ~ self.form.p_date:", this.form.date)
+                    let date = new Date(this.form.date); // Convert to Date object
+                    let formattedDate = date.toISOString().split('T')[0];
                     // Log the form data
                     console.log('Form data:', this.form);
                     showLoading();
@@ -87,7 +92,7 @@
                         "product": this.form.product,
                         "order_no": this.form.orderNumber,
                         "user": this.form.nameproduct,  // Assuming 'user' is the same as 'nameproduct'
-                        "p_date": this.form.date,
+                        "p_date": formattedDate,
                         "chanel": this.form.channel,
                         "note": this.form.remark
                     };

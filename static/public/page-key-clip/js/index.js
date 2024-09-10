@@ -54,9 +54,10 @@
                     static: true,
                     enableTime: true,
                     disableMobile: "true",
-                    dateFormat: "Y-m-d",
+                    dateFormat: "d/m/Y",
                     onChange: function (selectedDates, dateStr, instance) {
-                        self.form.date = dateStr; // Update date in form data
+                        self.form.date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00'; // Update date in form data
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", self.form.date)
                         delete self.errors.date; // Remove validation error for date field
                     },
                 });
@@ -84,6 +85,9 @@
                 if (this.validateForm()) {
                     try {
                         showLoading();
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", this.form.date)
+                        let date = new Date(this.form.date); // Convert to Date object
+                        let formattedDate = date.toISOString().split('T')[0];
                         let data = {
                             "product": this.form.product || "",
                             "note": this.form.remark || "",
@@ -91,10 +95,9 @@
                             "approved": "",
                             "approve_date": "",
                             "chanel": this.form.channel || "",
-                            "date": this.form.date || ""
+                            "date": formattedDate || ""
                         };
-
-                        console.log("Submitting data:", data);
+                        
 
                         // Call the service to handle the form submission
                         const responsegetInsertVdoHandler = await services.getInsertVdoHandler(data, this.token_header);

@@ -33,7 +33,7 @@
                     },
                     {
                         id: 2,
-                        name: "รอติดต้อเบอร์",
+                        name: "รอติดต่อเบอร์",
                     },
                     {
                         id: 3,
@@ -49,7 +49,7 @@
                     },
                     {
                         id: 6,
-                        name: "แก้ไขกาวแล้ว",
+                        name: "แก้ไขดาวแล้ว",
                     },
                     {
                         id: 7,
@@ -57,15 +57,15 @@
                     },
                     {
                         id: 8,
-                        name: "ไม่รับสายครั้งที่ 1",
+                        name: "ไม่รับสายครั้งที่1",
                     },
                     {
                         id: 9,
-                        name: "ไม่รับสายครั้งที่ 2",
+                        name: "ไม่รับสายครั้งที่2",
                     },
                     {
                         id: 10,
-                        name: "ไม่รับสายครั้งที่ 3",
+                        name: "ไม่รับสายครั้งที่3",
                     },
                 ],
 
@@ -107,8 +107,9 @@
                     disableMobile: "true",
                     dateFormat: "Y-m-d",
                     onChange: function (selectedDates, dateStr, instance) {
-                        self.form.date = dateStr; // Update date in form data
-                        delete self.errors.date; // Remove validation error for date field
+                        self.form.date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00'; // Update date in form data
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", self.form.date)
+                        delete self.errors.date;
                     },
                 });
             },
@@ -161,7 +162,9 @@
                     console.log("กรอกข้อมูล สำเร็จ!");
 
                     try {
-
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", this.form.date)
+                        let date = new Date(this.form.date); // Convert to Date object
+                        let formattedDate = date.toISOString().split('T')[0];
                         // Create a data object with the correct field names as expected by the backend
                         let data = {
                             customer_name: this.form.nameTT || "",
@@ -171,7 +174,7 @@
                             product: this.form.product || "",
                             note: this.form.note || "",
                             action: this.form.editstars || "",
-                            date: this.form.date || ""
+                            date: formattedDate || ""
                         };
 
 
@@ -182,6 +185,12 @@
                         // Send the data using your service
                         const responseGetDailyHandler = await services.getInsertReviewDailyHandler(data, this.token_header);
                         const response = responseGetDailyHandler?.data || {};
+
+                        Msg("บันทึกสำเร็จ", 'success');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000)
+                                
                         this.dataDailyHandler = response.data || [];
 
                         const totalItems = response.total || 0;
@@ -203,10 +212,7 @@
                         this.errors = {};
                         this.flatpickr_dp_from_date.clear();
 
-                        Msg("บันทึกสำเร็จ", 'success');
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 2000)
+              
 
                     } catch (error) {
                         console.warn("Error loading data:", error.response ? error.response.data : error.message);
