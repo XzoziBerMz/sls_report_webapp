@@ -43,8 +43,7 @@
                         delete self.errors.date; // Remove validation error for date field
                     },
                 });
-            }
-            ,
+            },
         
             validateForm() {
                 this.errors = {};
@@ -81,10 +80,9 @@
             
                 try {
 
-                    console.log("🚀 ~ DefaultData ~ self.form.p_date:", this.form.date)
-                    let date = new Date(this.form.date); // Convert to Date object
-                    let formattedDate = date.toISOString().split('T')[0];
-                    // Log the form data
+                    let dateParts = this.form.date.split('/');
+                    let formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
+
                     console.log('Form data:', this.form);
                     showLoading();
                     let data = {

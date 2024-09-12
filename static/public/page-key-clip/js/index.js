@@ -20,6 +20,7 @@
                     channel: "",
                     product: "",
                     vdo: "",
+                    date: "",
                 },
                 errors: {}
             }
@@ -72,6 +73,12 @@
                 if (!this.form.product) {
                     this.errors.product = 'กรุณาเลือกสินค้า';
                 }
+                if (!this.form.vdo) {
+                    this.errors.vdo = 'กรุณากรอก ลิ้งค์ VDO';
+                }
+                if (!this.form.date) {
+                    this.errors.date = 'กรุณาเลือก Date';
+                }
 
                 return Object.keys(this.errors).length === 0;
             },
@@ -85,9 +92,14 @@
                 if (this.validateForm()) {
                     try {
                         showLoading();
-                        console.log("🚀 ~ DefaultData ~ self.form.date:", this.form.date)
-                        let date = new Date(this.form.date); // Convert to Date object
-                        let formattedDate = date.toISOString().split('T')[0];
+                        console.log("🚀 ~ DefaultData ~ self.form.date:", this.form.date);
+
+                       
+                        let dateParts = this.form.date.split('/');
+                        let formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
+
+                        console.log("Formatted Date:", formattedDate);
+
                         let data = {
                             "product": this.form.product || "",
                             "note": this.form.remark || "",
@@ -97,7 +109,8 @@
                             "chanel": this.form.channel || "",
                             "date": formattedDate || ""
                         };
-                        
+                        console.log("🚀 ~ handleSubmit ~ data:", data)
+
 
                         // Call the service to handle the form submission
                         const responsegetInsertVdoHandler = await services.getInsertVdoHandler(data, this.token_header);

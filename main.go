@@ -61,6 +61,7 @@ func main() {
 	app.Get("/product-order", render.ProductOrderwPage)
 	app.Get("/key-clip", render.KeyClipPage)
 	app.Get("/negative-details", render.NegativeDetailsPage)
+	app.Get("/key-ads", render.AdsKeyAddPage)
 
 	app.Listen(":8000")
 
