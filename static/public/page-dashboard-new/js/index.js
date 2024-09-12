@@ -79,8 +79,10 @@
                 order_sort_r2: "desc",
                 startDate: null,
                 endDate: null,
+                startDate_status: false,
+                endDate_status: false,
                 selectedAction: '',
-                date_show: currentDateShow,
+                // date_show: currentDateShow,
                 dataEditStars: [
                     {
                         id: 1,
@@ -256,6 +258,7 @@
 
                             self.startDate = `${year}-${month}-${day}`;
                             console.log("🚀 ~ self.startDate:", self.startDate);
+                            self.startDate_status = true
                             await self.DefaultData()
 
                         }
@@ -280,6 +283,7 @@
 
                             self.endDate = `${year}-${month}-${day}`;
                             console.log("🚀 ~ self.endDate:", self.endDate);
+                            self.endDate_status = true
                             await self.DefaultData()
 
                         }
@@ -332,6 +336,29 @@
                     closeLoading();
                 }
             },
+
+            formatDate(date) {
+                const d = new Date(date);
+                const day = String(d.getDate()).padStart(2, '0');
+
+                const englishMonthsAbbrev = [
+                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                ];
+                // const thaiMonths = [
+                //     'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                //     'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                // ];
+
+                // const month = thaiMonths[d.getMonth()]; 
+                const month = englishMonthsAbbrev[d.getMonth()];
+                console.log("🚀 ~ formatDate ~ month:", month)
+                const year = d.getFullYear();
+
+                // return `${day} ${month} ${year + 543}` ;
+                return `${day} ${month} ${year}` ;
+            },
+
 
             async sortTable(column) {
                 if (this.column_order_by === column) {
@@ -532,14 +559,14 @@
                 const self = this;
                 try {
                     const currentDate = new Date();
-                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+                    const formattedDate = currentDate.toISOString().slice(0, 10)
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10)
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedStartDate = `${formattedDatestart}`;
 
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let formattedEndDate = `${formattedDateend}`;
 
                     let data = {
                         "start_at": formattedStartDate || formattedDate,
@@ -592,11 +619,6 @@
             },
             async loadLog() {
 
-            },
-
-            formatDate(date) {
-                // แปลงวันที่เป็นรูปแบบที่ต้องการ: ปี-เดือน-วัน
-                return new Date(date).toISOString().split('T')[0];
             },
 
             formatNumber(amount) {

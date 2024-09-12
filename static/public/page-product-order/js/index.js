@@ -63,9 +63,7 @@
                 if (!this.form.channel) {
                     this.errors.channel = 'กรุณากรอกช่องทาง';
                 }
-                // if (!this.form.remark) {
-                //     this.errors.remark = 'กรุณากรอกหมายเหตุ';
-                // }
+         
         
                 return Object.keys(this.errors).length === 0;
             },

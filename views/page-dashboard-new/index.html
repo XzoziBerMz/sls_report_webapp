@@ -43,10 +43,17 @@
                                                 alt="Admin">
                                         </div>
                                         <div class="ms-3">
-                                            <h1 class="fs-36 text-center font-bold">
-                                                ADMIN: as of <span v-text="date_show"></span>
+                                            <h1 class="text-center font-bold" v-if="startDate && endDate && startDate_status && endDate_status">
+                                                ADMIN: as of <span v-text="formatDate(startDate)"></span>
+                                                <span v-if="endDate && endDate_status"> to <span v-text="formatDate(endDate)"></span></span>
+                                            </h1>
+                                            <h1 class="text-center font-bold" v-else>
+                                                ADMIN: as of 
+                                                <span v-if="startDate_status" v-text="formatDate(startDate)"></span>
+                                                <span v-else v-text="formatDate(endDate)"></span>
                                             </h1>
                                         </div>
+                                        
                                     </div>
                                     <div class="mt-5">
                                         <div class="d-flex ">
@@ -282,8 +289,8 @@
                                                 <div>
                                                     <select class="form-select w-80px h-35px" data-hide-search="true"
                                                     id="page_size_select_order" name="page_size_select_order"
-                                                    data-control="select2" v-model="itemsPerPage">
-                                                    <option value="10" selected>10</option>
+                                                    data-control="select2" v-model="itemsPerPageorder">
+                                                    <option value="10" >10</option>
                                                     <option value="20">20</option>
                                                     <option value="50">50</option>
                                                     <option value="100">100</option>
@@ -726,12 +733,12 @@
                                                 <div class="d-flex justify-content-between">
                                                     <span class="text-dark fw-bolder fs-14">TT5</span>
                                                     <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.tt5"></span>
+                                                        v-text="dataDailySum.total_tt5"></span>
                                                 </div>
                                                 <div class="d-flex justify-content-between">
                                                     <span class="text-dark fw-bolder fs-14">TT6</span>
                                                     <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.tt6"></span>
+                                                        v-text="dataDailySum.total_tt6"></span>
                                                 </div>
 
                                             </div>

@@ -3,10 +3,10 @@
     getPokemon: `/get-pokemon`,
   };
 
-  function getInsertOrderManualHandler(body = {}, token) {
+  function getInsertAsd(body = {}, token) {
     return axios({
       method: "post",
-      url: basepath + `/api/v1/order/insert-manual`,
+      url: basepath + `/api/v1/ads/insert`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -14,8 +14,17 @@
     });
   }
 
+  function getProduct(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/product/list`,
+      headers: { "x-auth-token": token },
+    });
+  }
+
   const services = {
-    getInsertOrderManualHandler,
+    getInsertAsd,
+    getProduct,
   };
   window.services = services;
 })(jQuery, window, axios);
