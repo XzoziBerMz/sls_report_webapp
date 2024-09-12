@@ -38,35 +38,44 @@
                 data_edit: [],
                 dataMatterUpdate: [],
                 dataUpdateAction: [],
+                dataOrderManual: [],
                 dataDailySum: {},
                 totalItems: 0,
                 perPage: 10,
                 // totalPagesreview: 0,
                 // totalPagesreview2: 0,
                 column_order_by_r: 0,
+                column_order_order: 0,
                 totalItemsreview: 0,
                 totalItemsreview2: 0,
+                totalItemsreorder: 0,
                 totallog: 0,
                 currentPages: 1,
                 currentPagereview2: 1,
                 currentPagelog: 1,
                 currentPagereview: 1,
+                currentPagereorder: 1,
                 perPagereview: 10,
+                perPagereorder: 10,
                 perPagereview2: 10,
                 perPagelog: 10,
                 itemsPerPage: 10,
                 itemsPerPageScript: 10,
                 itemsPerPage2: 10,
                 itemsPerPageLog: 10,
+                itemsPerPageorder: 10,
                 itemsPerPagereview: 10,
                 itemsPerPagereview2: 10,
+                itemsPerPagereorder: 10,
                 itemsPerPagelog: 10,
                 maxVisiblePages: 5,
                 column_order_by: '',
                 column_order_by_r: '',
                 column_order_by_r2: '',
+                column_order_order: '',
                 order_sort: "desc",
                 order_sort_r: "desc",
+                order_sort_order: "desc",
                 order_sort_r2: "desc",
                 startDate: null,
                 endDate: null,
@@ -132,6 +141,9 @@
             totalPagesreview() {
                 return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
             },
+            totalPagesreorder() {
+                return Math.ceil(this.totalItemsreorder / this.itemsPerPagereorder);
+            },
             totalPagesreview2() {
                 return Math.ceil(this.totalItemsreview2 / this.itemsPerPagereview2);
             },
@@ -155,6 +167,17 @@
                 const maxPages = 5;
                 const startPage = Math.max(1, this.currentPagereview - Math.floor(maxPages / 2));
                 const endPage = Math.min(this.totalPagesreview, startPage + maxPages - 1);
+
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+                return pages;
+            },
+            pagesorder() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPagereorder - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPagesreorder, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
                     pages.push(page);
@@ -209,8 +232,13 @@
                     self.itemsPerPageLog = selectedValue || 10
                     await self.editinghistory();
                 })
+                $('#page_size_select_order').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.itemsPerPageorder = selectedValue || 10
+                    await self.loadDataProductChannel();
+                })
 
-                self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
+                self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
                     static: true,
                     enableTime: false,
                     disableMobile: "true",
@@ -233,12 +261,37 @@
                         }
                     },
                 });
+
+                self.flatpickr_dp_from_date = $("#kt_td_picker_end_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            // Assign the start and end dates based on the selected date range
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.endDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.endDate:", self.endDate);
+                            await self.DefaultData()
+
+                        }
+                    },
+                });
                 const currentDate = new Date();
                 const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ');
                 self.startDate = formattedDate
+                self.endDate = formattedDate
             },
 
-            
+
 
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
@@ -250,11 +303,13 @@
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
 
                     let data = {
                         "search": "",
                         "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedDateEnd,
+                        "end_at": formattedEndDate || formattedDate,
                         "product": [],
                         "chanel": [],
                         "save_by": [],
@@ -302,6 +357,19 @@
                 // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataReview();
             },
+            async sortTableOrder(column) {
+                if (this.column_order_order === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.order_sort_order = this.order_sort_order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_order_order = column;
+                    this.order_sort_order = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.loadDataProductChannel();
+            },
+
             async sortTableR2(column) {
                 if (this.column_order_by_r2 === column) {
                     // สลับทิศทางการเรียงลำดับ
@@ -315,7 +383,7 @@
                 await this.loadDataReviewTb2();
             },
 
-        
+
             getSortIcon(column) {
                 const self = this;
                 if (self.column_order_by !== column) {
@@ -329,6 +397,13 @@
                     return "bi-chevron-down";  // Default down icon
                 }
                 return self.order_sort_r === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+            getSortIconorder(column) {
+                const self = this;
+                if (self.column_order_order !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort_order === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
 
             getSortIconR2(column) {
@@ -362,25 +437,61 @@
                     this.loadDataReview(page, this.perPagereview);
                 }
             },
+            changePagereorder(page) {
+                if (page !== this.currentPagereorder && page > 0 && page <= this.totalPagesreorder) {
+                    this.currentPagereorder = page;
+                    this.loadDataProductChannel(page, this.perPagereorder);
+                }
+            },
             updatePerPage(event) {
                 this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
             },
 
+
             async loadDataProductChannel() {
                 const self = this;
                 try {
-                    let data = {
-                        page: 1,
-                        per_page: 100,
-                    }
-                    let responseGetProductChannel = await services.getProductChannel();
-                    const dataProductChannel = responseGetProductChannel?.data.data || [];
-                    self.dataProductChannel = dataProductChannel;
+                    showLoading();
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
 
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let data = {
+
+                        // search: this.search,
+                        customer: this.customer || '', // Bind the search fields
+                        product: this.product || '',
+                        order_no: this.order_no || '',
+                        chanel: this.chanel || '',
+                        note: this.note || '',
+                        user: this.user || '',
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        page: this.currentPagereorder,
+                        "per_page": Number(this.itemsPerPageorder),
+                        "order": this.column_order_order,
+                        "order_by": this.order_sort_order
+                    };
+
+                    const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
+                    const response = responseGetOrderManual?.data || {};
+                    this.dataOrderManual = response.data || [];
+                    console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
+
+
+                    self.totalItemsreorder = responseGetOrderManual.data.total;
+                    closeLoading()
                 } catch (error) {
-                    console.warn(`🌦️ ~ onClickSearch ~ error:`, error);
+                    console.warn("Error loading data:", error);
+                    closeLoading()
                 }
             },
+
             async loadDataReview() {
                 const self = this;
                 try {
@@ -392,10 +503,13 @@
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
 
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
                     let data = {
 
                         "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedDateEnd,
+                        "end_at": formattedEndDate || formattedDate,
                         "search": "",
                         "user": [],
                         "infraction": [],
@@ -417,8 +531,6 @@
             async loadDataReviewTb2() {
                 const self = this;
                 try {
-
-
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
@@ -426,11 +538,12 @@
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
 
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
                     let data = {
-
                         "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedDateEnd,
-
+                        "end_at": formattedEndDate || formattedDate,
                         "search": "",
                         "by": [],
                         "channel": [],
@@ -443,7 +556,7 @@
                     let responsegetTb2 = await services.getReviewTb2(data, self.token_header);
                     const dataReviewTb2 = responsegetTb2?.data.data || [];
                     self.dataReviewTb2 = dataReviewTb2;
-                    // this.totalItemsreview2
+
                     self.totalItemsreview2 = responsegetTb2.data.total;
 
                 } catch (error) {
@@ -457,15 +570,19 @@
 
                     const currentDate = new Date().toISOString().slice(0, 10);
                     const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
+
+                    let formattedDatestart = this.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+
+                    let formattedDateend = this.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let data = {
-                        "start_at": startDateFormatted,
-                        "end_at": currentDate
+                        "start_at": formattedDatestart,
+                        "end_at": formattedDateend
                     };
 
                     const responseGetDailySum = await services.getDailySum(data, this.token_header);
                     const response = responseGetDailySum?.data || {};
                     this.dataDailySum = response.data || {};
-                    console.log("🚀 ~ loadDailySum ~ this.dataDailySum:", this.dataDailySum)
+
 
                     closeLoading()
                 } catch (error) {
@@ -474,7 +591,7 @@
                 }
             },
             async loadLog() {
-             
+
             },
 
             formatDate(date) {
@@ -500,12 +617,12 @@
                         "service": "sls_negative_detail",
                         "id_ref": this.data_edit.id,
                         "page": this.currentPagelog,
-                        "per_page":  Number(this.itemsPerPageLog),
+                        "per_page": Number(this.itemsPerPageLog),
                     };
 
                     const responseGetLog = await services.getlog(data, this.token_header);
                     this.datLog = responseGetLog.data.data || {};
-                  
+
                     this.totallog = responseGetLog.data.total;
                     console.log("🚀 ~ editinghistory ~ self.totallog:", this.totallog)
 
@@ -513,7 +630,7 @@
                     console.warn("Error loading data:", error);
                 }
             },
-       
+
 
             async onSaveModal() {
                 try {
@@ -523,19 +640,19 @@
                     };
                     let response = await services.getUpdateActionReviewNegativeHandler(data, this.token_header);
                     console.log("🚀 ~ onSaveModal ~ response.code:", response.data.code);
-                    
+
                     if (response.data.code === 200) {
                         // เรียกใช้ loadDataReviewTb2 หลังจากบันทึกข้อมูลสำเร็จ
                         await this.loadDataReviewTb2(); // ใช้ this แทน self
                     }
-                    
+
                     console.log("🚀 ~ onSaveModal ~ data:", data);
                 } catch (error) {
                     console.log("🚀 ~ onSaveModal ~ error:", error);
                 }
-                
+
                 console.log("🚀 ~ onSaveModal ~ this.data_edit:", this.data_edit);
-                
+
                 // ปิดโมดัล
                 $('#staticBackdrop').modal('hide');
             }
@@ -545,9 +662,9 @@
                 const self = this;
                 try {
                     await self.loadDataClip()
-                    await self.loadDataProductChannel()
                     await self.loadDataReview()
                     await self.loadDataReviewTb2()
+                    await self.loadDataProductChannel()
                     // await self.loadDataApp()
                     await self.loadDailySum()
                 } catch (error) {
@@ -563,7 +680,7 @@
         mounted: function () {
             let self = this
             self.init()
-           
+
             self.DefaultData()
             console.log("ok")
         }

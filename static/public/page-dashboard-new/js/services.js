@@ -79,6 +79,17 @@
         });
     }
 
+    function getOrderManual(body = {}, token) {
+        return axios({
+          method: "post",
+          url: basepath + `/api/v1/order/filter-manual`,
+          // url: endpoint.getKeyReview,
+          // url: basePath + endpoint.getKeyReview,
+          data: { ...body },
+          headers: { "x-auth-token": token },
+        });
+      }
+
 
     const services = {
         getUpdateActionReviewNegativeHandler,
@@ -88,6 +99,7 @@
         getProductChannel,
         getClip,
         getlog,
+        getOrderManual,
     };
     window.services = services;
 })(jQuery, window, axios);

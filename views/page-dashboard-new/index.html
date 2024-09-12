@@ -37,23 +37,46 @@
                         <div id="kt_app_toolbar" class="app-toolbar pb-5">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid flex-stack">
                                 <div class="d-flex justify-content-between">
-                                    <div class="d-flex pb-3 align-items-end">
+                                    <div class="d-flex pb-3 align-items-end ">
                                         <div class="mt-3">
                                             <img width="60" height="60" src="/assets/media/images/Remove-bg.png"
                                                 alt="Admin">
                                         </div>
                                         <div class="ms-3">
-                                            <h1 class="fs-36 text-center  font-bold">ADMIN: as of <span
-                                                    v-text="date_show"></span> </h1>
+                                            <h1 class="fs-36 text-center font-bold">
+                                                ADMIN: as of <span v-text="date_show"></span>
+                                            </h1>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end">
 
-                                        <div class="mt-5">
-                                            <div class="w-100 input-group" id="kt_td_picker_simple"
+
+                                    <div class="mt-5">
+                                        <div class="d-flex ">
+                                            <!-- Start Date Picker -->
+                                            <div class="w-600px input-group align-items-center" id="kt_td_picker_start"
                                                 data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                <input id="kt_td_picker_basic_input" type="text" class="form-control"
-                                                    data-td-target="#kt_td_picker_basic" />
+                                                <div>
+                                                    <span class="fs-14 fw-bolder align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control w-400px" data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+
+                                            <!-- End Date Picker -->
+                                            <div class="w-600px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14 fw-bolder align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control w-400px" data-td-target="#kt_td_picker_end" />
                                                 <span class="input-group-text" data-td-target="#kt_td_picker_basic"
                                                     data-td-toggle="datetimepicker">
                                                     <i class="ki-duotone ki-calendar fs-2"><span
@@ -61,8 +84,8 @@
                                                 </span>
                                             </div>
                                         </div>
-
                                     </div>
+
                                 </div>
 
 
@@ -126,7 +149,8 @@
                                                                         <span>Link</span>
                                                                     </a>
                                                                 </td>
-                                                                <td class="text-start align-middle" v-text="item.user"></td>
+                                                                <td class="text-start align-middle" v-text="item.user">
+                                                                </td>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -169,7 +193,7 @@
                                     </div>
                                     <div class="col card p-5">
                                         <div>
-                                            <h1 class="text-dark fs-24">ติดตาม ครีเอเตอร์</h1>
+                                            <h1 class="text-dark fs-24">คีย์ Order</h1>
                                         </div>
                                         <div class="w-100 ">
                                             <div class="table-responsive border rounded-4">
@@ -177,55 +201,80 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-4 ">
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div @click="sortTableOrder('p_date')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>สินค้า</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <span>วันที่</span>
+                                                                    <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('p_date')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div  @click="sortTableOrder('customer_name')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>ช่องทาง</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <span>ชื่อลุกค้า</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('customer_name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div
+                                                                <div  @click="sortTableOrder('product')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>จำนวน(คน)</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <span>ชื่อสินค้า</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('product')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div  @click="sortTableOrder('order_no')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>ลิ้งค์คลิป</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <span>หมายเลขคำสั่งซื้อ</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('order_no')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
+                                                                <div  @click="sortTableOrder('chanel')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>เจนโค๊ด</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <span>ช่องทาง</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('chanel')"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-200px align-middle">
+                                                                <div  @click="sortTableOrder('note')"
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>หมายเหตุ</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('note')"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-200px align-middle">
+                                                                <div  @click="sortTableOrder('user')"
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>user</span>
+                                                                   <i class="bi-chevron-down"
+                                                                    :class="getSortIconorder('user')"></i>
                                                                 </div>
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="fs-6">
-                                                        <template v-for="(item , index) in dataProductChannel">
+                                                        <template v-for="(item , index) in dataOrderManual">
                                                             <tr>
+                                                                <td class="text-start align-middle"
+                                                                    v-text="item.p_date"></td>
+                                                                <td class="text-start align-middle"
+                                                                    v-text="item.customer_name"></td>
                                                                 <td class="text-start align-middle"
                                                                     v-text="item.product"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.channel"></td>
+                                                                    v-text="item.order_no"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.quantity"></td>
+                                                                    v-text="item.chanel"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.clip_iink"></td>
+                                                                    v-text="item.note"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.gen_code"></td>
+                                                                    v-text="item.user"></td>
                                                             </tr>
                                                         </template>
 
@@ -235,27 +284,30 @@
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
                                                     <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        data-control="select2">
-                                                        <!-- <option></option> -->
-                                                        <option value="10" selected>10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
+                                                    id="page_size_select_order" name="page_size_select_order"
+                                                    data-control="select2" v-model="itemsPerPage">
+                                                    <option value="10" selected>10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
                                                 </div>
                                                 <ul class="pagination">
-                                                    <li class="page-item previous disabled"><a href="#"
-                                                            class="page-link"><i class="previous"></i></a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                                    <li class="page-item active"><a href="#" class="page-link">2</a>
+                                                    <li :class="['page-item', { disabled: currentPagereorder === 1 }]"
+                                                        @click="changePagereorder(currentPagereorder - 1)">
+                                                        <span class="page-link"><i class="previous"></i></span>
                                                     </li>
-                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">...</a>
+                                                    <li v-for="pageorder in pagesreview" :key="pageorder"
+                                                        :class="['page-item', { active: currentPagereorder === pageorder && pageorder !== '...' }]"
+                                                        @click="changePagereorder(pageorder)">
+                                                        <span class="page-link" v-if="pageorder !== '...'"
+                                                            v-text="pageorder"></span>
+                                                        <span v-if="pageorder === '...'">...</span>
                                                     </li>
-                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                                    <li class="page-item next"><a href="#" class="page-link"><i
-                                                                class="next"></i></a></li>
+                                                    <li :class="['page-item', { disabled: currentPagereorder === totalPagesreorder }]"
+                                                        @click="changePagereorder(currentPagereorder + 1)">
+                                                        <span class="page-link"><i class="next"></i></span>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -495,14 +547,14 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR2('noteNN')"
+                                                            <div @click="sortTableR2('case_detail')"
                                                                 class="d-flex justify-content-around align-items-center">
                                                                 <!-- <i class="bi-cash-stack"></i> -->
                                                                 <div class="row">
                                                                     <span>เหตุผล</span>
                                                                 </div>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIconR2('noteNN')"></i>
+                                                                    :class="getSortIconR2('case_detail')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
@@ -585,7 +637,8 @@
                                                             </td>
                                                             <td class="text-start align-middle" v-text="item.phone_no">
                                                             </td>
-                                                            <td class="text-start align-middle" v-text="item.noteNN">
+                                                            <td class="text-start align-middle"
+                                                                v-text="item.case_detail">
                                                             </td>
                                                             <td class="text-center align-middle" v-text="item.channel">
                                                             </td>
@@ -672,6 +725,16 @@
                                                     <span class="text-dark fw-bolder fs-14">Marwell</span>
                                                     <span class="text-305 fw-bolder fs-14"
                                                         v-text="dataDailySum.total_marwell224"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">TT5</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.tt5"></span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-dark fw-bolder fs-14">TT6</span>
+                                                    <span class="text-305 fw-bolder fs-14"
+                                                        v-text="dataDailySum.tt6"></span>
                                                 </div>
 
                                             </div>
@@ -854,74 +917,73 @@
                                 <h1 class="h1 text-center">ไม่มีข้อมูลการแก้ไขดาว</h1>
                             </div>
                             <!-- <div v-else> -->
-                                <template v-for="(logItem, logIndex) in datLog" :key="logItem.id">
-                                    <div class="row pb-3">
-                                        <div class="col-6">
+                            <template v-for="(logItem, logIndex) in datLog" :key="logItem.id">
+                                <div class="row pb-3">
+                                    <div class="col-6">
 
-                                            <div class="pt-3">
-                                                <div class="d-flex gap-3" v-for="(item, index) in logItem.data_json"
-                                                    :key="index">
-                                                    <div class="">
-                                                        <span class="fs-3 text-dark fw-bolder">ชื่อ: </span>
-                                                        <span class="fs-3" v-text="item.user"></span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="fs-3 text-dark fw-bolder">ตามแก้ดาว: </span>
-                                                        <span class="fs-3" v-text="item.old"></span>
-                                                    </div>
+                                        <div class="pt-3">
+                                            <div class="d-flex gap-3" v-for="(item, index) in logItem.data_json"
+                                                :key="index">
+                                                <div class="">
+                                                    <span class="fs-3 text-dark fw-bolder">ชื่อ: </span>
+                                                    <span class="fs-3" v-text="item.user"></span>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="pt-3">
-                                                <div class="d-flex gap-3" v-for="(item, index) in logItem.data_json"
-                                                    :key="index">
-                                                    <div class="">
-                                                        <span class="fs-3 text-dark fw-bolder">ชื่อ: </span>
-                                                        <span class="fs-3" v-text="item.user"></span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="fs-3 text-dark fw-bolder">ตามแก้ดาว: </span>
-                                                        <span class="fs-3" v-text="item.new"></span>
-                                                    </div>
-                                                    <div class="">
-                                                        <span class="fs-3 text-dark fw-bolder">วันที่: </span>
-                                                        <span class="fs-3" v-text="item.created_at.slice(0, 10)"></span>
-                                                    </div>
+                                                <div class="">
+                                                    <span class="fs-3 text-dark fw-bolder">ตามแก้ดาว: </span>
+                                                    <span class="fs-3" v-text="item.old"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="my-4" />
-                                </template>
-                                <div class="d-flex justify-content-between align-items-center mt-3" >
-                                    <div>
-                                        <select class="form-select w-80px h-35px" data-hide-search="true"
-                                            id="page_size_log" name="page_size_log" data-control="select2"
-                                            v-model="itemsPerPageLog">
-                                            <option value="10" selected>10</option>
-                                            <option value="20">20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
+                                    <div class="col-6">
+                                        <div class="pt-3">
+                                            <div class="d-flex gap-3" v-for="(item, index) in logItem.data_json"
+                                                :key="index">
+                                                <div class="">
+                                                    <span class="fs-3 text-dark fw-bolder">ชื่อ: </span>
+                                                    <span class="fs-3" v-text="item.user"></span>
+                                                </div>
+                                                <div class="">
+                                                    <span class="fs-3 text-dark fw-bolder">ตามแก้ดาว: </span>
+                                                    <span class="fs-3" v-text="item.new"></span>
+                                                </div>
+                                                <div class="">
+                                                    <span class="fs-3 text-dark fw-bolder">วันที่: </span>
+                                                    <span class="fs-3" v-text="item.created_at.slice(0, 10)"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <ul class="pagination">
-                                        <li :class="['page-item', { disabled: currentPagelog === 1 }]"
-                                            @click="changePageLog(currentPagelog - 1)">
-                                            <span class="page-link"><i class="previous"></i></span>
-                                        </li>
-                                        <li v-for="pagelog in pagesLog" :key="pagelog"
-                                            :class="['page-item', { active: currentPagelog === pagelog && pagelog !== '...' }]"
-                                            @click="changePageLog(pagelog)">
-                                            <span class="page-link" v-if="pagelog !== '...'" v-text="pagelog"></span>
-                                            <span v-if="pagelog === '...'">...</span>
-                                        </li>
-                                        <li :class="['page-item', { disabled: currentPagelog === totalPageLog }]"
-                                            @click="changePageLog(currentPagelog + 1)">
-                                            <span class="page-link"><i class="next"></i></span>
-                                        </li>
-                                    </ul>
                                 </div>
+                                <hr class="my-4" />
+                            </template>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <select class="form-select w-80px h-35px" data-hide-search="true" id="page_size_log"
+                                        name="page_size_log" data-control="select2" v-model="itemsPerPageLog">
+                                        <option value="10" selected>10</option>
+                                        <option value="20">20</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                                <ul class="pagination">
+                                    <li :class="['page-item', { disabled: currentPagelog === 1 }]"
+                                        @click="changePageLog(currentPagelog - 1)">
+                                        <span class="page-link"><i class="previous"></i></span>
+                                    </li>
+                                    <li v-for="pagelog in pagesLog" :key="pagelog"
+                                        :class="['page-item', { active: currentPagelog === pagelog && pagelog !== '...' }]"
+                                        @click="changePageLog(pagelog)">
+                                        <span class="page-link" v-if="pagelog !== '...'" v-text="pagelog"></span>
+                                        <span v-if="pagelog === '...'">...</span>
+                                    </li>
+                                    <li :class="['page-item', { disabled: currentPagelog === totalPageLog }]"
+                                        @click="changePageLog(currentPagelog + 1)">
+                                        <span class="page-link"><i class="next"></i></span>
+                                    </li>
+                                </ul>
+                            </div>
                             <!-- </div> -->
                         </div>
                         <div class="modal-footer">
