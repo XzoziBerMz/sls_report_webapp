@@ -81,8 +81,11 @@
                 const self = this;
                 showLoading();
                 try {
+                    let data = {
+                        "channel_id": "CHANNEL_TIKTOK"
+                   }
                     const [responseGetChannel, responseGetProduct] = await Promise.all([
-                        services.getChannel(self.token_header),
+                        services.getChannel(data , self.token_header),
                         services.getProduct(self.token_header)
                     ]);
 

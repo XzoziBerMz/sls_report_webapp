@@ -48,7 +48,10 @@
                 }
 
                 try {
-                    const responseGetInputChannel = await services.getInputChannel(self.token_header);
+                    let data = {
+                         "channel_id": "CHANNEL_TIKTOK"
+                    }
+                    const responseGetInputChannel = await services.getInputChannel(data,self.token_header);
                     const dataInputChannel = responseGetInputChannel?.data.data || [];
                     this.dataInputChannel = dataInputChannel;
                 } catch (error) {

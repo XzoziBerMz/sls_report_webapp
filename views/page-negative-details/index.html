@@ -74,8 +74,8 @@
                                                             <template v-for="(item, indexch) in dataChannel" :key="indexch">
                                                                 <div class="col-1">
                                                                     <label class="form-check form-check-custom form-check-solid">
-                                                                        <input class="form-check-input" type="radio" v-model="form.channel" :value="item.channel_name" name="radio_input" @change="handleInput('channel')" />
-                                                                        <span class="form-check-label text-dark" v-text="item.channel_name"></span>
+                                                                        <input class="form-check-input" type="radio" v-model="form.channel" :value="item.shop_name" name="radio_input" @change="handleInput('channel')" />
+                                                                        <span class="form-check-label text-dark" v-text="item.shop_name"></span>
                                                                     </label>
                                                                 </div>
                                                             </template>

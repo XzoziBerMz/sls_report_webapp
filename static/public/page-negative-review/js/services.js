@@ -5,7 +5,7 @@
     // getKeyReview: `/negatvie-list`,
   };
 
-  function createData(body = {}, token) {
+  function createData(body = {},token) {
     return axios({
       method: "post",
       url: basepath + `/api/v1/review/insert-daily`,
@@ -37,13 +37,13 @@
     });
   }
 
-  function getInputChannel(token) {
+  function getInputChannel(body = {},token) {
     return axios({
-      method: "get",
-      url: basepath + `/api/v1/channel/list`,
+      method: "post",
+      url: basepath + `/api/v1/shop/list`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
-      // data: { ...body },
+      data: { ...body },
       headers: { "x-auth-token": token },
     });
   }

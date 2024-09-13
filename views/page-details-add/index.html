@@ -44,8 +44,8 @@
                                         <div class="position-relative">
                                             <input type="hidden" />
                                             <div class="input-container">
-                                                <input type="text" class="form-control form-control-lg"
-                                                    placeholder="ค้นหา.." />
+                                                <input type="text" class="form-control form-control-lg" v-model="serach_value"
+                                                    placeholder="ค้นหา.." @blur="handleBlur()"/>
                                                 <i class="bi bi-search"></i>
                                             </div>
                                         </div>
@@ -110,7 +110,7 @@
                                                         <template v-for="item in dataDataAdd">
                                                             <tr>
                                                                 <td class="align-middle min-w-100px text-break"
-                                                                    v-text="item.p_timestamp"></td>
+                                                                    v-text="utilsConvDate(item.p_timestamp)"></td>
                                                                 <td class="align-middle min-w-200px text-break"
                                                                     v-text="item.shop_name"></td>
                                                                 <td class="align-middle min-w-100px text-break"

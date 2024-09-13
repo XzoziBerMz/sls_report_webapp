@@ -2,7 +2,7 @@
   // const basepath = "https://sls-report-api.945.report";
   // const basepath = "http://127.0.0.1:4444";
   const endpoint = {
-    get_channel: `/api/v1/channel/list`,
+    get_channel: `/api/v1/shop/list`,
     get_product: `/api/v1/product/list`,
     insert_data: `/api/v1/review/insert-negative`
   };
@@ -16,10 +16,11 @@
     });
   }
 
-  function getChannel(token) {
+  function getChannel(body = {},token) {
     return axios({
-      method: "get",
+      method: "post",
       url: basepath + endpoint.get_channel,
+      data: { ...body },
       headers: { "x-auth-token": token },
     });
   }

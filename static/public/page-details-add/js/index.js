@@ -20,7 +20,6 @@
                 itemsPerPage: 10,
                 totalItems: 0,
                 currentPages: 1,
-           
                 column_order_by: "p_timestamp",
                 order_sort: "desc",
 
@@ -39,11 +38,8 @@
                 for (let page = startPage; page <= endPage; page++) {
                     pages.push(page);
                 }
-
                 return pages;
             }
-
-
         },
         methods: {
             ...window.webUtils.method || {},
@@ -82,12 +78,24 @@
                 return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
 
+            searchData(event) {
+                this.isEnterPressed = true;
+                this.loadDataAdd();
+                event.target.blur();
+            },
+            handleBlur() {
+                if (!this.isEnterPressed) {
+                    this.loadDataAdd();
+                }
+                this.isEnterPressed = false;
+            },
+
             async loadDataAdd() {
                 const self = this;
                 try {
                     showLoading();
                     let data = {
-                        "search": "",
+                        "search": self.serach_value,
                         "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage || 10),
                         "order": self.column_order_by,
@@ -104,6 +112,7 @@
                     closeLoading()
                 }
             },
+
 
 
         },
