@@ -1,0 +1,174 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-details-add/css/index.css">
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <h1 class="fs-1 fw-bolder">Details Add</h1>
+                                <div class="card p-10 mt-3 w-100">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="position-relative">
+                                            <input type="hidden" />
+                                            <div class="input-container">
+                                                <input type="text" class="form-control form-control-lg"
+                                                   placeholder="ค้นหา.." />
+                                                <i class="bi bi-search"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row gap-5 px-3 mt-5">
+                                        <div class="card p-5 ">
+                                            <div class="table-responsive border rounded-4">
+                                                <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                                    <thead>
+                                                        <tr class="fw-bold fs-4 ">
+                                                            <th class="min-w-100px">
+                                                                <div
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <i class="bi-calendar3"></i>
+                                                                    <span>วันที่</span>
+                                                                    <i class="bi-chevron-down"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-200px">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>ร้าน</span>
+                                                                    <i class="bi-filter"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>ค่าแอด</span>
+                                                                    <i class="bi-filter"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>รายได้แอด</span>
+                                                                    <i class="bi-filter"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>รายได้รวม</span>
+                                                                    <i class="bi-filter"></i>
+                                                                </div>
+                                                            </th>
+                                                            <th class="min-w-100px">
+                                                                <div
+                                                                    class="d-flex justify-content-between align-items-center">
+                                                                    <span>0.00%</span>
+                                                                    <i class="bi-filter"></i>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="fs-6">
+                                                        <template v-for="item in dataDataAdd">
+                                                            <tr>
+                                                                <td class="align-middle min-w-100px text-break" v-text="item.p_timestamp"></td>
+                                                                <td class="align-middle min-w-200px text-break" v-text="item.shop_name"></td>
+                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_fee"></td>
+                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_income"></td>
+                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_total_income"></td>
+                                                                <td class="align-middle min-w-100px text-break" ></td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                    <!-- <tfoot class="border-top border-1 fs-6">
+                                                        <tr>
+                                                            <td class="align-middle min-w-100px text-break"></td>
+                                                            <td class="align-middle min-w-200px text-break"></td>
+                                                            <td class="align-middle min-w-100px text-break"></td>
+                                                            <td class="align-middle min-w-100px text-break">61</td>
+                                                            <td class="align-middle min-w-100px text-break"></td>
+                                                            <td class="align-middle min-w-100px text-break"></td>
+                                                        </tr>
+                                                    </tfoot> -->
+                                                </table>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-control="select2">
+                                                        <option></option>
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                                <ul class="pagination">
+                                                    <li class="page-item previous disabled"><a href="#" class="page-link"><i
+                                                                class="previous"></i></a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
+                                                    <li class="page-item active"><a href="#" class="page-link">2</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">...</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
+                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
+                                                    <li class="page-item next"><a href="#" class="page-link"><i
+                                                                class="next"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-details-add/js/services.js" type="module"> </script>
+<script src="/page-details-add/js/index.js" type="module"> </script>
+
+</html>

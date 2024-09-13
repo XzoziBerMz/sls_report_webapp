@@ -336,6 +336,7 @@
             itemsPerPage: {
                 deep: true,
                 async handler(newValue) {
+                    console.log("🚀 ~ handler ~ newValue:", newValue)
                     this.currentPages = 1
 
                     await this.loadDataOrder();

@@ -61,15 +61,13 @@
                                                     <span v-text="errors.date" class="text-danger"></span>
                                                 </div>
                                             </div>
-
                                             <div class="col-12">
                                                 <div class="fv-row mb-10">
                                                     <div class="row gap-3">
                                                         <label class="required fw-semibold fs-4 mb-2">ร้าน</label>
                                                         <template v-for="(item, index) in dataEditStars" :key="index">
                                                             <div class="col-1">
-                                                                <label
-                                                                    class="form-check form-check-custom form-check-solid w-175px">
+                                                                <label class="form-check form-check-custom form-check-solid w-175px">
                                                                     <input class="form-check-input" type="radio"
                                                                         v-model="form.editstars" :value="item.name"
                                                                         name="radio_input1S"
@@ -79,47 +77,32 @@
                                                                 </label>
                                                             </div>
                                                         </template>
+                                                        <!-- เพิ่มตัวเลือก "อื่นๆ" -->
+                                                        <div class="col-1">
+                                                            <label class="form-check form-check-custom form-check-solid w-175px">
+                                                                <input class="form-check-input" type="radio"
+                                                                    v-model="form.editstars" value="other"
+                                                                    name="radio_input1S"
+                                                                    @change="handleInput('editstars')" />
+                                                                <span class="form-check-label text-dark">อื่นๆ</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <!-- แสดงช่อง input text เมื่อเลือก "อื่นๆ" -->
+                                                    <div v-if="form.editstars === 'other'" class="mt-5 d-flex justify-content-end">
+                                                        <input type="text" v-model="form.otherStars" class="form-control w-25"
+                                                            placeholder="กรุณาระบุร้านเพิ่มเติม" />
                                                     </div>
                                                     <span v-text="errors.editstars" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-12">
-                                                <div class="fv-row mb-10">
-                                                    <div class="row gap-3">
-                                                        <label class="required fw-semibold fs-4 mb-2">สินค้า</label>
-                                                        <template v-for="(item, index) in dataProduct" :key="index">
-                                                            <div class="col-1">
-                                                                <label
-                                                                    class="form-check form-check-custom form-check-solid w-175px">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        v-model="form.product_name" :value="item.product_name"
-                                                                        name="radio_input_product"
-                                                                        @change="handleInput('product_name')" />
-                                                                    <span class="form-check-label text-dark"
-                                                                        v-text="item.product_name"></span>
-                                                                </label>
-                                                            </div>
-                                                        </template>
-                                                    </div>
-                                                    <span v-text="errors.product_name" class="text-danger"></span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="required fw-semibold fs-4 mb-2">ชื่อ</label>
-                                                    <input type="text" name="name"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.name" @input="handleInput('name')" />
-                                                    <span v-text="errors.name" class="text-danger"></span>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="col-6">
                                                 <div class="fv-row mb-10">
                                                     <label class="required fw-semibold fs-4 mb-2">ค่าแอด</label>
                                                     <input type="text" name="add_fee"
                                                         class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.add_fee" @input="handleInput('add_fee')" />
+                                                        v-model="form.add_fee" @input="handleInputN('add_fee')" />
                                                     <span v-text="errors.add_fee" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -129,7 +112,7 @@
                                                     <input type="text" name="added_income"
                                                         class="form-control form-control mb-3 mb-lg-0 h-50px"
                                                         v-model="form.added_income"
-                                                        @input="handleInput('added_income')" />
+                                                        @input="handleInputN('added_income')" />
                                                     <span v-text="errors.added_income" class="text-danger"></span>
                                                 </div>
                                             </div>
@@ -139,28 +122,10 @@
                                                     <input type="text" name="total_income"
                                                         class="form-control form-control mb-3 mb-lg-0 h-50px"
                                                         v-model="form.total_income"
-                                                        @input="handleInput('total_income')" />
+                                                        @input="handleInputN('total_income')" />
                                                     <span v-text="errors.total_income" class="text-danger"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="required fw-semibold fs-4 mb-2">รายได้รวม</label>
-                                                    <input type="text" name="total_income"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.total_income"
-                                                        @input="handleInput('total_income')" />
-                                                    <span v-text="errors.total_income" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class=" fw-semibold fs-4 mb-2">%</label>
-                                                    <input type="text" name="total_shop_income"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.total_shop_income" />
-                                                </div>
-                                            </div> -->
                                         </div>
                                         <div class="d-flex justify-content-center">
                                             <button id="kt_docs_formvalidation_text_submit" type="submit"
