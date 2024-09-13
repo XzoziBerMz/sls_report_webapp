@@ -251,44 +251,44 @@
                                                 <thead>
                                                     <tr class="fw-bold fs-4 ">
                                                         <th class="min-w-100px">
-                                                            <div @click="sortTable('p_timestamp')"
+                                                            <div @click="sortCostTable('p_timestamp')"
                                                                 class="d-flex justify-content-around align-items-center pointer">
                                                                 <i class="bi-calendar3"></i>
                                                                 <span>วันที่</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('p_timestamp')"></i>
+                                                                    :class="getCostSortIcon('p_timestamp')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-200px">
-                                                            <div @click="sortTable('shop_name')"
+                                                            <div @click="sortCostTable('shop_name')"
                                                                 class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>ร้าน</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('shop_name')"></i>
+                                                                    :class="getCostSortIcon('shop_name')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div @click="sortTable('ads_fee')"
+                                                            <div @click="sortCostTable('ads_fee')"
                                                                 class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>ค่าแอด</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('ads_fee')"></i>
+                                                                    :class="getCostSortIcon('ads_fee')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div @click="sortTable('ads_income')"
+                                                            <div @click="sortCostTable('ads_income')"
                                                                 class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>รายได้แอด</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('ads_income')"></i>
+                                                                    :class="getCostSortIcon('ads_income')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div @click="sortTable('ads_total_income')"
+                                                            <div @click="sortCostTable('ads_total_income')"
                                                                 class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>รายได้รวม</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('ads_total_income')"></i>
+                                                                    :class="getCostSortIcon('ads_total_income')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
