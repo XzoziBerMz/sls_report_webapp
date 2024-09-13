@@ -15,7 +15,7 @@
 			id="#kt_aside_menu" data-kt-menu="true">
 
 			<div class="menu-item menu-sub-indention menu-accordion"
-				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
+				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
 				data-kt-menu-trigger="click">
 				<a href="#" class="menu-link py-3">
 					<span class="menu-icon">
@@ -26,7 +26,7 @@
 					<span class="menu-arrow"></span>
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
-					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order'}">
+					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order'}">
 					<div class="menu-item" :class="{active:currentPage === 'dashboard'}">
 						<a href="/dashboard" class="menu-link py-3">
 							<span class="menu-bullet">
@@ -41,6 +41,14 @@
 								<i class="bi-badge-ad"></i>
 							</span>
 							<span class="menu-title">Ads</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'details-add'}">
+						<a href="/details-add" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-cash-coin"></i> 
+							</span>
+							<span class="menu-title">Ads Cost</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'video'}">
@@ -72,13 +80,21 @@
 					<span class="menu-arrow"></span>
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
-					:class="{show:currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
+					:class="{show:currentPage === 'ads_form' || currentPage === 'key-ads' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
 					<div class="menu-item" :class="{active:currentPage === 'ads_form'}">
 						<a href="/ads-form" class="menu-link py-3">
 							<span class="menu-bullet">
 								<i class="bi-badge-ad"></i>
 							</span>
 							<span class="menu-title">Ads</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'key-ads'}">
+						<a href="/key-ads" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-cash-coin"></i>
+							</span>
+							<span class="menu-title">Ads Cost</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'chat'}">

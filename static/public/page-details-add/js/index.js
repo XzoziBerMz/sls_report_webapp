@@ -8,7 +8,7 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: window.currentPage,
+                currentPage: 'details-add',
                 authstatus: window.authstatus,
                 token_header: token_header || '',
                 datas: [],
