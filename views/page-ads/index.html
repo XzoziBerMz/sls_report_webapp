@@ -55,100 +55,110 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-5">
                                                             <th class="min-w-100px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('date')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-calendar3"></i>
                                                                     <span>วันที่</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('date')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('name')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-type flex-shrink-1"></i>
                                                                     <div class="row w-100 ms-2">
                                                                         <span>ชื่อ</span>
                                                                         <span>ADS</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('product')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-type"></i>
                                                                     <div class="row">
                                                                         <span>สินค้า</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('product')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('status')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-toggles"></i>
                                                                     <div class="row">
                                                                         <span>สถานะ</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('status')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('total_cost')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-cash-stack"></i>
                                                                     <div class="row ms-2">
                                                                         <span>ค่าใช้จ่ายทั้งหมด</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('total_cost')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('budget')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-cash-stack"></i>
                                                                     <div class="row">
                                                                         <span>งบประมาณ</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('budget')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-150px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('total_shop_income')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-cash-stack"></i>
                                                                     <div class="row">
                                                                         <span>รายได้รวม(ร้านค้า)</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('total_shop_income')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('cost_per_purchase')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-cash-stack"></i>
                                                                     <div class="row">
                                                                         <span>ต้นทุนต่อการซื้อ(ร้านค้า)</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('cost_per_purchase')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-50px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('purchase')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <div class="row">
                                                                         <span>#</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('purchase')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-150px align-middle">
-                                                                <div
-                                                                    class="d-flex justify-content-around align-items-center">
+                                                                <div @click="sortTable('note')"
+                                                                    class="d-flex justify-content-around align-items-center pointer">
                                                                     <div class="row">
                                                                         <span>โน๊ต</span>
                                                                     </div>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('note')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle tetx-center">
@@ -169,7 +179,8 @@
                                                                     <span v-text="item.product"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
-                                                                    <span v-if="item.status === 'active'" v-text="'เปิดการใช้งาน'"></span>
+                                                                    <span v-if="item.status === 'active'"
+                                                                        v-text="'เปิดการใช้งาน'"></span>
                                                                     <span v-else v-text="'ปิดการใช้งาน'"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
@@ -240,46 +251,51 @@
                                                 <thead>
                                                     <tr class="fw-bold fs-4 ">
                                                         <th class="min-w-100px">
-                                                            <div
-                                                                class="d-flex justify-content-around align-items-center">
+                                                            <div @click="sortTable('p_timestamp')"
+                                                                class="d-flex justify-content-around align-items-center pointer">
                                                                 <i class="bi-calendar3"></i>
                                                                 <span>วันที่</span>
-                                                                <i class="bi-chevron-down"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('p_timestamp')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-200px">
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
+                                                            <div @click="sortTable('shop_name')"
+                                                                class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>ร้าน</span>
-                                                                <i class="bi-filter"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('shop_name')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
+                                                            <div @click="sortTable('ads_fee')"
+                                                                class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>ค่าแอด</span>
-                                                                <i class="bi-filter"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('ads_fee')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
+                                                            <div @click="sortTable('ads_income')"
+                                                                class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>รายได้แอด</span>
-                                                                <i class="bi-filter"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('ads_income')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
-                                                            <div
-                                                                class="d-flex justify-content-between align-items-center">
+                                                            <div @click="sortTable('ads_total_income')"
+                                                                class="d-flex justify-content-between align-items-center pointer">
                                                                 <span>รายได้รวม</span>
-                                                                <i class="bi-filter"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('ads_total_income')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px">
                                                             <div
                                                                 class="d-flex justify-content-between align-items-center">
                                                                 <span>0.00%</span>
-                                                                <i class="bi-filter"></i>
+                                                                <i class="bi-chevron-down"></i>
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -614,9 +630,10 @@
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">สถานะ</label>
-                                            <select class="form-select form-select-solid" data-hide-search="true" id="status-select"
-                                                data-control="select2" data-dropdown-parent="#kt_modal_1"
-                                                data-placeholder="Select an option" v-model="dataEddit.status">
+                                            <select class="form-select form-select-solid" data-hide-search="true"
+                                                id="status-select" data-control="select2"
+                                                data-dropdown-parent="#kt_modal_1" data-placeholder="Select an option"
+                                                v-model="dataEddit.status">
                                                 <option value="active">เปิดการใช้งาน</option>
                                                 <option value="inactive">ปิดการใช้งาน</option>
                                             </select>

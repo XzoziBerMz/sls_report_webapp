@@ -24,10 +24,14 @@
                 currentPages: 1,
                 itemsPerPage: 10,
                 totalItems: 0,
+                column_order_by: "date",
+                order_sort: "desc",
 
                 currentCostPages: 1,
                 itemsCostPerPage: 10,
                 totalCostItems: 0,
+                column_cost_order_by: "p_timestamp",
+                cost_order_sort: "desc",
             }
         },
         computed: {
@@ -110,6 +114,46 @@
                 this.currentCostPages = page;
                 this.getAdsCost();
             },
+
+            async sortTable(column) {
+                if (this.column_order_by === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.order_sort = this.order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_order_by = column;
+                    this.order_sort = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.getAds();
+            },
+            getSortIcon(column) {
+                const self = this;
+                if (self.column_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+            async sortCostTable(column) {
+                if (this.column_cost_order_by === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.cost_order_sort = this.cost_order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_cost_order_by = column;
+                    this.cost_order_sort = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.getAdsCost();
+            },
+            getCostSortIcon(column) {
+                const self = this;
+                if (self.column_cost_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.cost_order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+
             editAds(data) {
                 const self = this;
                 $('#kt_modal_1').modal('show');
@@ -155,8 +199,8 @@
                         // "ref_default": 1,
                         "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage) || 10,
-                        "order": "date",
-                        "order_by": "desc"
+                        "order": self.column_order_by,
+                        "order_by": self.order_sort
                     }
                     const response = await services.getAdsApi(data, self.token_header)
                     if (response.data.code === 200) {
@@ -184,8 +228,8 @@
                         // "ref_default": 1,
                         "page": self.currentCostPages,
                         "per_page": parseInt(self.itemsCostPerPage) || 10,
-                        "order": "shop_name",
-                        "order_by": "desc"
+                        "order": self.column_cost_order_by,
+                        "order_by": self.cost_order_sort
                     }
                     const response = await services.getAdsCost(data, self.token_header)
                     if (response.data.code === 200) {
