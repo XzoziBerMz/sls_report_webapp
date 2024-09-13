@@ -45,7 +45,7 @@
                                             <input type="hidden" />
                                             <div class="input-container">
                                                 <input type="text" class="form-control form-control-lg"
-                                                   placeholder="ค้นหา.." />
+                                                    placeholder="ค้นหา.." />
                                                 <i class="bi bi-search"></i>
                                             </div>
                                         </div>
@@ -57,46 +57,51 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-4 ">
                                                             <th class="min-w-100px">
-                                                                <div
+                                                                <div  @click="sortTable('p_timestamp')"
                                                                     class="d-flex justify-content-around align-items-center">
                                                                     <i class="bi-calendar3"></i>
                                                                     <span>วันที่</span>
-                                                                    <i class="bi-chevron-down"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('p_timestamp')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px">
-                                                                <div
+                                                                <div  @click="sortTable('shop_name')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ร้าน</span>
-                                                                    <i class="bi-filter"></i>
+                                                                       <i class="bi-chevron-down"
+                                                                :class="getSortIcon('shop_name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div
+                                                                <div  @click="sortTable('ads_fee')" 
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ค่าแอด</span>
-                                                                    <i class="bi-filter"></i>
+                                                                       <i class="bi-chevron-down"
+                                                                :class="getSortIcon('ads_fee')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div
+                                                                <div  @click="sortTable('ads_income')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>รายได้แอด</span>
-                                                                    <i class="bi-filter"></i>
+                                                                       <i class="bi-chevron-down"
+                                                                :class="getSortIcon('ads_income')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div
+                                                                <div  @click="sortTable('ads_total_income')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>รายได้รวม</span>
-                                                                    <i class="bi-filter"></i>
+                                                                       <i class="bi-chevron-down"
+                                                                :class="getSortIcon('ads_total_income')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div
-                                                                    class="d-flex justify-content-between align-items-center">
+                                                                <div  @click="sortTable('')" class="d-flex justify-content-between align-items-center">
                                                                     <span>0.00%</span>
-                                                                    <i class="bi-filter"></i>
+                                                                       <i class="bi-chevron-down"
+                                                                :class="getSortIcon('')"></i>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -104,12 +109,17 @@
                                                     <tbody class="fs-6">
                                                         <template v-for="item in dataDataAdd">
                                                             <tr>
-                                                                <td class="align-middle min-w-100px text-break" v-text="item.p_timestamp"></td>
-                                                                <td class="align-middle min-w-200px text-break" v-text="item.shop_name"></td>
-                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_fee"></td>
-                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_income"></td>
-                                                                <td class="align-middle min-w-100px text-break" v-text="item.ads_total_income"></td>
-                                                                <td class="align-middle min-w-100px text-break" ></td>
+                                                                <td class="align-middle min-w-100px text-break"
+                                                                    v-text="item.p_timestamp"></td>
+                                                                <td class="align-middle min-w-200px text-break"
+                                                                    v-text="item.shop_name"></td>
+                                                                <td class="align-middle min-w-100px text-break"
+                                                                    v-text="item.ads_fee"></td>
+                                                                <td class="align-middle min-w-100px text-break"
+                                                                    v-text="item.ads_income"></td>
+                                                                <td class="align-middle min-w-100px text-break"
+                                                                    v-text="item.ads_total_income"></td>
+                                                                <td class="align-middle min-w-100px text-break"></td>
                                                             </tr>
                                                         </template>
                                                     </tbody>
@@ -127,8 +137,9 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
-                                                    <select class="form-select w-80px h-35px" data-control="select2">
-                                                        <option></option>
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        id="page_size_add" name="page_size_add"  v-model="itemsPerPage"
+                                                        data-control="select2">
                                                         <option value="10" selected>10</option>
                                                         <option value="20">20</option>
                                                         <option value="50">50</option>
@@ -136,21 +147,25 @@
                                                     </select>
                                                 </div>
                                                 <ul class="pagination">
-                                                    <li class="page-item previous disabled"><a href="#" class="page-link"><i
-                                                                class="previous"></i></a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                                    <li class="page-item active"><a href="#" class="page-link">2</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">...</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                                    <li class="page-item next"><a href="#" class="page-link"><i
-                                                                class="next"></i></a></li>
+                                                    <li :class="['page-item', { disabled: currentPages === 1 }]"
+                                                        @click="changePage(currentPages - 1)">
+                                                        <p class="page-link"><i class="previous"></i></p>
+                                                    </li>
+                                                    <li v-for="page in pages" :key="page"
+                                                        :class="['page-item', { active: currentPages === page && page !== '...' }]"
+                                                        @click="changePage(page)">
+                                                        <p class="page-link" v-if="page !== '...'" v-text="page"></p>
+                                                        <span v-if="page === '...'">...</span>
+                                                    </li>
+                                                    <li :class="['page-item', { disabled: currentPages === totalPages }]"
+                                                        @click="changePage(currentPages + 1)">
+                                                        <p class="page-link"><i class="next"></i></p>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -158,7 +173,7 @@
                 </div>
             </div>
         </div>
-   
+
 
 
     </div>

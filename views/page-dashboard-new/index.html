@@ -94,7 +94,6 @@
 
                                 </div>
 
-
                                 <!-- S1 -->
                                 <div class="row gap-5">
                                     <div class="col-6 card p-5">
@@ -165,16 +164,30 @@
                                             </div>
 
                                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div>
-                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        id="page_size_select_review_script"
-                                                        name="page_size_select_review_script" data-control="select2"
-                                                        v-model="itemsPerPageScript">
-                                                        <option value="10" selected>10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <select class="form-select w-80px h-35px"
+                                                            data-hide-search="true" id="page_size_select_review_script"
+                                                            name="page_size_select_review_script"
+                                                            data-control="select2">
+                                                            <option value="10" selected>10</option>
+                                                            <option value="20">20</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="d-flex align-items-end ms-5">
+                                                        <span>
+                                                            กำลังแสดง
+                                                            <span v-text="startItem"></span>
+                                                            ถึง
+                                                            <span v-text="endItem"></span>
+                                                            จาก
+                                                            <span v-text="totalItems"></span> รายการ
+                                                            <span v-if="totalItems > 10"></span>
+                                                        </span>
+                                                    </div>
+
                                                 </div>
                                                 <ul class="pagination">
                                                     <li :class="['page-item', { disabled: currentPages === 1 }]"
@@ -288,15 +301,29 @@
                                                 </table>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div>
-                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        id="page_size_select_order" name="page_size_select_order"
-                                                        data-control="select2">
-                                                        <option value="10">10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <select class="form-select w-80px h-35px"
+                                                            data-hide-search="true" id="page_size_select_order"
+                                                            name="page_size_select_order" data-control="select2">
+                                                            <option value="10">10</option>
+                                                            <option value="20">20</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="d-flex align-items-end ms-5">
+                                                        <span>
+                                                            กำลังแสดง
+                                                            <span v-text="startItemorder"></span>
+                                                            ถึง
+                                                            <span v-text="endItemorder"></span>
+                                                            จาก
+                                                            <span v-text="totalItemsreorder"></span> รายการ
+                                                            <span v-if="totalItemsreorder > 10"></span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <ul class="pagination">
                                                     <li :class="['page-item', { disabled: currentPagereorder === 1 }]"
@@ -473,15 +500,29 @@
                                             </table>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <div>
-                                                <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                    id="page_size_select_review" name="page_size_select_review"
-                                                    data-control="select2">
-                                                    <option value="10" selected>10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        id="page_size_select_review" name="page_size_select_review"
+                                                        data-control="select2">
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="d-flex align-items-end ms-5">
+                                                    <span>
+                                                        กำลังแสดง
+                                                        <span v-text="startItemreview"></span>
+                                                        ถึง
+                                                        <span v-text="endItemreview"></span>
+                                                        จาก
+                                                        <span v-text="totalItemsreview"></span> รายการ
+                                                        <span v-if="totalItemsreview > 10"></span>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentPagereview === 1 }]"
@@ -677,15 +718,28 @@
                                             </table>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <div>
-                                                <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                    id="page_size_select_review2" name="page_size_select_review2"
-                                                    data-control="select2" v-model="itemsPerPage2">
-                                                    <option value="10" selected>10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        id="page_size_select_review2" name="page_size_select_review2"
+                                                        data-control="select2">
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-end ms-5">
+                                                    <span>
+                                                        กำลังแสดง
+                                                        <span v-text="startItemreviewT2"></span>
+                                                        ถึง
+                                                        <span v-text="endItemreviewT2"></span>
+                                                        จาก
+                                                        <span v-text="totalItemsreview2"></span> รายการ
+                                                        <span v-if="totalItemsreview2 > 10"></span>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentPagereview2 === 1 }]"
@@ -913,10 +967,10 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <h3>ข้อมูลใหม่</h3>
+                                    <h3>ข้อมูลเก่า</h3>
                                 </div>
                                 <div class="col-6">
-                                    <h3>ข้อมูลเก่า</h3>
+                                    <h3>ข้อมูลใหม่</h3>
                                 </div>
                             </div>
                             <div v-if="datLog.length === 0">
@@ -955,7 +1009,7 @@
                                                 </div>
                                                 <div class="">
                                                     <span class="fs-3 text-dark fw-bolder">วันที่: </span>
-                                                    <span class="fs-3" v-text="item.created_at.slice(0, 10)"></span>
+                                                    <span class="fs-3" v-text="utilsConvDate(item.created_at.slice(0, 10))"></span>
                                                 </div>
                                             </div>
                                         </div>

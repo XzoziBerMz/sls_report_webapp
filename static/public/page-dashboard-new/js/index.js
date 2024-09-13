@@ -35,7 +35,7 @@
                 dataLine: [],
                 dataOrder: [],
                 dataClip: [],
-                data_edit: [],
+                data_edit: {},
                 dataMatterUpdate: [],
                 dataUpdateAction: [],
                 dataOrderManual: [],
@@ -207,6 +207,37 @@
                 }
                 return pages;
             },
+            startItem() {
+                return (this.currentPages - 1) * this.itemsPerPageScript + 1;
+            },
+            endItem() {
+                const end = this.currentPages * this.itemsPerPageScript;
+                return end > this.totalItems ? this.totalItems : end;
+            },
+
+            startItemorder() {
+                return (this.currentPagereorder - 1) * this.itemsPerPagereorder + 1;
+            },
+            endItemorder() {
+                const end = this.currentPagereorder * this.itemsPerPagereorder;
+                return end > this.totalItemsreorder ? this.totalItemsreorder : end;
+            },
+
+            startItemreview() {
+                return (this.currentPagereview - 1) * this.itemsPerPagereview + 1;
+            },
+            endItemreview() {
+                const end = this.currentPagereview * this.itemsPerPagereview;
+                return end > this.totalItemsreview ? this.totalItemsreview : end;
+            },
+            
+            startItemreviewT2() {
+                return (this.currentPagereview2 - 1) * this.itemsPerPagereview2 + 1;
+            },
+            endItemreviewT2() {
+                const end = this.currentPagereview2 * this.itemsPerPagereview2;
+                return end > this.totalItemsreview2 ? this.totalItemsreview2 : end;
+            },
             
         },
         methods: {
@@ -217,28 +248,33 @@
                 $('#page_size_select_review_script').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.itemsPerPageScript = selectedValue || 10
+                    self.currentPages = 1
                     await self.loadDataClip();
                 })
 
                 $('#page_size_select_review').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.itemsPerPagereview = selectedValue || 10
+                    self.currentPagereview = 1
                     await self.loadDataReview();
                 })
 
                 $('#page_size_select_review2').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
-                    self.itemsPerPage2 = selectedValue || 10
+                    self.itemsPerPagereview2 = selectedValue || 10
+                    self.currentPagereview2 = 1
                     await self.loadDataReviewTb2();
                 })
                 $('#page_size_log').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.itemsPerPageLog = selectedValue || 10
-                    await self.editinghistory();
+                    self.currentPagelog = 1
+                    await self.editinghistory(this.data_edit);
                 })
                 $('#page_size_select_order').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.itemsPerPagereorder = selectedValue || 10
+                    self.page_size_select_order = 1
                     await self.loadDataProductChannel();
                 })
 
@@ -299,12 +335,10 @@
                 self.endDate = formattedDate
             },
 
-
-
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
-
+                    // showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
@@ -334,12 +368,161 @@
                     self.perPage = per_page; // Update per_page value
                     self.currentPages = page; // Set the current page
 
-                    closeLoading();
+                    // closeLoading();
                 } catch (error) {
                     console.warn(`🌦️ ~ loadDataClip ~ error:`, error);
-                    closeLoading();
+                    // closeLoading();
                 }
             },
+
+            async loadDataProductChannel() {
+                const self = this;
+                try {
+                    // showLoading();
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let data = {
+
+                        // search: this.search,
+                        customer: this.customer || '', // Bind the search fields
+                        product: this.product || '',
+                        order_no: this.order_no || '',
+                        chanel: this.chanel || '',
+                        note: this.note || '',
+                        user: this.user || '',
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        page: this.currentPagereorder,
+                        "per_page": Number(this.itemsPerPagereorder),
+                        "order": this.column_order_order,
+                        "order_by": this.order_sort_order
+                    };
+
+                    const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
+                    const response = responseGetOrderManual?.data || {};
+                    this.dataOrderManual = response.data || [];
+                    console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
+
+                    self.totalItemsreorder = responseGetOrderManual.data.total;
+                    // closeLoading()
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                    // closeLoading()
+                }
+            },
+
+            async loadDataReview() {
+                const self = this;
+                try {
+                    // showLoading();
+
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
+                    let data = {
+
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        "search": "",
+                        "user": [],
+                        "infraction": [],
+                        "page": self.currentPagereview,
+                        "per_page": Number(this.itemsPerPagereview),
+                        "order": this.column_order_by_r,
+                        "order_by": this.order_sort_r
+                    };
+                    let responsegetClip = await services.getReview(data, self.token_header);
+                    const dataReview = responsegetClip?.data.data || [];
+                    self.dataReview = dataReview;
+                    self.totalItemsreview = responsegetClip.data.total;
+
+                    // closeLoading()
+                } catch (error) {
+                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
+                    // closeLoading()
+                }
+            },
+
+            async loadDataReviewTb2() {
+                const self = this;
+                try {
+                    // showLoading();
+                    const currentDate = new Date();
+                    const formattedDate = currentDate.toISOString().slice(0, 10)
+                    const formattedDateEnd = currentDate.toISOString().slice(0, 10)
+
+                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart}`;
+
+                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend}`;
+
+                    let data = {
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        "search": "",
+                        "by": [],
+                        "channel": [],
+                        "action": [],
+                        "page": self.currentPagereview2,
+                        "per_page": Number(this.itemsPerPagereview2),
+                        "order": this.column_order_by_r2,
+                        "order_by": this.order_sort_r2
+                    };
+                    let responsegetTb2 = await services.getReviewTb2(data, self.token_header);
+                    const dataReviewTb2 = responsegetTb2?.data.data || [];
+                    self.dataReviewTb2 = dataReviewTb2;
+
+                    self.totalItemsreview2 = responsegetTb2.data.total;
+                    // closeLoading()
+
+                } catch (error) {
+                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
+                    // closeLoading()
+                }
+            },
+
+            async loadDailySum() {
+                try {
+                    // showLoading();
+
+                    const currentDate = new Date().toISOString().slice(0, 10);
+                    const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
+
+                    let formattedDatestart = this.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+
+                    let formattedDateend = this.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let data = {
+                        "start_at": formattedDatestart,
+                        "end_at": formattedDateend
+                    };
+
+                    const responseGetDailySum = await services.getDailySum(data, this.token_header);
+                    const response = responseGetDailySum?.data || {};
+                    this.dataDailySum = response.data || {};
+
+
+                    // closeLoading()
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                    // closeLoading()
+                }
+            },
+
 
             formatDate(date) {
                 const d = new Date(date);
@@ -478,153 +661,10 @@
                 this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
             },
 
-            async loadDataProductChannel() {
-                const self = this;
-                try {
-                    showLoading();
-                    const currentDate = new Date();
-                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
+        
 
-                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+        
 
-                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
-                    let data = {
-
-                        // search: this.search,
-                        customer: this.customer || '', // Bind the search fields
-                        product: this.product || '',
-                        order_no: this.order_no || '',
-                        chanel: this.chanel || '',
-                        note: this.note || '',
-                        user: this.user || '',
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
-                        page: this.currentPagereorder,
-                        "per_page": Number(this.itemsPerPagereorder),
-                        "order": this.column_order_order,
-                        "order_by": this.order_sort_order
-                    };
-
-                    const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
-                    const response = responseGetOrderManual?.data || {};
-                    this.dataOrderManual = response.data || [];
-                    console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
-
-                    self.totalItemsreorder = responseGetOrderManual.data.total;
-                    closeLoading()
-                } catch (error) {
-                    console.warn("Error loading data:", error);
-                    closeLoading()
-                }
-            },
-
-            async loadDataReview() {
-                const self = this;
-                try {
-                    showLoading();
-
-                    const currentDate = new Date();
-                    const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
-
-                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
-
-                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
-
-                    let data = {
-
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
-                        "search": "",
-                        "user": [],
-                        "infraction": [],
-                        "page": self.currentPagereview,
-                        "per_page": Number(this.itemsPerPagereview),
-                        "order": this.column_order_by_r,
-                        "order_by": this.order_sort_r
-                    };
-                    let responsegetClip = await services.getReview(data, self.token_header);
-                    const dataReview = responsegetClip?.data.data || [];
-                    self.dataReview = dataReview;
-                    self.totalItemsreview = responsegetClip.data.total;
-
-                    closeLoading()
-                } catch (error) {
-                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                    closeLoading()
-                }
-            },
-
-            async loadDataReviewTb2() {
-                const self = this;
-                try {
-                    showLoading();
-                    const currentDate = new Date();
-                    const formattedDate = currentDate.toISOString().slice(0, 10)
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10)
-
-                    let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart}`;
-
-                    let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend}`;
-
-                    let data = {
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
-                        "search": "",
-                        "by": [],
-                        "channel": [],
-                        "action": [],
-                        "page": self.currentPagereview2,
-                        "per_page": Number(this.itemsPerPage2),
-                        "order": this.column_order_by_r2,
-                        "order_by": this.order_sort_r2
-                    };
-                    let responsegetTb2 = await services.getReviewTb2(data, self.token_header);
-                    const dataReviewTb2 = responsegetTb2?.data.data || [];
-                    self.dataReviewTb2 = dataReviewTb2;
-
-                    self.totalItemsreview2 = responsegetTb2.data.total;
-                    closeLoading()
-
-                } catch (error) {
-                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                    closeLoading()
-                }
-            },
-
-            async loadDailySum() {
-                try {
-                    showLoading();
-
-                    const currentDate = new Date().toISOString().slice(0, 10);
-                    const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
-
-                    let formattedDatestart = this.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-
-                    let formattedDateend = this.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let data = {
-                        "start_at": formattedDatestart,
-                        "end_at": formattedDateend
-                    };
-
-                    const responseGetDailySum = await services.getDailySum(data, this.token_header);
-                    const response = responseGetDailySum?.data || {};
-                    this.dataDailySum = response.data || {};
-
-
-                    closeLoading()
-                } catch (error) {
-                    console.warn("Error loading data:", error);
-                    closeLoading()
-                }
-            },
             async loadLog() {
 
             },
@@ -635,17 +675,17 @@
 
             modalEdit(data) {
                 $('#staticBackdrop').modal('show');
-                this.data_edit = { ...data };
+                this.data_edit = data ;
             },
             async editinghistory(data) {
                 $('#editinghistory').modal('show');
                 // this.data_edit = { ...data };
-                this.data_edit = { ...data };
+                this.data_edit = data || this.data_edit;
                 console.log("🚀 ~ editinghistory ~ this.data_edit:", this.data_edit)
                 try {
                     let data = {
                         "service": "sls_negative_detail",
-                        "id_ref": this.data_edit.id,
+                        "id_ref": this.data_edit.id || this.data_id,
                         "page": this.currentPagelog,
                         "per_page": Number(this.itemsPerPageLog),
                     };
