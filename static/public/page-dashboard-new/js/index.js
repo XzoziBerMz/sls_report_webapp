@@ -90,11 +90,11 @@
                     },
                     {
                         id: 2,
-                        name: "รอติดต้อเบอร์",
+                        name: "รอติดต่อเบอร์",
                     },
                     {
                         id: 3,
-                        name: "ติดต่อไม่ได้/ไม่ได้รัยสาย",
+                        name: "ติดต่อไม่ได้/ไม่ได้รับสาย",
                     },
                     {
                         id: 4,
@@ -338,7 +338,7 @@
             async loadDataClip(page = 1, per_page = 10) {
                 const self = this;
                 try {
-                    // showLoading();
+                    showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
@@ -368,17 +368,17 @@
                     self.perPage = per_page; // Update per_page value
                     self.currentPages = page; // Set the current page
 
-                    // closeLoading();
+                    closeLoading();
                 } catch (error) {
                     console.warn(`🌦️ ~ loadDataClip ~ error:`, error);
-                    // closeLoading();
+                    closeLoading();
                 }
             },
 
             async loadDataProductChannel() {
                 const self = this;
                 try {
-                    // showLoading();
+                    showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
@@ -411,17 +411,17 @@
                     console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
 
                     self.totalItemsreorder = responseGetOrderManual.data.total;
-                    // closeLoading()
+                    closeLoading()
                 } catch (error) {
                     console.warn("Error loading data:", error);
-                    // closeLoading()
+                    closeLoading()
                 }
             },
 
             async loadDataReview() {
                 const self = this;
                 try {
-                    // showLoading();
+                    showLoading();
 
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
@@ -450,17 +450,17 @@
                     self.dataReview = dataReview;
                     self.totalItemsreview = responsegetClip.data.total;
 
-                    // closeLoading()
+                    closeLoading()
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                    // closeLoading()
+                    closeLoading()
                 }
             },
 
             async loadDataReviewTb2() {
                 const self = this;
                 try {
-                    // showLoading();
+                    showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10)
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10)
@@ -488,17 +488,17 @@
                     self.dataReviewTb2 = dataReviewTb2;
 
                     self.totalItemsreview2 = responsegetTb2.data.total;
-                    // closeLoading()
+                    closeLoading()
 
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
-                    // closeLoading()
+                    closeLoading()
                 }
             },
 
             async loadDailySum() {
                 try {
-                    // showLoading();
+                    showLoading();
 
                     const currentDate = new Date().toISOString().slice(0, 10);
                     const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
@@ -516,10 +516,10 @@
                     this.dataDailySum = response.data || {};
 
 
-                    // closeLoading()
+                    closeLoading()
                 } catch (error) {
                     console.warn("Error loading data:", error);
-                    // closeLoading()
+                    closeLoading()
                 }
             },
 
