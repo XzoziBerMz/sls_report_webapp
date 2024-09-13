@@ -6,7 +6,7 @@
   function getInsertAsd(body = {}, token) {
     return axios({
       method: "post",
-      url: basepath + `/api/v1/ads/insert`,
+      url: basepath + `/api/v1/ads/cost/insert`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -14,17 +14,17 @@
     });
   }
 
-  function getProduct(token) {
-    return axios({
-      method: "get",
-      url: basepath + `/api/v1/product/list`,
-      headers: { "x-auth-token": token },
-    });
-  }
+  // function getProduct(token) {
+  //   return axios({
+  //     method: "get",
+  //     url: basepath + `/api/v1/product/list`,
+  //     headers: { "x-auth-token": token },
+  //   });
+  // }
 
   const services = {
     getInsertAsd,
-    getProduct,
+    // getProduct,
   };
   window.services = services;
 })(jQuery, window, axios);

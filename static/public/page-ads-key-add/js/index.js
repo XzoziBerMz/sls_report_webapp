@@ -6,21 +6,20 @@
             return {
                 user: window.user || "",
                 // currentPage: window.currentPage,
-                currentPage: 'product-order',
+                currentPage: 'key-ads',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
-                dataProduct: [],
+                // dataProduct: [],
                 token_header: token_header || '',
                 form: {
                     product: "",
                     shop_name: "",
-                    product_name: "",
                     add_fee: "",
                     added_income: "",
-                    name: "",
+                  
                 },
                 dataEditStars: [
                     {
@@ -108,34 +107,29 @@
                 if (!this.form.total_income) {
                     this.errors.total_income = 'กรุณากรอกรายได้รวม';
                 }
-                if (!this.form.name) {
-                    this.errors.name = 'กรุณากรอกชื่อ';
-                }
-                if (!this.form.product_name) {
-                    this.errors.product_name = 'กรุณากรอกชื่อ';
-                }
+             
 
 
                 return Object.keys(this.errors).length === 0;
             },
 
-            async loadData() {
-                const self = this;
-                showLoading();
-                try {
-                    const [responseGetProduct] = await Promise.all([
-                        services.getProduct(self.token_header)
-                    ]);
+            // async loadData() {
+            //     const self = this;
+            //     showLoading();
+            //     try {
+            //         const [responseGetProduct] = await Promise.all([
+            //             services.getProduct(self.token_header)
+            //         ]);
 
-                    const dataProduct = responseGetProduct?.data.data || [];
-                    self.dataProduct = dataProduct;
+            //         const dataProduct = responseGetProduct?.data.data || [];
+            //         self.dataProduct = dataProduct;
 
-                } catch (error) {
-                    console.warn('🌦 ~ loadData ~ error:', error);
-                } finally {
-                    closeLoading();
-                }
-            },
+            //     } catch (error) {
+            //         console.warn('🌦 ~ loadData ~ error:', error);
+            //     } finally {
+            //         closeLoading();
+            //     }
+            // },
 
             async handleSubmit(event) {
                 event.preventDefault();
@@ -144,30 +138,21 @@
                     console.error("กรุณากรอกข้อมูลให้ครบถ้วน");
                     return;
                 }
-
                 try {
-
                     let dateParts = this.form.date.split('/');
                     let formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
 
                     console.log('Form data:', this.form);
                     showLoading();
+
+                    let shopName = this.form.editstars === 'other' ? this.form.otherStars : this.form.editstars;
                     let data = {
-                        "shop_name": this.form.editstars,   
-                        "name": this.form.name,           
-                        "product": this.form.product_name,     
-                        "total_cost": parseFloat(this.form.add_fee),  
-                        "budget": parseFloat(this.form.added_income),
-                        "total_shop_income": parseFloat(this.form.total_income),  
-                        // "cost_per_purchase": 0,  
-                        // "purchase": "",         
-                        // "note": "",            
-                        // "ref_default": 1,       
-                        // "user": "username",      
-                        "date": formattedDate   
+                        "shop_name": shopName ,
+                        "ads_fee": parseFloat(this.form.add_fee),
+                        "ads_income": parseFloat(this.form.added_income), 
+                        "ads_total_income": parseFloat(this.form.total_income),
+                        "timestamp": formattedDate 
                     };
-
-
                     console.log('Data being sent:', data);
                     const response = await services.getInsertAsd(data, this.token_header);
                     const responseData = response.data || {};
@@ -180,9 +165,6 @@
                             window.location.reload();
                         }, 2000)
                     }
-
-
-
                 } catch (error) {
                     console.warn("Error loading data:", error);
                     closeLoading()
@@ -193,6 +175,19 @@
 
                 this.errors[field] = '';
             },
+            handleInputN(field) {
+               
+                let value = this.form[field];
+                
+                this.errors[field] = '';
+          
+                const regex = /^[0-9]*\.?[0-9]*%?$/;
+                
+                if (!regex.test(value)) {
+                  this.form[field] = value.slice(0, -1);
+                }
+              },
+
         },
 
 
@@ -200,7 +195,7 @@
 
         mounted: function () {
             let self = this;
-            self.loadData();
+            // self.loadData();
             self.DefaultData();
             console.log("ok");
         }

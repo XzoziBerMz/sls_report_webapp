@@ -138,7 +138,7 @@
         },
         computed: {
             totalPages() {
-                return Math.ceil(this.totalItems / this.perPage);
+                return Math.ceil(this.totalItems / this.itemsPerPageScript);
             },
             totalPagesreview() {
                 return Math.ceil(this.totalItemsreview / this.itemsPerPagereview);
@@ -196,6 +196,7 @@
                 }
                 return pages;
             },
+
             pagesLog() {
                 const pages = [];
                 const maxPages = 5;
@@ -206,6 +207,7 @@
                 }
                 return pages;
             },
+            
         },
         methods: {
             ...window.webUtils.method || {},
@@ -220,7 +222,7 @@
 
                 $('#page_size_select_review').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
-                    self.itemsPerPage = selectedValue || 10
+                    self.itemsPerPagereview = selectedValue || 10
                     await self.loadDataReview();
                 })
 
@@ -236,7 +238,7 @@
                 })
                 $('#page_size_select_order').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
-                    self.itemsPerPageorder = selectedValue || 10
+                    self.itemsPerPagereorder = selectedValue || 10
                     await self.loadDataProductChannel();
                 })
 
@@ -248,24 +250,26 @@
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {
-                            // Assign the start and end dates based on the selected date range
                             const selectedDate = selectedDates[0];
-
+                
                             // Format the date to YYYY-MM-DD in local time zone
                             const year = selectedDate.getFullYear();
-                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
                             const day = String(selectedDate.getDate()).padStart(2, '0');
-
+                
                             self.startDate = `${year}-${month}-${day}`;
                             console.log("🚀 ~ self.startDate:", self.startDate);
-                            self.startDate_status = true
-                            await self.DefaultData()
-
+                            self.startDate_status = true;
+                
+                            // Set minDate for the end date picker to prevent selecting earlier dates
+                            self.flatpickr_dp_end_date.set("minDate", self.startDate);
+                
+                            await self.DefaultData();
                         }
                     },
                 });
-
-                self.flatpickr_dp_from_date = $("#kt_td_picker_end_input").flatpickr({
+                
+                self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
                     static: true,
                     enableTime: false,
                     disableMobile: "true",
@@ -273,22 +277,22 @@
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {
-                            // Assign the start and end dates based on the selected date range
                             const selectedDate = selectedDates[0];
-
+                
                             // Format the date to YYYY-MM-DD in local time zone
                             const year = selectedDate.getFullYear();
-                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
                             const day = String(selectedDate.getDate()).padStart(2, '0');
-
+                
                             self.endDate = `${year}-${month}-${day}`;
                             console.log("🚀 ~ self.endDate:", self.endDate);
-                            self.endDate_status = true
-                            await self.DefaultData()
-
+                            self.endDate_status = true;
+                
+                            await self.DefaultData();
                         }
                     },
                 });
+                
                 const currentDate = new Date();
                 const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ');
                 self.startDate = formattedDate
@@ -474,7 +478,6 @@
                 this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
             },
 
-
             async loadDataProductChannel() {
                 const self = this;
                 try {
@@ -500,7 +503,7 @@
                         "start_at": formattedStartDate || formattedDate,
                         "end_at": formattedEndDate || formattedDate,
                         page: this.currentPagereorder,
-                        "per_page": Number(this.itemsPerPageorder),
+                        "per_page": Number(this.itemsPerPagereorder),
                         "order": this.column_order_order,
                         "order_by": this.order_sort_order
                     };
@@ -509,7 +512,6 @@
                     const response = responseGetOrderManual?.data || {};
                     this.dataOrderManual = response.data || [];
                     console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
-
 
                     self.totalItemsreorder = responseGetOrderManual.data.total;
                     closeLoading()
@@ -522,6 +524,7 @@
             async loadDataReview() {
                 const self = this;
                 try {
+                    showLoading();
 
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
@@ -541,7 +544,7 @@
                         "user": [],
                         "infraction": [],
                         "page": self.currentPagereview,
-                        "per_page": Number(this.itemsPerPage),
+                        "per_page": Number(this.itemsPerPagereview),
                         "order": this.column_order_by_r,
                         "order_by": this.order_sort_r
                     };
@@ -550,14 +553,17 @@
                     self.dataReview = dataReview;
                     self.totalItemsreview = responsegetClip.data.total;
 
+                    closeLoading()
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
+                    closeLoading()
                 }
             },
 
             async loadDataReviewTb2() {
                 const self = this;
                 try {
+                    showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10)
                     const formattedDateEnd = currentDate.toISOString().slice(0, 10)
@@ -585,9 +591,11 @@
                     self.dataReviewTb2 = dataReviewTb2;
 
                     self.totalItemsreview2 = responsegetTb2.data.total;
+                    closeLoading()
 
                 } catch (error) {
                     console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
+                    closeLoading()
                 }
             },
 

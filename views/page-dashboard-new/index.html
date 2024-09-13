@@ -43,17 +43,19 @@
                                                 alt="Admin">
                                         </div>
                                         <div class="ms-3">
-                                            <h1 class="text-center font-bold" v-if="startDate && endDate && startDate_status && endDate_status">
+                                            <h1 class="text-center font-bold"
+                                                v-if="startDate && endDate && startDate_status && endDate_status">
                                                 ADMIN: as of <span v-text="formatDate(startDate)"></span>
-                                                <span v-if="endDate && endDate_status"> to <span v-text="formatDate(endDate)"></span></span>
+                                                <span v-if="endDate && endDate_status"> to <span
+                                                        v-text="formatDate(endDate)"></span></span>
                                             </h1>
                                             <h1 class="text-center font-bold" v-else>
-                                                ADMIN: as of 
+                                                ADMIN: as of
                                                 <span v-if="startDate_status" v-text="formatDate(startDate)"></span>
                                                 <span v-else v-text="formatDate(endDate)"></span>
                                             </h1>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="mt-5">
                                         <div class="d-flex ">
@@ -209,55 +211,55 @@
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>วันที่</span>
                                                                     <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('p_date')"></i>
+                                                                        :class="getSortIconorder('p_date')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div  @click="sortTableOrder('customer_name')"
+                                                                <div @click="sortTableOrder('customer_name')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ชื่อลุกค้า</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('customer_name')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('customer_name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div  @click="sortTableOrder('product')"
+                                                                <div @click="sortTableOrder('product')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ชื่อสินค้า</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('product')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('product')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div  @click="sortTableOrder('order_no')"
+                                                                <div @click="sortTableOrder('order_no')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>หมายเลขคำสั่งซื้อ</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('order_no')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('order_no')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div  @click="sortTableOrder('chanel')"
+                                                                <div @click="sortTableOrder('chanel')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ช่องทาง</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('chanel')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('chanel')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div  @click="sortTableOrder('note')"
+                                                                <div @click="sortTableOrder('note')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>หมายเหตุ</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('note')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('note')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div  @click="sortTableOrder('user')"
+                                                                <div @click="sortTableOrder('user')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>user</span>
-                                                                   <i class="bi-chevron-down"
-                                                                    :class="getSortIconorder('user')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconorder('user')"></i>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -275,10 +277,10 @@
                                                                     v-text="item.order_no"></td>
                                                                 <td class="text-start align-middle"
                                                                     v-text="item.chanel"></td>
-                                                                <td class="text-start align-middle"
-                                                                    v-text="item.note"></td>
-                                                                <td class="text-start align-middle"
-                                                                    v-text="item.user"></td>
+                                                                <td class="text-start align-middle" v-text="item.note">
+                                                                </td>
+                                                                <td class="text-start align-middle" v-text="item.user">
+                                                                </td>
                                                             </tr>
                                                         </template>
 
@@ -288,20 +290,20 @@
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
                                                     <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                    id="page_size_select_order" name="page_size_select_order"
-                                                    data-control="select2" v-model="itemsPerPageorder">
-                                                    <option value="10" >10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
+                                                        id="page_size_select_order" name="page_size_select_order"
+                                                        data-control="select2">
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
                                                 </div>
                                                 <ul class="pagination">
                                                     <li :class="['page-item', { disabled: currentPagereorder === 1 }]"
                                                         @click="changePagereorder(currentPagereorder - 1)">
                                                         <span class="page-link"><i class="previous"></i></span>
                                                     </li>
-                                                    <li v-for="pageorder in pagesreview" :key="pageorder"
+                                                    <li v-for="pageorder in pagesorder" :key="pageorder"
                                                         :class="['page-item', { active: currentPagereorder === pageorder && pageorder !== '...' }]"
                                                         @click="changePagereorder(pageorder)">
                                                         <span class="page-link" v-if="pageorder !== '...'"
@@ -474,7 +476,7 @@
                                             <div>
                                                 <select class="form-select w-80px h-35px" data-hide-search="true"
                                                     id="page_size_select_review" name="page_size_select_review"
-                                                    data-control="select2" v-model="itemsPerPage">
+                                                    data-control="select2">
                                                     <option value="10" selected>10</option>
                                                     <option value="20">20</option>
                                                     <option value="50">50</option>

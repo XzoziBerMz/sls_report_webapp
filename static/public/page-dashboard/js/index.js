@@ -12,6 +12,7 @@
                datas:[],
                inventoryDetail:[],
                search:"",
+               serach_value:"",
                filtered:[],
 
                                   
