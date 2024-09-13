@@ -151,22 +151,50 @@
                                                                     <i class="bi-chevron-down"></i>
                                                                 </div>
                                                             </th>
+                                                            <th class="min-w-100px align-middle tetx-center">
+                                                                <span>แก้ไข</span>
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="fs-6">
-                                                        <template v-for="item in 10">
+                                                        <template v-for="item in data_ads">
                                                             <tr>
-                                                                <td class="align-middle min-w-100px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <span v-text="utilsConvDate(item.date)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-200px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-100px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-100px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-100px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-100px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-150px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-200px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-50px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
-                                                                <td class="align-middle min-w-150px text-break">TigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTigerTiger</td>
+                                                                <td class="align-middle min-w-200px text-break">
+                                                                    <span v-text="item.name"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <span v-text="item.product"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <span v-text="item.status"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <span v-text="item.total_cost"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <span v-text="item.budget"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-150px text-break">
+                                                                    <span v-text="item.total_shop_income"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-200px text-break">
+                                                                    <span v-text="item.cost_per_purchase"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-50px text-break">
+                                                                    <span v-text="item.purchase"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-150px text-break">
+                                                                    <span v-text="item.note"></span>
+                                                                </td>
+                                                                <td class="align-middle min-w-100px text-break">
+                                                                    <div>
+                                                                        <button class="btn btn-primary"
+                                                                            @click="editAds(item)">แก้ไข</button>
+                                                                    </div>
+                                                                </td>
                                                             </tr>
                                                         </template>
                                                     </tbody>
@@ -174,7 +202,9 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
-                                                    <select class="form-select w-80px h-35px" data-control="select2">
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        data-control="select2" id="page_size_select"
+                                                        name="page_size_select">
                                                         <option></option>
                                                         <option value="10" selected>10</option>
                                                         <option value="20">20</option>
@@ -183,17 +213,20 @@
                                                     </select>
                                                 </div>
                                                 <ul class="pagination">
-                                                    <li class="page-item previous disabled"><a href="#"
-                                                            class="page-link"><i class="previous"></i></a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                                    <li class="page-item active"><a href="#" class="page-link">2</a>
+                                                    <li :class="['page-item', { disabled: currentPages === 1 }]"
+                                                        @click="changePage(currentPages - 1)">
+                                                        <p class="page-link"><i class="previous"></i></p>
                                                     </li>
-                                                    <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">...</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                                    <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                                    <li class="page-item next"><a href="#" class="page-link"><i
-                                                                class="next"></i></a></li>
+                                                    <li v-for="page in pages" :key="page"
+                                                        :class="['page-item', { active: currentPages === page && page !== '...' }]"
+                                                        @click="changePage(page)">
+                                                        <p class="page-link" v-if="page !== '...'" v-text="page"></p>
+                                                        <span v-if="page === '...'">...</span>
+                                                    </li>
+                                                    <li :class="['page-item', { disabled: currentPages === totalPages }]"
+                                                        @click="changePage(currentPages + 1)">
+                                                        <p class="page-link"><i class="next"></i></p>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -251,14 +284,26 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="fs-6">
-                                                    <template v-for="item in 5">
+                                                    <template v-for="item in data_ads_cost">
                                                         <tr>
-                                                            <td class="align-middle min-w-100px text-break">Tiger Nixon</td>
-                                                            <td class="align-middle min-w-200px text-break">System Architect</td>
-                                                            <td class="align-middle min-w-100px text-break">Edinburgh</td>
-                                                            <td class="align-middle min-w-100px text-break">61</td>
-                                                            <td class="align-middle min-w-100px text-break">2011/04/25</td>
-                                                            <td class="align-middle min-w-100px text-break">$320,800</td>
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <span v-text="utilsConvDate(item.p_timestamp)"></span>
+                                                            </td>
+                                                            <td class="align-middle min-w-200px text-break">
+                                                                <span v-text="item.shop_name"></span>
+                                                            </td>
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <span v-text="item.ads_fee"></span>
+                                                            </td>
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <span v-text="item.ads_income"></span>
+                                                            </td>
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <span v-text="item.ads_total_income"></span>
+                                                            </td>
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <span></span>
+                                                            </td>
                                                         </tr>
                                                     </template>
                                                 </tbody>
@@ -266,9 +311,12 @@
                                                     <tr>
                                                         <td class="align-middle min-w-100px text-break"></td>
                                                         <td class="align-middle min-w-200px text-break"></td>
-                                                        <td class="align-middle min-w-100px text-break"></td>
-                                                        <td class="align-middle min-w-100px text-break">61</td>
-                                                        <td class="align-middle min-w-100px text-break"></td>
+                                                        <td class="align-middle min-w-100px text-break" v-text="AdsFee">
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break"
+                                                            v-text="AdsIncome"></td>
+                                                        <td class="align-middle min-w-100px text-break"
+                                                            v-text="totalAdsIncome"></td>
                                                         <td class="align-middle min-w-100px text-break"></td>
                                                     </tr>
                                                 </tfoot>
@@ -276,7 +324,9 @@
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div>
-                                                <select class="form-select w-80px h-35px" data-control="select2">
+                                                <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                    data-control="select2" id="page_size_cost_select"
+                                                    name="page_size_cost_select">
                                                     <option></option>
                                                     <option value="10" selected>10</option>
                                                     <option value="20">20</option>
@@ -285,16 +335,21 @@
                                                 </select>
                                             </div>
                                             <ul class="pagination">
-                                                <li class="page-item previous disabled"><a href="#" class="page-link"><i
-                                                            class="previous"></i></a></li>
-                                                <li class="page-item "><a href="#" class="page-link">1</a></li>
-                                                <li class="page-item active"><a href="#" class="page-link">2</a></li>
-                                                <li class="page-item "><a href="#" class="page-link">3</a></li>
-                                                <li class="page-item "><a href="#" class="page-link">...</a></li>
-                                                <li class="page-item "><a href="#" class="page-link">5</a></li>
-                                                <li class="page-item "><a href="#" class="page-link">6</a></li>
-                                                <li class="page-item next"><a href="#" class="page-link"><i
-                                                            class="next"></i></a></li>
+                                                <li :class="['page-item', { disabled: currentCostPages === 1 }]"
+                                                    @click="changeCostPage(currentCostPages - 1)">
+                                                    <p class="page-link"><i class="previous"></i></p>
+                                                </li>
+                                                <li v-for="page_cost in pagesCost" :key="page_cost"
+                                                    :class="['page-item', { active: currentCostPages === page_cost && page_cost !== '...' }]"
+                                                    @click="changeCostPage(page_cost)">
+                                                    <p class="page-link" v-if="page_cost !== '...'" v-text="page_cost">
+                                                    </p>
+                                                    <span v-if="page_cost === '...'">...</span>
+                                                </li>
+                                                <li :class="['page-item', { disabled: currentCostPages === totalPages }]"
+                                                    @click="changeCostPage(currentCostPages + 1)">
+                                                    <p class="page-link"><i class="next"></i></p>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -341,9 +396,12 @@
                                                 <tbody class="fs-6">
                                                     <template v-for="item in 10">
                                                         <tr>
-                                                            <td class="align-middle min-w-100px text-break">Tiger Nixon</td>
-                                                            <td class="align-middle min-w-200px text-break">System Architect</td>
-                                                            <td class="align-middle min-w-100px text-break">Edinburgh</td>
+                                                            <td class="align-middle min-w-100px text-break">Tiger Nixon
+                                                            </td>
+                                                            <td class="align-middle min-w-200px text-break">System
+                                                                Architect</td>
+                                                            <td class="align-middle min-w-100px text-break">Edinburgh
+                                                            </td>
                                                             <td class="align-middle min-w-100px text-break">61</td>
                                                         </tr>
                                                     </template>
@@ -471,7 +529,8 @@
                                                 <template v-for="item in 10">
                                                     <tr>
                                                         <td class="align-middle min-w-100px text-break">Tiger Nixon</td>
-                                                        <td class="align-middle min-w-200px text-break">System Architect</td>
+                                                        <td class="align-middle min-w-200px text-break">System Architect
+                                                        </td>
                                                         <td class="align-middle min-w-100px text-break">Edinburgh</td>
                                                         <td class="align-middle min-w-100px text-break">61</td>
                                                         <td class="align-middle min-w-100px text-break">2011/04/25</td>
@@ -512,12 +571,112 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" tabindex="-1" id="kt_modal_1">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Modal title</h3>
+
+                                <!--begin::Close-->
+                                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                            class="path2"></span></i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row row-cols-2 g-5">
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">วันที่</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">ชื่อ ADS</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">สินค้า</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">สถานะ</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">ค่าใช้จ่ายทั้งหมด</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">งบประมาณ</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">รายได้รวม(ร้านค้า)</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">ต้นทุนต่อการซื้อ(ร้านค้า)</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">#</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="">
+                                            <label for="" class="required form-label">โน๊ต</label>
+                                            <input type="email" class="form-control form-control-solid" placeholder=""
+                                                v-model="dataEddit" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
+                                <button type="button" class="btn btn-primary">บันทึก</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 </body>
 <script>
     window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
 <script src="/page-ads/js/services.js" type="module"> </script>

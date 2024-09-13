@@ -1,11 +1,12 @@
 (function ($, window, Vue, axios) {
     'use strict';
 
-
+    const token_header = getCookie('token');
 
     const app = Vue.createApp({
         data: function () {
             return {
+                ...window.webUtils.data || {},
                 user: window.user || "",
                 // currentPage: window.currentPage,
                 authstatus: window.authstatus,
@@ -14,35 +15,152 @@
                 search: "",
                 filtered: [],
                 currentDate: '',
-                currentPage: 'ads'
+                currentPage: 'ads',
+                token_header: token_header || '',
+                data_ads: [],
+                data_ads_cost: [],
+                dataEddit: {},
 
+                currentPages: 1,
+                itemsPerPage: 10,
+                totalItems: 0,
 
+                currentCostPages: 1,
+                itemsCostPerPage: 10,
+                totalCostItems: 0,
             }
         },
         computed: {
+            totalPages() {
+                return Math.ceil(this.totalItems / this.itemsPerPage);
+            },
+            totalCostPages() {
+                return Math.ceil(this.totalCostItems / this.itemsCostPerPage);
+            },
+            pages() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentPages - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
 
+                return pages;
+            },
+            pagesCost() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentCostPages - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
 
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+
+                return pages;
+            },
+            AdsFee() {
+                return this.data_ads_cost.reduce((sum, item) => sum + parseFloat(item.ads_fee || 0), 0);
+            },
+            AdsIncome() {
+                return this.data_ads_cost.reduce((sum, item) => sum + parseFloat(item.ads_income || 0), 0);
+            },
+            totalAdsIncome() {
+                return this.data_ads_cost.reduce((sum, item) => sum + parseFloat(item.ads_total_income || 0), 0);
+            },
 
         },
         methods: {
+            ...window.webUtils.method || {},
             async init() {
                 let self = this
 
+                try {
+                    await self.getAds();
+                    await self.getAdsCost();
+                } catch (error) {
+                    console.log("🚀 ~ init ~ error:", error)
+                } finally {
+                    $('#page_size_select').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsPerPage = selectedValue || 10
+                        await self.getAds();
+                    })
+                    $('#page_size_cost_select').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsCostPerPage = selectedValue || 10
+                        await self.getAdsCost();
+                    })
+                }
             },
 
             formatDate(date) {
                 const options = { day: '2-digit', month: 'short', year: 'numeric' };
                 return date.toLocaleDateString('en-US', options);
             },
-
-            getPokemon: async function () {
+            changePage(page) {
+                if (page < 1 || page > this.totalPages) return;
+                this.currentPages = page;
+                this.getAds();
+            },
+            changeCostPage(page) {
+                if (page < 1 || page > this.totalCostPages) return;
+                this.currentCostPages = page;
+                this.getAdsCost();
+            },
+            editAds(data) {
+                const self = this;
+                $('#kt_modal_1').modal('show');
+                self.dataEddit = data || [];
+            },
+            getAds: async function () {
                 const self = this;
                 try {
                     showLoading();
-                    const response = await services.getPokemon({})
-                    if (response) {
-                        console.log(response)
+                    let data = {
+                        "search": "",
+                        // "ref_default": 1,
+                        "page": self.currentPages,
+                        "per_page": parseInt(self.itemsPerPage) || 10,
+                        "order": "date",
+                        "order_by": "desc"
+                    }
+                    const response = await services.getAdsApi(data, self.token_header)
+                    if (response.data.code === 200) {
+                        self.data_ads = response.data.data || [];
+                        self.totalItems = response.data.total;
+                        console.log(response.data.data)
+                        closeLoading();
+
+                    }
+
+                } catch (err) {
+                    closeLoading();
+                    Msg("errorMsg", 'error');
+
+                } finally {
+
+                }
+            },
+            getAdsCost: async function () {
+                const self = this;
+                try {
+                    showLoading();
+                    let data = {
+                        "search": "",
+                        // "ref_default": 1,
+                        "page": self.currentCostPages,
+                        "per_page": parseInt(self.itemsCostPerPage) || 10,
+                        "order": "shop_name",
+                        "order_by": "desc"
+                    }
+                    const response = await services.getAdsCost(data, self.token_header)
+                    if (response.data.code === 200) {
+                        self.data_ads_cost = response.data.data || [];
+                        self.totalCostItems = response.data.total;
+                        console.log(response.data.data)
                         closeLoading();
 
                     }
@@ -58,10 +176,11 @@
 
         },
 
-        mounted: function () {
+        mounted:async function () {
             let self = this
             this.currentDate = this.formatDate(new Date());
             //    self.getPokemon()
+            await self.init()
             console.log("ok")
         }
 

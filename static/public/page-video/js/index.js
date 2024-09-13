@@ -106,7 +106,7 @@
 
                     $('#page_size_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
-                        self.itemsPerP1age = selectedValue || 10
+                        self.itemsPerPage = selectedValue || 10
                         await self.loadDataOrder();
                     })
                 } catch (error) {
