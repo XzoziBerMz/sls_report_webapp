@@ -95,7 +95,7 @@
                     })
                 }
             },
-
+            
             formatDate(date) {
                 const options = { day: '2-digit', month: 'short', year: 'numeric' };
                 return date.toLocaleDateString('en-US', options);
@@ -113,7 +113,38 @@
             editAds(data) {
                 const self = this;
                 $('#kt_modal_1').modal('show');
-                self.dataEddit = data || [];
+                self.dataEddit = { ...data} || [];
+                $('#status-select').val(self.dataEddit.status).trigger('change')
+                self.date_time = $("#kt_datepicker_1").flatpickr({
+                    dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
+                    onChange: function (selectedDates, dateStr, instance) {
+                        self.dataEddit.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                    },
+                });
+                self.date_time.setDate(self.dataEddit.date);
+            },
+            async updateData() {
+                const self = this;
+              
+                try {
+                    showLoading();
+                    let data = self.dataEddit
+                    data.budget = parseFloat(data.budget);
+                    data.cost_per_purchase = parseFloat(data.cost_per_purchase);
+                    data.total_shop_income = parseFloat(data.total_shop_income);
+                    data.total_cost = parseFloat(data.total_cost);
+                    const response = await services.updateData(data, self.token_header);
+
+                    if (response.data.code === 200) {
+                        await self.getAds();
+                        $('#kt_modal_1').modal('hide');
+                    }
+                } catch (error) {
+                    closeLoading();
+                    console.log("🚀 ~ updateData ~ error:", error)
+                }
             },
             getAds: async function () {
                 const self = this;
@@ -175,8 +206,41 @@
             }
 
         },
-
-        mounted:async function () {
+        watch: {
+            "dataEddit.total_cost"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.dataEddit.total_cost = formattedValue;
+            },
+            "dataEddit.budget"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.dataEddit.budget = formattedValue;
+            },
+            "dataEddit.total_shop_income"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.dataEddit.total_shop_income = formattedValue;
+            },
+            "dataEddit.cost_per_purchase"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.dataEddit.cost_per_purchase = formattedValue;
+            },
+        },
+        mounted: async function () {
             let self = this
             this.currentDate = this.formatDate(new Date());
             //    self.getPokemon()

@@ -169,7 +169,8 @@
                                                                     <span v-text="item.product"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
-                                                                    <span v-text="item.status"></span>
+                                                                    <span v-if="item.status === 'active'" v-text="'เปิดการใช้งาน'"></span>
+                                                                    <span v-else v-text="'ปิดการใช้งาน'"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
                                                                     <span v-text="item.total_cost"></span>
@@ -572,11 +573,11 @@
                     </div>
                 </div>
 
-                <div class="modal fade" tabindex="-1" id="kt_modal_1">
+                <div class="modal fade" tabindex="-1" id="kt_modal_1" data-bs-focus="false">
                     <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title">Modal title</h3>
+                                <h3 class="modal-title">แก้ไข ข้อมูล</h3>
 
                                 <!--begin::Close-->
                                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
@@ -592,71 +593,75 @@
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">วันที่</label>
-                                            <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                            <input class="form-control form-control-solid" placeholder="Pick a date"
+                                                id="kt_datepicker_1" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">ชื่อ ADS</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.name" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">สินค้า</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.product" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">สถานะ</label>
-                                            <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                            <select class="form-select form-select-solid" data-hide-search="true" id="status-select"
+                                                data-control="select2" data-dropdown-parent="#kt_modal_1"
+                                                data-placeholder="Select an option" v-model="dataEddit.status">
+                                                <option value="active">เปิดการใช้งาน</option>
+                                                <option value="inactive">ปิดการใช้งาน</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">ค่าใช้จ่ายทั้งหมด</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.total_cost" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">งบประมาณ</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.budget" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">รายได้รวม(ร้านค้า)</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.total_shop_income" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">ต้นทุนต่อการซื้อ(ร้านค้า)</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.cost_per_purchase" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">#</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.purchase" />
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="">
                                             <label for="" class="required form-label">โน๊ต</label>
                                             <input type="email" class="form-control form-control-solid" placeholder=""
-                                                v-model="dataEddit" />
+                                                v-model="dataEddit.note" />
                                         </div>
                                     </div>
                                 </div>
@@ -664,7 +669,7 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">ปิด</button>
-                                <button type="button" class="btn btn-primary">บันทึก</button>
+                                <button type="button" class="btn btn-primary" @click="updateData">บันทึก</button>
                             </div>
                         </div>
                     </div>
