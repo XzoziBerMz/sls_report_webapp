@@ -96,13 +96,13 @@
     border-top: 1px solid #F3F3F3 !important; /* Adjust color and thickness as needed */
 }
 
-.form-control {
+/* .form-control {
     border-top: none; /* ซ่อนเส้นขอบด้านบน */
     border-left: none; /* ซ่อนเส้นขอบด้านซ้าย */
     border-right: none; /* ซ่อนเส้นขอบด้านขวา */
     border-bottom: 1px solid #ced4da; /* แสดงเส้นขอบด้านล่าง */
     border-radius: 0; /* ทำให้มุมของเส้นขอบเป็นมุมตรง */
-}
+} */
 
 .pointer { 
     cursor: pointer;

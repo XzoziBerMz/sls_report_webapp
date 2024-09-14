@@ -39,7 +39,20 @@
                     pages.push(page);
                 }
                 return pages;
-            }
+            },
+
+            AdsFee() {
+                return this.dataDataAdd.reduce((sum, item) => sum + parseFloat(item.ads_fee || 0), 0);
+            },
+
+            AdsIncome() {
+                return this.dataDataAdd.reduce((sum, item) => sum + parseFloat(item.ads_income || 0), 0);
+            },
+            totalAdsIncome() {
+                return this.dataDataAdd.reduce((sum, item) => sum + parseFloat(item.ads_total_income || 0), 0);
+            },
+
+
         },
         methods: {
             ...window.webUtils.method || {},
@@ -52,11 +65,73 @@
                     await self.loadDataAdd();
                 })
 
+                self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.startDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.startDate:", self.startDate);
+                            self.startDate_status = true;
+
+                            // Set minDate for the end date picker to prevent selecting earlier dates
+                            self.flatpickr_dp_end_date.set("minDate", self.startDate);
+
+                            await self.loadDataAdd();
+                        }
+                    },
+                });
+
+                self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.endDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.endDate:", self.endDate);
+                            self.endDate_status = true;
+
+                            await self.loadDataAdd();
+                        }
+                    },
+                });
+
             },
             changePage(page) {
                 if (page < 1 || page > this.totalPages) return;
                 this.currentPages = page;
                 this.loadDataAdd();
+            },
+            formatPercentage(addFee, totalIncome) {
+                if (addFee == null || totalIncome == null || isNaN(addFee) || isNaN(totalIncome) || totalIncome === 0) {
+                    return '0.00%';
+                }
+                const percentage = (addFee / totalIncome) * 100;
+                // ตรวจสอบอีกครั้งหลังจากคำนวณ
+                if (isNaN(percentage) || !isFinite(percentage)) {
+                    return '0.00%';
+                }
+                return `${percentage.toFixed(2)}%`;
             },
             async sortTable(column) {
                 if (this.column_order_by === column) {
@@ -95,6 +170,8 @@
                 try {
                     showLoading();
                     let data = {
+                        "start_at": self.startDate,
+                        "end_at": self.endDate,
                         "search": self.serach_value,
                         "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage || 10),
@@ -112,6 +189,8 @@
                     closeLoading()
                 }
             },
+
+
 
 
 

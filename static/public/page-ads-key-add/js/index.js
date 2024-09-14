@@ -291,6 +291,28 @@
                 this.errors[index][field] = null;
 
             },
+            // restrictToNumbers(index, field) {
+            //     // อนุญาตให้กรอกตัวเลขและจุดทศนิยม โดยจะยอมให้มีเพียงจุดเดียว
+            //     this.dataEditStars[index][field] = this.dataEditStars[index][field].replace(/[^0-9.]/g, '');
+            
+            //     // แบ่งข้อมูลตามจุดทศนิยม
+            //     let parts = this.dataEditStars[index][field].split('.');
+                
+            //     // จัดรูปแบบส่วนที่เป็นจำนวนเต็มให้มีคอมม่า (1,000,000)
+            //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            //     // ถ้ามีจุดทศนิยม ให้จำกัดตัวเลขหลังจุดทศนิยมไม่เกิน 2 ตำแหน่ง
+            //     if (parts.length > 1) {
+            //         parts[1] = parts[1].substring(0, 2); // จำกัดให้มีทศนิยม 2 ตำแหน่ง
+            //     }
+            
+            //     // รวมส่วนจำนวนเต็มกับทศนิยมกลับเข้าไป
+            //     this.dataEditStars[index][field] = parts.join('.');
+            
+            //     // เรียกใช้ฟังก์ชัน validateFields
+            //     this.validateFields();
+            // },
+            
 
             handleInput(index, field) {
                 if (this.errors[index]) {

@@ -40,16 +40,54 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <h1 class="fs-1 fw-bolder">Details ADS</h1>
                                 <div class="card p-10 mt-3 w-100">
+
                                     <div class="d-flex justify-content-end">
-                                        <div class="position-relative">
-                                            <input type="hidden" />
-                                            <div class="input-container">
-                                                <input type="text" class="form-control form-control-lg" v-model="serach_value"
-                                                    placeholder="ค้นหา.." @blur="handleBlur()"/>
-                                                <i class="bi bi-search"></i>
+                                        <div class="d-flex ">
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                            <!-- End Date Picker -->
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_end" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="">
+                                            <div class="position-relative">
+                                                <input type="hidden" />
+                                                <div class="input-container">
+                                                    <input type="text" class="form-control form-control-lg" v-model="serach_value"
+                                                        placeholder="ค้นหา.." @blur="handleBlur()"/>
+                                                    <i class="bi bi-search"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                               
+                                    
                                     <div class="row gap-5 px-3 mt-5">
                                         <div class="card p-5 ">
                                             <div class="table-responsive border rounded-4">
@@ -119,20 +157,22 @@
                                                                     v-text="item.ads_income"></td>
                                                                 <td class="align-middle min-w-100px text-break"
                                                                     v-text="item.ads_total_income"></td>
-                                                                <td class="align-middle min-w-100px text-break"></td>
+                                                                <td class="align-middle min-w-100px text-break"  v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'">
+                                                                    
+                                                                </td>
                                                             </tr>
                                                         </template>
                                                     </tbody>
-                                                    <!-- <tfoot class="border-top border-1 fs-6">
+                                                    <tfoot class="border-top border-1 fs-6">
                                                         <tr>
                                                             <td class="align-middle min-w-100px text-break"></td>
                                                             <td class="align-middle min-w-200px text-break"></td>
-                                                            <td class="align-middle min-w-100px text-break"></td>
-                                                            <td class="align-middle min-w-100px text-break">61</td>
-                                                            <td class="align-middle min-w-100px text-break"></td>
-                                                            <td class="align-middle min-w-100px text-break"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="AdsFee"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="AdsIncome"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="totalAdsIncome"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"></td>
                                                         </tr>
-                                                    </tfoot> -->
+                                                    </tfoot>
                                                 </table>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
