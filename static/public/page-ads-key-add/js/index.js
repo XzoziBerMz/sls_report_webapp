@@ -117,6 +117,15 @@
             async init() {
                 let self = this;
             },
+
+            formatNumber(number) {
+                if (typeof number === 'number') {
+                    return number.toLocaleString(); // Format number with commas
+                }
+                return number; // Return as is if not a number
+            },
+            
+            
             formatPercentage(addFee, totalIncome) {
                 if (addFee == null || totalIncome == null || isNaN(addFee) || isNaN(totalIncome) || totalIncome === 0) {
                     return '0.00%';
@@ -157,6 +166,7 @@
                     console.log("🚀 ~ DefaultData ~ error:", error)
                 }
             },
+            
 
             addAds() {
                 const self = this;

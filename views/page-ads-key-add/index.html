@@ -126,9 +126,9 @@
                                                 <tr class="fs-6 ">
                                                     <th></th>
                                                     <th></th>
-                                                    <th class="text-end" v-text="AddFee"></th>
-                                                    <th class="text-end" v-text="AddIncome"></th>
-                                                    <th class="text-end" v-text="AddTotal"></th>
+                                                    <th class="text-end" v-text="formatNumber(AddFee)"></th>
+                                                    <th class="text-end" v-text="formatNumber(AddIncome)"></th>
+                                                    <th class="text-end" v-text="formatNumber(AddTotal)"></th>
                                                     <th class="text-end"
                                                         v-text="formatPercentage(AddFee, AddTotal) || '0.00%'"></th>
                                                 </tr>
@@ -138,7 +138,7 @@
                                                     <th class="text-end">ค่าแอด</th>
                                                     <th class="text-end">รายได้แอด</th>
                                                     <th class="text-end">รายได้รวม</th>
-                                                    <th class="text-end">0.00%</th>
+                                                    <th class="text-end">เปอร์เซ็นต์</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fs-6">
