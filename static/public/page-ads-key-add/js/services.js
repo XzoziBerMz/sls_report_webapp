@@ -6,7 +6,17 @@
   function getInsertAsd(body = {}, token) {
     return axios({
       method: "post",
-      url: basepath + `/api/v1/ads/cost/insert`,
+      url: basepath + `/api/v1/ads/cost/multiple/insert`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      data: { ...body },
+      headers: { "x-auth-token": token },
+    });
+  }
+  function getShop(body = {}, token) {
+    return axios({
+      method: "post",
+      url: basepath + `/api/v1/shop/list`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },
@@ -25,6 +35,7 @@
   const services = {
     getInsertAsd,
     // getProduct,
+    getShop,
   };
   window.services = services;
 })(jQuery, window, axios);

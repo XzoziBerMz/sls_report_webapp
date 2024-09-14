@@ -80,3 +80,10 @@
     width: 94%;
 }
 
+.z-index-101 {
+    z-index: 101 !important;
+}
+
+.pointer {
+    cursor: pointer;
+}

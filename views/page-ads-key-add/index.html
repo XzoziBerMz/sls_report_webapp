@@ -38,103 +38,188 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
-                                <h1 class="fs-1 fw-bolder">งบ ADS</h1>
-                                <div class="card p-10 mt-3 w-100">
-                                    <form id="kt_docs_formvalidation_text" class="form" @submit="handleSubmit"
-                                        autocomplete="off">
-                                        <div class="row mt-5">
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="fw-semibold required fs-4 mb-2">วันที่</label>
-                                                    <div class="input-group w-100" id="kt_td_picker_simple"
-                                                        data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                        <input id="kt_td_picker_basic_input" type="text"
-                                                            class="form-control" v-model="form.date"
-                                                            @input="handleInput('date')" />
-                                                        <span class="input-group-text"
-                                                            data-td-target="#kt_td_picker_basic"
-                                                            data-td-toggle="datetimepicker"><i
-                                                                class="ki-duotone ki-calendar fs-2"><span
-                                                                    class="path1"></span><span
-                                                                    class="path2"></span></i></span>
-                                                    </div>
-                                                    <span v-text="errors.date" class="text-danger"></span>
+
+
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h1 class="fs-1 fw-bolder">งบ ADS</h1>
+                                    </div>
+                                </div>
+                                <!-- <div class="col">
+
+                                            <div class="card p-10 mt-3 ">
+                                                <div>
+                                                    <h1 v-text="item.shop_name"></h1>
                                                 </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="fv-row mb-10">
-                                                    <div class="row gap-3">
-                                                        <label class="required fw-semibold fs-4 mb-2">ร้าน</label>
-                                                        <template v-for="(item, index) in dataEditStars" :key="index">
-                                                            <div class="col-1">
-                                                                <label class="form-check form-check-custom form-check-solid w-175px">
-                                                                    <input class="form-check-input" type="radio"
-                                                                        v-model="form.editstars" :value="item.name"
-                                                                        name="radio_input1S"
-                                                                        @change="handleInput('editstars')" />
-                                                                    <span class="form-check-label text-dark"
-                                                                        v-text="item.name"></span>
-                                                                </label>
+                                                <div class="row mt-5">
+                                                    <div class="col-6">
+                                                        <div class="fv-row mb-10">
+                                                            <label class="fw-semibold required fs-4 mb-2">วันที่</label>
+                                                            <div class="input-group w-100" id="kt_td_picker_simple"
+                                                                data-td-target-input="nearest"
+                                                                data-td-target-toggle="nearest">
+                                                                <input :id="'kt_td_picker_basic_input'+index"
+                                                                    type="text" class="form-control" v-model="item.timestamp"
+                                                                    @input="handleInput(index, 'timestamp')" />
+                                                                <span class="input-group-text"
+                                                                    data-td-target="#kt_td_picker_basic"
+                                                                    data-td-toggle="datetimepicker"><i
+                                                                        class="ki-duotone ki-calendar fs-2"><span
+                                                                            class="path1"></span><span
+                                                                            class="path2"></span></i></span>
                                                             </div>
-                                                        </template>
-                                                        <!-- เพิ่มตัวเลือก "อื่นๆ" -->
-                                                        <div class="col-1">
-                                                            <label class="form-check form-check-custom form-check-solid w-175px">
-                                                                <input class="form-check-input" type="radio"
-                                                                    v-model="form.editstars" value="other"
-                                                                    name="radio_input1S"
-                                                                    @change="handleInput('editstars')" />
-                                                                <span class="form-check-label text-dark">อื่นๆ</span>
-                                                            </label>
+                                                            <span v-if="errors[index] && errors[index].date"
+                                                                v-text="errors[index].date" class="text-danger"></span>
                                                         </div>
                                                     </div>
-                                                    <!-- แสดงช่อง input text เมื่อเลือก "อื่นๆ" -->
-                                                    <div v-if="form.editstars === 'other'" class="mt-5 d-flex justify-content-end">
-                                                        <input type="text" v-model="form.otherStars" class="form-control w-25"
-                                                            placeholder="กรุณาระบุร้านเพิ่มเติม" />
+
+                                                    <div class="col-6">
+                                                        <div class="fv-row mb-10">
+                                                            <label class="required fw-semibold fs-4 mb-2">ค่าแอด</label>
+                                                            <input type="text" :name="'add_fee'+index" :id="'add_fee'+index"
+                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
+                                                                v-model="item.add_fee"
+                                                                @input="handleInputN(index, 'add_fee')" />
+                                                            <span v-if="errors[index] && errors[index].add_fee"
+                                                                v-text="errors[index].add_fee"
+                                                                class="text-danger"></span>
+                                                        </div>
                                                     </div>
-                                                    <span v-text="errors.editstars" class="text-danger"></span>
+                                                    <div class="col-6">
+                                                        <div class="fv-row mb-10">
+                                                            <label
+                                                                class="required fw-semibold fs-4 mb-2">รายได้แอด</label>
+                                                            <input type="text" :name="'added_income'+index" :id="'added_income'+index"
+                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
+                                                                v-model="item.added_income"
+                                                                @input="handleInputN(index,'added_income')" />
+                                                            <span v-if="errors[index] && errors[index].added_income"
+                                                                v-text="errors[index].added_income"
+                                                                class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="fv-row mb-10">
+                                                            <label
+                                                                class="required fw-semibold fs-4 mb-2">รายได้รวม</label>
+                                                            <input type="text" :name="'total_income'+index" :id="'total_income'+index"
+                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
+                                                                v-model="item.total_income"
+                                                                @input="handleInputN(index,'total_income')" />
+                                                            <span v-if="errors[index] && errors[index].added_income"
+                                                                v-text="errors[index].added_income"
+                                                                class="text-danger"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="required fw-semibold fs-4 mb-2">ค่าแอด</label>
-                                                    <input type="text" name="add_fee"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.add_fee" @input="handleInputN('add_fee')" />
-                                                    <span v-text="errors.add_fee" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="required fw-semibold fs-4 mb-2">รายได้แอด</label>
-                                                    <input type="text" name="added_income"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.added_income"
-                                                        @input="handleInputN('added_income')" />
-                                                    <span v-text="errors.added_income" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="fv-row mb-10">
-                                                    <label class="required fw-semibold fs-4 mb-2">รายได้รวม</label>
-                                                    <input type="text" name="total_income"
-                                                        class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                        v-model="form.total_income"
-                                                        @input="handleInputN('total_income')" />
-                                                    <span v-text="errors.total_income" class="text-danger"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center">
-                                            <button id="kt_docs_formvalidation_text_submit" type="submit"
-                                                class="btn btn-primary w-25">
-                                                <span class="indicator-label">บันทึก</span>
-                                            </button>
-                                        </div>
-                                    </form>
+                                        </div> -->
+
+                                <div class="card p-10 pt-5">
+                                    <div class="d-flex justify-content-end align-items-center mt-5">
+                                        <button type="button" @click="addAds" class="btn btn-primary w-150px">เพิ่ม
+                                            ADS</button>
+                                    </div>
+                                    <div class="table-responsive border rounded-4 mt-5">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fs-6 ">
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th class="text-end" v-text="AddFee"></th>
+                                                    <th class="text-end" v-text="AddIncome"></th>
+                                                    <th class="text-end" v-text="AddTotal"></th>
+                                                    <th class="text-end"
+                                                        v-text="formatPercentage(AddFee, AddTotal) || '0.00%'"></th>
+                                                </tr>
+                                                <tr class="fw-bold fs-4 ">
+                                                    <th>วันที่</th>
+                                                    <th>ร้าน</th>
+                                                    <th class="text-end">ค่าแอด</th>
+                                                    <th class="text-end">รายได้แอด</th>
+                                                    <th class="text-end">รายได้รวม</th>
+                                                    <th class="text-end">0.00%</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <template v-for="(item, index) in dataEditStars" :key="index">
+                                                    <tr>
+                                                        <td class="align-middle">
+                                                            <span v-text="dateDefault"></span>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <span v-if="!item.new_data" v-text="item.shop_name"></span>
+                                                            <div v-else>
+                                                                <select class="form-select " data-control="select2"
+                                                                    :id="'select_channel_'+index"
+                                                                    :name="'select_channel_'+index"
+                                                                    data-placeholder="Select an Channel">
+                                                                    <option></option>
+                                                                </select>
+                                                                <span v-if="errors[index] && errors[index].shop_name"
+                                                                    v-text="errors[index].shop_name"
+                                                                    class="text-danger"></span>
+                                                            </div>
+                                                            <!-- <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.shop_name}"
+                                                                    v-model="item.shop_name" /> -->
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div>
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.add_fee}"
+                                                                    v-model="item.add_fee" @input="restrictToNumbers(index,'add_fee')"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div>
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.added_income}"
+                                                                    v-model="item.added_income" @input="restrictToNumbers(index,'added_income')"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div>
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.total_income}"
+                                                                    v-model="item.total_income" @input="restrictToNumbers(index,'total_income')"/>
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="text-end"
+                                                                :class="{'d-flex gap-3 justify-content-end align-items-center': item.new_data}">
+                                                                <span class=""
+                                                                    v-text="formatPercentage(item.add_fee, item.total_income) || '0.00%'"></span>
+                                                                <i v-if="item.new_data"
+                                                                    class="text-danger bi-trash pointer"
+                                                                    @click="deleteAds(index)"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-center align-items-center mt-5">
+                                        <button type="button" @click="handleSubmit"
+                                            class="btn btn-primary w-300px">บันทึก</button>
+                                    </div>
                                 </div>
+                                <div class="position-fixed top-0 end-0 p-3 z-index-101">
+                                    <div id="kt_docs_toast_toggle" class="toast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-header justify-content-end">
+                                            <i class="text-danger me-auto bi-exclamation-circle fs-4"></i>
+                                            <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="toast-body fs-6">
+                                            กรุณากรอกข้อมูลให้ครบ
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -144,7 +229,6 @@
 
 
 
-    </div>
     </div>
 </body>
 <script>

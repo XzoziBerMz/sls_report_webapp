@@ -12,152 +12,262 @@
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
-                // dataProduct: [],
+                data_channel: [],
                 token_header: token_header || '',
                 form: {
                     product: "",
                     shop_name: "",
                     add_fee: "",
                     added_income: "",
-                  
+
                 },
                 dataEditStars: [
                     {
                         id: 1,
-                        name: "ป้าวปั้น",
+                        shop_name: "ป้าวปั้น",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
+
                     },
                     {
                         id: 2,
-                        name: "คีโด789",
+                        shop_name: "คีโด789",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 3,
-                        name: "ฟู๊ด",
+                        shop_name: "ฟู๊ด",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 4,
-                        name: "มีมง",
+                        shop_name: "มีมง",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 5,
-                        name: "ลิสเติ้ล",
+                        shop_name: "ลิสเติ้ล",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 6,
-                        name: "somchai",
+                        shop_name: "somchai",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 7,
-                        name: "TT2",
+                        shop_name: "TT2",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 8,
-                        name: "TT4",
+                        shop_name: "TT4",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 9,
-                        name: "TT5",
+                        shop_name: "TT5",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                     {
                         id: 10,
-                        name: "TT6",
+                        shop_name: "TT6",
+                        add_fee: "",
+                        added_income: "",
+                        total_income: "",
                     },
                 ],
                 flatpickr_dp_from_date: null,
-                errors: {}
+                errors: [],
+                dateDefault: null
             }
+        },
+        computed: {
+            AddFee() {
+                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.add_fee || 0), 0);
+                return sum.toFixed(2);
+            },
+            AddIncome() {
+                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.added_income || 0), 0);
+                return sum.toFixed(2);
+            },
+            AddTotal() {
+                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
+                return sum.toFixed(2);
+            },
         },
         methods: {
             async init() {
                 let self = this;
             },
+            formatPercentage(addFee, totalIncome) {
+                if (addFee == null || totalIncome == null || isNaN(addFee) || isNaN(totalIncome) || totalIncome === 0) {
+                    return '0.00%';
+                }
+                const percentage = (addFee / totalIncome) * 100;
+                // ตรวจสอบอีกครั้งหลังจากคำนวณ
+                if (isNaN(percentage) || !isFinite(percentage)) {
+                    return '0.00%';
+                }
+                return `${percentage.toFixed(2)}%`;
+            },
+
             async DefaultData() {
                 const self = this;
-                self.flatpickr_dp_from_date = flatpickr("#kt_td_picker_basic_input", {
-                    static: true,
-                    enableTime: true,
-                    disableMobile: "true",
-                    dateFormat: "d/m/Y",
-                    onChange: function (selectedDates, dateStr, instance) {
-                        self.form.date = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
-                        delete self.errors.date;
-                    },
+                self.dataEditStars.forEach((element, index) => {
+
+                    flatpickr("#kt_td_picker_basic_input" + index, {
+                        static: true,
+                        enableTime: true,
+                        disableMobile: "true",
+                        dateFormat: "d/m/Y",
+                        onChange: function (selectedDates, dateStr, instance) {
+                            self.dataEditStars[index].timestamp = instance.formatDate(selectedDates[0], "Y-m-d");
+                            console.log("🚀 ~ self.dataEditStars.forEach ~ self.dataEditStars[:", self.dataEditStars)
+                            delete self.errors.date;
+                        },
+                    });
                 });
+
+                self.dateDefault = self.formatDate(new Date());
+                try {
+                    let data = {}
+                    const req = await services.getShop(data, self.token_header)
+                    if (req.data.code === 200) {
+                        self.data_channel = req.data.data
+                    }
+                } catch (error) {
+                    console.log("🚀 ~ DefaultData ~ error:", error)
+                }
             },
 
-            validateForm() {
-                this.errors = {};
-
-                if (!this.form.date) {
-                    this.errors.date = 'กรุณาเลือกวันที่';
+            addAds() {
+                const self = this;
+                let data = {
+                    "new_data": true,
+                    shop_name: "",
+                    add_fee: "",
+                    added_income: "",
+                    total_income: "",
                 }
 
-                if (!this.form.editstars) {
-                    this.errors.editstars = 'กรุณาเลือกร้าน';
-                }
+                self.dataEditStars.push(data)
+                this.$nextTick(() => {
 
-                if (!this.form.add_fee) {
-                    this.errors.add_fee = 'กรุณากรอกค่าแอด';
-                }
+                    self.dataEditStars.forEach((item, index) => {
+                        const selectorPayment = '#select_channel_' + index;
+                        if (!$(selectorPayment).data('select2')) {
+                            $(selectorPayment).select2({
+                                placeholder: "Select Payment Method",
+                                width: '100%',
+                                data: self.data_channel.map(
+                                    (item) => ({ id: item.shop_name, text: item.shop_name })
+                                ),
+                            });
+                        }
+                        $(selectorPayment).on("change.custom", async function () {
+                            const selectedValue = $(this).val(); // Get the selected value
+                            item.shop_name = selectedValue || 10
+                        })
+                    })
+                })
 
-                if (!this.form.added_income) {
-                    this.errors.added_income = 'กรุณากรอกรายได้แอด';
-                }
+            },
+            deleteAds(index) {
+                this.dataEditStars.splice(index, 1);
+            },
+            formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');  // วัน, เติม 0 ข้างหน้าให้เป็นสองหลัก
+                const month = String(date.getMonth() + 1).padStart(2, '0');  // เดือน (getMonth() ให้ค่าตั้งแต่ 0-11), เติม 0 ข้างหน้า
+                const year = date.getFullYear();  // ปี
 
-                if (!this.form.total_income) {
-                    this.errors.total_income = 'กรุณากรอกรายได้รวม';
-                }
-             
-
-
-                return Object.keys(this.errors).length === 0;
+                return `${day}/${month}/${year}`;
             },
 
-            // async loadData() {
-            //     const self = this;
-            //     showLoading();
-            //     try {
-            //         const [responseGetProduct] = await Promise.all([
-            //             services.getProduct(self.token_header)
-            //         ]);
 
-            //         const dataProduct = responseGetProduct?.data.data || [];
-            //         self.dataProduct = dataProduct;
+            validateFields() {
+                this.errors = [];
+                let isValid = true;
 
-            //     } catch (error) {
-            //         console.warn('🌦 ~ loadData ~ error:', error);
-            //     } finally {
-            //         closeLoading();
-            //     }
-            // },
+                this.dataEditStars.forEach((item, index) => {
+                    let error = {};
+
+                    if (!item.add_fee) {
+                        error.add_fee = true;
+                        isValid = false;
+                    }
+
+                    if (!item.added_income) {
+                        error.added_income = true;
+                        isValid = false;
+                    }
+
+                    if (!item.total_income) {
+                        error.total_income = true;
+                        isValid = false;
+                    }
+
+                    if (item.new_data) {
+                        if (!item.shop_name) {
+                            error.shop_name = "กรุณาเลือก ร้าน"
+                            isValid = false;
+                        }
+                    }
+
+                    this.errors[index] = error;
+                });
+                console.log("🚀 ~ this.dataEditStars.forEach ~ this.errors:", this.errors)
+
+                return isValid;
+            },
+            getCurrentDateFormatted() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); // เดือนเริ่มจาก 0
+                const day = String(now.getDate()).padStart(2, '0');
+
+                return `${year}-${month}-${day}`;
+            },
 
             async handleSubmit(event) {
-                event.preventDefault();
-
-                if (!this.validateForm()) {
-                    console.error("กรุณากรอกข้อมูลให้ครบถ้วน");
-                    return;
+                if (this.validateFields() === false) {
+                    const toastElement = document.getElementById('kt_docs_toast_toggle');
+                    const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+                    toast.show();
+                    return
                 }
                 try {
-                    let dateParts = this.form.date.split('/');
-                    let formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
-
-                    console.log('Form data:', this.form);
                     showLoading();
-
-                    let shopName = this.form.editstars === 'other' ? this.form.otherStars : this.form.editstars;
                     let data = {
-                        "shop_name": shopName ,
-                        "ads_fee": parseFloat(this.form.add_fee),
-                        "ads_income": parseFloat(this.form.added_income), 
-                        "ads_total_income": parseFloat(this.form.total_income),
-                        "timestamp": formattedDate 
-                    };
-                    console.log('Data being sent:', data);
+                        "data": this.dataEditStars
+                    }
+                    console.log("🚀 ~ handleSubmit ~ data:", data)
+                    data.data.forEach((item, index) => {
+                        delete item.id
+                        item.timestamp = this.getCurrentDateFormatted()
+                        item.ads_fee = parseFloat(item.add_fee);
+                        item.ads_income = parseFloat(item.added_income);
+                        item.ads_total_income = parseFloat(item.total_income);
+                    });
                     const response = await services.getInsertAsd(data, this.token_header);
-                    const responseData = response.data || {};
-                    if (responseData.code === 200) {
-                        this.dataInsertOrderManualHandler = responseData.data || [];
+                    if (response.data.code === 200) {
                         closeLoading()
 
                         Msg("บันทึกสำเร็จ", 'success');
@@ -171,22 +281,39 @@
                 }
             },
 
-            handleInput(field) {
-
-                this.errors[field] = '';
+            restrictToNumbers(index, field) {
+                this.dataEditStars[index][field] = this.dataEditStars[index][field].replace(/[^0-9]/g, '');
+                this.validateFields()
             },
-            handleInputN(field) {
-               
-                let value = this.form[field];
-                
-                this.errors[field] = '';
-          
-                const regex = /^[0-9]*\.?[0-9]*%?$/;
-                
-                if (!regex.test(value)) {
-                  this.form[field] = value.slice(0, -1);
+            clearError(index, field) {
+                // Clear the error for the specified field
+                console.log("🚀 ~ clearError ~ this.errors:", this.errors)
+                this.errors[index][field] = null;
+
+            },
+
+            handleInput(index, field) {
+                if (this.errors[index]) {
+                    this.errors[index][field] = ''; // Clear the error for the specific item and field
                 }
-              },
+            },
+            handleInputN(index, field) {
+
+                let value = this.dataEditStars[index][field];
+
+                // Clear the general error (optional)
+                if (this.errors[field]) {
+                    this.errors[field] = '';
+                }
+
+                // Regex to validate numeric or percentage input
+                const regex = /^[0-9]*\.?[0-9]*%?$/;
+
+                // If the value doesn't match the regex, slice off the last character
+                if (!regex.test(value)) {
+                    this.dataEditStars[index][field] = value.slice(0, -1);
+                }
+            },
 
         },
 
