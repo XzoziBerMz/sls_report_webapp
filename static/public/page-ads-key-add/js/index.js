@@ -102,15 +102,16 @@
         computed: {
             AddFee() {
                 const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.add_fee || 0), 0);
-                return sum.toFixed(2);
+                // return sum.toFixed(2);
+                return sum
             },
             AddIncome() {
                 const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.added_income || 0), 0);
-                return sum.toFixed(2);
+                return sum
             },
             AddTotal() {
                 const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
-                return sum.toFixed(2);
+                return sum
             },
         },
         methods: {
