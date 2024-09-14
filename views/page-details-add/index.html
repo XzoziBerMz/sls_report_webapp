@@ -78,16 +78,17 @@
                                             <div class="position-relative">
                                                 <input type="hidden" />
                                                 <div class="input-container">
-                                                    <input type="text" class="form-control form-control-lg" v-model="serach_value"
-                                                        placeholder="ค้นหา.." @blur="handleBlur()"/>
+                                                    <input type="text" class="form-control form-control-lg"
+                                                        v-model="serach_value" placeholder="ค้นหา.."
+                                                        @blur="handleBlur()" />
                                                     <i class="bi bi-search"></i>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                               
-                                    
+
+
                                     <div class="row gap-5 px-3 mt-5">
                                         <div class="card p-5 ">
                                             <div class="table-responsive border rounded-4">
@@ -95,51 +96,52 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-4 ">
                                                             <th class="min-w-100px">
-                                                                <div  @click="sortTable('p_timestamp')"
+                                                                <div @click="sortTable('p_timestamp')"
                                                                     class="d-flex justify-content-around align-items-center">
                                                                     <i class="bi-calendar3"></i>
                                                                     <span>วันที่</span>
                                                                     <i class="bi-chevron-down"
-                                                                    :class="getSortIcon('p_timestamp')"></i>
+                                                                        :class="getSortIcon('p_timestamp')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px">
-                                                                <div  @click="sortTable('shop_name')"
+                                                                <div @click="sortTable('shop_name')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ร้าน</span>
-                                                                       <i class="bi-chevron-down"
-                                                                :class="getSortIcon('shop_name')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('shop_name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div  @click="sortTable('ads_fee')" 
+                                                                <div @click="sortTable('ads_fee')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>ค่าแอด</span>
-                                                                       <i class="bi-chevron-down"
-                                                                :class="getSortIcon('ads_fee')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('ads_fee')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div  @click="sortTable('ads_income')"
+                                                                <div @click="sortTable('ads_income')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>รายได้แอด</span>
-                                                                       <i class="bi-chevron-down"
-                                                                :class="getSortIcon('ads_income')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('ads_income')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div  @click="sortTable('ads_total_income')"
+                                                                <div @click="sortTable('ads_total_income')"
                                                                     class="d-flex justify-content-between align-items-center">
                                                                     <span>รายได้รวม</span>
-                                                                       <i class="bi-chevron-down"
-                                                                :class="getSortIcon('ads_total_income')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('ads_total_income')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px">
-                                                                <div  @click="sortTable('')" class="d-flex justify-content-between align-items-center">
+                                                                <div @click="sortTable('')"
+                                                                    class="d-flex justify-content-between align-items-center">
                                                                     <span>0.00%</span>
-                                                                       <i class="bi-chevron-down"
-                                                                :class="getSortIcon('')"></i>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('')"></i>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -152,13 +154,13 @@
                                                                 <td class="align-middle min-w-200px text-break"
                                                                     v-text="item.shop_name"></td>
                                                                 <td class="align-middle min-w-100px text-break"
-                                                                    v-text="item.ads_fee"></td>
+                                                                    v-text="formatNumber(item.ads_fee)"></td>
                                                                 <td class="align-middle min-w-100px text-break"
-                                                                    v-text="item.ads_income"></td>
+                                                                    v-text="formatNumber(item.ads_income)"></td>
                                                                 <td class="align-middle min-w-100px text-break"
-                                                                    v-text="item.ads_total_income"></td>
-                                                                <td class="align-middle min-w-100px text-break"  v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'">
-                                                                    
+                                                                    v-text="formatNumber(item.ads_total_income)"></td>
+                                                                <td class="align-middle min-w-100px text-break"
+                                                                    v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'">
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -167,10 +169,15 @@
                                                         <tr>
                                                             <td class="align-middle min-w-100px text-break"></td>
                                                             <td class="align-middle min-w-200px text-break"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="AdsFee"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="AdsIncome"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="totalAdsIncome"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium" v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium"
+                                                                v-text="formatNumber(AdsFee)"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium"
+                                                                v-text="formatNumber(AdsIncome)"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium"
+                                                                v-text="formatNumber(totalAdsIncome)"></td>
+                                                            <td class="align-middle min-w-100px text-break fw-medium"
+                                                                v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'">
+                                                            </td>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -178,7 +185,7 @@
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div>
                                                     <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        id="page_size_add" name="page_size_add"  v-model="itemsPerPage"
+                                                        id="page_size_add" name="page_size_add" v-model="itemsPerPage"
                                                         data-control="select2">
                                                         <option value="10" selected>10</option>
                                                         <option value="20">20</option>
