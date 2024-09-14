@@ -21,6 +21,7 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifica
 COPY --from=build /app/sls-report-app .
 COPY --from=build /app/views /app/views
 COPY --from=build /app/static /app/static
+COPY .env .env
 
 # Expose the port the application will run on
 EXPOSE 8000
