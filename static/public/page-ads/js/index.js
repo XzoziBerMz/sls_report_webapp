@@ -99,7 +99,17 @@
                     })
                 }
             },
-            
+            formatNumber(number) {
+                if (typeof number === 'number') {
+                    return number.toLocaleString(); // Format number with commas
+                }
+                return number; // Return as is if not a number
+            },
+            formatPercentage(fee, totalIncome) {
+                if (totalIncome === 0) return '0.00%';
+                const percentage = (fee / totalIncome) * 100;
+                return percentage.toFixed(2) + '%';
+            },
             formatDate(date) {
                 const options = { day: '2-digit', month: 'short', year: 'numeric' };
                 return date.toLocaleDateString('en-US', options);

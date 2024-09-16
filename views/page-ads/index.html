@@ -184,16 +184,18 @@
                                                                     <span v-else v-text="'ปิดการใช้งาน'"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
-                                                                    <span v-text="item.total_cost"></span>
+                                                                    <span v-text="formatNumber(item.total_cost)"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-100px text-break">
-                                                                    <span v-text="item.budget"></span>
+                                                                    <span v-text="formatNumber(item.budget)"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-150px text-break">
-                                                                    <span v-text="item.total_shop_income"></span>
+                                                                    <span
+                                                                        v-text="formatNumber(item.total_shop_income)"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-200px text-break">
-                                                                    <span v-text="item.cost_per_purchase"></span>
+                                                                    <span
+                                                                        v-text="formatNumber(item.cost_per_purchase)"></span>
                                                                 </td>
                                                                 <td class="align-middle min-w-50px text-break">
                                                                     <span v-text="item.purchase"></span>
@@ -294,7 +296,7 @@
                                                         <th class="min-w-100px">
                                                             <div
                                                                 class="d-flex justify-content-between align-items-center">
-                                                                <span>0.00%</span>
+                                                                <span>เปอร์เซ็น</span>
                                                                 <i class="bi-chevron-down"></i>
                                                             </div>
                                                         </th>
@@ -310,16 +312,18 @@
                                                                 <span v-text="item.shop_name"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="item.ads_fee"></span>
+                                                                <span v-text="formatNumber(item.ads_fee)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="item.ads_income"></span>
+                                                                <span v-text="formatNumber(item.ads_income)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="item.ads_total_income"></span>
+                                                                <span
+                                                                    v-text="formatNumber(item.ads_total_income)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span></span>
+                                                                <span
+                                                                    v-text="formatPercentage(item.ads_fee, item.ads_total_income)"></span>
                                                             </td>
                                                         </tr>
                                                     </template>
@@ -328,13 +332,15 @@
                                                     <tr>
                                                         <td class="align-middle min-w-100px text-break"></td>
                                                         <td class="align-middle min-w-200px text-break"></td>
-                                                        <td class="align-middle min-w-100px text-break" v-text="AdsFee">
+                                                        <td class="align-middle min-w-100px text-break"
+                                                            v-text="formatNumber(AdsFee)">
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break"
-                                                            v-text="AdsIncome"></td>
+                                                            v-text="formatNumber(AdsIncome)"></td>
                                                         <td class="align-middle min-w-100px text-break"
-                                                            v-text="totalAdsIncome"></td>
-                                                        <td class="align-middle min-w-100px text-break"></td>
+                                                            v-text="formatNumber(totalAdsIncome)"></td>
+                                                        <td class="align-middle min-w-100px text-break"
+                                                            v-text="formatPercentage(AdsFee, totalAdsIncome)"></td>
                                                     </tr>
                                                 </tfoot>
                                             </table>

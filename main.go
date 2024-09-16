@@ -51,6 +51,7 @@ func main() {
 	app.Get("/login", render.LoginPage)
 	app.Get("/ads", render.AdsPage)
 	app.Get("/ads-form", render.AdsFormPage)
+	app.Get("/campaign-form", render.CampaignFormPage)
 	app.Get("/chat", render.ChatPage)
 	// app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Get("/dashboard", render.DashboardNewPage)

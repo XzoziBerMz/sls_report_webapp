@@ -32,7 +32,7 @@
 							<span class="menu-bullet">
 								<i class="bi-pie-chart"></i>
 							</span>
-							<span class="menu-title">Dashboard</span>
+							<span class="menu-title">รายงานภาพรวม แอดมิน</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'ads'}">
@@ -40,15 +40,15 @@
 							<span class="menu-bullet">
 								<i class="bi-badge-ad"></i>
 							</span>
-							<span class="menu-title">Ads</span>
+							<span class="menu-title">รายงานภาพรวม ADS</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'details-add'}">
 						<a href="/details-add" class="menu-link py-3">
 							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i> 
+								<i class="bi-cash-coin"></i>
 							</span>
-							<span class="menu-title">Ads Cost</span>
+							<span class="menu-title">รายงาน ค่าโฆษณา</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'video'}">
@@ -56,7 +56,7 @@
 							<span class="menu-bullet">
 								<i class="bi-play-btn"></i>
 							</span>
-							<span class="menu-title">VDO</span>
+							<span class="menu-title">รายงาน คลิปวีดิโอ</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'key-order'}">
@@ -64,23 +64,23 @@
 							<span class="menu-bullet">
 								<i class="bi-basket"></i>
 							</span>
-							<span class="menu-title">Order</span>
+							<span class="menu-title">รายงาน ทำรายการ</span>
 						</a>
 					</div>
 				</div>
 			</div>
 			<div class="menu-item menu-sub-indention menu-accordion"
-				:class="{ hover: currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'ads_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' }"
+				:class="{ hover: currentPage === 'ads_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'ads_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' }"
 				data-kt-menu-trigger="click">
 				<a href="#" class="menu-link py-3">
 					<span class="menu-icon">
 						<i class="bi-file-earmark-text fs-4"></i>
 					</span>
-					<span class="menu-title">Form Report</span>
+					<span class="menu-title">แบบฟอร์ม</span>
 					<span class="menu-arrow"></span>
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
-					:class="{show:currentPage === 'ads_form' || currentPage === 'key-ads' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
+					:class="{show: currentPage === 'ads_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
 					<div class="menu-item" :class="{active:currentPage === 'ads_form'}">
 						<a href="/ads-form" class="menu-link py-3">
 							<span class="menu-bullet">
@@ -94,7 +94,15 @@
 							<span class="menu-bullet">
 								<i class="bi-cash-coin"></i>
 							</span>
-							<span class="menu-title">Ads Cost</span>
+							<span class="menu-title">ค่าโฆษณา</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'campaign_form'}">
+						<a href="/campaign-form" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-megaphone"></i>
+							</span>
+							<span class="menu-title">แคมเปญ</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'chat'}">
@@ -110,7 +118,7 @@
 							<span class="menu-bullet">
 								<i class="bi-play-btn"></i>
 							</span>
-							<span class="menu-title">VDO</span>
+							<span class="menu-title">คลิปวีดิโอ</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'product-order'}">
@@ -118,7 +126,7 @@
 							<span class="menu-bullet">
 								<i class="bi-basket"></i>
 							</span>
-							<span class="menu-title">Order</span>
+							<span class="menu-title">ทำรายการ</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'negativ-review'}">
@@ -134,7 +142,7 @@
 							<span class="menu-bullet">
 								<i class="bi-list-stars"></i>
 							</span>
-							<span class="menu-title">รายละเอียด รีวิวเชิงลบ</span>
+							<span class="menu-title">รายละเอียด เชิงลบ</span>
 						</a>
 					</div>
 				</div>

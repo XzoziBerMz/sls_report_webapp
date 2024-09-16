@@ -1,37 +1,31 @@
 (function ($, window, Vue, axios) {
     'use strict';
 
-
+    const token_header = getCookie('token');
 
     const app = Vue.createApp({
         data: function () {
-            const _page_settings = {
-                // activeTab: null,
-                // is_pending: false,
-                // view_mode: window.view_mode || "",
-                // edit_mode: window.edit_mode || "",
-                // back_redirect: "./xxxx.html",
-                validator_form: null,
-
-                // page settings
-            }
             return {
                 user: window.user || "",
-                // currentPage: window.currentPage,
                 currentPage: 'ads_form',
                 authstatus: window.authstatus,
                 datas: [],
                 inventoryDetail: [],
                 search: "",
                 filtered: [],
-                validator_form: null,
-                ..._page_settings,
-                dataList: [
-                    {id: 1, name: "1"},
-                    {id: 2, name: "2"},
-                    {id: 3, name: "3"},
-                ],
-
+                dataProduct: [],
+                dataShop: [],
+                token_header: token_header || '',
+                form: {
+                    name: '',
+                    total_cost: '',
+                    budget: '',
+                    total_income: '',
+                    cost_per_purchase: '',
+                    purchase: '',
+                    note: '',
+                },
+                errors: {}
             }
         },
         computed: {
@@ -43,125 +37,185 @@
         methods: {
             async init() {
                 let self = this
-                $("#kt_datepicker_start").flatpickr();
-                $("#kt_datepicker_end").flatpickr();
+
+                try {
+                    try {
+                        const req = await services.getProduct(self.token_header)
+                        self.dataProduct = req.data.data || []
+                    } catch (error) {
+                        console.log("🚀 ~ init ~ error:", error)
+                    }
+                    try {
+                        let data = {}
+                        const req = await services.getShop(data, self.token_header)
+                        self.dataShop = req.data.data || []
+                    } catch (error) {
+                        console.log("🚀 ~ init ~ error:", error)
+                    }
+
+                } catch (error) {
+                    console.log("🚀 ~ init ~ error:", error)
+                } finally {
+                    $("#kt_datepicker_1").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
+                        onChange: function (selectedDates, dateStr, instance) {
+                            self.date_time = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                            // console.log("🚀 ~ init ~ self.start_date:", self.start_date)
+                            // self.flatpickr_dp_end_date.set('minDate', selectedDates[0]);
+
+                            // if (self.end_date && new Date(self.start_date) > new Date(self.end_date)) {
+                            //     self.flatpickr_dp_end_date.clear();
+                            //     self.end_date = "";
+                            // }
+                            delete self.errors.date_time;
+                        },
+                    });
+
+                    $('#select_product').html(`<option></option>`).select2({
+                        allowInput: false,
+                        // dropdownParent: $('#select_product').closest('.fv-row'),
+                        data: [..._.cloneDeep(self.dataProduct) || []]
+                            .map(item => ({ ...item, id: item.product_id, text: item.product_name })),
+                    });
+                    $('#select_product').on("change.custom", async function () {
+                        const values = $(this).select2("data") || [];
+                        const name = values?.[0]?.text || "";
+                        self.product_value = name;
+                    });
+                    $('#select_shop').html(`<option></option>`).select2({
+                        allowInput: false,
+                        // dropdownParent: $('#select_shop').closest('.fv-row'),
+                        data: [..._.cloneDeep(self.dataShop) || []]
+                            .map(item => ({ ...item, id: item.shop_id, text: item.shop_name })),
+                    });
+                    $('#select_shop').on("change.custom", async function () {
+                        const values = $(this).select2("data") || [];
+                        const name = values?.[0]?.text || "";
+                        self.shop_value = name;
+                    });
+                    $('#select_status').val('active').trigger('change');
+
+                }
+            },
+            validateForm() {
+                this.errors = {};
+
+                if (!this.date_time) {
+                    this.errors.date_time = 'กรุณาเลือกวันที่';
+                }
+                if (!this.form.name) {
+                    this.errors.name = 'กรุณากรอก ชื่อ ADS';
+                }
+                if (!this.shop_value) {
+                    this.errors.shop = 'กรุณาเลือก ร้าน';
+                }
+                if (!this.product_value) {
+                    this.errors.product = 'กรุณาเลือก สินค้า';
+                }
+                if (!this.form.total_cost) {
+                    this.errors.total_cost = 'กรุณากรอก ค่าใช้จ่ายทั้งหมด';
+                }
+                if (!this.form.budget) {
+                    this.errors.budget = 'กรุณากรอก งบประมาณ';
+                }
+                if (!this.form.total_income) {
+                    this.errors.total_income = 'กรุณากรอก รายได้รวม(ร้านค้า)';
+                }
+                if (!this.form.cost_per_purchase) {
+                    this.errors.cost_per_purchase = 'กรุณากรอก ต้นทุนต่อการซื้อ(ร้านค้า)';
+                }
+                if (!this.form.purchase) {
+                    this.errors.purchase = 'กรุณากรอก การซื้อ';
+                }
+
+
+                return Object.keys(this.errors).length === 0;
             },
             async savePage() {
                 const self = this;
-                try {
-                    let validate = await self.onValidateForm().validate();
-                    if (validate === "Valid") {
-                        console.log("save")
+                if (self.validateForm()) {
+                    try {
+                        let data = {
+                            "shop_name": self.shop_value || '',
+                            "name": self.form.name || '',
+                            "product": self.product_value || '',
+                            "total_cost": Number(self.form.total_cost) || '',
+                            "budget": Number(self.form.budget) || '',
+                            "total_shop_income": Number(self.form.total_income) || '',
+                            "cost_per_purchase": Number(self.form.cost_per_purchase) || '',
+                            "purchase": self.form.purchase || '',
+                            "note": self.form.note || '',
+                            "ref_default": 1,
+                            "date": self.date_time || ''
+                        }
+
+                        const req = await services.insertData(data, self.token_header)
+                        if (req.data.code === 200) {
+                            closeLoading()
+                            Msg("บันทึกสำเร็จ", 'success');
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000)
+                        }
+                    } catch (error) {
+                        console.log("🚀 ~ savePage ~ error:", error)
                     }
-                } catch (error) {
-                    console.log("🚀 ~ savePage ~ error:", error)
-                }
-            },
-
-            onValidateForm: function () {
-                const self = this;
-                const key_validator = "validator_form";
-                if (self[key_validator]) {
-                    self[key_validator]?.resetForm();
-                    self[key_validator].destroy();
-                }
-                const field_name_validate = self.dataList.map((item) => ({
-                    type: 'INPUT',
-                    case: ["required"],
-                    // name: "amount_" + item.name,
-                    name: item.name,
-                }));
-
-                let map_validates = {};
-                let error_keys = [];
-                self.tab_validate_errors = [];
-                field_name_validate.forEach((item) => {
-                    let error_message = {};
-                    item.case.forEach((feitem) => {
-                        error_message = {
-                            ...error_message,
-                            [feitem]: getLabelMessageError(`ข้อมูล ${item.name} ต้องมี`),
-                            // [feitem]: getLabelMessageError(`ข้อมูล ${item.name} ต้องมี ${feitem}`),
-                        };
-                    });
-
-                    let cases = {};
-                    if (item.case.some((sitem) => sitem === "email_pattern")) {
-                        cases = {
-                            ...cases,
-                            emailAddress: {
-                                message: error_message["email_pattern"],
-                            },
-                        };
-                    }
-                    map_validates[item.name] = {
-                        validators: {
-                            validateMessage: {},
-                            callback: {
-                                message: error_message["required"],
-                                callback: function (input) {
-                                    if (item.case.some((sitem) => sitem === "required")) {
-                                        if (`${input.value || ""}`.trim() === "") {
-                                            return false;
-                                        }
-                                    }
-                                    return true;
-                                },
-                            },
-                            ...cases,
-                        },
-                    };
-                    error_keys = [
-                        ...error_keys,
-                        ...Object.keys(error_message).map((key) => error_message[key]),
-                    ];
-                });
-
-                // console.log(`🌦️ ~ onValidate ~ error_keys:`, error_keys);
-                self[key_validator] = FormValidation.formValidation(
-                    $(`[fv-id="${key_validator}"]`)[0],
-                    {
-                        fields: { ...map_validates },
-                        plugins: {
-                            ...ktFormValidationPlugins(),
-                        },
-                    }
-                );
-
-                if (!self[key_validator]) {
-                    return Promise.resolve({
-                        status: "Valid",
-                    });
-                }
-                return self[key_validator];
-            },
-
-            getPokemon: async function () {
-                const self = this;
-                try {
-                    showLoading();
-                    const response = await services.getPokemon({})
-                    if (response) {
-                        console.log(response)
-                        closeLoading();
-
-                    }
-
-                } catch (err) {
-                    closeLoading();
-                    Msg("errorMsg", 'error');
-
-                } finally {
-
+                } else {
+                    console.log("Form validation failed.");
+                    closeLoading()
                 }
             }
 
         },
+        watch: {
+            "form.total_cost"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.form.total_cost = formattedValue;
+            },
+            "form.budget"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.form.budget = formattedValue;
+            },
+            "form.total_income"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.form.total_income = formattedValue;
+            },
+            "form.cost_per_purchase"(newValue) {
+                let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+                const decimalParts = formattedValue.split('.');
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+                this.form.cost_per_purchase = formattedValue;
+            },
+            // "form.purchase"(newValue) {
+            //     let formattedValue = `${newValue}`.replace(/[^0-9.]/g, "");
+            //     const decimalParts = formattedValue.split('.');
+            //     if (decimalParts.length > 2) {
+            //         formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+            //     }
+            //     this.form.purchase = formattedValue;
+            // },
+        },
 
-        mounted:async function () {
+        mounted: async function () {
             let self = this
-            await self.init()
-            //    self.getPokemon()
+
+            await self.init();
             console.log("ok")
         }
 
