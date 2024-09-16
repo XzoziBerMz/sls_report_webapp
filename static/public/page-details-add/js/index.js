@@ -184,7 +184,7 @@
                     }
                     let responseGetAdd = await services.getAdsCost(data, self.token_header);
                     const dataAdd = responseGetAdd?.data.data || [];
-                    self.dataDataAdd = dataAdd;
+                    self.dataDataAdd = dataAdd
                     self.totalItems = responseGetAdd.data.total;
                     closeLoading()
 
@@ -194,11 +194,6 @@
                 }
             },
 
-
-            utilsConvDate(timestamp) {
-                // Your implementation for date conversion
-                return new Date(timestamp).toLocaleDateString(); // Example implementation
-            },
             formatNumber(number) {
                 if (typeof number === 'number') {
                     return number.toLocaleString(); // Format number with commas
