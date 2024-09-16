@@ -319,28 +319,28 @@
                                                         <td class="align-middle min-w-100px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
+                                                                <input type="text" class="form-control w-150px text-end" @input="handleInputN(item.total_cost, index, 'total_cost')"
                                                                     v-model="item.total_cost" :class="{'border-danger': errors[index]?.total_cost}"/>
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
+                                                                <input type="text" class="form-control w-150px text-end" @input="handleInputN(item.budget, index, 'budget')"
                                                                     v-model="item.budget" :class="{'border-danger': errors[index]?.budget}"/>
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
+                                                                <input type="text" class="form-control w-150px text-end" @input="handleInputN(item.total_shop_income, index, 'total_shop_income')"
                                                                     v-model="item.total_shop_income" :class="{'border-danger': errors[index]?.total_shop_income}"/>
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
+                                                                <input type="text" class="form-control w-150px text-end" @input="handleInputN(item.cost_per_purchase, index, 'cost_per_purchase')"
                                                                     v-model="item.cost_per_purchase" :class="{'border-danger': errors[index]?.cost_per_purchase}"/>
                                                             </div>
                                                         </td>

@@ -78,8 +78,49 @@
 
                             self.dataAds = [];
                             await self.loadData()
+
+                            self.$nextTick(() => {
+
+                                self.dataAds.forEach((item, index) => {
+                                    const selectorPayment = '#select_status_' + index;
+                                    if (!$(selectorPayment).data('select2')) {
+                                        $(selectorPayment).select2({
+                                            placeholder: "Select Status",
+                                            width: '100%',
+                                            data: self.data_status.map(
+                                                (item) => ({ id: item.id, text: item.name })
+                                            ),
+                                        });
+                                    }
+                                    $(selectorPayment).on("change.custom", async function () {
+                                        const selectedValue = $(this).val(); // Get the selected value
+                                        console.log("🚀 ~ selectedValue:", self.dataAds)
+                                        item.status = selectedValue || 10
+                                    })
+                                })
+                            })
                         },
                     });
+
+                    self.$nextTick(() => {
+
+                        self.dataAds.forEach((item, index) => {
+                            const selectorPayment = '#select_status_' + index;
+                            if (!$(selectorPayment).data('select2')) {
+                                $(selectorPayment).select2({
+                                    placeholder: "Select Status",
+                                    width: '100%',
+                                    data: self.data_status.map(
+                                        (item) => ({ id: item.id, text: item.name })
+                                    ),
+                                });
+                            }
+                            $(selectorPayment).on("change.custom", async function () {
+                                const selectedValue = $(this).val(); // Get the selected value
+                                item.status = selectedValue || 10
+                            })
+                        })
+                    })
 
                     // $('#select_product').html(`<option></option>`).select2({
                     //     allowInput: false,
@@ -95,6 +136,20 @@
                     // $('#select_status').val('active').trigger('change');
 
                 }
+            },
+            handleInputN(value, index, field) {
+                let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
+
+                // แยกทศนิยมออก
+                const decimalParts = formattedValue.split('.');
+
+                // ตรวจสอบว่าแยกได้มากกว่าสองส่วนหรือไม่ (มากกว่า 1 จุดทศนิยม)
+                if (decimalParts.length > 2) {
+                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+                }
+
+                // กำหนดค่าที่ถูกต้องกลับไปที่ฟิลด์
+                this.dataAds[index][field] = formattedValue;
             },
             created() {
                 // Set start_at to one day before the current date
@@ -224,26 +279,64 @@
             async savePage() {
                 const self = this;
                 if (self.validateForm()) {
-                    try {
-                        // const currentDate = new Date();
-                        // let data = {
-                        //     "shop_name": self.shop_value || '',
-                        //     "name": self.form.name || '',
-                        //     "product": self.product_value || '',
-                        //     "total_cost": Number(self.form.total_cost) || '',
-                        //     "budget": Number(self.form.budget) || '',
-                        //     "total_shop_income": Number(self.form.total_income) || '',
-                        //     "cost_per_purchase": Number(self.form.cost_per_purchase) || '',
-                        //     "purchase": self.form.purchase || '',
-                        //     "note": self.form.note || '',
-                        //     "ref_default": 1,
-                        //     "date": self.date_time || ''
-                        // }
-                        const currentDate = new Date();
-                        currentDate.setDate(currentDate.getDate() + 1);
-                        const formattedDate = currentDate.toISOString().split('T')[0];
+                    const currentDate = new Date();
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    const formattedDate = currentDate.toISOString().split('T')[0];
+
+                    if (self.start_date_time === formattedDate) {
+                        const newAds = self.dataAds.filter(item => item.new_ads);
+                        const existingAds = self.dataAds.filter(item => !item.new_ads);
+
+                        if (newAds.length) {
+                            for (const ad of newAds) {
+                                ad.total_cost = Number(ad.total_cost) || 0;
+                                ad.budget = Number(ad.budget) || 0;
+                                ad.total_shop_income = Number(ad.total_shop_income) || 0;
+                                ad.cost_per_purchase = Number(ad.cost_per_purchase) || 0;
+                                ad.date = formattedDate || '';
+                                try {
+                                    const req = await services.insertData(ad, self.token_header);
+                                    if (req.data.code === 200) {
+                                        console.log("Save successful for:", ad);
+                                        // ดำเนินการหลังจากบันทึกสำเร็จ (เช่น แจ้งเตือน)
+                                    } else {
+                                        Msg("อัพเดทไม่สำเร็จ", 'error');
+                                        return;
+                                        // จัดการกรณีที่การบันทึกล้มเหลว
+                                    }
+                                } catch (error) {
+                                    console.log("Error saving ad:", ad, error);
+                                    // จัดการข้อผิดพลาด
+                                }
+                            }
+                        }
+
+                        if (existingAds.length) {
+                            for (const ad of existingAds) {
+                                ad.total_cost = Number(ad.total_cost) || 0;
+                                ad.budget = Number(ad.budget) || 0;
+                                ad.total_shop_income = Number(ad.total_shop_income) || 0;
+                                ad.cost_per_purchase = Number(ad.cost_per_purchase) || 0;
+                                ad.date = formattedDate || '';
+                                ad.ref_default = 0;
+                                try {
+                                    const req = await services.updateData(ad, self.token_header);
+                                    if (req.data.code === 200) {
+                                        console.log("Update successful for:", ad);
+                                        // ดำเนินการหลังจากอัพเดทสำเร็จ (เช่น แจ้งเตือน)
+                                    } else {
+                                        Msg("อัพเดทไม่สำเร็จ", 'error');
+                                        return;
+                                    }
+                                } catch (error) {
+                                    console.log("Error updating ad:", ad, error);
+                                    // จัดการข้อผิดพลาด
+                                }
+                            }
+                        }
+                        console.log("Update")
+                    } else {
                         let dataAds = self.dataAds || []
-                        console.log("🚀 ~ savePage ~ dataAds:", dataAds)
 
                         for (const data of dataAds) {
                             data.total_cost = Number(data.total_cost) || 0;
@@ -260,14 +353,14 @@
                                 return;
                             }
                         }
-                        closeLoading();
-                        Msg("บันทึกสำเร็จ", 'success');
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 2000);
-                    } catch (error) {
-                        console.log("🚀 ~ savePage ~ error:", error)
                     }
+                   
+                    closeLoading();
+                    Msg("บันทึกสำเร็จ", 'success');
+                    // setTimeout(function () {
+                    //     window.location.reload();
+                    // }, 2000);
+                    
                 } else {
                     console.log("Form validation failed.");
                     closeLoading()
