@@ -135,6 +135,45 @@
                         name: "ติดตามเคส",
                     },
                 ],
+                matter_story: [
+                    {
+                        id: 1,
+                        name: "พบการละเมิด",
+                    },
+                    {
+                        id: 2,
+                        name: "ไม่พบการละเมิด",
+                    },
+
+                ],
+
+                modal_titles: '',
+                modal_session: '',
+                data_products: [],
+                data_products_2: [],
+                data_products_3: [],
+                data_products_4: [],
+                data_channel: [],
+                data_channel_2: [],
+                data_channel_3: [],
+                data_channel_4: [],
+                data_users: [],
+                data_users_2: [],
+                data_users_3: [],
+                data_users_4: [],
+                filter_products: [],
+                filter_products_2: [],
+                filter_products_3: [],
+                filter_products_4: [],
+                filter_channel: [],
+                filter_channel_2: [],
+                filter_channel_3: [],
+                filter_channel_4: [],
+                filter_users: [],
+                filter_users_2: [],
+                filter_users_3: [],
+                filter_users_4: [],
+                filter_star_4: [],
 
             }
         },
@@ -354,19 +393,22 @@
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend} 23:59:59`;
-
+                    const productNames = self.filter_products.map(item => item.name);
+                    const channelNames = self.filter_channel.map(item => item.name);
+                    const usersNames = self.filter_users.map(item => item.name);
                     let data = {
                         "search": "",
                         "start_at": formattedStartDate || formattedDate,
                         "end_at": formattedEndDate || formattedDate,
-                        "product": [],
-                        "chanel": [],
-                        "save_by": [],
+                        "product": productNames || [],
+                        "chanel": channelNames || [],
+                        "save_by": usersNames || [],
                         "page": page, // Pass the current page
                         "per_page": Number(this.itemsPerPageScript),
                         "order": this.column_order_by,
                         "order_by": this.order_sort
                     };
+                    console.log("🚀 ~ loadDataClip ~ data:", data)
 
                     let responsegetClip = await services.getClip(data, self.token_header);
                     const dataClip = responsegetClip?.data.data || [];
@@ -394,8 +436,14 @@
 
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    const productNames = self.filter_products_2.map(item => item.name);
+                    const channelNames = self.filter_channel_2.map(item => item.name);
+                    const usersNames = self.filter_users_2.map(item => item.name);
                     let data = {
                         // search: this.search,
+                        "product_multiple": productNames || [],
+                        "channel_multiple": channelNames || [],
+                        "user_multiple": usersNames || [],
                         customer: this.customer || '', // Bind the search fields
                         product: this.product || '',
                         order_no: this.order_no || '',
@@ -436,13 +484,18 @@
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend} 23:59:59`;
 
+                    const productNames = self.filter_products_3.map(item => item.name);
+                    const channelNames = self.filter_channel_3.map(item => item.name);
+                    const usersNames = self.filter_users_3.map(item => item.name);
+
                     let data = {
+                        "channel": productNames || [],
+                        "infraction": channelNames || [],
+                        "user": usersNames || [],
 
                         "start_at": formattedStartDate || formattedDate,
                         "end_at": formattedEndDate || formattedDate,
                         "search": "",
-                        "user": [],
-                        "infraction": [],
                         "page": self.currentPagereview,
                         "per_page": Number(this.itemsPerPagereview),
                         "order": this.column_order_by_r,
@@ -473,13 +526,19 @@
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend}`;
 
+                    const productNames = self.filter_products_4.map(item => item.name);
+                    const channelNames = self.filter_channel_4.map(item => item.name);
+                    const usersNames = self.filter_users_4.map(item => item.name);
+                    const star = self.filter_star_4.map(item => item.name);
                     let data = {
+                        "by": usersNames || [],
+                        "product": productNames || [],
+                        "channel": channelNames || [],
+                        "action": star || [],
+
                         "start_at": formattedStartDate || formattedDate,
                         "end_at": formattedEndDate || formattedDate,
                         "search": "",
-                        "by": [],
-                        "channel": [],
-                        "action": [],
                         "page": self.currentPagereview2,
                         "per_page": Number(this.itemsPerPagereview2),
                         "order": this.column_order_by_r2,
@@ -659,7 +718,8 @@
                 if (!Array.isArray(this.dataDailySum)) {
                     return [];
                 }
-                return this.dataDailySum.filter(list => list.channel_name === channelName);            },
+                return this.dataDailySum.filter(list => list.channel_name === channelName);
+            },
 
             modalEdit(data) {
                 $('#staticBackdrop').modal('show');
@@ -686,6 +746,308 @@
                 }
             },
 
+            async filterModalVDO(value, tableSession) {
+                console.log("🚀 ~ filterModalVDO ~ value:", value)
+                const self = this;
+                self.modal_titles = value
+                self.modal_session = tableSession
+                $('#filter_model').modal('show')
+
+                if (tableSession === 1) {
+                    if (value === 'สินค้า') {
+                        try {
+                            const req = await services.getProduct(self.token_header);
+                            self.data_products = req.data.data.map(item => {
+                                const existingProduct = self.filter_products.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else if (value === 'ช่องทาง') {
+                        console.log("a;kasd")
+                        try {
+                            const req = await services.getChannel(self.token_header);
+                            self.data_channel = req.data.data.map(item => {
+                                const existingProduct = self.filter_channel.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else {
+                        try {
+                            const req = await services.getUser(self.token_header);
+                            self.data_users = req.data.data.map(item => {
+                                const existingProduct = self.filter_users.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    }
+                } else if (tableSession === 2) {
+                    if (value === 'ชื่อสินค้า') {
+                        try {
+                            const req = await services.getProductAll(self.token_header);
+                            self.data_products_2 = req.data.data.map(item => {
+                                const existingProduct = self.filter_products_2.find(prod => prod.name === item.product_name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.product_name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else if (value === 'ช่องทาง') {
+                        try {
+                            const req = await services.getChannelAll(self.token_header);
+                            self.data_channel_2 = req.data.data.map(item => {
+                                const existingProduct = self.filter_channel_2.find(prod => prod.name === item.channel_name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.channel_name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else {
+                        try {
+                            const req = await services.getUser(self.token_header);
+                            self.data_users_2 = req.data.data.map(item => {
+                                const existingProduct = self.filter_users_2.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    }
+                } else if (tableSession === 3) {
+                    if (value === 'ร้าน') {
+                        try {
+                            let data = {}
+                            const req = await services.getShopTT(data, self.token_header);
+                            self.data_products_3 = req.data.data.map(item => {
+                                const existingProduct = self.filter_products_3.find(prod => prod.name === item.shop_name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.shop_name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else if (value === 'เรื่องการละเมิด') {
+                        try {
+                            self.data_channel_3 = self.matter_story.map(item => {
+                                const existingProduct = self.filter_channel_3.find(prod => prod.name === item.name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else {
+                        try {
+                            const req = await services.getUser(self.token_header);
+                            self.data_users_3 = req.data.data.map(item => {
+                                const existingProduct = self.filter_users_3.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    }
+                } else {
+                     if (value === 'ช่องทาง') {
+                        try {
+                            let data = {}
+                            const req = await services.getShopTT(data, self.token_header);
+                            self.data_channel_4 = req.data.data.map(item => {
+                                const existingProduct = self.filter_channel_4.find(prod => prod.name === item.shop_name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.shop_name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else if (value === 'สินค้า') {
+                        try {
+                            const req = await services.getProductAll(self.token_header);
+                            self.data_products_4 = req.data.data.map(item => {
+                                const existingProduct = self.filter_products_4.find(prod => prod.name === item.product_name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.product_name
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else if (value === 'ผู้ดูแล') {
+                        try {
+                            const req = await services.getUser(self.token_header);
+                            self.data_users_4 = req.data.data.map(item => {
+                                const existingProduct = self.filter_users_4.find(prod => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error)
+                        }
+                    } else {
+                        try {
+                            self.data_star_4 = self.dataEditStars.map(item => {
+                                const existingProduct = self.filter_star_4.find(prod => prod.name === item.name);
+
+                                return {
+                                    check_value: existingProduct ? existingProduct.check_value : false,
+                                    name: item.name
+                                };
+                            });      
+                        } catch (error) {
+                            console.log("🚀 ~ filterModalVDO ~ error:", error)
+                        }
+                    }
+                }
+            },
+            closeModalFilter() {
+                $('#filter_model').modal('hide')
+                if (this.modal_session === 1) {
+                    this.data_products = []
+                    this.data_channel = []
+                    this.data_users = []
+                } else if (this.modal_session === 2) {
+                    this.data_products_2 = []
+                    this.data_channel_2 = []
+                    this.data_users_2 = []
+                } else if (this.modal_session === 3) {
+                    this.data_products_3 = []
+                    this.data_channel_3 = []
+                    this.data_users_3 = []
+                } else {
+                    this.data_products_4 = []
+                    this.data_channel_4 = []
+                    this.data_users_4 = []
+                    this.data_star_4 = []
+                }
+
+            },
+            async saveFilter() {
+                const self = this
+
+                function addOrRemoveItem(filterArray, item) {
+                    console.log("🚀 ~ addOrRemoveItem ~ filterArray:", filterArray)
+                    const index = filterArray.findIndex(existingItem => existingItem.name === item.name);
+                    if (item.check_value) {
+                        if (index === -1) {
+                            filterArray.push(item);
+                        }
+                    } else {
+                        if (index !== -1) {
+                            filterArray.splice(index, 1);
+                        }
+                    }
+                }
+
+                if (self.modal_session === 1) {
+                    if (self.modal_titles === 'สินค้า') {
+                        self.data_products.forEach(item => addOrRemoveItem(self.filter_products, item));
+                    } else if (self.modal_titles === 'ช่องทาง') {
+                        self.data_channel.forEach(item => addOrRemoveItem(self.filter_channel, item));
+                    } else {
+                        self.data_users.forEach(item => addOrRemoveItem(self.filter_users, item));
+                    }
+                    self.data_products = []
+                    self.data_channel = []
+                    self.data_users = []
+                    $('#filter_model').modal('hide')
+
+                    await self.loadDataClip()
+                } else if (self.modal_session === 2) {
+                    if (self.modal_titles === 'สินค้า') {
+                        self.data_products_2.forEach(item => addOrRemoveItem(self.filter_products_2, item));
+                    } else if (self.modal_titles === 'ช่องทาง') {
+                        self.data_channel_2.forEach(item => addOrRemoveItem(self.filter_channel_2, item));
+                    } else {
+                        self.data_users_2.forEach(item => addOrRemoveItem(self.filter_users_2, item));
+                    }
+                    self.data_products_2 = []
+                    self.data_channel_2 = []
+                    self.data_users_2 = []
+                    $('#filter_model').modal('hide')
+
+                    await self.loadDataProductChannel()
+                } else if (self.modal_session === 3) {
+                    if (self.modal_titles === 'ร้าน') {
+                        self.data_products_3.forEach(item => addOrRemoveItem(self.filter_products_3, item));
+                    } else if (self.modal_titles === 'เรื่องการละเมิด') {
+                        self.data_channel_3.forEach(item => addOrRemoveItem(self.filter_channel_3, item));
+                    } else {
+                        self.data_users_3.forEach(item => addOrRemoveItem(self.filter_users_3, item));
+                    }
+                    self.data_products_3 = []
+                    self.data_channel_3 = []
+                    self.data_users_3 = []
+                    $('#filter_model').modal('hide')
+
+                    await self.loadDataReview()
+                } else {
+                    if (self.modal_titles === 'ช่องทาง') {
+                        self.data_channel_4.forEach(item => addOrRemoveItem(self.filter_channel_4, item));
+                    } else if (self.modal_titles === 'สินค้า') {
+                        self.data_products_4.forEach(item => addOrRemoveItem(self.filter_products_4, item));
+                    } else if (self.modal_titles === 'ผู้ดูแล') {
+                        self.data_users_4.forEach(item => addOrRemoveItem(self.filter_users_4, item));
+                    } else {
+                        self.data_star_4.forEach(item => addOrRemoveItem(self.filter_star_4, item));
+                    }
+                    self.data_products_4 = []
+                    self.data_channel_4 = []
+                    self.data_users_4 = []
+                    self.data_star_4 = []
+                    $('#filter_model').modal('hide')
+
+                    await self.loadDataReviewTb2()
+                }
+
+            },
+
 
             async onSaveModal() {
                 try {
@@ -701,6 +1063,47 @@
                     console.log("🚀 ~ onSaveModal ~ error:", error);
                 }
                 $('#staticBackdrop').modal('hide');
+            },
+
+            resetCheckValue() {
+                const self = this
+
+                if (self.modal_session === 1) {
+                    if (self.modal_titles === 'สินค้า') {
+                        this.data_products.forEach(item => item.check_value = false);
+                    } else if (self.modal_titles === 'ช่องทาง') {
+                        this.data_channel.forEach(item => item.check_value = false);
+                    } else {
+                        this.data_users.forEach(item => item.check_value = false);
+                    }
+                } else if (self.modal_session === 2) {
+                    if (self.modal_titles === 'ชื่อสินค้า') {
+                        this.data_products_2.forEach(item => item.check_value = false);
+                    } else if (self.modal_titles === 'ช่องทาง') {
+                        this.data_channel_2.forEach(item => item.check_value = false);
+                    } else {
+                        this.data_users_2.forEach(item => item.check_value = false);
+                    }
+                } else if (self.modal_session === 3) {
+                    if (self.modal_titles === 'ชื่อสินค้า') {
+                        this.data_products_3.forEach(item => item.check_value = false);
+                    } else if (self.modal_titles === 'ช่องทาง') {
+                        this.data_channel_3.forEach(item => item.check_value = false);
+                    } else {
+                        this.data_users_3.forEach(item => item.check_value = false);
+                    }
+                } else {
+                    if (self.modal_titles === 'ช่องทาง') {
+                        this.data_channel_4.forEach(item => item.check_value = false);
+                    } else if (self.modal_titles === 'สินค้า') {
+                        this.data_products_4.forEach(item => item.check_value = false);
+                    } else if (self.modal_titles === 'ผู้ดูแล') {
+                        this.data_users_4.forEach(item => item.check_value = false);
+                    } else {
+                        this.data_star_4.forEach(item => item.check_value = false);
+                    }
+                }
+
             },
 
             async DefaultData() {

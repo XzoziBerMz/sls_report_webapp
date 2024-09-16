@@ -6,7 +6,7 @@
 
     }
 
-    function getClip(body = {},token) {
+    function getClip(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/vdo/filter`,
@@ -26,7 +26,7 @@
         // });
     }
 
-    function getReview(body = {},token) {
+    function getReview(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/review/filter-daily`,
@@ -37,7 +37,7 @@
         });
     }
 
-    function getReviewTb2(body = {},token) {
+    function getReviewTb2(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/review/filter-negative`,
@@ -47,7 +47,7 @@
             headers: { "x-auth-token": token }
         });
     }
-    function getDailySum(body = {},token) {
+    function getDailySum(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/chat/daily-v2-sum`,
@@ -57,7 +57,7 @@
             headers: { "x-auth-token": token }
         });
     }
-    function getlog(body = {},token) {
+    function getlog(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/log/filter`,
@@ -68,7 +68,7 @@
         });
     }
 
-    function getUpdateActionReviewNegativeHandler(body = {},token) {
+    function getUpdateActionReviewNegativeHandler(body = {}, token) {
         return axios({
             method: 'post',
             url: basepath + `/api/v1/review/update-action-negative`,
@@ -81,23 +81,87 @@
 
     function getOrderManual(body = {}, token) {
         return axios({
-          method: "post",
-          url: basepath + `/api/v1/order/filter-manual`,
-          // url: endpoint.getKeyReview,
-          // url: basePath + endpoint.getKeyReview,
-          data: { ...body },
-          headers: { "x-auth-token": token },
+            method: "post",
+            url: basepath + `/api/v1/order/filter-manual`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token },
         });
-      }
+    }
+    function getShopTT(body = {}, token) {
+        return axios({
+            method: "post",
+            url: basepath + `/api/v1/shop/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            data: { ...body },
+            headers: { "x-auth-token": token },
+        });
+    }
     function listChannel(token) {
         return axios({
-          method: "get",
-          url: basepath + `/api/v1/channel/list`,
-          // url: endpoint.getKeyReview,
-          // url: basePath + endpoint.getKeyReview,
-          headers: { "x-auth-token": token },
+            method: "get",
+            url: basepath + `/api/v1/channel/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
         });
-      }
+    }
+    function getProduct(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/vdo/list-product`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
+    function getChannel(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/vdo/list-channel`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
+    function getUser(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/vdo/list-save-by`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
+    function getProductAll(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/product/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
+    function getChannelAll(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/channel/list`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
+    // function getUserAll(token) {
+    //     return axios({
+    //         method: "get",
+    //         url: basepath + `/api/v1/vdo/list-save-by`,
+    //         // url: endpoint.getKeyReview,
+    //         // url: basePath + endpoint.getKeyReview,
+    //         headers: { "x-auth-token": token },
+    //     });
+    // }
 
 
     const services = {
@@ -110,6 +174,13 @@
         getlog,
         getOrderManual,
         listChannel,
+        getProduct,
+        getChannel,
+        getUser,
+        getProductAll,
+        getChannelAll,
+        getShopTT,
+        // getUserAll,
     };
     window.services = services;
 })(jQuery, window, axios);

@@ -199,7 +199,7 @@
                 }
                 this.isEnterPressed = false;
             },
-            
+
             async loadDataOrder() {
                 const self = this;
                 try {

@@ -106,19 +106,31 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-4 ">
                                                             <th class="min-w-200px align-middle">
-                                                                <div @click="sortTable('product')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>สินค้า</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('product')"></i>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div @click="sortTable('product')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>สินค้า</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIcon('product')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('สินค้า', 1)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div @click="sortTable('chanel')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ช่องทาง</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('chanel')"></i>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div @click="sortTable('chanel')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>ช่องทาง</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIcon('chanel')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('ช่องทาง', 1)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
@@ -130,11 +142,17 @@
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div @click="sortTable('user')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ผู้ลงบันทึก</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('user')"></i>
+                                                                <div class="d-flex  align-items-center">
+                                                                    <div @click="sortTable('user')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>ผู้ดูแล</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIcon('user')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('ผู้ดูแล', 1)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
                                                             </th>
                                                         </tr>
@@ -230,18 +248,25 @@
                                                             <th class="min-w-200px align-middle">
                                                                 <div @click="sortTableOrder('customer_name')"
                                                                     class="d-flex justify-content-between align-items-center">
-                                                                    <span>ชื่อลุกค้า</span>
+                                                                    <span>ชื่อลูกค้า</span>
                                                                     <i class="bi-chevron-down"
                                                                         :class="getSortIconorder('customer_name')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-100px align-middle">
-                                                                <div @click="sortTableOrder('product')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ชื่อสินค้า</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIconorder('product')"></i>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div @click="sortTableOrder('product')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>ชื่อสินค้า</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIconorder('product')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('ชื่อสินค้า', 2)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
+
                                                             </th>
                                                             <th class="min-w-200px align-middle">
                                                                 <div @click="sortTableOrder('order_no')"
@@ -252,12 +277,19 @@
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div @click="sortTableOrder('chanel')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ช่องทาง</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIconorder('chanel')"></i>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div @click="sortTableOrder('chanel')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>ช่องทาง</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIconorder('chanel')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('ช่องทาง', 2)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
+
                                                             </th>
                                                             <th class="min-w-200px align-middle">
                                                                 <div @click="sortTableOrder('note')"
@@ -268,12 +300,19 @@
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
-                                                                <div @click="sortTableOrder('user')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>user</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIconorder('user')"></i>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div @click="sortTableOrder('user')"
+                                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                                        <span>ผู้ดูแล</span>
+                                                                        <i class="bi-chevron-down"
+                                                                            :class="getSortIconorder('user')"></i>
+                                                                    </div>
+                                                                    <div class="flex-shrink-1">
+                                                                        <i @click="filterModalVDO('ผู้ดูแล', 2)"
+                                                                            class="pointer bi-funnel"></i>
+                                                                    </div>
                                                                 </div>
+
                                                             </th>
                                                         </tr>
                                                     </thead>
@@ -283,7 +322,8 @@
                                                                 <td class="text-start align-middle"
                                                                     v-text="utilsConvDate(item.p_date)"></td>
                                                                 <td class="text-start align-middle"
-                                                                    v-text="item.customer_name"></td>
+                                                                    v-text="item.customer_name">
+                                                                </td>
                                                                 <td class="text-start align-middle"
                                                                     v-text="item.product"></td>
                                                                 <td class="text-start align-middle"
@@ -367,15 +407,23 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR('chanel')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
-                                                                <div class="row w-75 ms-2">
-                                                                    <span>ร้าน</span>
+
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR('chanel')"
+                                                                    class="d-flex w-100 justify-content-around align-items-center">
+                                                                   
+                                                                    <div class="row w-75 ms-2">
+                                                                        <span>ร้าน</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR('chanel')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR('chanel')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('ร้าน', 3)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
+
                                                         </th>
                                                         <th class="min-w-100px align-middle">
                                                             <div @click="sortTableR('review_negative')"
@@ -422,14 +470,19 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-150px align-middle">
-                                                            <div @click="sortTableR('infraction')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-cash-stack"></i> -->
-                                                                <div class="row">
-                                                                    <span>เรื่องการละเมิด</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR('infraction')"
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row">
+                                                                        <span>เรื่องการละเมิด</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR('infraction')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR('infraction')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('เรื่องการละเมิด', 3)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-200px align-middle">
@@ -455,14 +508,19 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR('user')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
-                                                                <div class="row w-150 ms-2">
-                                                                    <span>ผู้ดูแล</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR('user')"
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row w-150 ms-2">
+                                                                        <span>ผู้ดูแล</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR('user')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR('user')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('ผู้ดูแล', 3)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                     </tr>
@@ -488,7 +546,8 @@
                                                                 v-text="item.infraction">
                                                             </td>
                                                             <td class="text-center align-middle"
-                                                                v-text="item.notification"></td>
+                                                                v-text="item.notification">
+                                                            </td>
                                                             <td class="text-center align-middle"
                                                                 v-text="item.approve_request"></td>
                                                             <td class="text-center align-middle" v-text="item.user">
@@ -605,25 +664,35 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR2('channel')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-cash-stack"></i> -->
-                                                                <div class="row">
-                                                                    <span>ช่องทาง</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR2('channel')"
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row">
+                                                                        <span>ช่องทาง</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR2('channel')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR2('channel')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('ช่องทาง', 4)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-150px align-middle">
-                                                            <div @click="sortTableR2('product')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-cash-stack"></i> -->
-                                                                <div class="row">
-                                                                    <span>สินค้า</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR2('product')"
+                                                                    class="d-flex w-100 justify-content-around align-items-center">
+                                                                    <div class="row">
+                                                                        <span>สินค้า</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR2('product')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR2('product')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('สินค้า', 4)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-200px align-middle">
@@ -638,31 +707,41 @@
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR2('user')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
-                                                                <div class="row w-100 ms-2">
-                                                                    <span>By(คอมเฟิร์ม)</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR2('user')"
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <!-- <i class="bi-type flex-shrink-1"></i> -->
+                                                                    <div class="row w-100 ms-2">
+                                                                        <span>ผู้ดูแล</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR2('user')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR2('user')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('ผู้ดูแล', 4)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
-                                                            <div @click="sortTableR2('action')"
-                                                                class="d-flex justify-content-around align-items-center">
-                                                                <!-- <i class="bi-type flex-shrink-1"></i> -->
-                                                                <div class="row w-100 ms-2">
-                                                                    <span>ตามแก้ดาว</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <div @click="sortTableR2('action')"
+                                                                    class="d-flex justify-content-around align-items-center">
+                                                                    <div class="row w-100 ms-2">
+                                                                        <span>ตามแก้ดาว</span>
+                                                                    </div>
+                                                                    <i class="bi-chevron-down"
+                                                                        :class="getSortIconR2('action')"></i>
                                                                 </div>
-                                                                <i class="bi-chevron-down"
-                                                                    :class="getSortIconR2('action')"></i>
+                                                                <div class="flex-shrink-1">
+                                                                    <i @click="filterModalVDO('ตามแก้ดาว', 4)"
+                                                                        class="pointer bi-funnel"></i>
+                                                                </div>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-100px align-middle">
                                                             <div
                                                                 class="d-flex justify-content-around align-items-center">
-
                                                                 <div class="row w-100 ms-2">
                                                                     <span>แก้ไขดาว</span>
                                                                 </div>
@@ -765,11 +844,11 @@
 
                                 <div class="row w-100 mt-12">
                                     <template v-for="(item, index) in dataNameChannel" :key="index">
-                                        <div class="col d-flex  h-100">
-                                            <div class="card box-shadow29 br-30 p-5 position-relative w-100">
+                                        <div class="col d-flex ">
+                                            <div class="card box-shadow29 br-30 p-5 w-100 d-flex flex-column h-100">
                                                 <div class="position-absolute top-0 start-50 translate-middle">
-                                                    <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                        :src="item.img_channel+'&export=view&authuser=0'" alt="">
+                                                    <img style="width: 50px; height: 50px; border-radius: 50px;"
+                                                        :src="item.img_channel+'&export=view&authuser=0'" alt="" />
                                                 </div>
                                                 <div class="row mt-5">
                                                     <template v-if="filteredData(item.channel_name).length">
@@ -787,7 +866,8 @@
                                             </div>
                                         </div>
                                     </template>
-                                    <div class="col d-flex h-100">
+
+                                    <!-- <div class="col d-flex h-100">
                                         <div class="card box-shadow29 br-30 p-5 position-relative w-100">
                                             <div
                                                 class="card border box-shadow3 h-25px w-100px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
@@ -804,7 +884,7 @@
                                                 </template>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -936,6 +1016,210 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" tabindex="-1" id="filter_model">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" v-text="modal_titles"></h3>
+
+                            <!--begin::Close-->
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" @click="closeModalFilter">
+                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                        class="path2"></span></i>
+                            </div>
+                            <!--end::Close-->
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="d-flex gap-5 flex-wrap">
+                                <template v-if="modal_session === 1">
+                                    <template v-if="modal_titles === 'สินค้า'" v-for="(item, index) in data_products">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_product' + index" :name="'check_product' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_product' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                    <template v-else-if="modal_titles === 'ช่องทาง'"
+                                        v-for="(item, index) in data_channel">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_channel' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                    <template v-else v-for="(item, index) in data_users">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template v-else-if="modal_session === 2">
+                                    <template v-if="modal_titles === 'ชื่อสินค้า'"
+                                        v-for="(item, index) in data_products_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_product' + index" :name="'check_product' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_product' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                    <template v-else-if="modal_titles === 'ช่องทาง'"
+                                        v-for="(item, index) in data_channel_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_channel' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                    <template v-else v-for="(item, index) in data_users_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template v-else-if="modal_session === 3">
+                                    <template v-if="modal_titles === 'ร้าน'"
+                                        v-for="(item, index) in data_products_3">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_product' + index" :name="'check_product' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_product' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                    <template v-else-if="modal_titles === 'เรื่องการละเมิด'"
+                                        v-for="(item, index) in data_channel_3">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_channel' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                    <template v-else v-for="(item, index) in data_users_3">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+
+                                <template v-else-if="modal_session === 4">
+                                    <template v-if="modal_titles === 'ช่องทาง'"
+                                        v-for="(item, index) in data_channel_4 ">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_product' + index" :name="'check_product' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_product' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                    <template v-else-if="modal_titles === 'สินค้า'"
+                                        v-for="(item, index) in data_products_4">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_channel' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                    <template v-else-if="modal_titles === 'ผู้ดูแล'" 
+                                    v-for="(item, index) in data_users_4">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <template v-else v-for="(item, index) in data_star_4">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" @click="resetCheckValue">Reset</button>
+                            <button type="button" class="btn btn-primary" @click="saveFilter">Save changes</button>
                         </div>
                     </div>
                 </div>
