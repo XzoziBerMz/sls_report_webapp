@@ -153,6 +153,15 @@
             headers: { "x-auth-token": token },
         });
     }
+    function getmanual(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/order/list-product-manual`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
     // function getUserAll(token) {
     //     return axios({
     //         method: "get",
@@ -180,6 +189,7 @@
         getProductAll,
         getChannelAll,
         getShopTT,
+        getmanual,
         // getUserAll,
     };
     window.services = services;

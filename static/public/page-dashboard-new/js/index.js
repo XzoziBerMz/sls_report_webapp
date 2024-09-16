@@ -801,13 +801,13 @@
                 } else if (tableSession === 2) {
                     if (value === 'ชื่อสินค้า') {
                         try {
-                            const req = await services.getProductAll(self.token_header);
+                            const req = await services.getmanual(self.token_header);
                             self.data_products_2 = req.data.data.map(item => {
-                                const existingProduct = self.filter_products_2.find(prod => prod.name === item.product_name);
+                                const existingProduct = self.filter_products_2.find(prod => prod.name === item);
 
                                 return {
                                     check_value: existingProduct ? existingProduct.check_value : false,
-                                    name: item.product_name
+                                    name: item
                                 };
                             });
                         } catch (error) {
@@ -1000,7 +1000,7 @@
 
                     await self.loadDataClip()
                 } else if (self.modal_session === 2) {
-                    if (self.modal_titles === 'สินค้า') {
+                    if (self.modal_titles === 'ชื่อสินค้า') {
                         self.data_products_2.forEach(item => addOrRemoveItem(self.filter_products_2, item));
                     } else if (self.modal_titles === 'ช่องทาง') {
                         self.data_channel_2.forEach(item => addOrRemoveItem(self.filter_channel_2, item));
