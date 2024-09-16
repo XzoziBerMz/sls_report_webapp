@@ -12,6 +12,7 @@
                 search: "",
                 filtered: [],
                 dataInsert: [],
+                dataShop: [],
 
                 formData: {
                     marwellsoy24: "",
@@ -52,96 +53,133 @@
         },
         methods: {
 
+            async loadDataShop() {
+                const self = this;
+                let data = { "channel_id": "" };
+                try {
+                    showLoading();
+                    let responsegetShop = await services.getShop(data, self.token_header);
+                    const dataShop = responsegetShop?.data.data || [];
+                    self.dataShop = dataShop;
+
+                    // Initialize formData and errors dynamically based on dataShop
+                    dataShop.forEach(shop => {
+                        self.formData[shop.shop_id] = "";
+                        self.errors[shop.shop_id] = "";
+                    });
+
+                    closeLoading();
+                } catch (error) {
+                    console.warn(`Error in loadDataShop:`, error);
+                    closeLoading();
+                }
+            },
+
             validateForm() {
                 this.errors = {};  // Reset the errors
                 let isValid = true;
-            
-                // Manually validate each field by converting it to a string before trimming
-                if (String(this.formData.marwellsoy24).trim() === "") {
-                    this.errors.marwellsoy24 = "กรุณากรอกข้อมูล";
-                    isValid = false;
+
+                // Validate each dynamically created form field
+                for (let item of this.dataShop) {
+                    const value = String(this.formData[item.shop_id]).trim();
+                    if (value === "") {
+                        this.errors[item.shop_id] = "กรุณากรอกข้อมูล";
+                        isValid = false;
+                    }
                 }
-            
-                if (String(this.formData.lookjeab).trim() === "") {
-                    this.errors.lookjeab = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.goodSup).trim() === "") {
-                    this.errors.goodSup = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.somchai).trim() === "") {
-                    this.errors.somchai = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.kaopan).trim() === "") {
-                    this.errors.kaopan = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.meemong).trim() === "") {
-                    this.errors.meemong = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.marwell224).trim() === "") {
-                    this.errors.marwell224 = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.tt5).trim() === "") {
-                    this.errors.tt5 = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.littleCactus).trim() === "") {
-                    this.errors.littleCactus = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.ketoFood).trim() === "") {
-                    this.errors.ketoFood = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.supplement).trim() === "") {
-                    this.errors.supplement = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.marineeY).trim() === "") {
-                    this.errors.marineeY = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.tt6).trim() === "") {
-                    this.errors.tt6 = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.myorder).trim() === "") {
-                    this.errors.myorder = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
-                if (String(this.formData.lineOa).trim() === "") {
-                    this.errors.lineOa = "กรุณากรอกข้อมูล";
-                    isValid = false;
-                }
-            
                 return isValid;
-            }
-            ,
+            },
+
+
+            // validateForm() {
+            //     this.errors = {};  // Reset the errors
+            //     let isValid = true;
+
+            //     // Manually validate each field by converting it to a string before trimming
+            //     if (String(this.formData.marwellsoy24).trim() === "") {
+            //         this.errors.marwellsoy24 = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.lookjeab).trim() === "") {
+            //         this.errors.lookjeab = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.goodSup).trim() === "") {
+            //         this.errors.goodSup = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.somchai).trim() === "") {
+            //         this.errors.somchai = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.kaopan).trim() === "") {
+            //         this.errors.kaopan = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.meemong).trim() === "") {
+            //         this.errors.meemong = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.marwell224).trim() === "") {
+            //         this.errors.marwell224 = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.tt5).trim() === "") {
+            //         this.errors.tt5 = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.littleCactus).trim() === "") {
+            //         this.errors.littleCactus = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.ketoFood).trim() === "") {
+            //         this.errors.ketoFood = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.supplement).trim() === "") {
+            //         this.errors.supplement = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.marineeY).trim() === "") {
+            //         this.errors.marineeY = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.tt6).trim() === "") {
+            //         this.errors.tt6 = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.myorder).trim() === "") {
+            //         this.errors.myorder = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     if (String(this.formData.lineOa).trim() === "") {
+            //         this.errors.lineOa = "กรุณากรอกข้อมูล";
+            //         isValid = false;
+            //     }
+
+            //     return isValid;
+            // },
             clearError(field) {
-                this.errors[field] = ""; 
+                this.errors[field] = "";
             },
 
             restrictToNumbers(field) {
-                this.formData[field] = this.formData[field].replace(/[^0-9]/g, "");  
-                this.clearError(field); 
+                this.formData[field] = this.formData[field].replace(/[^0-9]/g, "");
+                this.clearError(field);
             },
 
             clearFormData() {
@@ -155,50 +193,35 @@
             async savePage() {
                 if (this.validateForm()) {
                     try {
-                  
                         let data = {
-                            "marwellsoy24": Number(this.formData.marwellsoy24), 
-                            "lookjeab789": Number(this.formData.lookjeab),
-                            "marwell224": Number(this.formData.marwell224),
-                            "tt5": Number(this.formData.tt5),
-                            "tt6": Number(this.formData.tt6),
-                            "good_sup": Number(this.formData.goodSup),
-                            "somchai": Number(this.formData.somchai),
-                            "little_cactus": Number(this.formData.littleCactus),
-                            "keto_food": Number(this.formData.supplement),
-                            "keowpun": Number(this.formData.kaopan),
-                            "meemomg": Number(this.formData.meemong),
-                            "serm_d": Number(this.formData.ketoFood),
-                            "marinee_y": Number(this.formData.marineeY),
-                            "myorder": Number(this.formData.myorder),
-                            "line_oa": Number(this.formData.lineOa)
+                            data_json: []
                         };
+
+                        // Populate the data to be submitted based on formData
+                        this.dataShop.forEach(item => {
+                            data.data_json.push({
+                                shop_name: item.shop_name,         // Use shop_name from the dataShop
+                                total_count: Number(this.formData[item.shop_id]) // Use the corresponding formData value
+                            });
+                        });
 
                         const responsegetInsert = await services.getInsert(data, this.token_header);
                         const response = responsegetInsert?.data || {};
-
                         this.dataInsert = response.data || [];
 
                         this.clearFormData();
-                        
                         Msg("บันทึกสำเร็จ", 'success');
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 2000)
-
-
+                        setTimeout(() => window.location.reload(), 2000);
                     } catch (error) {
-                        console.warn("Error loading data:", error);
+                        console.warn("Error saving data:", error);
                     }
-
-                    console.log("Form is valid. Submitting data...");
                 } else {
                     console.log("Form validation failed.");
                 }
             }
-
         },
         mounted() {
+            this.loadDataShop()
             console.log("ok");
         }
     });

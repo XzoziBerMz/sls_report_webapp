@@ -50,7 +50,7 @@
     function getDailySum(body = {},token) {
         return axios({
             method: 'post',
-            url: basepath + `/api/v1/chat/daily-sum`,
+            url: basepath + `/api/v1/chat/daily-v2-sum`,
             // url: endpoint.getKeyReview,
             // url: basePath + endpoint.getKeyReview,
             data: { ...body },
@@ -89,6 +89,15 @@
           headers: { "x-auth-token": token },
         });
       }
+    function listChannel(token) {
+        return axios({
+          method: "get",
+          url: basepath + `/api/v1/channel/list`,
+          // url: endpoint.getKeyReview,
+          // url: basePath + endpoint.getKeyReview,
+          headers: { "x-auth-token": token },
+        });
+      }
 
 
     const services = {
@@ -100,6 +109,7 @@
         getClip,
         getlog,
         getOrderManual,
+        listChannel,
     };
     window.services = services;
 })(jQuery, window, axios);

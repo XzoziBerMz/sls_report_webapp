@@ -70,6 +70,8 @@
                     enableTime: false,
                     disableMobile: "true",
                     dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {
@@ -97,6 +99,8 @@
                     enableTime: false,
                     disableMobile: "true",
                     dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {

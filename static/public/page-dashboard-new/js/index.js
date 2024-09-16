@@ -82,6 +82,8 @@
                 startDate_status: false,
                 endDate_status: false,
                 selectedAction: '',
+                dataNameChannel: [],
+                unmatchedItems: [],
                 // date_show: currentDateShow,
                 dataEditStars: [
                     {
@@ -230,7 +232,7 @@
                 const end = this.currentPagereview * this.itemsPerPagereview;
                 return end > this.totalItemsreview ? this.totalItemsreview : end;
             },
-            
+
             startItemreviewT2() {
                 return (this.currentPagereview2 - 1) * this.itemsPerPagereview2 + 1;
             },
@@ -238,7 +240,6 @@
                 const end = this.currentPagereview2 * this.itemsPerPagereview2;
                 return end > this.totalItemsreview2 ? this.totalItemsreview2 : end;
             },
-            
         },
         methods: {
             ...window.webUtils.method || {},
@@ -283,52 +284,59 @@
                     enableTime: false,
                     disableMobile: "true",
                     dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {
                             const selectedDate = selectedDates[0];
-                
+
                             // Format the date to YYYY-MM-DD in local time zone
                             const year = selectedDate.getFullYear();
                             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
                             const day = String(selectedDate.getDate()).padStart(2, '0');
-                
+
                             self.startDate = `${year}-${month}-${day}`;
-                            console.log("🚀 ~ self.startDate:", self.startDate);
                             self.startDate_status = true;
-                
+
                             // Set minDate for the end date picker to prevent selecting earlier dates
                             self.flatpickr_dp_end_date.set("minDate", self.startDate);
-                
+                            if (self.endDate && new Date(self.startDate) > new Date(self.endDate)) {
+                                // Reset the input field for end date and clear the value
+                                self.flatpickr_dp_end_date.clear();
+                                self.endDate = ""; // Reset the variable holding end date
+                            }
+
                             await self.DefaultData();
                         }
                     },
                 });
-                
+
                 self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
                     static: true,
                     enableTime: false,
                     disableMobile: "true",
                     dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
                     maxDate: 'today',
                     onChange: async function (selectedDates, dateStr, instance) {
                         if (selectedDates.length) {
                             const selectedDate = selectedDates[0];
-                
+
                             // Format the date to YYYY-MM-DD in local time zone
                             const year = selectedDate.getFullYear();
                             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
                             const day = String(selectedDate.getDate()).padStart(2, '0');
-                
+
                             self.endDate = `${year}-${month}-${day}`;
-                            console.log("🚀 ~ self.endDate:", self.endDate);
                             self.endDate_status = true;
-                
+
                             await self.DefaultData();
                         }
                     },
                 });
-                
+
                 const currentDate = new Date();
                 const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ');
                 self.startDate = formattedDate
@@ -341,7 +349,6 @@
                     showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
@@ -381,7 +388,6 @@
                     showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
@@ -389,7 +395,6 @@
                     let formattedDateend = self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend} 23:59:59`;
                     let data = {
-
                         // search: this.search,
                         customer: this.customer || '', // Bind the search fields
                         product: this.product || '',
@@ -408,7 +413,6 @@
                     const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
                     const response = responseGetOrderManual?.data || {};
                     this.dataOrderManual = response.data || [];
-                    console.log("🚀 ~ loadDataProductChannel ~  this.dataOrderManual:", this.dataOrderManual)
 
                     self.totalItemsreorder = responseGetOrderManual.data.total;
                     closeLoading()
@@ -425,7 +429,6 @@
 
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10).replace('T', ' ') + ' 00:00:00';
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10) + ' 23:59:59';
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart} 00:00:00`;
@@ -463,7 +466,6 @@
                     showLoading();
                     const currentDate = new Date();
                     const formattedDate = currentDate.toISOString().slice(0, 10)
-                    const formattedDateEnd = currentDate.toISOString().slice(0, 10)
 
                     let formattedDatestart = self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedStartDate = `${formattedDatestart}`;
@@ -501,7 +503,6 @@
                     showLoading();
 
                     const currentDate = new Date().toISOString().slice(0, 10);
-                    const startDateFormatted = new Date(this.startDate || currentDate).toISOString().slice(0, 10);
 
                     let formattedDatestart = this.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
 
@@ -510,19 +511,19 @@
                         "start_at": formattedDatestart,
                         "end_at": formattedDateend
                     };
-
                     const responseGetDailySum = await services.getDailySum(data, this.token_header);
                     const response = responseGetDailySum?.data || {};
                     this.dataDailySum = response.data || {};
-
-
+                    const matchedNames = this.dataNameChannel.map(item => item.channel_name);
+                    this.unmatchedItems = this.dataDailySum.filter(item =>
+                        !matchedNames.includes(item.channel_name)
+                    );
                     closeLoading()
                 } catch (error) {
                     console.warn("Error loading data:", error);
                     closeLoading()
                 }
             },
-
 
             formatDate(date) {
                 const d = new Date(date);
@@ -532,71 +533,50 @@
                     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
                 ];
-                // const thaiMonths = [
-                //     'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
-                //     'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-                // ];
 
-                // const month = thaiMonths[d.getMonth()]; 
                 const month = englishMonthsAbbrev[d.getMonth()];
-                console.log("🚀 ~ formatDate ~ month:", month)
                 const year = d.getFullYear();
 
-                // return `${day} ${month} ${year + 543}` ;
-                return `${day} ${month} ${year}` ;
+                return `${day} ${month} ${year}`;
             },
-
 
             async sortTable(column) {
                 if (this.column_order_by === column) {
-                    // สลับทิศทางการเรียงลำดับ
                     this.order_sort = this.order_sort === 'asc' ? 'desc' : 'asc';
                 } else {
-                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
                     this.column_order_by = column;
                     this.order_sort = 'asc';
                 }
-                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataClip();
             },
             async sortTableR(column) {
                 if (this.column_order_by_r === column) {
-                    // สลับทิศทางการเรียงลำดับ
                     this.order_sort_r = this.order_sort_r === 'asc' ? 'desc' : 'asc';
                 } else {
-                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
                     this.column_order_by_r = column;
                     this.order_sort_r = 'asc';
                 }
-                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataReview();
             },
             async sortTableOrder(column) {
                 if (this.column_order_order === column) {
-                    // สลับทิศทางการเรียงลำดับ
                     this.order_sort_order = this.order_sort_order === 'asc' ? 'desc' : 'asc';
                 } else {
-                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
                     this.column_order_order = column;
                     this.order_sort_order = 'asc';
                 }
-                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataProductChannel();
             },
 
             async sortTableR2(column) {
                 if (this.column_order_by_r2 === column) {
-                    // สลับทิศทางการเรียงลำดับ
                     this.order_sort_r2 = this.order_sort_r2 === 'asc' ? 'desc' : 'asc';
                 } else {
-                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
                     this.column_order_by_r2 = column;
                     this.order_sort_r2 = 'asc';
                 }
-                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
                 await this.loadDataReviewTb2();
             },
-
 
             getSortIcon(column) {
                 const self = this;
@@ -661,27 +641,33 @@
                 this.loadDataClip(1, parseInt(event.target.value)); // Reset to page 1 when per-page changes
             },
 
-        
-
-        
-
-            async loadLog() {
-
+            async loadChannel() {
+                const self = this
+                try {
+                    const req = await services.listChannel(self.token_header)
+                    self.dataNameChannel = req.data.data || []
+                    console.log("🚀 ~ loadChannel ~ req:", req)
+                } catch (error) {
+                    console.log("🚀 ~ loadChannel ~ error:", error)
+                }
             },
 
             formatNumber(amount) {
                 return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
+            filteredData(channelName) {
+                if (!Array.isArray(this.dataDailySum)) {
+                    return [];
+                }
+                return this.dataDailySum.filter(list => list.channel_name === channelName);            },
 
             modalEdit(data) {
                 $('#staticBackdrop').modal('show');
-                this.data_edit = data ;
+                this.data_edit = data;
             },
             async editinghistory(data) {
                 $('#editinghistory').modal('show');
-                // this.data_edit = { ...data };
                 this.data_edit = data || this.data_edit;
-                console.log("🚀 ~ editinghistory ~ this.data_edit:", this.data_edit)
                 try {
                     let data = {
                         "service": "sls_negative_detail",
@@ -694,7 +680,6 @@
                     this.datLog = responseGetLog.data.data || {};
 
                     this.totallog = responseGetLog.data.total;
-                    console.log("🚀 ~ editinghistory ~ self.totallog:", this.totallog)
 
                 } catch (error) {
                     console.warn("Error loading data:", error);
@@ -709,24 +694,14 @@
                         "action": this.selectedAction || ""
                     };
                     let response = await services.getUpdateActionReviewNegativeHandler(data, this.token_header);
-                    console.log("🚀 ~ onSaveModal ~ response.code:", response.data.code);
-
                     if (response.data.code === 200) {
-                        // เรียกใช้ loadDataReviewTb2 หลังจากบันทึกข้อมูลสำเร็จ
                         await this.loadDataReviewTb2(); // ใช้ this แทน self
                     }
-
-                    console.log("🚀 ~ onSaveModal ~ data:", data);
                 } catch (error) {
                     console.log("🚀 ~ onSaveModal ~ error:", error);
                 }
-
-                console.log("🚀 ~ onSaveModal ~ this.data_edit:", this.data_edit);
-
-                // ปิดโมดัล
                 $('#staticBackdrop').modal('hide');
-            }
-            ,
+            },
 
             async DefaultData() {
                 const self = this;
@@ -735,7 +710,7 @@
                     await self.loadDataReview()
                     await self.loadDataReviewTb2()
                     await self.loadDataProductChannel()
-                    // await self.loadDataApp()
+                    await self.loadChannel()
                     await self.loadDailySum()
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)

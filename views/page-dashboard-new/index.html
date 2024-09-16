@@ -764,160 +764,47 @@
                                 <!-- Card App  -->
 
                                 <div class="row w-100 mt-12">
-                                    <div class="col d-flex  h-100">
-                                        <div class=" box-shadow29 br-30 p-5 position-relative w-100">
-                                            <div class="position-absolute top-0 start-50 translate-middle">
-                                                <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                    src="/assets/media/images/iconTikTok.png" alt="">
-                                            </div>
-                                            <div class="row mt-5">
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Marwllsoy24</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_marwellsoy24"></span>
+                                    <template v-for="(item, index) in dataNameChannel" :key="index">
+                                        <div class="col d-flex  h-100">
+                                            <div class="card box-shadow29 br-30 p-5 position-relative w-100">
+                                                <div class="position-absolute top-0 start-50 translate-middle">
+                                                    <img style="width: 50px;height: 50px; border-radius: 50px;"
+                                                        :src="item.img_channel+'&export=view&authuser=0'" alt="">
                                                 </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Lookjeab789</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_lookjeab789"></span>
+                                                <div class="row mt-5">
+                                                    <template v-if="filteredData(item.channel_name).length">
+                                                        <template v-for="(list, i) in filteredData(item.channel_name)"
+                                                            :key="i">
+                                                            <div class="d-flex justify-content-between">
+                                                                <span class="text-dark fw-bolder fs-14"
+                                                                    v-text="list.shop_name"></span>
+                                                                <span class="text-305 fw-bolder fs-14"
+                                                                    v-text="list.total_count"></span>
+                                                            </div>
+                                                        </template>
+                                                    </template>
                                                 </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Marwell</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_marwell224"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">TT5</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_tt5"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">TT6</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_tt6"></span>
-                                                </div>
-
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col d-flex h-100">
-                                        <div class=" box-shadow29 br-30 p-5 position-relative w-100 ">
-                                            <div class="position-absolute top-0 start-50 translate-middle">
-                                                <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                    src="/assets/media/images/Lazada.jpg.png" alt="">
-                                            </div>
-                                            <div class="row mt-5">
-
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Good Sup</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_good_sup"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">SOMchai</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_somchai"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Little Cactus</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_little_cactus"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">KETO Food</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_keto_food"></span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col d-flex h-100">
-                                        <div class="card box-shadow29 br-30 p-5 position-relative w-100 ">
-                                            <div class="position-absolute top-0 start-50 translate-middle">
-                                                <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                    src="/assets/media/images/shopping.png" alt="">
-                                            </div>
-                                            <div class="row mt-5">
-
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">ข้าวปั้น</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_keowpun"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">อาหารเสริมมีมง</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_meemomg"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">อาหารเสริมดี จำ</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_serm_d"></span>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">marinee</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_marinee_y"></span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </template>
                                     <div class="col d-flex h-100">
                                         <div class="card box-shadow29 br-30 p-5 position-relative w-100">
-                                            <div class="position-absolute top-0 start-50 translate-middle">
-                                                <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                    src="/assets/media/images/facebook.png" alt="">
-                                            </div>
-                                            <div class="row mt-5">
-
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Myorder</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_myorder"></span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col d-flex h-100">
-                                        <div class="card box-shadow29 br-30 p-5 position-relative w-100">
-                                            <div class="position-absolute top-0 start-50 translate-middle">
-                                                <img style="width: 50px;height: 50px; border-radius: 50px;"
-                                                    src="/assets/media/images/Line.png" alt="">
-                                            </div>
-                                            <div class="row mt-5">
-
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-dark fw-bolder fs-14">Line OA</span>
-                                                    <span class="text-305 fw-bolder fs-14"
-                                                        v-text="dataDailySum.total_line_oa"></span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-2 d-flex h-100">
-                                        <div class="card box-shadow29 br-30 p-3 position-relative w-100 d-flex">
                                             <div
                                                 class="card border box-shadow3 h-25px w-100px position-absolute top-0 start-50 d-flex justify-content-center align-items-center translate-middle">
                                                 <h1 class="text-center fs-18">อื่นๆ</h1>
                                             </div>
                                             <div class="row mt-5">
-                                                <div class="d-flex justify-content-between">
-                                                    <ul>
-                                                        <template v-for="(item, index) in dataOrder" :key="index">
-                                                            <li class="text-dark fw-bolder fs-14">
-                                                                ยืนยัน order (<span
-                                                                    v-text="formatNumber(item.amount_order)"></span>) ✔
-                                                            </li>
-                                                        </template>
-                                                    </ul>
-                                                </div>
+                                                <template v-for="(item, index) in unmatchedItems" :key="index">
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="text-dark fw-bolder fs-14"
+                                                            v-text="item.shop_name"></span>
+                                                        <span class="text-305 fw-bolder fs-14"
+                                                            v-text="item.total_count"></span>
+                                                    </div>
+                                                </template>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1009,7 +896,8 @@
                                                 </div>
                                                 <div class="">
                                                     <span class="fs-3 text-dark fw-bolder">วันที่: </span>
-                                                    <span class="fs-3" v-text="utilsConvDate(item.created_at.slice(0, 10))"></span>
+                                                    <span class="fs-3"
+                                                        v-text="utilsConvDate(item.created_at.slice(0, 10))"></span>
                                                 </div>
                                             </div>
                                         </div>
