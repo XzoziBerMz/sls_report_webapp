@@ -51,6 +51,19 @@
                     await self.created()
                     await self.loadData()
 
+                    self.dataAds.forEach((item, index) => {
+                        const selectorPayment = '#kt_td_picker_start_input_' + index;
+                        self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
+                            altInput: true,
+                            altFormat: "d/m/Y",
+                            dateFormat: "Y-m-d",
+                            onChange: async function (selectedDates, dateStr, instance) {
+                                item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                            },
+                        });
+                        self.set_date_time.setDate(item.date)
+                    })
+
                     try {
                         const req = await services.getProduct(self.token_header)
                         self.dataProduct = req.data.data || []
@@ -102,6 +115,8 @@
                         },
                     });
 
+                    
+
                     self.$nextTick(() => {
 
                         self.dataAds.forEach((item, index) => {
@@ -121,20 +136,6 @@
                             })
                         })
                     })
-
-                    // $('#select_product').html(`<option></option>`).select2({
-                    //     allowInput: false,
-                    //     // dropdownParent: $('#select_product').closest('.fv-row'),
-                    //     data: [..._.cloneDeep(self.dataProduct) || []]
-                    //         .map(item => ({ ...item, id: item.product_id, text: item.product_name })),
-                    // });
-                    // $('#select_product').on("change.custom", async function () {
-                    //     const values = $(this).select2("data") || [];
-                    //     const name = values?.[0]?.text || "";
-                    //     self.product_value = name;
-                    // });
-                    // $('#select_status').val('active').trigger('change');
-
                 }
             },
             handleInputN(value, index, field) {
@@ -160,6 +161,14 @@
                 this.end_date_time = formattedDate;
                 console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
             },
+            focusNext(column, nextIndex) {
+                const nextInput = this.$refs[column + '_' + nextIndex];
+                if (nextInput && nextInput[0]) { // ตรวจสอบว่าถ้าเป็น array
+                    nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
+                } else if (nextInput) {
+                    nextInput.focus(); // ถ้าเป็น element เดียว
+                }
+            },
             addAds() {
                 const self = this;
                 let data = {
@@ -174,7 +183,7 @@
                     "purchase": "",
                     "note": "",
                     "ref_default": 1,
-                    "date": self.start_date_time
+                    "date": ""
                 }
                 self.dataAds.push(data)
 
@@ -195,6 +204,16 @@
                             const selectedValue = $(this).val(); // Get the selected value
                             item.status = selectedValue || 10
                         })
+
+                        const selectorDate = '#kt_td_picker_start_input_' + index;
+                        $(selectorDate).flatpickr({
+                            altInput: true,
+                            altFormat: "d/m/Y",
+                            dateFormat: "Y-m-d",
+                            onChange: async function (selectedDates, dateStr, instance) {
+                                item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                            },
+                        });
                     })
                 })
             },
@@ -262,10 +281,10 @@
                         error.cost_per_purchase = true;
                         isValid = false;
                     }
-                    // if (!item.purchase) {
-                    //     error.purchase = true;
-                    //     isValid = false;
-                    // }
+                    if (!item.date) {
+                        error.date = "กรุณาเลือก วันที่";
+                        isValid = false;
+                    }
                     if (!item.status) {
                         error.status = "กรุณาเลือก สถานะ"
                         isValid = false;
@@ -357,9 +376,9 @@
                    
                     closeLoading();
                     Msg("บันทึกสำเร็จ", 'success');
-                    // setTimeout(function () {
-                    //     window.location.reload();
-                    // }, 2000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
                     
                 } else {
                     console.log("Form validation failed.");

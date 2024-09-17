@@ -22,6 +22,7 @@
                 currentPages: 1,
                 column_order_by: "p_timestamp",
                 order_sort: "desc",
+                data_shop: []
 
             }
         },
@@ -58,6 +59,30 @@
             ...window.webUtils.method || {},
             async init() {
                 let self = this
+
+                try {
+                    let data = {}
+                    const req = await services.getShop(data, self.token_header)
+                    if (req.data.code === 200) {
+                        self.data_shop = req.data.data || []
+                    }
+                } catch (error) {
+                    console.log("🚀 ~ DefaultData ~ error:", error)
+                }
+
+                $('#select_search').html(`<option></option>`).select2({
+                    allowInput: false,
+                    // dropdownParent: $('#select_search').closest('.fv-row'),
+                    data: [..._.cloneDeep(self.data_shop) || []]
+                        .map(item => ({ ...item, id: item.id, text: item.shop_name })),
+                });
+                $('#select_search').on("change.custom", async function () {
+                    const values = $(this).select2("data") || [];
+                    const name = values?.[0]?.text || "";
+                    self.serach_value = name;
+                    await self.loadDataAdd();
+                });
+                // $('#select_status').val('active').trigger('change');
 
                 $('#page_size_add').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value

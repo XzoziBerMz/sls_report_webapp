@@ -2,6 +2,7 @@
   // const basepath = "https://sls-report-api.945.report";
   const endpoint = {
     get_ads: `/api/v1/ads/cost/filter`,
+    get_shop: `/api/v1/shop/list`,
   };
 
   function getAdsCost(body = {}, token) {
@@ -12,9 +13,18 @@
       headers: { "x-auth-token": token },
     });
   }
+  function getShop(body = {}, token) {
+    return axios({
+      method: "post",
+      url: basepath + endpoint.get_shop,
+      data: { ...body },
+      headers: { "x-auth-token": token },
+    });
+  }
 
   const services = {
     getAdsCost,
+    getShop,
   };
   window.services = services;
 })(jQuery, window, axios);
