@@ -41,19 +41,90 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <h1 class="fs-1 fw-bolder">รายงาน ทำรายการ</h1>
                                 <div class="card p-10 mt-3 w-100">
-                                    <div class="d-flex justify-content-end">
+                                    <div class="d-flex justify-content-end gap-5">
+                                        <div class="d-flex gap-5">
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                            <!-- End Date Picker -->
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_end" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                         <div data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="true" data-kt-search-layout="inline">
                                             <form data-kt-search-element="form" class="w-100 position-relative" autocomplete="off">
                                                 <input type="hidden" />
                                                 <div class="input-container">
-                                                    <input type="text" class="form-control form-control-lg px-10" name="search" v-model="search" placeholder="ค้นหา.." data-kt-search-element="input" @blur="onSearchInput" />
+                                                    <input type="text" class="form-control form-control-lg px-10 form-control-5" name="search" v-model="search" placeholder="ค้นหา.." data-kt-search-element="input" @blur="onSearchInput" />
                                                     <i class="bi bi-search"></i>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
-                                    <div class="table-responsive border rounded-4">
+                                    <div class="table-responsive border rounded-4 mt-3">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <tr>
+                                                <th class="align-bottom w-200px">
+                                                </th>
+                                                <th class="align-bottom">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="customer" @blur="onSearchInput" class="form-control " id="floatingInputCustomer" placeholder=""/>
+                                                        <label for="floatingInputCustomer">ค้าหา ชื่อลูกค้า</label>
+                                                    </div>
+                                                </th>
+                                                <th class="align-bottom">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="product" @blur="onSearchInput" class="form-control " id="floatingInputProduct" placeholder=""/>
+                                                        <label for="floatingInputProduct">ค้าหา ชื่อสินค้า</label>
+                                                    </div>
+                                                </th>
+                                                <th class="align-bottom">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control " id="floatingInputOrderNo" placeholder=""/>
+                                                        <label for="floatingInputOrderNo">ค้าหา หมายเลขคำสั่งซื้อ</label>
+                                                    </div>
+                                                </th>
+                                                <th class="align-bottom">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control " id="floatingInputChanel" placeholder=""/>
+                                                        <label for="floatingInputChanel">ค้าหา ช่องทาง</label>
+                                                    </div>
+                                                </th>
+                                                <th class="align-bottom">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="note" @blur="onSearchInput" class="form-control " id="floatingInputNote" placeholder=""/>
+                                                        <label for="floatingInputNote">ค้าหา หมายเหตุ</label>
+                                                    </div>
+                                                </th>
+                                                <th class="align-bottom w-200px">
+                                                    <div class="form-floating mb-7">
+                                                        <input type="text" v-model="user" @blur="onSearchInput" class="form-control " id="floatingInputUser" placeholder=""/>
+                                                        <label for="floatingInputUser">ค้าหา user</label>
+                                                    </div>
+                                                </th>
+                                            </tr>
                                             <tr class="fw-bold fs-4">
                                                 <th class="min-w-100px align-middle" @click="sortData('p_date')">
                                                     <div class="d-flex justify-content-between align-items-center">
@@ -118,77 +189,48 @@
                                                     </tr>
                                                 </template>
                                             </tbody>
-                                            <tfoot class="tfoot-bordered">
-                                                <td class="align-top w-200px">
-                                                    <!-- <div class="row">
-                                                        <div class="form-floating pt-2">
-                                                            <input
-                                                                id="kt_td_picker_basic_input"
-                                                                type="text"
-                                                                class="form-control"
-                                                                placeholder="From" />
+                                            <!-- <tfoot class="tfoot-bordered">
+                                                <tr>
+                                                    <td class="align-top w-200px">
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="customer" @blur="onSearchInput" class="form-control " id="floatingInputCustomer" placeholder=""/>
+                                                            <label for="floatingInputCustomer">ชื่อลูกค้า</label>
                                                         </div>
-                                                        <div class="form-floating">
-                                                            <input
-                                                                id="kt_td_picker_basic_input_to"
-                                                                ref="toDatePicker" 
-                                                                type="text"
-                                                                class="form-control"
-                                                                placeholder="To" />
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="product" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputProduct" placeholder=""/>
+                                                            <label for="floatingInputProduct">สินค้า</label>
                                                         </div>
-                                                    </div> -->
-                                                    <div class="row">
-                                                        <div class="form-floating ">
-                                                            <input type="date" class="form-control"
-                                                                id="kt_td_picker_basic_input" placeholder="" />
-                                                            <label for="floatingInput">From</label>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputOrderNo" placeholder=""/>
+                                                            <label for="floatingInputOrderNo">หมายเลขคำสั่งซื้อ</label>
                                                         </div>
-                                                        <div class="form-floating ">
-                                                            <input type="date" class="form-control"
-                                                                id="kt_td_picker_basic_input_to" placeholder="" />
-                                                            <label for="floatingInput">To</label>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputChanel" placeholder=""/>
+                                                            <label for="floatingInputChanel">ช่องทาง</label>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                
-                                                <td class="align-top">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="customer" @blur="onSearchInput" class="form-control" id="floatingInputCustomer" placeholder=""/>
-                                                        <label for="floatingInputCustomer">ชื่อลูกค้า</label>
-                                                    </div>
-                                                </td>
-                                                <td class="align-top">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="product" @blur="onSearchInput" class="form-control" id="floatingInputProduct" placeholder=""/>
-                                                        <label for="floatingInputProduct">สินค้า</label>
-                                                    </div>
-                                                </td>
-                                                <td class="align-top">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control" id="floatingInputOrderNo" placeholder=""/>
-                                                        <label for="floatingInputOrderNo">หมายเลขคำสั่งซื้อ</label>
-                                                    </div>
-                                                </td>
-                                                <td class="align-top">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control" id="floatingInputChanel" placeholder=""/>
-                                                        <label for="floatingInputChanel">ช่องทาง</label>
-                                                    </div>
-                                                </td>
-                                                <td class="align-top">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="note" @blur="onSearchInput" class="form-control" id="floatingInputNote" placeholder=""/>
-                                                        <label for="floatingInputNote">หมายเหตุ</label>
-                                                    </div>
-                                                </td>
-                                                <td class="align-top w-200px">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="user" @blur="onSearchInput" class="form-control" id="floatingInputUser" placeholder=""/>
-                                                        <label for="floatingInputUser">user</label>
-                                                    </div>
-                                                </td>
-                                                
-                                            </tfoot>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="note" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputNote" placeholder=""/>
+                                                            <label for="floatingInputNote">หมายเหตุ</label>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-top w-200px">
+                                                        <div class="form-floating mb-7">
+                                                            <input type="text" v-model="user" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputUser" placeholder=""/>
+                                                            <label for="floatingInputUser">user</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot> -->
                                         </table>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">

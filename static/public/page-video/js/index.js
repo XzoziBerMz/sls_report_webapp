@@ -113,7 +113,7 @@
                     console.log("🚀 ~ init ~ error:", error)
 
                 } finally {
-                    const fromDatePicker = $("#floatingInputFrom").flatpickr({
+                    const fromDatePicker = $("#kt_td_picker_start_input").flatpickr({
                         dateFormat: "d/m/Y",
                         maxDate: "today",
                         onChange: async function (selectedDates, dateStr, instance) {
@@ -134,7 +134,7 @@
                     });
 
                     // Initialize Flatpickr for the end date input
-                    const toDatePicker = $("#floatingInputTo").flatpickr({
+                    const toDatePicker = $("#kt_td_picker_end_input").flatpickr({
                         dateFormat: "d/m/Y", // Ensure this is set correctly
                         maxDate: "today",
                         onChange: async function (selectedDates, dateStr, instance) {

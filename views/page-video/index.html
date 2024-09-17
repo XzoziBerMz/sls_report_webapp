@@ -40,14 +40,44 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <h1 class="fs-1 fw-bolder">รายงาน คลิปวีดีโอ</h1>
                                 <div class="card p-10 mt-3 w-100">
-                                    <div class="d-flex justify-content-end">
+                                    <div class="d-flex justify-content-end gap-10">
+                                        <div class="d-flex gap-5">
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                            <!-- End Date Picker -->
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_end" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                         <div class="position-relative">
                                             <!-- <form class="w-100 position-relative" autocomplete="off"> -->
                                             <input type="hidden" />
                                             <div class="input-container">
-                                                <input type="text" class="form-control form-control-lg"
-                                                    v-model="serach_value"
-                                                    @blur="handleBlur()" placeholder="ค้นหา.." />
+                                                <input type="text" class="form-control form-control-5 form-control-lg"
+                                                    v-model="serach_value" @blur="handleBlur()" placeholder="ค้นหา.." />
                                                 <i class="bi bi-search"></i>
                                             </div>
                                             <!-- </form> -->
@@ -66,11 +96,18 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center"
-                                                            @click="sortTable('product')">
-                                                            <span>สินค้า</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('product')"></i>
+                                                        <div class="d-flex gap-3 align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('product')">
+                                                                <span>สินค้า</span>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('product')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('สินค้า')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
+
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle">
@@ -82,12 +119,19 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center"
-                                                            @click="sortTable('chanel')">
-                                                            <span>ช่องทาง</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('chanel')"></i>
+                                                        <div class="d-flex w-100 gap-3 align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('chanel')">
+                                                                <span>ช่องทาง</span>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('chanel')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('ช่องทาง')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
                                                         </div>
+
                                                     </th>
                                                     <th class="min-w-200px align-middle">
                                                         <div class="d-flex justify-content-between align-items-center"
@@ -97,10 +141,16 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle">
-                                                        <div class="d-flex justify-content-between align-items-center"
-                                                            @click="sortTable('user')">
-                                                            <span>ผู้ลงบันทึก</span>
-                                                            <i class="bi-chevron-down" :class="getSortIcon('user')"></i>
+                                                        <div class="d-flex w-100 gap-3 align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('user')">
+                                                                <span>ผู้ลงบันทึก</span>
+                                                                <i class="bi-chevron-down" :class="getSortIcon('user')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('ผู้ลงบันทึก')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
                                                         </div>
                                                     </th>
                                                     <th class="min-w-100px align-middle">
@@ -146,7 +196,7 @@
                                                         <td class="text-start align-middle" v-text="item.approved"></td>
                                                     </tr>
                                                 </template>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td class="align-top w-200px">
                                                         <div class="row">
                                                             <div class="form-floating ">
@@ -196,7 +246,7 @@
                                                     </td>
                                                     <td class="align-top w-200px">
                                                     </td>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -254,8 +304,9 @@
                             <template v-if="modal_titles === 'สินค้า'" v-for="(item, index) in data_products">
                                 <div class="align-middle pe-3">
                                     <div class="form-check form-check-solid">
-                                        <input class="form-check-input" type="checkbox" :checked="item.check_value" v-model="item.check_value"
-                                            :id="'check_product' + index" :name="'check_product' + index" />
+                                        <input class="form-check-input" type="checkbox" :checked="item.check_value"
+                                            v-model="item.check_value" :id="'check_product' + index"
+                                            :name="'check_product' + index" />
                                         <label class="form-check-label text-dark" :for="'check_product' + index"
                                             v-text="item.name"></label>
                                     </div>
@@ -266,8 +317,9 @@
                             <template v-else-if="modal_titles === 'ช่องทาง'" v-for="(item, index) in data_channel">
                                 <div class="align-middle pe-3">
                                     <div class="form-check form-check-solid">
-                                        <input class="form-check-input" type="checkbox" :checked="item.check_value" v-model="item.check_value"
-                                            :id="'check_channel' + index" :name="'check_channel' + index" />
+                                        <input class="form-check-input" type="checkbox" :checked="item.check_value"
+                                            v-model="item.check_value" :id="'check_channel' + index"
+                                            :name="'check_channel' + index" />
                                         <label class="form-check-label text-dark" :for="'check_channel' + index"
                                             v-text="item.name"></label>
                                     </div>
@@ -278,8 +330,9 @@
                             <template v-else v-for="(item, index) in data_users">
                                 <div class="align-middle pe-3">
                                     <div class="form-check form-check-solid">
-                                        <input class="form-check-input" type="checkbox" :checked="item.check_value" v-model="item.check_value"
-                                            :id="'check_users' + index" :name="'check_users' + index" />
+                                        <input class="form-check-input" type="checkbox" :checked="item.check_value"
+                                            v-model="item.check_value" :id="'check_users' + index"
+                                            :name="'check_users' + index" />
                                         <label class="form-check-label text-dark" :for="'check_users' + index"
                                             v-text="item.name"></label>
                                     </div>

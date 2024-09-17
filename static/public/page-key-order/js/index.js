@@ -62,6 +62,65 @@
         },
         methods: {
             ...window.webUtils.method || {},
+            async init() {
+                let self = this
+
+                self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.startDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.startDate:", self.startDate);
+                            self.startDate_status = true;
+
+                            // Set minDate for the end date picker to prevent selecting earlier dates
+                            self.flatpickr_dp_end_date.set("minDate", self.startDate);
+
+                            await self.loadData();
+                        }
+                    },
+                });
+
+                self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
+                    maxDate: 'today',
+                    onChange: async function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length) {
+                            const selectedDate = selectedDates[0];
+
+                            // Format the date to YYYY-MM-DD in local time zone
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                            const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                            self.endDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.endDate:", self.endDate);
+                            self.endDate_status = true;
+
+                            await self.loadData();
+                        }
+                    },
+                });
+
+            },
             async DefaultData() {
                 const self = this;
 
@@ -126,22 +185,23 @@
                 // });
             },
             async loadData() {
+                const self = this;
                 try {
                     showLoading();
                     let data = {
-                        search: this.search,
-                        customer: this.customer || '', // Bind the search fields
-                        product: this.product || '',
-                        order_no: this.order_no || '',
-                        chanel: this.chanel || '',
-                        note: this.note || '',
-                        user: this.user || '',
-                        "start_at": this.from_date ? this.from_date : null,
-                        "end_at": this.to_date ? this.to_date : null,
-                        page: this.currentPages,
-                        per_page: +this.perPage,
-                        order: this.sortField,
-                        order_by: this.sortOrder
+                        search: self.search,
+                        customer: self.customer || '', // Bind the search fields
+                        product: self.product || '',
+                        order_no: self.order_no || '',
+                        chanel: self.chanel || '',
+                        note: self.note || '',
+                        user: self.user || '',
+                        "start_at": self.startDate,
+                        "end_at": self.endDate ,
+                        page: self.currentPages,
+                        per_page: +self.perPage,
+                        order: self.sortField,
+                        order_by: self.sortOrder
                     };
         
                     const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
@@ -193,6 +253,7 @@
             this.loadData();
             this.DefaultData();
             this.DefaultDataTO();
+            this.init();
             console.log("Component mounted and data loaded");
         }
     });
