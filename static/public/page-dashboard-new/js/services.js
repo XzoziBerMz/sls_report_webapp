@@ -162,6 +162,15 @@
             headers: { "x-auth-token": token },
         });
     }
+    function getChannelShop(token) {
+        return axios({
+            method: "get",
+            url: basepath + `/api/v1/review/list-channel-negative`,
+            // url: endpoint.getKeyReview,
+            // url: basePath + endpoint.getKeyReview,
+            headers: { "x-auth-token": token },
+        });
+    }
     // function getUserAll(token) {
     //     return axios({
     //         method: "get",
@@ -190,6 +199,7 @@
         getChannelAll,
         getShopTT,
         getmanual,
+        getChannelShop,
         // getUserAll,
     };
     window.services = services;
