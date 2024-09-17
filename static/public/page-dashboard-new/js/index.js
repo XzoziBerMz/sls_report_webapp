@@ -173,6 +173,7 @@
         filter_users_3: [],
         filter_users_4: [],
         filter_star_4: [],
+        data_star_4: [],
       };
     },
     computed: {
@@ -1085,22 +1086,42 @@
               console.log("🚀 ~ filterModal ~ error:", error);
             }
           } else {
-            try {
-              self.data_star_4 = self.dataEditStars.map((item) => {
-                const existingProduct = self.filter_star_4.find(
-                  (prod) => prod.name === item.name
+   
+              try {
+                const req = await services.getdataEditStars(
+                  self.token_header
                 );
+                self.data_star_4 = req.data.data.map((item) => {
+                  const existingProduct = self.filter_star_4.find(
+                    (prod) => prod === item
+                  );
+  
+                  return {
+                    check_value: existingProduct
+                      ? existingProduct.check_value
+                      : false,
+                    name: item,
+                  };
+                });
+              } catch (error) {
+                console.log("🚀 ~ filterModal ~ error:", error);
+              }
+            // try {
+            //   self.data_star_4 = self.dataEditStars.map((item) => {
+            //     const existingProduct = self.filter_star_4.find(
+            //       (prod) => prod.name === item.name
+            //     );
 
-                return {
-                  check_value: existingProduct
-                    ? existingProduct.check_value
-                    : false,
-                  name: item.name,
-                };
-              });
-            } catch (error) {
-              console.log("🚀 ~ filterModalVDO ~ error:", error);
-            }
+            //     return {
+            //       check_value: existingProduct
+            //         ? existingProduct.check_value
+            //         : false,
+            //       name: item.name,
+            //     };
+            //   });
+            // } catch (error) {
+            //   console.log("🚀 ~ filterModalVDO ~ error:", error);
+            // }
           }
         }
       },

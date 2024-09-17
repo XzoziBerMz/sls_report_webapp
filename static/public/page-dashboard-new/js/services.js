@@ -205,6 +205,15 @@
       headers: { "x-auth-token": token },
     });
   }
+  function getdataEditStars(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/review/list-action-negative`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
   // function getUserAll(token) {
   //     return axios({
   //         method: "get",
@@ -237,6 +246,7 @@
     ListProductReviewNegative,
     ListUserByReviewNegative,
     ListInfractionReviewDaily,
+    getdataEditStars,
     // getUserAll,
   };
   window.services = services;
