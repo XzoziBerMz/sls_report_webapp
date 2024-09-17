@@ -73,11 +73,16 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="true" data-kt-search-layout="inline">
-                                            <form data-kt-search-element="form" class="w-100 position-relative" autocomplete="off">
+                                        <div data-kt-search-keypress="true" data-kt-search-min-length="2"
+                                            data-kt-search-enter="true" data-kt-search-layout="inline">
+                                            <form data-kt-search-element="form" class="w-100 position-relative"
+                                                autocomplete="off">
                                                 <input type="hidden" />
                                                 <div class="input-container">
-                                                    <input type="text" class="form-control form-control-lg px-10 form-control-5" name="search" v-model="search" placeholder="ค้นหา.." data-kt-search-element="input" @blur="onSearchInput" />
+                                                    <input type="text"
+                                                        class="form-control form-control-lg px-10 form-control-5"
+                                                        name="search" v-model="search" placeholder="ค้นหา.."
+                                                        data-kt-search-element="input" @blur="onSearchInput" />
                                                     <i class="bi bi-search"></i>
                                                 </div>
                                             </form>
@@ -85,97 +90,89 @@
                                     </div>
                                     <div class="table-responsive border rounded-4 mt-3">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
-                                            <tr>
-                                                <th class="align-bottom w-200px">
-                                                </th>
-                                                <th class="align-bottom">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="customer" @blur="onSearchInput" class="form-control " id="floatingInputCustomer" placeholder=""/>
-                                                        <label for="floatingInputCustomer">ค้าหา ชื่อลูกค้า</label>
-                                                    </div>
-                                                </th>
-                                                <th class="align-bottom">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="product" @blur="onSearchInput" class="form-control " id="floatingInputProduct" placeholder=""/>
-                                                        <label for="floatingInputProduct">ค้าหา ชื่อสินค้า</label>
-                                                    </div>
-                                                </th>
-                                                <th class="align-bottom">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control " id="floatingInputOrderNo" placeholder=""/>
-                                                        <label for="floatingInputOrderNo">ค้าหา หมายเลขคำสั่งซื้อ</label>
-                                                    </div>
-                                                </th>
-                                                <th class="align-bottom">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control " id="floatingInputChanel" placeholder=""/>
-                                                        <label for="floatingInputChanel">ค้าหา ช่องทาง</label>
-                                                    </div>
-                                                </th>
-                                                <th class="align-bottom">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="note" @blur="onSearchInput" class="form-control " id="floatingInputNote" placeholder=""/>
-                                                        <label for="floatingInputNote">ค้าหา หมายเหตุ</label>
-                                                    </div>
-                                                </th>
-                                                <th class="align-bottom w-200px">
-                                                    <div class="form-floating mb-7">
-                                                        <input type="text" v-model="user" @blur="onSearchInput" class="form-control " id="floatingInputUser" placeholder=""/>
-                                                        <label for="floatingInputUser">ค้าหา user</label>
-                                                    </div>
-                                                </th>
-                                            </tr>
                                             <tr class="fw-bold fs-4">
-                                                <th class="min-w-100px align-middle" @click="sortData('p_date')">
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                <th class="min-w-100px align-middle">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center"
+                                                        @click="sortTable('p_date')">
                                                         <span>วันที่</span>
-                                                        <i :class="getSortIcon('p_date')"></i>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('p_date')"></i>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-150px align-middle" @click="sortData('customer_name')">
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                <th class="min-w-150px align-middle">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center"
+                                                        @click="sortTable('customer_name')">
                                                         <span>ชื่อลุกค้า</span>
-                                                        <i :class="getSortIcon('customer_name')"></i>
+                                                        <i class="bi-chevron-down"
+                                                            :class="getSortIcon('customer_name')"></i>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-200px align-middle" @click="sortData('product')">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span>ชื่อสินค้า</span>
-                                                        <i :class="getSortIcon('product')"></i>
+                                                <th class="min-w-200px align-middle">
+
+                                                    <div class="d-flex w-100 gap-3 align-items-center">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('product')">
+                                                            <span>ชื่อสินค้า</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('product')"></i>
+                                                        </div>
+                                                        <div class="flex-shrink-1">
+                                                            <i @click="filterModal('ชื่อสินค้า')"
+                                                                class="pointer bi-funnel"></i>
+                                                        </div>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-200px align-middle" @click="sortData('order_no')">
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                <th class="min-w-200px align-middle">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center"
+                                                        @click="sortTable('order_no')">
                                                         <span>หมายเลขคำสั่งซื้อ</span>
-                                                        <i :class="getSortIcon('order_no')"></i>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('order_no')"></i>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-200px align-middle" @click="sortData('chanel')">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span>ช่องทาง</span>
-                                                        <i :class="getSortIcon('chanel')"></i>
+                                                <th class="min-w-200px align-middle">
+                                                    <div
+                                                        class="d-flex w-100 justify-content-between align-items-center">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('chanel')">
+                                                            <span>ช่องทาง</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('chanel')"></i>
+                                                        </div>
+                                                        <div class="flex-shrink-1">
+                                                            <i @click="filterModal('ช่องทาง')"
+                                                                class="pointer bi-funnel"></i>
+                                                        </div>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-200px align-middle" @click="sortData('note')">
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                <th class="min-w-200px align-middle">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center"
+                                                        @click="sortTable('note')">
                                                         <span>หมายเหตุ</span>
-                                                        <i :class="getSortIcon('note')"></i>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('note')"></i>
                                                     </div>
                                                 </th>
-                                                <th class="min-w-100px align-middle" @click="sortData('user')">
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                <th class="min-w-100px align-middle">
+                                                    <div
+                                                    class="d-flex w-100 justify-content-between align-items-center">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center"
+                                                        @click="sortTable('user')">
                                                         <span>user</span>
-                                                        <i :class="getSortIcon('user')"></i>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('user')"></i>
+                                                    </div>
+                                                    <div class="flex-shrink-1">
+                                                        <i @click="filterModal('user')"
+                                                            class="pointer bi-funnel"></i>
+                                                    </div>
                                                     </div>
                                                 </th>
                                             </tr>
-                                        </thead>
+                                            </thead>
                                             <tfoot>
                                             </tfoot>
                                             <tbody class="fs-6">
                                                 <template v-for="(item, index) in dataOrderManual" :key="index">
                                                     <tr>
-                                                        <td class="text-start align-middle" v-text="utilsConvDate(item.p_date)"></td>
+                                                        <td class="text-start align-middle"
+                                                            v-text="utilsConvDate(item.p_date)"></td>
 
                                                         <td class="text-start align-middle" v-text="item.customer_name">
                                                         </td>
@@ -189,83 +186,116 @@
                                                     </tr>
                                                 </template>
                                             </tbody>
-                                            <!-- <tfoot class="tfoot-bordered">
-                                                <tr>
-                                                    <td class="align-top w-200px">
-                                                    </td>
-                                                    <td class="align-top">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="customer" @blur="onSearchInput" class="form-control " id="floatingInputCustomer" placeholder=""/>
-                                                            <label for="floatingInputCustomer">ชื่อลูกค้า</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-top">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="product" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputProduct" placeholder=""/>
-                                                            <label for="floatingInputProduct">สินค้า</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-top">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="order_no" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputOrderNo" placeholder=""/>
-                                                            <label for="floatingInputOrderNo">หมายเลขคำสั่งซื้อ</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-top">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="chanel" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputChanel" placeholder=""/>
-                                                            <label for="floatingInputChanel">ช่องทาง</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-top">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="note" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputNote" placeholder=""/>
-                                                            <label for="floatingInputNote">หมายเหตุ</label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-top w-200px">
-                                                        <div class="form-floating mb-7">
-                                                            <input type="text" v-model="user" @blur="onSearchInput" class="form-control form-control-5" id="floatingInputUser" placeholder=""/>
-                                                            <label for="floatingInputUser">user</label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tfoot> -->
                                         </table>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <select class="form-select w-80px h-35px" v-model="perPage" @change="loadData">
+                                            <select class="form-select w-80px h-35px" v-model="perPage"
+                                                @change="loadData">
                                                 <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
                                             </select>
-                                            
+
                                         </div>
                                         <ul class="pagination">
                                             <li class="page-item" :class="{ disabled: currentPages === 1 }">
-                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPages - 1)">
+                                                <a href="#" class="page-link"
+                                                    @click.prevent="goToPage(currentPages - 1)">
                                                     <i class="previous"></i>
                                                 </a>
                                             </li>
-                                            <li class="page-item" v-for="page in paginationRange" :key="page" :class="{ active: currentPages === page }">
-                                                <a href="#" class="page-link" @click.prevent="goToPage(page)" v-text="page"></a>
+                                            <li class="page-item" v-for="page in paginationRange" :key="page"
+                                                :class="{ active: currentPages === page }">
+                                                <a href="#" class="page-link" @click.prevent="goToPage(page)"
+                                                    v-text="page"></a>
                                             </li>
                                             <li class="page-item" :class="{ disabled: currentPages === totalPages }">
-                                                <a href="#" class="page-link" @click.prevent="goToPage(currentPages + 1)">
+                                                <a href="#" class="page-link"
+                                                    @click.prevent="goToPage(currentPages + 1)">
                                                     <i class="next"></i>
                                                 </a>
                                             </li>
                                         </ul>
-                                        
                                     </div>
-                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" tabindex="-1" id="filter_model">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" v-text="modal_titles"></h3>
+    
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                        @click="closeModalFilter">
+                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                                class="path2"></span></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+    
+                                <div class="modal-body">
+                                    <div class="d-flex gap-5 flex-wrap">
+    
+                                        <template v-if="modal_titles === 'ชื่อสินค้า'"
+                                        v-for="(item, index) in data_products_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_product' + index" :name="'check_product' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_product' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                    <template v-else-if="modal_titles === 'ช่องทาง'"
+                                        v-for="(item, index) in data_channel_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_channel' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                    <template v-else v-for="(item, index) in data_users_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="checkbox"
+                                                    :checked="item.check_value" v-model="item.check_value"
+                                                    :id="'check_users' + index" :name="'check_users' + index" />
+                                                <label class="form-check-label text-dark" :for="'check_users' + index"
+                                                    v-text="item.name"></label>
+                                            </div>
+                                        </div>
+                                    </template>
+    
+                                    </div>
+                                </div>
+    
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" @click="resetCheckValue">Reset</button>
+                                    <button type="button" class="btn btn-primary" @click="saveFilter">Save changes</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+            
+
             </div>
         </div>
 

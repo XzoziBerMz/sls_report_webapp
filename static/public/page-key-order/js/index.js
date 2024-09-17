@@ -28,7 +28,17 @@
                 order_no: "",
                 chanel: "",
                 note: "",
+
+                modal_titles: "",
+                column_order_by: "p_date",
+                order_sort: "desc",
                 token_header: token_header || '',
+                data_users_2: [],
+                data_products_2: [],
+                data_channel_2: [],
+                filter_products_2: [],
+                filter_channel_2: [],
+                filter_users_2: [],
             }
         },
 
@@ -36,7 +46,7 @@
             paginationRange() {
                 let startPage, endPage;
                 const maxPages = 5; // Number of pages to show
-        
+
                 if (this.totalPages <= maxPages) {
                     // If total pages are less than or equal to maxPages, show all pages
                     startPage = 1;
@@ -55,7 +65,7 @@
                         endPage = this.currentPages + halfMaxPages;
                     }
                 }
-        
+
                 // Generate an array of pages to be displayed
                 return Array.from({ length: (endPage - startPage + 1) }, (_, i) => startPage + i);
             }
@@ -188,7 +198,16 @@
                 const self = this;
                 try {
                     showLoading();
+                    const productNames = self.filter_products_2.map((item) => item.name);
+                    const channelNames = self.filter_channel_2.map((item) => item.name);
+                    const usersNames = self.filter_users_2.map((item) => item.name);
+
                     let data = {
+
+                        product_multiple: productNames || [],
+                        channel_multiple: channelNames || [],
+                        user_multiple: usersNames || [],
+
                         search: self.search,
                         customer: self.customer || '', // Bind the search fields
                         product: self.product || '',
@@ -197,17 +216,18 @@
                         note: self.note || '',
                         user: self.user || '',
                         "start_at": self.startDate,
-                        "end_at": self.endDate ,
+                        "end_at": self.endDate,
                         page: self.currentPages,
                         per_page: +self.perPage,
-                        order: self.sortField,
-                        order_by: self.sortOrder
+                        "order": self.column_order_by,
+                        "order_by": self.order_sort
+
+
                     };
-        
+
                     const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
                     const response = responseGetOrderManual?.data || {};
                     this.dataOrderManual = response.data || [];
-        
                     const totalItems = response.total || 0;
                     this.totalPages = Math.ceil(totalItems / +this.perPage);
                     closeLoading()
@@ -216,38 +236,158 @@
                     closeLoading()
                 }
             },
-            onSearchInput() {
-                console.log("Search input changed:", {
-                    search: this.search,
-                    customer: this.customer,
-                    product: this.product,
-                    order_no: this.order_no,
-                    chanel: this.chanel,
-                    note: this.note,
-                    user: this.user
-                }); // Debugging
-                this.currentPages = 1; // Reset to the first page on new search
-                this.loadData();      // Load data based on search input
+            async sortTable(column) {
+                if (this.column_order_by === column) {
+                    this.order_sort = this.order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.column_order_by = column;
+                    this.order_sort = 'asc';
+                }
+                await this.loadData();
             },
+            getSortIcon(column) {
+                const self = this;
+                if (self.column_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+
+            // onSearchInput() {
+            //     console.log("Search input changed:", {
+            //         search: this.search,
+            //         customer: this.customer,
+            //         product: this.product,
+            //         order_no: this.order_no,
+            //         chanel: this.chanel,
+            //         note: this.note,
+            //         user: this.user
+            //     }); // Debugging
+            //     this.currentPages = 1; // Reset to the first page on new search
+            //     this.loadData();      // Load data based on search input
+            // },
             goToPage(page) {
                 if (page < 1 || page > this.totalPages) return;
                 this.currentPages = page;
                 this.loadData();
             },
-            sortData(field) {
-                // Toggle sort order if the same field is clicked
-                if (this.sortField === field) {
-                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+
+
+
+            async filterModal(value) {
+                const self = this;
+                self.modal_titles = value
+                $('#filter_model').modal('show')
+                if (value === "ชื่อสินค้า") {
+                    try {
+                        const req = await services.getmanual(self.token_header);
+                        self.data_products_2 = req.data.data.map((item) => {
+                            const existingProduct = self.filter_products_2.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                } else if (value === "ช่องทาง") {
+                    try {
+                        const req = await services.getChannelAll(self.token_header);
+                        self.data_channel_2 = req.data.data.map((item) => {
+                            const existingProduct = self.filter_channel_2.find(
+                                (prod) => prod.name === item);
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
                 } else {
-                    this.sortField = field;
-                    this.sortOrder = 'asc';
+                    try {
+                        const req = await services.getusermanual(self.token_header);
+                        self.data_users_2 = req.data.data.map((item) => {
+                            const existingProduct = self.filter_users_2.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
                 }
-                this.loadData();
+
             },
-            getSortIcon(field) {
-                if (this.sortField !== field) return '';
-                return this.sortOrder === 'asc' ? 'bi-chevron-up' : 'bi-chevron-down';
+            resetCheckValue() {
+                const self = this
+
+                if (self.modal_titles === "ชื่อสินค้า") {
+                    this.data_products_2.forEach((item) => (item.check_value = false));
+                } else if (self.modal_titles === "ช่องทาง") {
+                    this.data_channel_2.forEach((item) => (item.check_value = false));
+                } else {
+                    this.data_users_2.forEach((item) => (item.check_value = false));
+                }
+            },
+            async saveFilter() {
+                const self = this
+
+                function addOrRemoveItem(filterArray, item) {
+                    const index = filterArray.findIndex(existingItem => existingItem.name === item.name);
+                    if (item.check_value) {
+                        if (index === -1) {
+                            filterArray.push(item);
+                        }
+                    } else {
+                        if (index !== -1) {
+                            filterArray.splice(index, 1);
+                        }
+                    }
+                }
+                if (self.modal_titles === "ชื่อสินค้า") {
+                    self.data_products_2.forEach((item) =>
+                        addOrRemoveItem(self.filter_products_2, item)
+                    );
+                } else if (self.modal_titles === "ช่องทาง") {
+                    self.data_channel_2.forEach((item) =>
+                        addOrRemoveItem(self.filter_channel_2, item)
+                    );
+                } else {
+                    self.data_users_2.forEach((item) =>
+                        addOrRemoveItem(self.filter_users_2, item)
+                    );
+                }
+                self.data_products_2 = [];
+                self.data_channel_2 = [];
+                self.data_users_2 = [];
+                $("#filter_model").modal("hide");
+
+                await self.loadData();
+
+            },
+            closeModalFilter() {
+                $('#filter_model').modal('hide')
+                this.data_products_2 = [];
+                this.data_channel_2 = [];
+                this.data_users_2 = [];
             }
+
         },
         mounted: function () {
             this.loadData();
