@@ -32,9 +32,12 @@
             async loadData() {
                 showLoading();
                 try {
+                    let data = {
+                        "channel_id": "CHANNEL_TIKTOK"
+                   }
                     // Make parallel API calls to fetch channel and video data
                     const [responseChannel, responseVdo] = await Promise.all([
-                        services.getChannel(this.token_header),
+                        services.getInputChannel(data,this.token_header),
                         services.getvdo(this.token_header)
                     ]);
 

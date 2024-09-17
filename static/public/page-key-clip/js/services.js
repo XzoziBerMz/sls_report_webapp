@@ -29,10 +29,22 @@
     });
   }
 
+    function getInputChannel(body = {},token) {
+    return axios({
+      method: "post",
+      url: basepath + `/api/v1/shop/list`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      data: { ...body },
+      headers: { "x-auth-token": token },
+    });
+  }
+
   const services = {
     getChannel,
     getvdo,
     getInsertVdoHandler,
+    getInputChannel,
   };
   window.services = services;
 })(jQuery, window, axios);
