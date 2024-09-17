@@ -1,232 +1,343 @@
 <html lang="en">
-
-<head>
+  <head>
     <title>{{.WebAppPageTitle}}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
     {{- template "resource-css" -}}
-    <link rel="stylesheet" href="/page-details-add/css/index.css">
+    <link rel="stylesheet" href="/page-details-add/css/index.css" />
     <script>
-        const basepath = "{{.Basepath}}";
+      const basepath = "{{.Basepath}}";
     </script>
+  </head>
 
-</head>
-
-<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
-    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
-    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
-
-    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
-        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
-            <!-- HEADER -->
-            <div id="kt_app_header" class="app-header bg-4461F2">
-                {{- template "header" . -}}
-            </div>
-            <!-- HEADER -->
-
-            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
-                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
-                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
-                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
-                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
-                    {{- template "sidebar" . -}}
-                </div>
-
-                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
-                    <div class="d-flex flex-column flex-column-fluid">
-                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
-                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
-                                <h1 class="fs-1 fw-bolder">รายงาน ค่าโฆษณา</h1>
-                                <div class="card p-10 mt-3 w-100">
-
-                                    <div class="d-flex justify-content-end align-items-center">
-                                        <div class="d-flex ">
-                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
-                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                <div>
-                                                    <span class="fs-14  align-middle"
-                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
-                                                </div>
-                                                <input id="kt_td_picker_start_input" type="text"
-                                                    class="form-control w-200px" data-td-target="#kt_td_picker_start" />
-                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
-                                                    data-td-toggle="datetimepicker">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span
-                                                            class="path1"></span><span class="path2"></span></i>
-                                                </span>
-                                            </div>
-                                            <!-- End Date Picker -->
-                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
-                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                <div>
-                                                    <span class="fs-14  align-middle"
-                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
-                                                </div>
-                                                <input id="kt_td_picker_end_input" type="text"
-                                                    class="form-control w-200px" data-td-target="#kt_td_picker_end" />
-                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
-                                                    data-td-toggle="datetimepicker">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span
-                                                            class="path1"></span><span class="path2"></span></i>
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="">
-                                            <select class="form-select" data-control="select2" data-placeholder="Select an option" id="select_search">
-                                                <option></option>
-                                                <option value="1">Option 1</option>
-                                                <option value="2">Option 2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="row gap-5 px-3 mt-5">
-                                        <div class="card p-5 ">
-                                            <div class="table-responsive border rounded-4">
-                                                <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
-                                                    <thead>
-                                                        <tr class="fw-bold fs-4 ">
-                                                            <th class="min-w-100px">
-                                                                <div @click="sortTable('p_timestamp')"
-                                                                    class="d-flex justify-content-around align-items-center">
-                                                                    <i class="bi-calendar3"></i>
-                                                                    <span>วันที่</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('p_timestamp')"></i>
-                                                                </div>
-                                                            </th>
-                                                            <th class="min-w-200px">
-                                                                <div @click="sortTable('shop_name')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ร้าน</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('shop_name')"></i>
-                                                                </div>
-                                                            </th>
-                                                            <th class="min-w-100px">
-                                                                <div @click="sortTable('ads_fee')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>ค่าแอด</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('ads_fee')"></i>
-                                                                </div>
-                                                            </th>
-                                                            <th class="min-w-100px">
-                                                                <div @click="sortTable('ads_income')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>รายได้แอด</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('ads_income')"></i>
-                                                                </div>
-                                                            </th>
-                                                            <th class="min-w-100px">
-                                                                <div @click="sortTable('ads_total_income')"
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>รายได้รวม</span>
-                                                                    <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('ads_total_income')"></i>
-                                                                </div>
-                                                            </th>
-                                                            <th class="min-w-100px">
-                                                                <div
-                                                                    class="d-flex justify-content-between align-items-center">
-                                                                    <span>เปอร์เซ็นต์</span>
-                                                                    <!-- <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('')"></i> -->
-                                                                </div>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="fs-6">
-                                                        <template v-for="item in dataDataAdd">
-                                                            <tr>
-                                                                <td class="align-middle min-w-100px text-center text-break"
-                                                                    v-text="utilsConvDate(item.p_timestamp)"></td>
-                                                                <td class="align-middle min-w-200px text-break"
-                                                                    v-text="item.shop_name"></td>
-                                                                <td class="align-middle min-w-100px text-break"
-                                                                    v-text="formatNumber(item.ads_fee)"></td>
-                                                                <td class="align-middle min-w-100px text-break"
-                                                                    v-text="formatNumber(item.ads_income)"></td>
-                                                                <td class="align-middle min-w-100px text-break"
-                                                                    v-text="formatNumber(item.ads_total_income)"></td>
-                                                                <td class="align-middle min-w-100px text-break"
-                                                                    v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'">
-                                                                </td>
-                                                            </tr>
-                                                        </template>
-                                                    </tbody>
-                                                    <tfoot class="border-top border-1 fs-6">
-                                                        <tr>
-                                                            <td class="align-middle min-w-100px text-break"></td>
-                                                            <td class="align-middle min-w-200px text-break"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium"
-                                                                v-text="formatNumber(AdsFee)"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium"
-                                                                v-text="formatNumber(AdsIncome)"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium"
-                                                                v-text="formatNumber(totalAdsIncome)"></td>
-                                                            <td class="align-middle min-w-100px text-break fw-medium"
-                                                                v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'">
-                                                            </td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div>
-                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        id="page_size_add" name="page_size_add" v-model="itemsPerPage"
-                                                        data-control="select2">
-                                                        <option value="10" selected>10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
-                                                </div>
-                                                <ul class="pagination">
-                                                    <li :class="['page-item', { disabled: currentPages === 1 }]"
-                                                        @click="changePage(currentPages - 1)">
-                                                        <p class="page-link"><i class="previous"></i></p>
-                                                    </li>
-                                                    <li v-for="page in pages" :key="page"
-                                                        :class="['page-item', { active: currentPages === page && page !== '...' }]"
-                                                        @click="changePage(page)">
-                                                        <p class="page-link" v-if="page !== '...'" v-text="page"></p>
-                                                        <span v-if="page === '...'">...</span>
-                                                    </li>
-                                                    <li :class="['page-item', { disabled: currentPages === totalPages }]"
-                                                        @click="changePage(currentPages + 1)">
-                                                        <p class="page-link"><i class="next"></i></p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <body
+    id="kt_app_body"
+    class="background-page"
+    data-kt-app-layout="light-sidebar"
+    data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true"
+    data-kt-app-sidebar-fixed="false"
+    data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true"
+    data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true"
+    data-kt-app-toolbar-enabled="true"
+    class="app-default"
+  >
+    <div
+      class="d-flex justify-content-center align-items-center flex-column gap-2 login-box"
+      id="kt_app_root"
+    >
+      <div
+        class="app-page w-100 flex-column flex-column-fluid"
+        id="kt_app_page"
+      >
+        <!-- HEADER -->
+        <div id="kt_app_header" class="app-header bg-4461F2">
+          {{- template "header" . -}}
         </div>
+        <!-- HEADER -->
 
+        <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+          <div
+            id="kt_app_sidebar"
+            class="app-sidebar flex-column"
+            data-kt-drawer="true"
+            data-kt-drawer-name="app-sidebar"
+            data-kt-drawer-activate="{default: true, lg: true}"
+            data-kt-drawer-overlay="true"
+            data-kt-drawer-width="250px"
+            data-kt-drawer-direction="start"
+            data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"
+          >
+            {{- template "sidebar" . -}}
+          </div>
 
+          <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+            <div class="d-flex flex-column flex-column-fluid">
+              <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
+                <div
+                  id="kt_app_toolbar_container"
+                  class="app-container container-fluid"
+                >
+                  <h1 class="fs-1 fw-bolder">รายงาน ค่าโฆษณา</h1>
+                  <div class="card p-10 mt-3 w-100">
+                    <div class="d-flex justify-content-end align-items-center">
+                      <div class="d-flex">
+                        <div
+                          class="w-350px input-group align-items-center"
+                          id="kt_td_picker_start"
+                          data-td-target-input="nearest"
+                          data-td-target-toggle="nearest"
+                        >
+                          <div>
+                            <span
+                              class="fs-14 align-middle"
+                              style="margin-right: 10px"
+                              >วันที่เริ่มต้น :</span
+                            >
+                          </div>
+                          <input
+                            id="kt_td_picker_start_input"
+                            type="text"
+                            class="form-control w-200px"
+                            data-td-target="#kt_td_picker_start"
+                          />
+                          <span
+                            class="input-group-text"
+                            data-td-target="#kt_td_picker_basic"
+                            data-td-toggle="datetimepicker"
+                          >
+                            <i class="ki-duotone ki-calendar fs-2"
+                              ><span class="path1"></span
+                              ><span class="path2"></span
+                            ></i>
+                          </span>
+                        </div>
+                        <!-- End Date Picker -->
+                        <div
+                          class="w-350px input-group align-items-center"
+                          id="kt_td_picker_end"
+                          data-td-target-input="nearest"
+                          data-td-target-toggle="nearest"
+                        >
+                          <div>
+                            <span
+                              class="fs-14 align-middle"
+                              style="margin-right: 10px"
+                              >วันที่สิ้นสุด :</span
+                            >
+                          </div>
+                          <input
+                            id="kt_td_picker_end_input"
+                            type="text"
+                            class="form-control w-200px"
+                            data-td-target="#kt_td_picker_end"
+                          />
+                          <span
+                            class="input-group-text"
+                            data-td-target="#kt_td_picker_basic"
+                            data-td-toggle="datetimepicker"
+                          >
+                            <i class="ki-duotone ki-calendar fs-2"
+                              ><span class="path1"></span
+                              ><span class="path2"></span
+                            ></i>
+                          </span>
+                        </div>
+                      </div>
 
+                      <div>
+                        <select
+                          class="form-select"
+                          data-control="select2"
+                          data-placeholder="เลือกร้าน"
+                          id="select_search"
+                        ></select>
+                      </div>
+                    </div>
+
+                    <div class="row gap-5 px-3 mt-5">
+                      <div class="card p-5">
+                        <div class="table-responsive border rounded-4">
+                          <table
+                            class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0"
+                          >
+                            <thead>
+                              <tr class="fw-bold fs-4">
+                                <th class="min-w-100px">
+                                  <div
+                                    @click="sortTable('p_timestamp')"
+                                    class="d-flex justify-content-around align-items-center"
+                                  >
+                                    <i class="bi-calendar3"></i>
+                                    <span>วันที่</span>
+                                    <i
+                                      class="bi-chevron-down"
+                                      :class="getSortIcon('p_timestamp')"
+                                    ></i>
+                                  </div>
+                                </th>
+                                <th class="min-w-200px">
+                                  <div
+                                    @click="sortTable('shop_name')"
+                                    class="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>ร้าน</span>
+                                    <i
+                                      class="bi-chevron-down"
+                                      :class="getSortIcon('shop_name')"
+                                    ></i>
+                                  </div>
+                                </th>
+                                <th class="min-w-100px">
+                                  <div
+                                    @click="sortTable('ads_fee')"
+                                    class="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>ค่าแอด</span>
+                                    <i
+                                      class="bi-chevron-down"
+                                      :class="getSortIcon('ads_fee')"
+                                    ></i>
+                                  </div>
+                                </th>
+                                <th class="min-w-100px">
+                                  <div
+                                    @click="sortTable('ads_income')"
+                                    class="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>รายได้แอด</span>
+                                    <i
+                                      class="bi-chevron-down"
+                                      :class="getSortIcon('ads_income')"
+                                    ></i>
+                                  </div>
+                                </th>
+                                <th class="min-w-100px">
+                                  <div
+                                    @click="sortTable('ads_total_income')"
+                                    class="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>รายได้รวม</span>
+                                    <i
+                                      class="bi-chevron-down"
+                                      :class="getSortIcon('ads_total_income')"
+                                    ></i>
+                                  </div>
+                                </th>
+                                <th class="min-w-100px">
+                                  <div
+                                    class="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>เปอร์เซ็นต์</span>
+                                    <!-- <i class="bi-chevron-down"
+                                                                        :class="getSortIcon('')"></i> -->
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody class="fs-6">
+                              <template v-for="item in dataDataAdd">
+                                <tr>
+                                  <td
+                                    class="align-middle min-w-100px text-center text-break"
+                                    v-text="utilsConvDate(item.p_timestamp)"
+                                  ></td>
+                                  <td
+                                    class="align-middle min-w-200px text-break"
+                                    v-text="item.shop_name"
+                                  ></td>
+                                  <td
+                                    class="align-middle min-w-100px text-break"
+                                    v-text="formatNumber(item.ads_fee)"
+                                  ></td>
+                                  <td
+                                    class="align-middle min-w-100px text-break"
+                                    v-text="formatNumber(item.ads_income)"
+                                  ></td>
+                                  <td
+                                    class="align-middle min-w-100px text-break"
+                                    v-text="formatNumber(item.ads_total_income)"
+                                  ></td>
+                                  <td
+                                    class="align-middle min-w-100px text-break"
+                                    v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'"
+                                  ></td>
+                                </tr>
+                              </template>
+                            </tbody>
+                            <tfoot class="border-top border-1 fs-6">
+                              <tr>
+                                <td
+                                  class="align-middle min-w-100px text-break"
+                                ></td>
+                                <td
+                                  class="align-middle min-w-200px text-break"
+                                ></td>
+                                <td
+                                  class="align-middle min-w-100px text-break fw-medium"
+                                  v-text="formatNumber(AdsFee)"
+                                ></td>
+                                <td
+                                  class="align-middle min-w-100px text-break fw-medium"
+                                  v-text="formatNumber(AdsIncome)"
+                                ></td>
+                                <td
+                                  class="align-middle min-w-100px text-break fw-medium"
+                                  v-text="formatNumber(totalAdsIncome)"
+                                ></td>
+                                <td
+                                  class="align-middle min-w-100px text-break fw-medium"
+                                  v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"
+                                ></td>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </div>
+                        <div
+                          class="d-flex justify-content-between align-items-center mt-3"
+                        >
+                          <div>
+                            <select
+                              class="form-select w-80px h-35px"
+                              data-hide-search="true"
+                              id="page_size_add"
+                              name="page_size_add"
+                              v-model="itemsPerPage"
+                              data-control="select2"
+                            >
+                              <option value="10" selected>10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                              <option value="100">100</option>
+                            </select>
+                          </div>
+                          <ul class="pagination">
+                            <li
+                              :class="['page-item', { disabled: currentPages === 1 }]"
+                              @click="changePage(currentPages - 1)"
+                            >
+                              <p class="page-link"><i class="previous"></i></p>
+                            </li>
+                            <li
+                              v-for="page in pages"
+                              :key="page"
+                              :class="['page-item', { active: currentPages === page && page !== '...' }]"
+                              @click="changePage(page)"
+                            >
+                              <p
+                                class="page-link"
+                                v-if="page !== '...'"
+                                v-text="page"
+                              ></p>
+                              <span v-if="page === '...'">...</span>
+                            </li>
+                            <li
+                              :class="['page-item', { disabled: currentPages === totalPages }]"
+                              @click="changePage(currentPages + 1)"
+                            >
+                              <p class="page-link"><i class="next"></i></p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
-<script>
+  </body>
+  <script>
     window.csrfToken = {{.csrf_token }};
     window.pageAction = {{.page_action }};
-</script>
-{{- template "resource-js" -}}
-<script src="/page-details-add/js/services.js" type="module"> </script>
-<script src="/page-details-add/js/index.js" type="module"> </script>
-
+  </script>
+  {{- template "resource-js" -}}
+  <script src="/page-details-add/js/services.js" type="module"></script>
+  <script src="/page-details-add/js/index.js" type="module"></script>
 </html>
