@@ -145,6 +145,30 @@
                             class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0"
                           >
                             <thead>
+                                <tr>
+                                    <th
+                                      class="align-middle min-w-100px text-break"
+                                    ></th>
+                                    <th
+                                      class="align-middle min-w-200px text-break"
+                                    ></th>
+                                    <th
+                                      class="align-middle min-w-100px text-break fw-medium"
+                                      v-text="formatNumber(AdsFee)"
+                                    ></th>
+                                    <th
+                                      class="align-middle min-w-100px text-break fw-medium"
+                                      v-text="formatNumber(AdsIncome)"
+                                    ></th>
+                                    <th
+                                      class="align-middle min-w-100px text-break fw-medium"
+                                      v-text="formatNumber(totalAdsIncome)"
+                                    ></th>
+                                    <th
+                                      class="align-middle min-w-100px text-break fw-medium"
+                                      v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"
+                                    ></th>
+                                  </tr>
                               <tr class="fw-bold fs-4">
                                 <th class="min-w-100px">
                                   <div
@@ -248,7 +272,7 @@
                                 </tr>
                               </template>
                             </tbody>
-                            <tfoot class="border-top border-1 fs-6">
+                            <!-- <tfoot class="border-top border-1 fs-6">
                               <tr>
                                 <td
                                   class="align-middle min-w-100px text-break"
@@ -273,7 +297,7 @@
                                   v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"
                                 ></td>
                               </tr>
-                            </tfoot>
+                            </tfoot> -->
                           </table>
                         </div>
                         <div
