@@ -80,7 +80,7 @@
                     "total_income": "",
                     "channel": "",
                     "note": "",
-                     "date": "",
+                    "date": self.selectedDate,
                 }
                 self.dataAds.push(data)
             },
@@ -113,9 +113,11 @@
                 let isValid = true;
                 this.dataAds.forEach((item, index) => {
                     let error = {};
-                    if (!item.channel) {
-                        error.channel = true;
-                        isValid = false;
+                    if (item.new_ads) {
+                        if (!item.channel) {
+                            error.channel = true;
+                            isValid = false;
+                        }
                     }
                     if (!item.total_cost) {
                         error.total_cost = true;
@@ -130,6 +132,7 @@
                         isValid = false;
                     }
                     this.errors[index] = error;
+                    console.log("🚀 ~ this.dataAds.forEach ~ this.errors[index]:", this.errors[index])
                 });
                 return isValid;
             },
@@ -140,21 +143,26 @@
                     const currentDate = new Date();
                     currentDate.setDate(currentDate.getDate() + 1);
                     const formattedDate = currentDate.toISOString().split('T')[0];
-                    let dataAds = self.dataAds || []
-                    for (const data of dataAds) {
-                        data.total_cost = Number(data.total_cost) || 0;
-                        data.total_income = Number(data.total_income) || 0;
-                        data.shop_name = data.shop_name || '';
-                        data.note = data.note || '';
-                        data.date = formattedDate || '';
-                        console.log("Data to be sent to API:", data);
-                        const req = await services.getInsertMultiple(data, self.token_header);
-                        if (req.data.code !== 200) {
-                            console.log("Insert failed for data:", data);
-                            Msg("บันทึกไม่สำเร็จ", 'error');
-                            return;
-                        }
+                    let dataAds = {
+                        data: self.dataAds || []
                     }
+                    
+                    const req = await services.getInsertMultiple(dataAds, self.token_header);
+                    console.log("🚀 ~ savePage ~ req:", req)
+
+                    // for (const data of dataAds) {
+                    //     data.total_cost = Number(data.total_cost) || 0;
+                    //     data.total_income = Number(data.total_income) || 0;
+                    //     data.shop_name = data.shop_name || '';
+                    //     data.note = data.note || '';
+                    //     data.date = formattedDate || '';
+                    //     console.log("Data to be sent to API:", data);
+                    //     if (req.data.code !== 200) {
+                    //         console.log("Insert failed for data:", data);
+                    //         Msg("บันทึกไม่สำเร็จ", 'error');
+                    //         return;
+                    //     }
+                    // }
                     closeLoading();
                     Msg("บันทึกสำเร็จ", 'success');
                     setTimeout(function () {
