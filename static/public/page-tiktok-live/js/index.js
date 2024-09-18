@@ -36,7 +36,7 @@
             ...window.webUtils.method || {},
             async init() {
                 let self = this
-                    await self.created()
+                   
                     await self.loadData()
                     $("#kt_td_picker_start_input").flatpickr({
                         altInput: true,
@@ -57,21 +57,7 @@
                 }
                 this.dataAds[index][field] = formattedValue;
             },
-            created() {
-                const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate());
-                const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-                console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
-            },
-
-            // focusNext(column, nextIndex) {
-            //     const nextInput = this.$refs[column + '_' + nextIndex];
-            //     if (nextInput && nextInput[0]) {
-            //         nextInput[0].focus(); 
-            //     } else if (nextInput) {
-            //         nextInput.focus(); 
-            //     }
-            // },
+    
       
 
             formatNumber(number) {
@@ -132,8 +118,8 @@
                 let data = {
                     "new_ads": true,
                     "shop_name": self.channel,
-                    "total_cost": parseFloat(self.total_cost) || 0,  
-                    "total_income": parseFloat(self.total_income) || 0,  
+                    "total_cost": parseFloat(self.total_cost),  
+                    "total_income": parseFloat(self.total_income),  
                     // "commission": 10.0,
                     "note": self.note, 
                     "p_timestamp": self.selectedDate
@@ -145,10 +131,6 @@
                 const self = this;
                 if (self.validateForm()) {
                     console.log("Form validated successfully, proceeding to save.");
-                    // const currentDate = new Date();
-                    // currentDate.setDate(currentDate.getDate() + 1);
-                    // const formattedDate = currentDate.toISOString().split('T')[0];
-                    
                     let dataAds = {
                         data: self.dataAds || []
                     }
