@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
     {{- template "resource-css" -}}
-    <link rel="stylesheet" href="/page-key-order/css/index.css">
+    <link rel="stylesheet" href="/page-report-tiktok-live/css/index.css">
     <!--end::custom css for this page-->
     <script>
         const basepath = "{{.Basepath}}";
@@ -39,7 +39,7 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
-                                <h1 class="fs-1 fw-bolder">รายงาน ทำรายการ</h1>
+                                <h1 class="fs-1 fw-bolder">รายงาน TikTok Live</h1>
                                 <div class="card p-10 mt-3 w-100">
                                     <div class="d-flex justify-content-end gap-5">
                                         <div class="d-flex gap-5">
@@ -57,7 +57,7 @@
                                                             class="path1"></span><span class="path2"></span></i>
                                                 </span>
                                             </div>
-                                            <!-- End Date Picker -->
+                                        
                                             <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
                                                 data-td-target-input="nearest" data-td-target-toggle="nearest">
                                                 <div>
@@ -80,81 +80,48 @@
                                                 <i class="bi bi-search" @click="handleSearch"></i>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                     <div class="table-responsive border rounded-4 mt-3">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <tr class="fw-bold fs-4">
                                                 <th class="min-w-100px align-middle">
                                                     <div class="d-flex w-100 justify-content-between align-items-center"
-                                                        @click="sortTable('p_date')">
+                                                        @click="sortTable('p_timestamp')">
                                                         <span>วันที่</span>
-                                                        <i class="bi-chevron-down" :class="getSortIcon('p_date')"></i>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('p_timestamp')"></i>
                                                     </div>
                                                 </th>
                                                 <th class="min-w-150px align-middle">
                                                     <div class="d-flex w-100 justify-content-between align-items-center"
-                                                        @click="sortTable('customer_name')">
-                                                        <span>ชื่อลุกค้า</span>
+                                                        @click="sortTable('total_cost')">
+                                                        <span>	
+                                                            ค่าใช้จ่ายทั้งหมด</span>
                                                         <i class="bi-chevron-down"
-                                                            :class="getSortIcon('customer_name')"></i>
+                                                            :class="getSortIcon('total_cost')"></i>
                                                     </div>
                                                 </th>
                                                 <th class="min-w-200px align-middle">
-
-                                                    <div class="d-flex w-100 gap-3 align-items-center">
                                                         <div class="d-flex w-100 justify-content-between align-items-center"
-                                                            @click="sortTable('product')">
-                                                            <span>ชื่อสินค้า</span>
+                                                            @click="sortTable('total_income')">
+                                                            <span>	
+                                                                รายได้รวม(ร้านค่า)</span>
                                                             <i class="bi-chevron-down"
-                                                                :class="getSortIcon('product')"></i>
+                                                                :class="getSortIcon('total_income')"></i>
                                                         </div>
-                                                        <div class="flex-shrink-1">
-                                                            <i @click="filterModal('ชื่อสินค้า')"
-                                                                class="pointer bi-funnel"></i>
-                                                        </div>
-                                                    </div>
                                                 </th>
                                                 <th class="min-w-200px align-middle">
                                                     <div class="d-flex w-100 justify-content-between align-items-center"
-                                                        @click="sortTable('order_no')">
-                                                        <span>หมายเลขคำสั่งซื้อ</span>
-                                                        <i class="bi-chevron-down" :class="getSortIcon('order_no')"></i>
-                                                    </div>
-                                                </th>
-                                                <th class="min-w-200px align-middle">
-                                                    <div
-                                                        class="d-flex w-100 justify-content-between align-items-center">
-                                                        <div class="d-flex w-100 justify-content-between align-items-center"
-                                                            @click="sortTable('chanel')">
-                                                            <span>ช่องทาง</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('chanel')"></i>
-                                                        </div>
-                                                        <div class="flex-shrink-1">
-                                                            <i @click="filterModal('ช่องทาง')"
-                                                                class="pointer bi-funnel"></i>
-                                                        </div>
+                                                        @click="sortTable('shop_name')">
+                                                        <span>ช่องทาง</span>
+                                                        <i class="bi-chevron-down" :class="getSortIcon('shop_name')"></i>
                                                     </div>
                                                 </th>
                                                 <th class="min-w-200px align-middle">
                                                     <div class="d-flex w-100 justify-content-between align-items-center"
                                                         @click="sortTable('note')">
-                                                        <span>หมายเหตุ</span>
+                                                        <span>note</span>
                                                         <i class="bi-chevron-down" :class="getSortIcon('note')"></i>
-                                                    </div>
-                                                </th>
-                                                <th class="min-w-100px align-middle">
-                                                    <div
-                                                    class="d-flex w-100 justify-content-between align-items-center">
-                                                    <div class="d-flex w-100 justify-content-between align-items-center"
-                                                        @click="sortTable('user')">
-                                                        <span>user</span>
-                                                        <i class="bi-chevron-down" :class="getSortIcon('user')"></i>
-                                                    </div>
-                                                    <div class="flex-shrink-1">
-                                                        <i @click="filterModal('user')"
-                                                            class="pointer bi-funnel"></i>
-                                                    </div>
                                                     </div>
                                                 </th>
                                             </tr>
@@ -164,20 +131,14 @@
                                             <tbody class="fs-6">
                                                 <template v-for="(item, index) in dataOrderManual" :key="index">
                                                     <tr>
-                                                        <td class="text-start align-middle"
-                                                            v-text="utilsConvDate(item.p_date)"></td>
-
-                                                        <td class="text-start align-middle" v-text="item.customer_name">
-                                                        </td>
-                                                        <td class="text-start align-middle" v-text="item.product">
-                                                        </td>
-                                                        <td class="text-start align-middle" v-text="item.order_no">
-                                                        </td>
-                                                        <td class="text-start align-middle" v-text="item.chanel"></td>
-                                                        <td class="text-start align-middle" v-text="item.note"></td>
-                                                        <td class="text-start align-middle" v-text="item.user"></td>
+                                                      <td class="text-start align-middle" v-text="utilsConvDate(item.p_timestamp)"></td>
+                                                      <td class="text-start align-middle" v-text="item.total_cost"></td>
+                                                      <td class="text-start align-middle" v-text="item.total_income"></td>
+                                                      <td class="text-start align-middle" v-text="item.shop_name"></td>
+                                                      <td class="text-start align-middle" v-text="item.note"></td>
                                                     </tr>
-                                                </template>
+                                                  </template>
+                                                  
                                             </tbody>
                                         </table>
                                     </div>
@@ -300,7 +261,7 @@
     window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
-<script src="/page-key-order/js/services.js" type="module"> </script>
-<script src="/page-key-order/js/index.js" type="module"> </script>
+<script src="/page-report-tiktok-live/js/services.js" type="module"> </script>
+<script src="/page-report-tiktok-live/js/index.js" type="module"> </script>
 
 </html>
