@@ -72,7 +72,7 @@
                     if (status === 'Valid') {
                         try {
                             let data = {
-                                "chanel": "TT2",
+                                "chanel": self.valueCheck,
                                 "review_negative": self.review_negative,
                                 "review_independent": self.review_independent,
                                 "reply_message": self.reply_message,
@@ -83,10 +83,10 @@
                             }
                             const req = await services.createData(data, self.token_header)
                             if (req.status === 200) {
-                                Msg("บันทึกสำเร็จ", 'success');
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 2000)
+                                // Msg("บันทึกสำเร็จ", 'success');
+                                // setTimeout(function () {
+                                //     window.location.reload();
+                                // }, 2000)
                             }
                         } catch (error) {
                             console.log("🚀 ~ error:", error)
