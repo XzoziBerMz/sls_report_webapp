@@ -7,7 +7,7 @@
             return {
                 ...window.webUtils.data || {},
                 user: window.user || "",
-                currentPage: 'key-order',
+                currentPage: 'report-tiktoklive',
                 currentPages: 1,
                 authstatus: window.authstatus,
                 datas: [],
@@ -29,7 +29,6 @@
                 chanel: "",
                 note: "",
                 serach_value: '',
-
                 modal_titles: "",
                 column_order_by: "p_date",
                 order_sort: "desc",
@@ -171,31 +170,34 @@
                         await self.loadData();
                     }
                 });
-                // self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
-                //     static: true,
-                //     enableTime: true,
-                //     disableMobile: "true",
-                //     dateFormat: "d/m/Y",
-                //     onChange: function (selectedDates, dateStr, instance) {
-                //         self.from_date = dateStr; // Update from_date
-                //         self.loadData();           // Trigger data loading
-                //     },
-                // });
-            },
-            async DefaultDataTO() {
-                const self = this;
-                // self.flatpickr_dp_to_date = $("#kt_td_picker_basic_input_to").flatpickr({
-                //     static: true,
-                //     enableTime: true,
-                //     disableMobile: "true",
-                //     dateFormat: "d/m/Y",
-                //     onChange: function (selectedDates, dateStr, instance) {
-                //         self.to_date = dateStr; // Update to_date
-                //         self.loadData();         // Trigger data loading
-                //     },
-                // });
+
             },
 
+            async loadData() {
+                const self = this;
+                try {
+                    showLoading();
+                    let data = {
+                        "start_at":  self.startDate,
+                        "end_at":  self.endDate,
+                        "search": self.serach_value,
+                        "shops": [],
+                        "page": self.currentPages,
+                        "per_page": 10,
+                        "order": "shop_name",
+                        "order_by": "desc"
+                    };
+                    const responseGetOrderManual = await services.getOrderManual(data, self.token_header);
+                    const response = responseGetOrderManual?.data || {};
+                    self.dataOrderManual = response.data || [];
+                    const totalItems = response.total || 0;
+                    self.totalPages = Math.ceil(totalItems / +self.perPage);
+                    closeLoading();
+                } catch (error) {
+                    console.warn("Error loading data:", error);
+                    closeLoading();
+                }
+            },
             handleSearch() {
                 // Reset pagination to the first page when a new search is triggered
                 this.currentPages = 1;
@@ -205,48 +207,7 @@
                 // Trigger search when the input loses focus
                 this.handleSearch();
             },
-            async loadData() {
-                const self = this;
-                try {
-                    showLoading();
-                    const productNames = self.filter_products_2.map((item) => item.name);
-                    const channelNames = self.filter_channel_2.map((item) => item.name);
-                    const usersNames = self.filter_users_2.map((item) => item.name);
 
-                    let data = {
-
-                        product_multiple: productNames || [],
-                        channel_multiple: channelNames || [],
-                        user_multiple: usersNames || [],
-
-                        search: self.serach_value,
-                        customer: self.customer || '', // Bind the search fields
-                        product: self.product || '',
-                        order_no: self.order_no || '',
-                        chanel: self.chanel || '',
-                        note: self.note || '',
-                        user: self.user || '',
-                        "start_at": self.startDate,
-                        "end_at": self.endDate,
-                        page: self.currentPages,
-                        per_page: +self.perPage,
-                        "order": self.column_order_by,
-                        "order_by": self.order_sort
-
-
-                    };
-
-                    const responseGetOrderManual = await services.getOrderManual(data, this.token_header);
-                    const response = responseGetOrderManual?.data || {};
-                    this.dataOrderManual = response.data || [];
-                    const totalItems = response.total || 0;
-                    this.totalPages = Math.ceil(totalItems / +this.perPage);
-                    closeLoading()
-                } catch (error) {
-                    console.warn("Error loading data:", error);
-                    closeLoading()
-                }
-            },
             async sortTable(column) {
                 if (this.column_order_by === column) {
                     this.order_sort = this.order_sort === 'asc' ? 'desc' : 'asc';
@@ -264,19 +225,7 @@
                 return self.order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
 
-            // onSearchInput() {
-            //     console.log("Search input changed:", {
-            //         search: this.search,
-            //         customer: this.customer,
-            //         product: this.product,
-            //         order_no: this.order_no,
-            //         chanel: this.chanel,
-            //         note: this.note,
-            //         user: this.user
-            //     }); // Debugging
-            //     this.currentPages = 1; // Reset to the first page on new search
-            //     this.loadData();      // Load data based on search input
-            // },
+
             goToPage(page) {
                 if (page < 1 || page > this.totalPages) return;
                 this.currentPages = page;
@@ -401,10 +350,12 @@
 
         },
         mounted: function () {
-            this.loadData();
-            this.DefaultData();
-            this.DefaultDataTO();
-            this.init();
+            const self = this
+
+            self.loadData();
+            self.DefaultData();
+
+            self.init();
             console.log("Component mounted and data loaded");
         }
     });

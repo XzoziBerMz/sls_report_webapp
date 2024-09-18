@@ -72,7 +72,7 @@
                     if (status === 'Valid') {
                         try {
                             let data = {
-                                "chanel": "TT2",
+                                "chanel": self.valueCheck,
                                 "review_negative": self.review_negative,
                                 "review_independent": self.review_independent,
                                 "reply_message": self.reply_message,
