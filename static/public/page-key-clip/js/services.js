@@ -32,7 +32,7 @@
     function getInputChannel(body = {},token) {
     return axios({
       method: "post",
-      url: basepath + `/api/v1/shop/list`,
+      url: basepath + `/api/v1/shop/vdo/list`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },

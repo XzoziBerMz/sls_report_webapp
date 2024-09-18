@@ -16,6 +16,7 @@
                 dataChannel: [],
                 dataProduct: [],
                 dataDailyHandler: [],
+                dataStars: [],
 
                 form: {
                     date: "",
@@ -83,9 +84,9 @@
                 try {
                     let data = {
                         "channel_id": "CHANNEL_TIKTOK"
-                   }
+                    }
                     const [responseGetChannel, responseGetProduct] = await Promise.all([
-                        services.getChannel(data , self.token_header),
+                        services.getChannel(data, self.token_header),
                         services.getProduct(self.token_header)
                     ]);
 
@@ -99,6 +100,17 @@
                     console.warn('🌦 ~ loadData ~ error:', error);
                 } finally {
                     closeLoading();
+                }
+            },
+
+
+            async loadStars() {
+                const self = this;
+                try {
+                    let responseStars = await services.getdataEditStars(self.token_header);
+                    self.dataStars = responseStars?.data.data || []; // เก็บข้อมูลลงใน dataStars
+                } catch (error) {
+                    console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
                 }
             },
 
@@ -190,10 +202,10 @@
                         const response = responseGetDailyHandler?.data || {};
 
                         Msg("บันทึกสำเร็จ", 'success');
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 2000)
-                                
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000)
+
                         this.dataDailyHandler = response.data || [];
 
                         const totalItems = response.total || 0;
@@ -215,7 +227,7 @@
                         this.errors = {};
                         this.flatpickr_dp_from_date.clear();
 
-              
+
 
                     } catch (error) {
                         console.warn("Error loading data:", error.response ? error.response.data : error.message);
@@ -238,6 +250,7 @@
             let self = this;
             self.DefaultData();
             self.loadData();
+            self.loadStars();
             console.log("ok");
         }
     });
