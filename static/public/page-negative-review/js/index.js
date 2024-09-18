@@ -83,10 +83,10 @@
                             }
                             const req = await services.createData(data, self.token_header)
                             if (req.status === 200) {
-                                // Msg("บันทึกสำเร็จ", 'success');
-                                // setTimeout(function () {
-                                //     window.location.reload();
-                                // }, 2000)
+                                Msg("บันทึกสำเร็จ", 'success');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000)
                             }
                         } catch (error) {
                             console.log("🚀 ~ error:", error)
