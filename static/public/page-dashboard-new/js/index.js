@@ -39,6 +39,7 @@
         dataMatterUpdate: [],
         dataUpdateAction: [],
         dataOrderManual: [],
+        dataStars: [],
         dataDailySum: {},
         totalItems: 0,
         perPage: 10,
@@ -571,8 +572,8 @@
 
       async loadDataReviewTb2() {
         const self = this;
+        showLoading();
         try {
-          showLoading();
           const currentDate = new Date();
           const formattedDate = currentDate.toISOString().slice(0, 10);
 
@@ -615,12 +616,12 @@
           console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
           closeLoading();
         }
+
       },
 
       async loadDailySum() {
+        showLoading();
         try {
-          showLoading();
-
           const currentDate = new Date().toISOString().slice(0, 10);
 
           let formattedDatestart =
@@ -648,6 +649,18 @@
         } catch (error) {
           console.warn("Error loading data:", error);
           closeLoading();
+        }
+
+
+      },
+
+      async loadStars() {
+        const self = this;
+        try {
+          let responseStars = await services.getdataEditStars(self.token_header);
+          self.dataStars = responseStars?.data.data || []; // เก็บข้อมูลลงใน dataStars
+        } catch (error) {
+          console.warn(`🌦️ ~ loaddataReview ~ error:`, error);
         }
       },
 
@@ -826,6 +839,7 @@
       modalEdit(data) {
         $("#staticBackdrop").modal("show");
         this.data_edit = data;
+        this.selectedAction = data.action;
       },
       async editinghistory(data) {
         $("#editinghistory").modal("show");
@@ -936,14 +950,13 @@
               const req = await services.getChannelAll(self.token_header);
               self.data_channel_2 = req.data.data.map((item) => {
                 const existingProduct = self.filter_channel_2.find(
-                  (prod) => prod.name === item.channel_name
-                );
+                  (prod) => prod.name === item);
 
                 return {
                   check_value: existingProduct
                     ? existingProduct.check_value
                     : false,
-                  name: item.channel_name,
+                  name: item
                 };
               });
             } catch (error) {
@@ -951,7 +964,7 @@
             }
           } else {
             try {
-              const req = await services.getUser(self.token_header);
+              const req = await services.getusermanual(self.token_header);
               self.data_users_2 = req.data.data.map((item) => {
                 const existingProduct = self.filter_users_2.find(
                   (prod) => prod.name === item
@@ -1008,7 +1021,7 @@
             }
           } else {
             try {
-              const req = await services.getUser(self.token_header);
+              const req = await services.getuserdaily(self.token_header);
               self.data_users_3 = req.data.data.map((item) => {
                 const existingProduct = self.filter_users_3.find(
                   (prod) => prod.name === item
@@ -1086,42 +1099,27 @@
               console.log("🚀 ~ filterModal ~ error:", error);
             }
           } else {
-   
-              try {
-                const req = await services.getdataEditStars(
-                  self.token_header
-                );
-                self.data_star_4 = req.data.data.map((item) => {
-                  const existingProduct = self.filter_star_4.find(
-                    (prod) => prod === item
-                  );
-  
-                  return {
-                    check_value: existingProduct
-                      ? existingProduct.check_value
-                      : false,
-                    name: item,
-                  };
-                });
-              } catch (error) {
-                console.log("🚀 ~ filterModal ~ error:", error);
-              }
-            // try {
-            //   self.data_star_4 = self.dataEditStars.map((item) => {
-            //     const existingProduct = self.filter_star_4.find(
-            //       (prod) => prod.name === item.name
-            //     );
 
-            //     return {
-            //       check_value: existingProduct
-            //         ? existingProduct.check_value
-            //         : false,
-            //       name: item.name,
-            //     };
-            //   });
-            // } catch (error) {
-            //   console.log("🚀 ~ filterModalVDO ~ error:", error);
-            // }
+            try {
+              const req = await services.getdataEditStars(
+                self.token_header
+              );
+              self.data_star_4 = req.data.data.map((item) => {
+                const existingProduct = self.filter_star_4.find(
+                  (prod) => prod === item
+                );
+
+                return {
+                  check_value: existingProduct
+                    ? existingProduct.check_value
+                    : false,
+                  name: item,
+                };
+              });
+            } catch (error) {
+              console.log("🚀 ~ filterModal ~ error:", error);
+            }
+
           }
         }
       },
@@ -1333,6 +1331,7 @@
       self.init();
 
       self.DefaultData();
+      self.loadStars();
       console.log("ok");
     },
   });

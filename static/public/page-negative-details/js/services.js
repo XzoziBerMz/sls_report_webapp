@@ -16,6 +16,16 @@
     });
   }
 
+  function getdataEditStars(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/review/list-action-negative`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+
   function getChannel(body = {},token) {
     return axios({
       method: "post",
@@ -37,6 +47,7 @@
     getProduct,
     getChannel,
     getInsertReviewDailyHandler,
+    getdataEditStars,
   };
   window.services = services;
 })(jQuery, window, axios);

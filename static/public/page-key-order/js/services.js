@@ -13,19 +13,44 @@
       headers: { "x-auth-token": token },
     });
   }
-
-  function getOrder(body = {}) {
-    return axios.get(`/page-key-order/mockjson/get_order.json`);
-    // return axios({
-    //     method: 'post',
-    //     url: endpoint.getCaretaker,
-    //     data: { ...body },
-    //     headers: { "x-auth-token": window.csrfToken }
-    // });
+  function getmanual(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/order/list-product-manual`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
   }
+
+  function getChannelAll(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/order/list-channel-manual`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+
+  function getusermanual(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/order/list-user-manual`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+
+
   const services = {
-    getOrder,
+   
     getOrderManual,
+    getmanual,
+    getChannelAll,
+    getusermanual,
+  
   };
   window.services = services;
 })(jQuery, window, axios);

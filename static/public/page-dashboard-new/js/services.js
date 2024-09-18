@@ -181,7 +181,7 @@
   function getChannelAll(token) {
     return axios({
       method: "get",
-      url: basepath + `/api/v1/channel/list`,
+      url: basepath + `/api/v1/order/list-channel-manual`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       headers: { "x-auth-token": token },
@@ -209,6 +209,24 @@
     return axios({
       method: "get",
       url: basepath + `/api/v1/review/list-action-negative`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+  function getusermanual(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/order/list-user-manual`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+  function getuserdaily(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/review/list-user-daily`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       headers: { "x-auth-token": token },
@@ -247,6 +265,8 @@
     ListUserByReviewNegative,
     ListInfractionReviewDaily,
     getdataEditStars,
+    getusermanual,
+    getuserdaily,
     // getUserAll,
   };
   window.services = services;
