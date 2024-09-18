@@ -72,18 +72,8 @@
             //         nextInput.focus(); 
             //     }
             // },
-            addAds() {
-                const self = this;
-                let data = {
-                    "new_ads": true,
-                    "total_cost": "",
-                    "total_income": "",
-                    "channel": "",
-                    "note": "",
-                    "date": self.selectedDate,
-                }
-                self.dataAds.push(data)
-            },
+      
+
             formatNumber(number) {
                 if (typeof number === 'number') {
                     return number.toLocaleString(); 
@@ -136,33 +126,34 @@
                 });
                 return isValid;
             },
+            addAds() {
+                const self = this;
+                
+                let data = {
+                    "new_ads": true,
+                    "shop_name": self.channel,
+                    "total_cost": parseFloat(self.total_cost) || 0,  
+                    "total_income": parseFloat(self.total_income) || 0,  
+                    // "commission": 10.0,
+                    "note": self.note, 
+                    "p_timestamp": self.selectedDate
+                }
+                self.dataAds.push(data)
+            },
+            
             async savePage() {
                 const self = this;
                 if (self.validateForm()) {
                     console.log("Form validated successfully, proceeding to save.");
-                    const currentDate = new Date();
-                    currentDate.setDate(currentDate.getDate() + 1);
-                    const formattedDate = currentDate.toISOString().split('T')[0];
+                    // const currentDate = new Date();
+                    // currentDate.setDate(currentDate.getDate() + 1);
+                    // const formattedDate = currentDate.toISOString().split('T')[0];
+                    
                     let dataAds = {
                         data: self.dataAds || []
                     }
-                    
                     const req = await services.getInsertMultiple(dataAds, self.token_header);
                     console.log("🚀 ~ savePage ~ req:", req)
-
-                    // for (const data of dataAds) {
-                    //     data.total_cost = Number(data.total_cost) || 0;
-                    //     data.total_income = Number(data.total_income) || 0;
-                    //     data.shop_name = data.shop_name || '';
-                    //     data.note = data.note || '';
-                    //     data.date = formattedDate || '';
-                    //     console.log("Data to be sent to API:", data);
-                    //     if (req.data.code !== 200) {
-                    //         console.log("Insert failed for data:", data);
-                    //         Msg("บันทึกไม่สำเร็จ", 'error');
-                    //         return;
-                    //     }
-                    // }
                     closeLoading();
                     Msg("บันทึกสำเร็จ", 'success');
                     setTimeout(function () {

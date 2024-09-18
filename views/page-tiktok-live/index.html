@@ -142,9 +142,9 @@
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control text-start"
-                                                                    @keyup.enter="focusNext('total_shop_income', index + 1)"
-                                                                    @input="handleInputN(item.total_shop_income, index, 'total_shop_income')"
+                                                                <input v-model="item.note" type="text" class="form-control text-start"
+                                                                    @keyup.enter="focusNext('note', index + 1)"
+                                                                   
                                                                     :ref="'total_shop_income_' + index" />
                                                             </div>
                                                         </td>
