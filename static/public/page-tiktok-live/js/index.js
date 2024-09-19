@@ -201,7 +201,7 @@
               window.location.reload();
             }, 2000);
           }
-          closeLoading();
+       
         } catch (error) {
           console.log("🚀 ~ savePage ~ error:", error);
           closeLoading();
