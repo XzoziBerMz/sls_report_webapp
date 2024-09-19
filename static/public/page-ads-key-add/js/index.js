@@ -102,16 +102,16 @@
         },
         computed: {
             AddFee() {
-                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.add_fee || 0), 0);
+                const sum = this.data_channel.reduce((sum, item) => sum + parseFloat(item.add_fee || 0), 0);
                 // return sum.toFixed(2);
                 return sum
             },
             AddIncome() {
-                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.added_income || 0), 0);
+                const sum = this.data_channel.reduce((sum, item) => sum + parseFloat(item.added_income || 0), 0);
                 return sum
             },
             AddTotal() {
-                const sum = this.dataEditStars.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
+                const sum = this.data_channel.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
                 return sum
             },
         },
@@ -127,8 +127,8 @@
                 }
                 return number; // Return as is if not a number
             },
-            
-            
+
+
             formatPercentage(addFee, totalIncome) {
                 if (addFee == null || totalIncome == null || isNaN(addFee) || isNaN(totalIncome) || totalIncome === 0) {
                     return '0.00%';
@@ -143,9 +143,8 @@
 
             async DefaultData() {
                 const self = this;
-               
-                self.dateDefault = self.formatDate(new Date());
-                console.log("🚀 ~ DefaultData ~ self.dateDefault:", self.dateDefault)
+
+                self.dateDefault = new Date();
                 try {
                     let data = {}
                     const req = await services.getShop(data, self.token_header)
@@ -153,29 +152,40 @@
                         self.data_channel = req.data.data
                         self.data_channel = req.data.data.map(item => ({
                             ...item,
-                            date: self.dateDefault
+                            timestamp: self.dateDefault.toISOString().split('T')[0] + ' 00:00:00' // แปลง date ให้เป็นรูปแบบ 'YYYY-MM-DD 00:00:00'
                         }));
                         console.log("🚀 ~ DefaultData ~ self.data_channel:", self.data_channel)
+                        this.$nextTick(() => {
+
+                            self.data_channel.forEach((item, index) => {
+                                const selectorPayment = '#kt_td_picker_start_input_' + index;
+
+                                self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
+                                    altInput: true,
+                                    altFormat: "d/m/Y",
+                                    dateFormat: "Y-m-d",
+                                    onChange: async function (selectedDates, dateStr, instance) {
+                                        item.timestamp = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                                    },
+                                });
+                                self.set_date_time.setDate(item.date)
+                            })
+                        })
                     }
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)
                 }
 
-                self.data_channel.forEach((item, index) => {
-                    const selectorPayment = '#kt_td_picker_start_input_' + index;
 
-                    self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
-                        altInput: true,
-                        altFormat: "d/m/Y",
-                        dateFormat: "Y-m-d",
-                        onChange: async function (selectedDates, dateStr, instance) {
-                            item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
-                        },
-                    });
-                    // self.set_date_time.setDate(item.date)
-                })
             },
-            
+            focusNext(column, nextIndex) {
+                const nextInput = this.$refs[column + '_' + nextIndex];
+                if (nextInput && nextInput[0]) { // ตรวจสอบว่าถ้าเป็น array
+                    nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
+                } else if (nextInput) {
+                    nextInput.focus(); // ถ้าเป็น element เดียว
+                }
+            },
 
             addAds() {
                 const self = this;
@@ -212,7 +222,7 @@
                             altFormat: "d/m/Y",
                             dateFormat: "Y-m-d",
                             onChange: async function (selectedDates, dateStr, instance) {
-                                item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                                item.timestamp = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
                             },
                         });
                     })
@@ -220,7 +230,7 @@
 
             },
             deleteAds(index) {
-                this.dataEditStars.splice(index, 1);
+                this.data_channel.splice(index, 1);
             },
             formatDate(date) {
                 const day = String(date.getDate()).padStart(2, '0');  // วัน, เติม 0 ข้างหน้าให้เป็นสองหลัก
@@ -289,7 +299,7 @@
                 try {
                     showLoading();
                     let data = {
-                        "data": this.dataEditStars
+                        "data": this.data_channel
                     }
                     console.log("🚀 ~ handleSubmit ~ data:", data)
                     data.data.forEach((item, index) => {
@@ -315,7 +325,7 @@
             },
 
             restrictToNumbers(index, field) {
-                this.dataEditStars[index][field] = this.dataEditStars[index][field].replace(/[^0-9]/g, '');
+                this.data_channel[index][field] = this.data_channel[index][field].replace(/[^0-9]/g, '');
                 this.validateFields()
             },
             clearError(index, field) {
@@ -327,25 +337,25 @@
             // restrictToNumbers(index, field) {
             //     // อนุญาตให้กรอกตัวเลขและจุดทศนิยม โดยจะยอมให้มีเพียงจุดเดียว
             //     this.dataEditStars[index][field] = this.dataEditStars[index][field].replace(/[^0-9.]/g, '');
-            
+
             //     // แบ่งข้อมูลตามจุดทศนิยม
             //     let parts = this.dataEditStars[index][field].split('.');
-                
+
             //     // จัดรูปแบบส่วนที่เป็นจำนวนเต็มให้มีคอมม่า (1,000,000)
             //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            
+
             //     // ถ้ามีจุดทศนิยม ให้จำกัดตัวเลขหลังจุดทศนิยมไม่เกิน 2 ตำแหน่ง
             //     if (parts.length > 1) {
             //         parts[1] = parts[1].substring(0, 2); // จำกัดให้มีทศนิยม 2 ตำแหน่ง
             //     }
-            
+
             //     // รวมส่วนจำนวนเต็มกับทศนิยมกลับเข้าไป
             //     this.dataEditStars[index][field] = parts.join('.');
-            
+
             //     // เรียกใช้ฟังก์ชัน validateFields
             //     this.validateFields();
             // },
-            
+
 
             handleInput(index, field) {
                 if (this.errors[index]) {
@@ -354,7 +364,7 @@
             },
             handleInputN(index, field) {
 
-                let value = this.dataEditStars[index][field];
+                let value = this.data_channel[index][field];
 
                 // Clear the general error (optional)
                 if (this.errors[field]) {
@@ -366,7 +376,7 @@
 
                 // If the value doesn't match the regex, slice off the last character
                 if (!regex.test(value)) {
-                    this.dataEditStars[index][field] = value.slice(0, -1);
+                    this.data_channel[index][field] = value.slice(0, -1);
                 }
             },
 
