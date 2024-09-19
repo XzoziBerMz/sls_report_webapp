@@ -59,13 +59,13 @@
 
                 self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
                     static: true,
-                    enableTime: false, 
+                    enableTime: false,
                     disableMobile: "true",
-                    dateFormat: "Y-m-d", 
-                    altFormat: "d/m/Y", 
+                    dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
                     altInput: true,
                     maxDate: "today",
-                    onChange: async function (selectedDates, dateStr, instance) {
+                    onChange: function (selectedDates) {
                         if (selectedDates.length) {
                             const selectedDate = selectedDates[0];
                             const year = selectedDate.getFullYear();
@@ -74,16 +74,16 @@
                             self.selectedDate = `${year}-${month}-${day}`;
                             console.log("🚀 ~ self.selectedDate:", self.selectedDate);
                             self.errors.date = null;
+                        } else {
+                            // Handle case where no date is selected
+                            self.selectedDate = null;
                         }
-                    },
+                    }
                 });
+            
+                // Initialize selectedDate to today's date
                 const currentDate = new Date();
-                const formattedDate = currentDate
-                  .toISOString()
-                  .slice(0, 10)
-                  .replace("T", " ");
-                self.selectedDate = formattedDate;
-             
+                self.selectedDate = currentDate.toISOString().slice(0, 10);
             },
             handleInputN(value, index, field) {
                 let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
@@ -148,29 +148,29 @@
             },
             addAds() {
                 const self = this;
-                // บังคับให้เป็นตัวเลข โดยใช้การตรวจสอบ NaN
                 let totalCost = parseFloat(self.total_cost);
                 let totalIncome = parseFloat(self.total_income);
-            
                 if (isNaN(totalCost)) totalCost = 0;
                 if (isNaN(totalIncome)) totalIncome = 0;
 
-                const currentDate = new Date().toISOString().slice(0, 10);
-                let formattedDatestart =self.startDate || new Date().toISOString().slice(0, 10);
-
+                let formattedDateStart = self.selectedDate || new Date().toISOString().slice(0, 10);
+    
+                const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                if (!datePattern.test(formattedDateStart)) {
+                    console.error("Invalid date format:", formattedDateStart);
+                    return; // Exit if the date is invalid
+                }
                 let data = {
                     "new_ads": true,
                     "shop_name": self.channel,
-                    "total_cost": totalCost,  
-                    "total_income": totalIncome, 
+                    "total_cost": totalCost,
+                    "total_income": totalIncome,
                     // "commission": 10.0,
                     "note": self.note,
-                    "p_timestamp":formattedDatestart 
+                    "p_timestamp": formattedDateStart
                 }
-                console.log("After parseFloat:", typeof data.total_cost, data.total_cost);
-                console.log("After parseFloat:", typeof data.total_income, data.total_income);
                 console.log("Selected Date:", self.selectedDate);
-
+                console.log("🚀 ~ addAds ~ self.dataAds:", self.dataAds)
                 self.dataAds.push(data)
             },
 
