@@ -95,6 +95,19 @@
                             self.$nextTick(() => {
 
                                 self.dataAds.forEach((item, index) => {
+                                    const selectorPayment = '#kt_td_picker_start_input_' + index;
+                                    self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
+                                        altInput: true,
+                                        altFormat: "d/m/Y",
+                                        dateFormat: "Y-m-d",
+                                        onChange: async function (selectedDates, dateStr, instance) {
+                                            item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                                        },
+                                    });
+                                    self.set_date_time.setDate(item.date)
+                                })
+
+                                self.dataAds.forEach((item, index) => {
                                     const selectorPayment = '#select_status_' + index;
                                     if (!$(selectorPayment).data('select2')) {
                                         $(selectorPayment).select2({
@@ -115,7 +128,7 @@
                         },
                     });
 
-                    
+
 
                     self.$nextTick(() => {
 
@@ -237,11 +250,17 @@
                         "order": "",
                         "order_by": "desc"
                     }
+                    const currentDate = new Date();
+                    currentDate.setDate(currentDate.getDate());
+                    const formattedDate = currentDate.toISOString().split('T')[0];
                     const req = await services.getAds(data, self.token_header)
                     if (req.data.code === 200) {
                         closeLoading();
                         self.errors = {};
-                        self.dataAds = req.data.data || []
+                        self.dataAds = req.data.data || [];
+                        self.dataAds.forEach(item => {
+                            item.date = formattedDate;  // แก้ไขค่า date ใน item โดยตรง
+                        });
                     }
                 } catch (error) {
                     closeLoading();
@@ -265,6 +284,10 @@
                         isValid = false;
                     }
 
+                    if (!item.name) {
+                        error.name = true;
+                        isValid = false;
+                    }
                     if (!item.total_cost) {
                         error.total_cost = true;
                         isValid = false;
@@ -273,12 +296,24 @@
                         error.budget = true;
                         isValid = false;
                     }
+                    if (!item.product) {
+                        error.product = true;
+                        isValid = false;
+                    }
                     if (!item.total_shop_income) {
                         error.total_shop_income = true;
                         isValid = false;
                     }
                     if (!item.cost_per_purchase) {
                         error.cost_per_purchase = true;
+                        isValid = false;
+                    }
+                    if (!item.purchase) {
+                        error.purchase = true;
+                        isValid = false;
+                    }
+                    if (!item.note) {
+                        error.note = true;
                         isValid = false;
                     }
                     if (!item.date) {
@@ -302,84 +337,35 @@
                     currentDate.setDate(currentDate.getDate() + 1);
                     const formattedDate = currentDate.toISOString().split('T')[0];
 
-                    if (self.start_date_time === formattedDate) {
-                        const newAds = self.dataAds.filter(item => item.new_ads);
-                        const existingAds = self.dataAds.filter(item => !item.new_ads);
-
-                        if (newAds.length) {
-                            for (const ad of newAds) {
-                                ad.total_cost = Number(ad.total_cost) || 0;
-                                ad.budget = Number(ad.budget) || 0;
-                                ad.total_shop_income = Number(ad.total_shop_income) || 0;
-                                ad.cost_per_purchase = Number(ad.cost_per_purchase) || 0;
-                                ad.date = formattedDate || '';
-                                try {
-                                    const req = await services.insertData(ad, self.token_header);
-                                    if (req.data.code === 200) {
-                                        console.log("Save successful for:", ad);
-                                        // ดำเนินการหลังจากบันทึกสำเร็จ (เช่น แจ้งเตือน)
-                                    } else {
-                                        Msg("อัพเดทไม่สำเร็จ", 'error');
-                                        return;
-                                        // จัดการกรณีที่การบันทึกล้มเหลว
-                                    }
-                                } catch (error) {
-                                    console.log("Error saving ad:", ad, error);
-                                    // จัดการข้อผิดพลาด
-                                }
-                            }
-                        }
-
-                        if (existingAds.length) {
-                            for (const ad of existingAds) {
-                                ad.total_cost = Number(ad.total_cost) || 0;
-                                ad.budget = Number(ad.budget) || 0;
-                                ad.total_shop_income = Number(ad.total_shop_income) || 0;
-                                ad.cost_per_purchase = Number(ad.cost_per_purchase) || 0;
-                                ad.date = formattedDate || '';
-                                ad.ref_default = 0;
-                                try {
-                                    const req = await services.updateData(ad, self.token_header);
-                                    if (req.data.code === 200) {
-                                        console.log("Update successful for:", ad);
-                                        // ดำเนินการหลังจากอัพเดทสำเร็จ (เช่น แจ้งเตือน)
-                                    } else {
-                                        Msg("อัพเดทไม่สำเร็จ", 'error');
-                                        return;
-                                    }
-                                } catch (error) {
-                                    console.log("Error updating ad:", ad, error);
-                                    // จัดการข้อผิดพลาด
-                                }
-                            }
-                        }
-                        console.log("Update")
-                    } else {
-                        let dataAds = self.dataAds || []
-
-                        for (const data of dataAds) {
-                            data.total_cost = Number(data.total_cost) || 0;
-                            data.budget = Number(data.budget) || 0;
-                            data.total_shop_income = Number(data.total_shop_income) || 0;
-                            data.cost_per_purchase = Number(data.cost_per_purchase) || 0;
-                            data.date = formattedDate || '';
-                            const req = await services.insertData(data, self.token_header);
-
-                            // ถ้าต้องการเช็คผลลัพธ์การบันทึกของแต่ละอัน
-                            if (req.data.code !== 200) {
-                                console.log("Insert failed for data:", data);
-                                Msg("บันทึกไม่สำเร็จ", 'error');
+                    for (const ad of newAds) {
+                        ad.total_cost = Number(ad.total_cost) || 0;
+                        ad.budget = Number(ad.budget) || 0;
+                        ad.total_shop_income = Number(ad.total_shop_income) || 0;
+                        ad.cost_per_purchase = Number(ad.cost_per_purchase) || 0;
+                        // ad.date = formattedDate || '';
+                        try {
+                            const req = await services.insertData(ad, self.token_header);
+                            if (req.data.code === 200) {
+                                console.log("Save successful for:", ad);
+                                closeLoading();
+                                Msg("บันทึกสำเร็จ", 'success');
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                                // ดำเนินการหลังจากบันทึกสำเร็จ (เช่น แจ้งเตือน)
+                            } else {
+                                Msg("อัพเดทไม่สำเร็จ", 'error');
                                 return;
+                                // จัดการกรณีที่การบันทึกล้มเหลว
                             }
+                        } catch (error) {
+                            console.log("Error saving ad:", ad, error);
+                            // จัดการข้อผิดพลาด
                         }
                     }
-                   
-                    closeLoading();
-                    Msg("บันทึกสำเร็จ", 'success');
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                    
+
+
+
                 } else {
                     console.log("Form validation failed.");
                     closeLoading()

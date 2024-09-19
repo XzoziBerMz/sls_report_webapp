@@ -295,15 +295,17 @@
                                                             <span v-if="errors[index] && errors[index].date" v-text="errors[index].date" class="text-danger"></span>
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break">
-                                                            <span v-if="!item.new_ads" v-text="item.name"></span>
-                                                            <div v-else class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-100 text-end" v-model="item.name" :class="{'border-danger': errors[index]?.name}"/>
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.name, index, 'name')"
+                                                                    @keyup.enter="focusNext('name', index + 1)" v-model="item.name" :ref="'name_' + index"
+                                                                    :class="{'border-danger': errors[index]?.name}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break">
-                                                            <span v-if="!item.new_ads" v-text="item.product"></span>
-                                                            <div v-else class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end" v-model="item.product" :class="{'border-danger': errors[index]?.product}"/>
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.product, index, 'product')"
+                                                                    @keyup.enter="focusNext('product', index + 1)" v-model="item.product" :ref="'product_' + index"
+                                                                    :class="{'border-danger': errors[index]?.product}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break">
@@ -355,15 +357,17 @@
                                                         </td>
 
                                                         <td class="align-middle min-w-50px text-break">
-                                                            <span v-if="!item.new_ads" v-text="item.purchase"></span>
-                                                            <div v-else class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end" v-model="item.purchase" />
+                                                            <div class="d-flex justify-content-center align-items-center"></div>
+                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.purchase, index, 'purchase')"
+                                                                    @keyup.enter="focusNext('purchase', index + 1)" v-model="item.purchase" :ref="'purchase_' + index"
+                                                                    :class="{'border-danger': errors[index]?.purchase}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break">
-                                                            <span v-if="!item.new_ads" v-text="item.note"></span>
-                                                            <div v-else class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end" v-model="item.note" />
+                                                            <div class="d-flex justify-content-center align-items-center"></div>
+                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.note, index, 'note')"
+                                                                    @keyup.enter="focusNext('note', index + 1)" v-model="item.note" :ref="'note_' + index"
+                                                                    :class="{'border-danger': errors[index]?.note}" />
                                                             </div>
                                                         </td>
                                                     </tr>
