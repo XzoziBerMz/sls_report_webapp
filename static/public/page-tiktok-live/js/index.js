@@ -172,20 +172,20 @@
         };
         self.dataAds.push(data);
       },
-
-      focusNext(ref, index) {
-        const nextField = this.$refs[`${ref}${index}`];
-        if (nextField) {
-          nextField.focus();
+      focusNext(column, nextIndex) {
+        const nextInput = this.$refs[column + '_' + nextIndex];
+        if (nextInput && nextInput.length) { // ตรวจสอบว่าถ้าเป็น array
+            nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
+        } else if (nextInput) {
+            nextInput.focus(); // ถ้าเป็น element เดียว
         }
-      },
+    },
 
       async savePage() {
         const self = this;
 
+        showLoading();
         if (self.validateForm()) {
-          showLoading();
-
           if (self.dataAds.length > 0) {
             self.dataAds.forEach((ad) => {
               ad.p_timestamp = self.selectedDate;
