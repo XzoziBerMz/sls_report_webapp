@@ -70,19 +70,17 @@
           },
         });
 
-        const currentDate = new Date();
-        self.selectedDate = currentDate.toISOString().slice(0, 10);
       },
 
       handleInputNumber(value) {
         let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ใช่ตัวเลข
         const decimalParts = formattedValue.split(".");
-    
+
         // ตรวจสอบว่าไม่มีมากกว่า 1 จุดทศนิยม
         if (decimalParts.length > 2) {
           formattedValue = decimalParts[0] + "." + decimalParts.slice(1).join("");
         }
-    
+
         // ถ้าเป็นค่าว่างหรือไม่ใช่ตัวเลข ให้คืนค่า 0.0
         let floatValue = parseFloat(formattedValue);
         return isNaN(floatValue) ? 0.0 : floatValue; // แปลงเป็น float64
@@ -127,6 +125,7 @@
       validateForm() {
         this.errors = {};
         let isValid = true;
+        console.log("🚀 ~ this.dataAds.forEach ~  this.dataAds:", this.dataAds)
         this.dataAds.forEach((item, index) => {
           let error = {};
           if (item.new_ads) {
@@ -147,11 +146,12 @@
           }
           this.errors[index] = error;
         });
-      
-        if (!this.form.date) {
+
+        console.log("🚀 ~ validateForm ~ this.form:", this.selectedDate)
+        if (!this.selectedDate) {
           this.errors.date = 'กรุณาเลือกวันที่';
         }
-      
+
         return isValid;
       },
       addAds() {
@@ -175,12 +175,11 @@
       focusNext(column, nextIndex) {
         const nextInput = this.$refs[column + '_' + nextIndex];
         if (nextInput && nextInput.length) { // ตรวจสอบว่าถ้าเป็น array
-            nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
+          nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
         } else if (nextInput) {
-            nextInput.focus(); // ถ้าเป็น element เดียว
+          nextInput.focus(); // ถ้าเป็น element เดียว
         }
-    },
-
+      },
       async savePage() {
         const self = this;
 
@@ -199,17 +198,16 @@
             dataAds,
             self.token_header
           );
-
           closeLoading();
           Msg("บันทึกสำเร็จ", "success");
-            setTimeout(function () {
-              window.location.reload();
-            }, 2000);
-            self.total_cost = '';
-            self.total_income = ''; 
-            self.shop_name = '';
-            self.note = ''; 
-            self.selectedDate = ''; 
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
+          self.total_cost = '';
+          self.total_income = '';
+          self.shop_name = '';
+          self.note = '';
+          self.selectedDate = '';
         } else {
           console.log("Form validation failed.");
           closeLoading();
