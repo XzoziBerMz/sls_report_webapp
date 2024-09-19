@@ -27,7 +27,9 @@
                 errors: {},
                 start_date_time: null,
                 end_date_time: null,
-                selectedDate: '' ,
+                selectedDate: '',
+                flatpickr_dp_from_date: null,
+
             }
         },
         computed: {
@@ -36,18 +38,52 @@
             ...window.webUtils.method || {},
             async init() {
                 let self = this
-                    await self.created()
-                    await self.loadData()
-                    $("#kt_td_picker_start_input").flatpickr({
-                        altInput: true,
-                        altFormat: "d/m/Y",
-                        dateFormat: "Y-m-d",
-                        onChange: function (selectedDates, dateStr, instance) {
-                            self.selectedDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
-                            console.log("🚀 ~ DefaultData ~ self.selectedDate:", self.selectedDate);
+
+                await self.loadData()
+                // $("#kt_td_picker_start_input").flatpickr({
+                //     altInput: true,
+                //     altFormat: "d/m/Y",
+                //     dateFormat: "Y-m-d",
+                //     onChange: function (selectedDates, dateStr, instance) {
+                //         // ตรวจสอบค่าที่เลือก
+                //         console.log("Selected Dates:", selectedDates);
+                //         console.log("Date String:", dateStr);
+
+                //         if (selectedDates.length > 0) {
+                //             self.selectedDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
+                //             console.log("🚀 ~ Updated selectedDate:", self.selectedDate);
+                //             self.errors.date = null;
+                //         }
+                //     },
+                // });
+
+                self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
+                    static: true,
+                    enableTime: false,
+                    disableMobile: "true",
+                    dateFormat: "Y-m-d",
+                    altFormat: "d/m/Y",
+                    altInput: true,
+                    maxDate: "today",
+                    onChange: function (selectedDates) {
+                        if (selectedDates.length) {
+                            const selectedDate = selectedDates[0];
+                            const year = selectedDate.getFullYear();
+                            const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+                            const day = String(selectedDate.getDate()).padStart(2, "0");
+                            self.selectedDate = `${year}-${month}-${day}`;
+                            console.log("🚀 ~ self.selectedDate:", self.selectedDate);
                             self.errors.date = null;
-                        },
-                    });
+                        } else {
+                            // Handle case where no date is selected
+                            self.selectedDate = null;
+                        }
+                    }
+                });
+            
+                // Initialize selectedDate to today's date
+                const currentDate = new Date();
+                self.selectedDate = currentDate.toISOString().slice(0, 10);
             },
             handleInputN(value, index, field) {
                 let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
@@ -57,45 +93,19 @@
                 }
                 this.dataAds[index][field] = formattedValue;
             },
-            created() {
-                const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate());
-                const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-                console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
-            },
 
-            // focusNext(column, nextIndex) {
-            //     const nextInput = this.$refs[column + '_' + nextIndex];
-            //     if (nextInput && nextInput[0]) {
-            //         nextInput[0].focus(); 
-            //     } else if (nextInput) {
-            //         nextInput.focus(); 
-            //     }
-            // },
-            addAds() {
-                const self = this;
-                let data = {
-                    "new_ads": true,
-                    "total_cost": "",
-                    "total_income": "",
-                    "channel": "",
-                    "note": "",
-                     "date": "",
-                }
-                self.dataAds.push(data)
-            },
             formatNumber(number) {
                 if (typeof number === 'number') {
-                    return number.toLocaleString(); 
+                    return number.toLocaleString();
                 }
-                return number; 
+                return number;
             },
             async loadData() {
                 const self = this;
                 try {
                     showLoading();
                     let data = {
-                          "channel_id": "CHANNEL_TIKTOK"
+                        "channel_id": "CHANNEL_TIKTOK"
                     }
                     const req = await services.getChannel(data, self.token_header)
                     if (req.data.code === 200) {
@@ -113,9 +123,11 @@
                 let isValid = true;
                 this.dataAds.forEach((item, index) => {
                     let error = {};
-                    if (!item.channel) {
-                        error.channel = true;
-                        isValid = false;
+                    if (item.new_ads) {
+                        if (!item.channel) {
+                            error.channel = true;
+                            isValid = false;
+                        }
                     }
                     if (!item.total_cost) {
                         error.total_cost = true;
@@ -125,36 +137,55 @@
                         error.total_income = true;
                         isValid = false;
                     }
-                    if (!this.selectedDate) { 
+                    if (!this.selectedDate) {
                         this.errors.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
                     this.errors[index] = error;
+                    console.log("🚀 ~ this.dataAds.forEach ~ this.errors[index]:", this.errors[index])
                 });
                 return isValid;
             },
+            addAds() {
+                const self = this;
+                let totalCost = parseFloat(self.total_cost);
+                let totalIncome = parseFloat(self.total_income);
+                if (isNaN(totalCost)) totalCost = 0;
+                if (isNaN(totalIncome)) totalIncome = 0;
+
+                let formattedDateStart = self.selectedDate || new Date().toISOString().slice(0, 10);
+    
+                const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                if (!datePattern.test(formattedDateStart)) {
+                    console.error("Invalid date format:", formattedDateStart);
+                    return; // Exit if the date is invalid
+                }
+                let data = {
+                    "new_ads": true,
+                    "shop_name": self.channel,
+                    "total_cost": totalCost,
+                    "total_income": totalIncome,
+                    // "commission": 10.0,
+                    "note": self.note,
+                    "p_timestamp": formattedDateStart
+                }
+                console.log("Selected Date:", self.selectedDate);
+                console.log("🚀 ~ addAds ~ self.dataAds:", self.dataAds)
+                self.dataAds.push(data)
+            },
+
             async savePage() {
                 const self = this;
+
                 if (self.validateForm()) {
                     console.log("Form validated successfully, proceeding to save.");
-                    const currentDate = new Date();
-                    currentDate.setDate(currentDate.getDate() + 1);
-                    const formattedDate = currentDate.toISOString().split('T')[0];
-                    let dataAds = self.dataAds || []
-                    for (const data of dataAds) {
-                        data.total_cost = Number(data.total_cost) || 0;
-                        data.total_income = Number(data.total_income) || 0;
-                        data.shop_name = data.shop_name || '';
-                        data.note = data.note || '';
-                        data.date = formattedDate || '';
-                        console.log("Data to be sent to API:", data);
-                        const req = await services.getInsertMultiple(data, self.token_header);
-                        if (req.data.code !== 200) {
-                            console.log("Insert failed for data:", data);
-                            Msg("บันทึกไม่สำเร็จ", 'error');
-                            return;
-                        }
+                    console.log("Data to be sent:", self.dataAds);
+
+                    let dataAds = {
+                        data: self.dataAds || []
                     }
+                    const req = await services.getInsertMultiple(dataAds, self.token_header);
+                    console.log("🚀 ~ savePage ~ req:", req)
                     closeLoading();
                     Msg("บันทึกสำเร็จ", 'success');
                     setTimeout(function () {

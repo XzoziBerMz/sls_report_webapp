@@ -49,9 +49,11 @@
                                         <div>
                                             <label class="fw-semibold required fs-4 mb-2">วันที่</label>
                                             <div class="w-350px input-group align-items-center" id="kt_td_picker_start">
-                                                <input id="kt_td_picker_start_input" type="text" class="form-control w-200px" />
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control w-200px" />
                                                 <span class="input-group-text">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
                                                 </span>
                                             </div>
                                             <span v-if="errors.date" v-text="errors.date" class="text-danger"></span>
@@ -119,32 +121,33 @@
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
+                                                            <div class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control text-end"
-                                                                    @input="handleInputN(item.total_cost, index, 'total_cost')"
-                                                                    @keyup.enter="focusNext('total_cost', index + 1)"
-                                                                    v-model="item.total_cost"
-                                                                    :ref="'total_cost_' + index"
-                                                                    :class="{'border-danger': errors[index]?.total_cost}" />
+                                                                       @input="item.total_cost = parseFloat(item.total_cost) || 0"
+                                                                       @keyup.enter="focusNext('total_cost', index + 1)"
+                                                                       v-model="item.total_cost"
+                                                                       :ref="'total_cost_' + index"
+                                                                       :class="{'border-danger': errors[index]?.total_cost}" />
                                                             </div>
                                                         </td>
+                                                        
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
+                                                            <div class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control text-end"
-                                                                    @keyup.enter="focusNext('total_income', index + 1)"
-                                                                    @input="handleInputN(item.total_income, index, 'total_income')"
-                                                                    v-model="item.total_income" :ref="'budget_' + index"
-                                                                    :class="{'border-danger': errors[index]?.total_income}" />
+                                                                       @input="item.total_income = parseFloat(item.total_income) || 0"
+                                                                       @keyup.enter="focusNext('total_income', index + 1)"
+                                                                       v-model="item.total_income"
+                                                                       :ref="'budget_' + index"
+                                                                       :class="{'border-danger': errors[index]?.total_income}" />
                                                             </div>
                                                         </td>
+                                                        
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control text-start"
-                                                                    @keyup.enter="focusNext('total_shop_income', index + 1)"
-                                                                    @input="handleInputN(item.total_shop_income, index, 'total_shop_income')"
+                                                                <input v-model="item.note" type="text"
+                                                                    class="form-control text-start"
+                                                                    @keyup.enter="focusNext('note', index + 1)"
                                                                     :ref="'total_shop_income_' + index" />
                                                             </div>
                                                         </td>

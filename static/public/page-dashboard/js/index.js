@@ -15,7 +15,6 @@
                serach_value:"",
                filtered:[],
 
-                                  
             }
         },
         computed: {
