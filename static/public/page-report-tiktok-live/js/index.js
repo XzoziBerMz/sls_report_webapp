@@ -30,7 +30,7 @@
                 note: "",
                 serach_value: '',
                 modal_titles: "",
-                column_order_by: "p_date",
+                column_order_by: "shop_name",
                 order_sort: "desc",
                 token_header: token_header || '',
                 data_users_2: [],
@@ -178,14 +178,14 @@
                 try {
                     showLoading();
                     let data = {
-                        "start_at":  self.startDate,
-                        "end_at":  self.endDate,
+                        "start_at": self.startDate,
+                        "end_at": self.endDate,
                         "search": self.serach_value,
                         "shops": [],
                         "page": self.currentPages,
-                        "per_page": 10,
-                        "order": "shop_name",
-                        "order_by": "desc"
+                        per_page: +self.perPage,
+                        "order": self.column_order_by,
+                        "order_by": self.order_sort
                     };
                     const responseGetOrderManual = await services.getOrderManual(data, self.token_header);
                     const response = responseGetOrderManual?.data || {};
