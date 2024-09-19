@@ -26,7 +26,7 @@
   function getChannelAll(token) {
     return axios({
       method: "get",
-      url: basepath + `/api/v1/order/list-channel-manual`,
+      url: basepath + `/api/v1/tiktok-live/list-shop`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       headers: { "x-auth-token": token },

@@ -146,14 +146,20 @@
                                                         </td>
 
                                                         <td class="align-middle min-w-150px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
-                                                                <input v-model="item.note" type="text"
-                                                                    class="form-control text-start"
-                                                                    @keyup.enter="focusNext('note', index + 1)"
-                                                                    :ref="'note_' + index" />
-                                                            </div>
+                                                       
+                                                                <div
+                                                                    class="d-flex justify-content-center align-items-center">
+                                                                    <input v-model="item.note" type="text"
+                                                                        class="form-control text-start"
+                                                                        @keyup.enter="focusNext('note', index + 1)"
+                                                                        :ref="'note_' + index" />
+                                                                        <i v-if="item.new_ads"
+                                                                            class="text-danger bi-trash pointer ms-3"
+                                                                            @click="deleteAds(index)"></i>
+                                                                </div>
+                                                          
                                                         </td>
+
                                                     </tr>
                                                 </template>
                                             </tbody>

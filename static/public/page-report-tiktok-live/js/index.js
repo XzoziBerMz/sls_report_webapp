@@ -150,7 +150,6 @@
                             toDatePicker.clear();
                             self.to_date = ""; // Reset the variable holding end date
                         }
-
                         await self.loadData();
                     }
                 });
@@ -170,18 +169,19 @@
                         await self.loadData();
                     }
                 });
-
             },
 
             async loadData() {
                 const self = this;
                 try {
                     showLoading();
+                    const channelNames = self.filter_channel_2.map((item) => item.name);
+                 
                     let data = {
+                        shops: channelNames || [],
                         "start_at": self.startDate,
                         "end_at": self.endDate,
                         "search": self.serach_value,
-                        "shops": [],
                         "page": self.currentPages,
                         per_page: +self.perPage,
                         "order": self.column_order_by,

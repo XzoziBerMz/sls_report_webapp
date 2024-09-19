@@ -111,10 +111,17 @@
                                                         </div>
                                                 </th>
                                                 <th class="min-w-200px align-middle">
+                                                    <div
+                                                    class="d-flex w-100 justify-content-between align-items-center">
                                                     <div class="d-flex w-100 justify-content-between align-items-center"
                                                         @click="sortTable('shop_name')">
                                                         <span>ช่องทาง</span>
                                                         <i class="bi-chevron-down" :class="getSortIcon('shop_name')"></i>
+                                                    </div>
+                                                    <div class="flex-shrink-1">
+                                                        <i @click="filterModal('ช่องทาง')"
+                                                            class="pointer bi-funnel"></i>
+                                                    </div>
                                                     </div>
                                                 </th>
                                                 <th class="min-w-200px align-middle">

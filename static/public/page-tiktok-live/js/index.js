@@ -154,6 +154,9 @@
 
         return isValid;
       },
+      deleteAds(index) {
+        this.dataAds.splice(index, 1);
+    },
       addAds() {
         const self = this;
         let totalCost = parseFloat(self.total_cost);
