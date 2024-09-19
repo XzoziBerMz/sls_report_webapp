@@ -76,59 +76,97 @@
             async init() {
                 let self = this
 
-                self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
-                    static: true,
-                    enableTime: false,
-                    disableMobile: "true",
-                    dateFormat: "Y-m-d",
-                    altFormat: "d/m/Y",
-                    altInput: true,
-                    maxDate: 'today',
+                // self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
+                //     static: true,
+                //     enableTime: false,
+                //     disableMobile: "true",
+                //     dateFormat: "Y-m-d",
+                //     altFormat: "d/m/Y",
+                //     altInput: true,
+                //     maxDate: 'today',
+                //     onChange: async function (selectedDates, dateStr, instance) {
+                //         if (selectedDates.length) {
+                //             const selectedDate = selectedDates[0];
+
+                //             // Format the date to YYYY-MM-DD in local time zone
+                //             const year = selectedDate.getFullYear();
+                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                //             const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                //             self.startDate = `${year}-${month}-${day}`;
+                //             console.log("🚀 ~ self.startDate:", self.startDate);
+                //             self.startDate_status = true;
+
+                //             // Set minDate for the end date picker to prevent selecting earlier dates
+                //             self.flatpickr_dp_end_date.set("minDate", self.startDate);
+
+                //             await self.loadData();
+                //         }
+                //     },
+                // });
+
+                // self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
+                //     static: true,
+                //     enableTime: false,
+                //     disableMobile: "true",
+                //     dateFormat: "Y-m-d",
+                //     altFormat: "d/m/Y",
+                //     altInput: true,
+                //     maxDate: 'today',
+                //     onChange: async function (selectedDates, dateStr, instance) {
+                //         if (selectedDates.length) {
+                //             const selectedDate = selectedDates[0];
+
+                //             // Format the date to YYYY-MM-DD in local time zone
+                //             const year = selectedDate.getFullYear();
+                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+                //             const day = String(selectedDate.getDate()).padStart(2, '0');
+
+                //             self.endDate = `${year}-${month}-${day}`;
+                //             console.log("🚀 ~ self.endDate:", self.endDate);
+                //             self.endDate_status = true;
+
+                //             await self.loadData();
+                //         }
+                //     },
+                // });
+
+                const fromDatePicker = $("#kt_td_picker_start_input").flatpickr({
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
                     onChange: async function (selectedDates, dateStr, instance) {
-                        if (selectedDates.length) {
-                            const selectedDate = selectedDates[0];
+                        // Set the date in "Y-m-d" format for backend use, but not for input display
+                        self.startFormDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
 
-                            // Format the date to YYYY-MM-DD in local time zone
-                            const year = selectedDate.getFullYear();
-                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                            const day = String(selectedDate.getDate()).padStart(2, '0');
+                        // Update maxDate of the existing flatpickr instance for #floatingInputTo
+                        toDatePicker.set('minDate', selectedDates[0]);
 
-                            self.startDate = `${year}-${month}-${day}`;
-                            console.log("🚀 ~ self.startDate:", self.startDate);
-                            self.startDate_status = true;
-
-                            // Set minDate for the end date picker to prevent selecting earlier dates
-                            self.flatpickr_dp_end_date.set("minDate", self.startDate);
-
-                            await self.loadData();
+                        if (self.endFormDate && new Date(self.startFormDate) > new Date(self.endFormDate)) {
+                            // Reset the input field for end date and clear the value
+                            toDatePicker.clear();
+                            self.endFormDate = ""; // Reset the variable holding end date
                         }
-                    },
+
+                        await self.loadData();
+                    }
                 });
 
-                self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
-                    static: true,
-                    enableTime: false,
-                    disableMobile: "true",
-                    dateFormat: "Y-m-d",
-                    altFormat: "d/m/Y",
-                    altInput: true,
-                    maxDate: 'today',
+                // Initialize Flatpickr for the end date input
+                const toDatePicker = $("#kt_td_picker_end_input").flatpickr({
+                    dateFormat: "d/m/Y", // Ensure this is set correctly
+                    maxDate: "today",
                     onChange: async function (selectedDates, dateStr, instance) {
-                        if (selectedDates.length) {
-                            const selectedDate = selectedDates[0];
+                        // Set the date in "Y-m-d" format for backend use, but not for input display
+                        self.endFormDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 23:59:59';
 
-                            // Format the date to YYYY-MM-DD in local time zone
-                            const year = selectedDate.getFullYear();
-                            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                            const day = String(selectedDate.getDate()).padStart(2, '0');
-
-                            self.endDate = `${year}-${month}-${day}`;
-                            console.log("🚀 ~ self.endDate:", self.endDate);
-                            self.endDate_status = true;
-
-                            await self.loadData();
+                        if (self.startFormDate && new Date(self.endFormDate) < new Date(self.startFormDate)) {
+                            // Reset the start date input field and clear the value
+                            fromDatePicker.clear();
+                            self.startFormDate = ""; // Reset the variable holding start date
                         }
-                    },
+
+                        await self.loadData();
+                    }
                 });
 
             },
@@ -226,8 +264,8 @@
                         chanel: self.chanel || '',
                         note: self.note || '',
                         user: self.user || '',
-                        "start_at": self.startDate,
-                        "end_at": self.endDate,
+                        "start_at":  self.startFormDate,
+                        "end_at":self.endFormDate,
                         page: self.currentPages,
                         per_page: +self.perPage,
                         "order": self.column_order_by,
