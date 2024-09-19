@@ -65,11 +65,9 @@
               self.errors.date = null;
             } else {
               self.selectedDate = null;
-
             }
           },
         });
-
       },
 
       handleInputNumber(value) {
@@ -78,7 +76,8 @@
 
         // ตรวจสอบว่าไม่มีมากกว่า 1 จุดทศนิยม
         if (decimalParts.length > 2) {
-          formattedValue = decimalParts[0] + "." + decimalParts.slice(1).join("");
+          formattedValue =
+            decimalParts[0] + "." + decimalParts.slice(1).join("");
         }
 
         // ถ้าเป็นค่าว่างหรือไม่ใช่ตัวเลข ให้คืนค่า 0.0
@@ -123,10 +122,11 @@
       },
 
       validateForm() {
-        this.errors = {};
+        const self = this;
+        self.errors = {};
         let isValid = true;
-        console.log("🚀 ~ this.dataAds.forEach ~  this.dataAds:", this.dataAds)
-        this.dataAds.forEach((item, index) => {
+        console.log("🚀 ~ self.dataAds.forEach ~  self.dataAds:", self.dataAds);
+        self.dataAds.forEach((item, index) => {
           let error = {};
           if (item.new_ads) {
             if (!item.shop_name) {
@@ -144,12 +144,12 @@
             error.total_income = true;
             isValid = false;
           }
-          this.errors[index] = error;
+          self.errors[index] = error;
         });
 
-        console.log("🚀 ~ validateForm ~ this.form:", this.selectedDate)
-        if (!this.selectedDate) {
-          this.errors.date = 'กรุณาเลือกวันที่';
+        if (!self.selectedDate) {
+          self.errors.date = "กรุณาเลือกวันที่";
+          isValid = false;
         }
 
         return isValid;
@@ -173,8 +173,9 @@
         self.dataAds.push(data);
       },
       focusNext(column, nextIndex) {
-        const nextInput = this.$refs[column + '_' + nextIndex];
-        if (nextInput && nextInput.length) { // ตรวจสอบว่าถ้าเป็น array
+        const nextInput = this.$refs[column + "_" + nextIndex];
+        if (nextInput && nextInput.length) {
+          // ตรวจสอบว่าถ้าเป็น array
           nextInput[0].focus(); // เข้าถึง element จริงถ้าเป็น array
         } else if (nextInput) {
           nextInput.focus(); // ถ้าเป็น element เดียว
@@ -182,34 +183,27 @@
       },
       async savePage() {
         const self = this;
+        try {
+          if (self.validateForm()) {
+            showLoading();
+            if (self.dataAds.length > 0) {
+              self.dataAds.forEach((ad) => {
+                ad.p_timestamp = self.selectedDate;
+              });
+            }
 
-        showLoading();
-        if (self.validateForm()) {
-          if (self.dataAds.length > 0) {
-            self.dataAds.forEach((ad) => {
-              ad.p_timestamp = self.selectedDate;
-            });
+            let dataAds = {
+              data: self.dataAds || [],
+            };
+            await services.getInsertMultiple(dataAds, self.token_header);
+            Msg("บันทึกสำเร็จ", "success");
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000);
           }
-
-          let dataAds = {
-            data: self.dataAds || [],
-          };
-          const req = await services.getInsertMultiple(
-            dataAds,
-            self.token_header
-          );
-          closeLoading();
-          Msg("บันทึกสำเร็จ", "success");
-          setTimeout(function () {
-            window.location.reload();
-          }, 2000);
-          self.total_cost = '';
-          self.total_income = '';
-          self.shop_name = '';
-          self.note = '';
-          self.selectedDate = '';
-        } else {
-          console.log("Form validation failed.");
+        } catch (error) {
+          console.log("🚀 ~ savePage ~ error:", error);
+        } finally {
           closeLoading();
         }
       },
