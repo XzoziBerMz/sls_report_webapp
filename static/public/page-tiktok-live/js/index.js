@@ -19,7 +19,7 @@
         dataAds: [],
         token_header: token_header || "",
         form: {
-            shop_name: "",
+          shop_name: "",
           total_cost: "",
           total_income: "",
           note: "",
@@ -38,7 +38,6 @@
         let self = this;
 
         await self.loadData();
-   
 
         self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
           static: true,
@@ -65,6 +64,7 @@
               self.errors.date = null;
             } else {
               self.selectedDate = null;
+              self.errors.date = "กรุณาเลือก วันที่";
             }
           },
         });
@@ -179,9 +179,15 @@
 
           closeLoading();
           Msg("บันทึกสำเร็จ", "success");
-          //   setTimeout(function () {
-          //     window.location.reload();
-          //   }, 2000);
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000);
+
+            self.total_cost = '';
+            self.total_income = ''; 
+            self.shop_name = '';
+            self.note = ''; 
+            self.selectedDate = ''; 
         } else {
           console.log("Form validation failed.");
           closeLoading();
