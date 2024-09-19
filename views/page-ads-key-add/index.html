@@ -142,10 +142,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="fs-6">
-                                                <template v-for="(item, index) in dataEditStars" :key="index">
+                                                <template v-for="(item, index) in data_channel" :key="index">
                                                     <tr>
                                                         <td class="align-middle">
-                                                            <span v-text="dateDefault"></span>
+                                                            <div class="w-150px input-group align-items-center" id="kt_td_picker_start" data-td-target-input="nearest"
+                                                                data-td-target-toggle="nearest">
+                                                                <input :id="'kt_td_picker_start_input_'+index" type="text" class="form-control w-200px"
+                                                                    data-td-target="#kt_td_picker_start" />
+                                                            </div>
+                                                            <span v-if="errors[index] && errors[index].date" v-text="errors[index].date" class="text-danger"></span>
                                                         </td>
                                                         <td class="align-middle">
                                                             <span v-if="!item.new_data" v-text="item.shop_name"></span>
@@ -233,7 +238,8 @@
 </body>
 <script>
     window.csrfToken = {{.csrf_token }};
-</script>
+    window.pageAction = {{.page_action }};
+    </script>
 {{- template "resource-js" -}}
 <script src="/page-ads-key-add/js/services.js" type="module"> </script>
 <script src="/page-ads-key-add/js/index.js" type="module"> </script>

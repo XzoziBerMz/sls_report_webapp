@@ -4,6 +4,7 @@
     const app = Vue.createApp({
         data: function () {
             return {
+                ...window.webUtils.data || {},
                 user: window.user || "",
                 // currentPage: window.currentPage,
                 currentPage: 'key-ads',
@@ -115,6 +116,7 @@
             },
         },
         methods: {
+            ...window.webUtils.method || {},
             async init() {
                 let self = this;
             },
@@ -141,31 +143,37 @@
 
             async DefaultData() {
                 const self = this;
-                self.dataEditStars.forEach((element, index) => {
-
-                    flatpickr("#kt_td_picker_basic_input" + index, {
-                        static: true,
-                        enableTime: true,
-                        disableMobile: "true",
-                        dateFormat: "d/m/Y",
-                        onChange: function (selectedDates, dateStr, instance) {
-                            self.dataEditStars[index].timestamp = instance.formatDate(selectedDates[0], "Y-m-d");
-                            console.log("🚀 ~ self.dataEditStars.forEach ~ self.dataEditStars[:", self.dataEditStars)
-                            delete self.errors.date;
-                        },
-                    });
-                });
-
+               
                 self.dateDefault = self.formatDate(new Date());
+                console.log("🚀 ~ DefaultData ~ self.dateDefault:", self.dateDefault)
                 try {
                     let data = {}
                     const req = await services.getShop(data, self.token_header)
                     if (req.data.code === 200) {
                         self.data_channel = req.data.data
+                        self.data_channel = req.data.data.map(item => ({
+                            ...item,
+                            date: self.dateDefault
+                        }));
+                        console.log("🚀 ~ DefaultData ~ self.data_channel:", self.data_channel)
                     }
                 } catch (error) {
                     console.log("🚀 ~ DefaultData ~ error:", error)
                 }
+
+                self.data_channel.forEach((item, index) => {
+                    const selectorPayment = '#kt_td_picker_start_input_' + index;
+
+                    self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                        },
+                    });
+                    // self.set_date_time.setDate(item.date)
+                })
             },
             
 
@@ -179,10 +187,10 @@
                     total_income: "",
                 }
 
-                self.dataEditStars.push(data)
+                self.data_channel.push(data)
                 this.$nextTick(() => {
 
-                    self.dataEditStars.forEach((item, index) => {
+                    self.data_channel.forEach((item, index) => {
                         const selectorPayment = '#select_channel_' + index;
                         if (!$(selectorPayment).data('select2')) {
                             $(selectorPayment).select2({
@@ -197,6 +205,16 @@
                             const selectedValue = $(this).val(); // Get the selected value
                             item.shop_name = selectedValue || 10
                         })
+
+                        const selectorDate = '#kt_td_picker_start_input_' + index;
+                        $(selectorDate).flatpickr({
+                            altInput: true,
+                            altFormat: "d/m/Y",
+                            dateFormat: "Y-m-d",
+                            onChange: async function (selectedDates, dateStr, instance) {
+                                item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                            },
+                        });
                     })
                 })
 
@@ -217,7 +235,7 @@
                 this.errors = [];
                 let isValid = true;
 
-                this.dataEditStars.forEach((item, index) => {
+                this.data_channel.forEach((item, index) => {
                     let error = {};
 
                     if (!item.add_fee) {
@@ -240,6 +258,10 @@
                             error.shop_name = "กรุณาเลือก ร้าน"
                             isValid = false;
                         }
+                    }
+                    if (!item.date) {
+                        error.date = "กรุณาเลือก วันที่";
+                        isValid = false;
                     }
 
                     this.errors[index] = error;
