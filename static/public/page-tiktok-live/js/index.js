@@ -19,7 +19,7 @@
         dataAds: [],
         token_header: token_header || "",
         form: {
-          channel: "",
+            shop_name: "",
           total_cost: "",
           total_income: "",
           note: "",
@@ -38,22 +38,7 @@
         let self = this;
 
         await self.loadData();
-        // $("#kt_td_picker_start_input").flatpickr({
-        //     altInput: true,
-        //     altFormat: "d/m/Y",
-        //     dateFormat: "Y-m-d",
-        //     onChange: function (selectedDates, dateStr, instance) {
-        //         // ตรวจสอบค่าที่เลือก
-        //         console.log("Selected Dates:", selectedDates);
-        //         console.log("Date String:", dateStr);
-
-        //         if (selectedDates.length > 0) {
-        //             self.selectedDate = instance.formatDate(selectedDates[0], "Y-m-d") + ' 00:00:00';
-        //             console.log("🚀 ~ Updated selectedDate:", self.selectedDate);
-        //             self.errors.date = null;
-        //         }
-        //     },
-        // });
+   
 
         self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
           static: true,
@@ -128,8 +113,8 @@
         this.dataAds.forEach((item, index) => {
           let error = {};
           if (item.new_ads) {
-            if (!item.channel) {
-              error.channel = true;
+            if (!item.shop_name) {
+              error.shop_name = true;
               isValid = false;
             }
           }
@@ -162,7 +147,7 @@
 
         let data = {
           new_ads: true,
-          shop_name: self.channel,
+          shop_name: self.shop_name,
           total_cost: totalCost,
           total_income: totalIncome,
           // "commission": 10.0,
