@@ -122,27 +122,27 @@
                                                         </td>
                                                         
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
+                                                            <div class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control text-end"
-                                                                    @input="item.total_cost = parseFloat(item.total_cost) || 0"
+                                                                    @input="item.total_cost = handleInputNumber(item.total_cost)"
                                                                     @keyup.enter="focusNext('total_cost', index + 1)"
                                                                     v-model="item.total_cost"
                                                                     :ref="'total_cost_' + index"
                                                                     :class="{'border-danger': errors[index]?.total_cost}" />
                                                             </div>
                                                         </td>
-
+                                                        
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
+                                                            <div class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control text-end"
-                                                                    @input="item.total_income = parseFloat(item.total_income) || 0"
+                                                                    @input="item.total_income = handleInputNumber(item.total_income)"
                                                                     @keyup.enter="focusNext('total_income', index + 1)"
-                                                                    v-model="item.total_income" :ref="'budget_' + index"
+                                                                    v-model="item.total_income"
+                                                                    :ref="'total_income_' + index"
                                                                     :class="{'border-danger': errors[index]?.total_income}" />
                                                             </div>
                                                         </td>
+                                                        
 
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div

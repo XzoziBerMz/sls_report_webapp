@@ -23,6 +23,7 @@
           total_cost: "",
           total_income: "",
           note: "",
+          date: "",
         },
         errors: {},
         start_date_time: null,
@@ -64,7 +65,7 @@
               self.errors.date = null;
             } else {
               self.selectedDate = null;
-              self.errors.date = "กรุณาเลือก วันที่";
+
             }
           },
         });
@@ -72,6 +73,21 @@
         const currentDate = new Date();
         self.selectedDate = currentDate.toISOString().slice(0, 10);
       },
+
+      handleInputNumber(value) {
+        let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ใช่ตัวเลข
+        const decimalParts = formattedValue.split(".");
+    
+        // ตรวจสอบว่าไม่มีมากกว่า 1 จุดทศนิยม
+        if (decimalParts.length > 2) {
+          formattedValue = decimalParts[0] + "." + decimalParts.slice(1).join("");
+        }
+    
+        // ถ้าเป็นค่าว่างหรือไม่ใช่ตัวเลข ให้คืนค่า 0.0
+        let floatValue = parseFloat(formattedValue);
+        return isNaN(floatValue) ? 0.0 : floatValue; // แปลงเป็น float64
+      },
+
       handleInputN(value, index, field) {
         let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
         const decimalParts = formattedValue.split(".");
@@ -107,6 +123,7 @@
           console.log("🚀 ~ loadData ~ error:", error);
         }
       },
+
       validateForm() {
         this.errors = {};
         let isValid = true;
@@ -118,24 +135,23 @@
               isValid = false;
             }
           }
-          if (!item.total_cost) {
+          // ตรวจสอบว่าค่า total_cost ถูกกรอก (0 ก็ถือว่าถูกต้อง)
+          if (item.total_cost === "" || isNaN(item.total_cost)) {
             error.total_cost = true;
             isValid = false;
           }
-          if (!item.total_income) {
+          // ตรวจสอบว่า total_income ถูกกรอก (0 ก็ถือว่าถูกต้อง)
+          if (item.total_income === "" || isNaN(item.total_income)) {
             error.total_income = true;
             isValid = false;
           }
-          if (!this.selectedDate) {
-            this.errors.date = "กรุณาเลือก วันที่";
-            isValid = false;
-          }
           this.errors[index] = error;
-          console.log(
-            "🚀 ~ this.dataAds.forEach ~ this.errors[index]:",
-            this.errors[index]
-          );
         });
+      
+        if (!this.form.date) {
+          this.errors.date = 'กรุณาเลือกวันที่';
+        }
+      
         return isValid;
       },
       addAds() {
@@ -155,6 +171,13 @@
           p_timestamp: self.selectedDate,
         };
         self.dataAds.push(data);
+      },
+
+      focusNext(ref, index) {
+        const nextField = this.$refs[`${ref}${index}`];
+        if (nextField) {
+          nextField.focus();
+        }
       },
 
       async savePage() {
@@ -182,7 +205,6 @@
             setTimeout(function () {
               window.location.reload();
             }, 2000);
-
             self.total_cost = '';
             self.total_income = ''; 
             self.shop_name = '';
