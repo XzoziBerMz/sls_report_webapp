@@ -339,10 +339,10 @@
           if (response.data.code === 200) {
             closeLoading();
 
-            Msg("บันทึกสำเร็จ", "success");
-            setTimeout(function () {
-              window.location.reload();
-            }, 2000);
+            // Msg("บันทึกสำเร็จ", "success");
+            // setTimeout(function () {
+            //   window.location.reload();
+            // }, 2000);
           }
         } catch (error) {
           console.warn("Error loading data:", error);
