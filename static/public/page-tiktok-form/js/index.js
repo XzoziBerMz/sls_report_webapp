@@ -28,12 +28,14 @@
                     note: '',
                 },
                 errors: {},
+                errors_date: {},
                 start_date_time: null,
                 end_date_time: null,
                 data_status: [
                     { id: 'active', name: 'เปิดใช้งาน' },
                     { id: 'inactive', name: 'ปิดใช้งาน' },
-                ]
+                ],
+                valueDate_time: null,
             }
         },
         computed: {
@@ -80,7 +82,82 @@
                 } catch (error) {
                     console.log("🚀 ~ init ~ error:", error)
                 } finally {
-                  
+
+                    $("#kt_td_picker_date_input").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
+                        onChange: async function (selectedDates, dateStr, instance) {
+
+                            self.dataAds.forEach((item, index) => {
+                                const selectedDate = selectedDates[0];
+                                const currentTime = new Date();
+
+                                const year = instance.formatDate(selectedDate, "Y");
+                                const month = instance.formatDate(selectedDate, "m");
+                                const day = instance.formatDate(selectedDate, "d");
+
+                                const hours = currentTime.getHours().toString().padStart(2, '0');
+                                const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                                const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+                                const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                                item.p_date = formattedDateTime;
+                                item.date = formattedDateTime;
+                                self.valueDate_time = formattedDateTime
+                            });
+
+                            console.log("🚀 ~ self.dataAds.forEach ~ self.valueDate_time:", self.valueDate_time)
+                        }
+                    });
+                    $("#kt_td_picker_start_input").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            self.start_date_time = instance.formatDate(selectedDates[0], "Y-m-d" + ' 00:00:00'); // Update date in form data
+                            self.end_date_time = instance.formatDate(selectedDates[0], "Y-m-d" + ' 23:59:59'); // Update date in form data
+
+                            self.dataAds = [];
+                            await self.loadData()
+
+                            self.$nextTick(() => {
+
+                                // self.dataAds.forEach((item, index) => {
+                                //     const selectorPayment = '#kt_td_picker_start_input_' + index;
+                                //     self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
+                                //         altInput: true,
+                                //         altFormat: "d/m/Y",
+                                //         dateFormat: "Y-m-d",
+                                //         onChange: async function (selectedDates, dateStr, instance) {
+                                //             item.p_date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
+                                //         },
+                                //     });
+                                //     // self.set_date_time.setDate(item.p_date)
+                                // })
+
+                                self.dataAds.forEach((item, index) => {
+                                    const selectorPayment = '#select_status_' + index;
+                                    if (!$(selectorPayment).data('select2')) {
+                                        $(selectorPayment).select2({
+                                            placeholder: "Select Status",
+                                            width: '100%',
+                                            data: self.data_status.map(
+                                                (item) => ({ id: item.id, text: item.name })
+                                            ),
+                                        });
+                                    }
+                                    $(selectorPayment).on("change.custom", async function () {
+                                        const selectedValue = $(this).val(); // Get the selected value
+                                        console.log("🚀 ~ selectedValue:", self.dataAds)
+                                        item.status = selectedValue || 10
+                                    })
+                                })
+                            })
+                        },
+                    });
+
                     self.$nextTick(() => {
 
                         self.dataAds.forEach((item, index) => {
@@ -147,7 +224,8 @@
                     "purchase": "",
                     "note": "",
                     "ref_default": 1,
-                    "date": ""
+                    "date": self.valueDate_time,
+                    "p_date": self.valueDate_time
                 }
                 self.dataAds.push(data)
 
@@ -180,6 +258,9 @@
                         });
                     })
                 })
+            },
+            deleteAds(index) {
+                this.dataAds.splice(index, 1);
             },
             formatNumber(number) {
                 if (typeof number === 'number') {
@@ -214,10 +295,12 @@
             },
             validateForm() {
                 this.errors = {};
+                this.errors_date = {};
                 let isValid = true;
 
                 this.dataAds.forEach((item, index) => {
                     let error = {};
+                    let error_date = {};
 
                     if (!item.name) {
                         error.name = true;
@@ -245,16 +328,18 @@
                         error.cost_per_purchase = true;
                         isValid = false;
                     }
-                    if (!item.p_date) {
-                        error.date = "กรุณาเลือก วันที่";
+                    if (!this.valueDate_time) {
+                        error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
-                    }
+                    } 
                     if (!item.status) {
                         error.status = "กรุณาเลือก สถานะ"
                         isValid = false;
                     }
 
                     this.errors[index] = error;
+                    this.errors_date = error_date;
+                    console.log("🚀 ~ this.dataAds.forEach ~ this.errors_date:", this.errors_date)
                 });
 
                 return isValid;
@@ -266,7 +351,7 @@
                     currentDate.setDate(currentDate.getDate() + 1);
                     const formattedDate = currentDate.toISOString().split('T')[0];
 
-                   
+
                     let dataAds = {
                         data: self.dataAds || []
                     }
@@ -285,13 +370,13 @@
                         Msg("บันทึกไม่สำเร็จ", 'error');
                         return;
                     }
-                                          
+
                     closeLoading();
                     Msg("บันทึกสำเร็จ", 'success');
                     setTimeout(function () {
                         window.location.reload();
                     }, 2000);
-                    
+
                 } else {
                     console.log("Form validation failed.");
                     closeLoading()
