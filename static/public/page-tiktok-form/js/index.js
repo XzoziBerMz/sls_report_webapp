@@ -51,7 +51,7 @@
 
                 try {
                     await self.created()
-                    // await self.loadData()
+                    await self.loadData()
                     self.dataAds.forEach((item, index) => {
                         const selectorPayment = '#kt_td_picker_start_input_' + index;
                         self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
@@ -62,7 +62,7 @@
                                 item.p_date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
                             },
                         });
-                        self.set_date_time.setDate(item.p_date)
+                        // self.set_date_time.setDate(item.p_date)
                     })
 
                     try {
@@ -196,7 +196,7 @@
             created() {
                 // Set start_at to one day before the current date
                 const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate());
+                currentDate.setDate(currentDate.getDate()- 1);
                 const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
                 this.start_date_time = formattedDate + ' 00:00:00';
                 this.end_date_time = formattedDate + ' 23:59:59';

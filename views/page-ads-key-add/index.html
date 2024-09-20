@@ -119,10 +119,11 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
                                             data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                            <div>
-                                                <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
-                                                    :</span>
+                                            <div class="">
                                             </div>
+                                            <label class="fs-14 required align-middle"
+                                                style="margin-right: 10px;">วันที่
+                                                :</label>
                                             <input id="kt_td_picker_date_input" type="text" class="form-control w-200px"
                                                 data-td-target="#kt_td_picker_start" />
                                             <span class="input-group-text" data-td-target="#kt_td_picker_basic"
@@ -140,7 +141,8 @@
                                                     ADS</button>
                                             </div>
                                             <div class="">
-                                                <button type="button" @click="handleSubmit" class="btn btn-success w-150px">บันทึก</button>
+                                                <button type="button" @click="handleSubmit"
+                                                    class="btn btn-success w-150px">บันทึก</button>
                                             </div>
                                         </div>
                                     </div>
@@ -182,12 +184,15 @@
                                                         <td class="align-middle">
                                                             <span v-if="!item.new_data" v-text="item.shop_name"></span>
                                                             <div v-else>
-                                                                <select class="form-select " data-control="select2"
+                                                                <!-- <select class="form-select " data-control="select2"
                                                                     :id="'select_channel_'+index"
                                                                     :name="'select_channel_'+index"
                                                                     data-placeholder="Select an Channel">
                                                                     <option></option>
-                                                                </select>
+                                                                </select> -->
+                                                                <input type="text" class="form-control"
+                                                                    :class="{'border-danger': errors[index]?.shop_name}"
+                                                                    v-model="item.shop_name" />
                                                                 <span v-if="errors[index] && errors[index].shop_name"
                                                                     v-text="errors[index].shop_name"
                                                                     class="text-danger"></span>
@@ -200,7 +205,8 @@
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
                                                                     :class="{'border-danger': errors[index]?.add_fee}"
-                                                                    v-model="item.add_fee" @input="handleInputN(item.add_fee, index, 'add_fee')"
+                                                                    v-model="item.add_fee"
+                                                                    @input="handleInputN(item.add_fee, index, 'add_fee')"
                                                                     @keydown.enter="focusNext('add_fee', index + 1)"
                                                                     :ref="'add_fee_' + index" />
                                                             </div>
@@ -209,7 +215,8 @@
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
                                                                     :class="{'border-danger': errors[index]?.added_income}"
-                                                                    v-model="item.added_income" @input="handleInputN(item.added_income, index, 'added_income')"
+                                                                    v-model="item.added_income"
+                                                                    @input="handleInputN(item.added_income, index, 'added_income')"
                                                                     @keydown.enter="focusNext('added_income', index + 1)"
                                                                     :ref="'added_income_' + index" />
                                                             </div>
@@ -218,7 +225,8 @@
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
                                                                     :class="{'border-danger': errors[index]?.total_income}"
-                                                                    v-model="item.total_income" @input="handleInputN(item.total_income, index, 'total_income')"
+                                                                    v-model="item.total_income"
+                                                                    @input="handleInputN(item.total_income, index, 'total_income')"
                                                                     @keydown.enter="focusNext('total_income', index + 1)"
                                                                     :ref="'total_income_' + index" />
                                                             </div>
@@ -240,7 +248,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                   
+
                                 </div>
                                 <div class="position-fixed top-0 end-0 p-3 z-index-101">
                                     <div id="kt_docs_toast_toggle" class="toast" role="alert" aria-live="assertive"

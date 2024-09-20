@@ -44,7 +44,7 @@
                                     <div class="fs-1 fw-bolder">
                                         <span>Ads</span>
                                     </div>
-                                    <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                    <!-- <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
                                         data-td-target-input="nearest" data-td-target-toggle="nearest">
                                         <div>
                                             <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
@@ -57,7 +57,7 @@
                                             <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
                                                     class="path2"></span></i>
                                         </span>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <!-- <div class="card p-5 mt-5">
@@ -186,8 +186,8 @@
                                         <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
                                             data-td-target-input="nearest" data-td-target-toggle="nearest">
                                             <div>
-                                                <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
-                                                    :</span>
+                                                <span class="fs-14 required align-middle" style="margin-right: 10px;">วันที่
+                                                    </span>
                                             </div>
                                             <input id="kt_td_picker_date_input" type="text" class="form-control w-200px"
                                                 data-td-target="#kt_td_picker_start" />
@@ -389,12 +389,22 @@
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break">
-                                                            <div
+                                                            <!-- <div
                                                                 class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-150px"
                                                                     @keyup.enter="focusNext('note', index + 1)"
                                                                     v-model="item.note" :ref="'note_' + index"
                                                                     :class="{'border-danger': errors[index]?.note}" />
+                                                            </div> -->
+                                                            <div class=""
+                                                                :class="{'d-flex gap-3 justify-content-end align-items-center': item.new_ads}">
+                                                                <input type="text" class="form-control w-150px"
+                                                                    @keyup.enter="focusNext('note', index + 1)"
+                                                                    v-model="item.note" :ref="'note_' + index"
+                                                                    :class="{'border-danger': errors[index]?.note}" />
+                                                                <i v-if="item.new_ads"
+                                                                    class="text-danger bi-trash pointer"
+                                                                    @click="deleteAds(index)"></i>
                                                             </div>
                                                         </td>
                                                     </tr>

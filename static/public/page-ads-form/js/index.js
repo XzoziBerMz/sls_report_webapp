@@ -196,7 +196,7 @@
             created() {
                 // Set start_at to one day before the current date
                 const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate());
+                currentDate.setDate(currentDate.getDate() -1 );
                 const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
                 this.start_date_time = formattedDate;
                 this.end_date_time = formattedDate;
@@ -257,6 +257,9 @@
                         });
                     })
                 })
+            },
+            deleteAds(index) {
+                this.dataAds.splice(index, 1);
             },
             formatNumber(number) {
                 if (typeof number === 'number') {
