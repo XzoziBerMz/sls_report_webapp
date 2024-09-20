@@ -195,6 +195,7 @@
                   const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
                   item.timestamp = formattedDateTime;
+                  item.date = formattedDateTime;
                   self.valueDate_time = formattedDateTime
                 });
 

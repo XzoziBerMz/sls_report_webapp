@@ -128,6 +128,34 @@
                         },
                     });
 
+                    $("#kt_td_picker_date_input").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
+                        onChange: async function (selectedDates, dateStr, instance) {
+
+                            self.dataAds.forEach((item, index) => {
+                                const selectedDate = selectedDates[0];
+                                const currentTime = new Date();
+
+                                const year = instance.formatDate(selectedDate, "Y");
+                                const month = instance.formatDate(selectedDate, "m");
+                                const day = instance.formatDate(selectedDate, "d");
+
+                                const hours = currentTime.getHours().toString().padStart(2, '0');
+                                const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                                const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+                                const formattedDateTime = `${year}-${month}-${day}`;
+
+                                item.date = formattedDateTime;
+                                self.valueDate_time = formattedDateTime
+                            });
+
+                            console.log("🚀 ~ self.dataAds.forEach ~ self.valueDate_time:", self.valueDate_time)
+                        }
+                    });
+
 
 
                     self.$nextTick(() => {
@@ -186,7 +214,7 @@
                 const self = this;
                 let data = {
                     "new_ads": true,
-                    "shop_name": "",
+                    "shop_name": "Test",
                     "name": "",
                     "product": "",
                     "total_cost": "",
@@ -196,7 +224,7 @@
                     "purchase": "",
                     "note": "",
                     "ref_default": 1,
-                    "date": ""
+                    "date": self.valueDate_time
                 }
                 self.dataAds.push(data)
 
@@ -269,10 +297,12 @@
             },
             validateForm() {
                 this.errors = {};
+                this.errors_date = {};
                 let isValid = true;
 
                 this.dataAds.forEach((item, index) => {
                     let error = {};
+                    let error_date = {};
 
                     if (!item.name) {
                         error.name = true;
@@ -316,8 +346,8 @@
                         error.note = true;
                         isValid = false;
                     }
-                    if (!item.date) {
-                        error.date = "กรุณาเลือก วันที่";
+                    if (!this.valueDate_time) {
+                        error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
                     if (!item.status) {
@@ -326,6 +356,7 @@
                     }
 
                     this.errors[index] = error;
+                    this.errors_date = error_date;
                 });
 
                 return isValid;
@@ -333,11 +364,12 @@
             async savePage() {
                 const self = this;
                 if (self.validateForm()) {
+                    showLoading();
                     const currentDate = new Date();
                     currentDate.setDate(currentDate.getDate() + 1);
                     const formattedDate = currentDate.toISOString().split('T')[0];
 
-                    for (const ad of newAds) {
+                    for (const ad of self.dataAds) {
                         ad.total_cost = Number(ad.total_cost) || 0;
                         ad.budget = Number(ad.budget) || 0;
                         ad.total_shop_income = Number(ad.total_shop_income) || 0;
@@ -345,26 +377,18 @@
                         // ad.date = formattedDate || '';
                         try {
                             const req = await services.insertData(ad, self.token_header);
-                            if (req.data.code === 200) {
-                                console.log("Save successful for:", ad);
-                                closeLoading();
-                                Msg("บันทึกสำเร็จ", 'success');
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 2000);
-                                // ดำเนินการหลังจากบันทึกสำเร็จ (เช่น แจ้งเตือน)
-                            } else {
-                                Msg("อัพเดทไม่สำเร็จ", 'error');
-                                return;
-                                // จัดการกรณีที่การบันทึกล้มเหลว
-                            }
                         } catch (error) {
                             console.log("Error saving ad:", ad, error);
+                            return 
                             // จัดการข้อผิดพลาด
                         }
                     }
-
-
+                    
+                    closeLoading();
+                    Msg("บันทึกสำเร็จ", 'success');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
 
                 } else {
                     console.log("Form validation failed.");

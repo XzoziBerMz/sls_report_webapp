@@ -181,32 +181,31 @@
                                 </div> -->
 
                                 <div class="card p-5 mt-5">
-                                    <div class="d-flex justify-content-end align-items-center gap-5">
-                                        <div>
-                                            <button class="btn btn-primary" @click="addAds">เพิ่ม Ads</button>
-                                        </div>
-                                        <div v-if="dataAds.length > 0">
-                                            <button class="btn btn-success w-100px" @click="savePage">บันทึก</button>
-                                        </div>
-                                    </div>
+
                                     <div class="d-flex justify-content-between">
-                                        <div class="w-350px input-group align-items-center" id="kt_td_picker_start" data-td-target-input="nearest"
-                                            data-td-target-toggle="nearest">
+                                        <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                            data-td-target-input="nearest" data-td-target-toggle="nearest">
                                             <div>
                                                 <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
                                                     :</span>
                                             </div>
                                             <input id="kt_td_picker_date_input" type="text" class="form-control w-200px"
                                                 data-td-target="#kt_td_picker_start" />
-                                            <span class="input-group-text" data-td-target="#kt_td_picker_basic" data-td-toggle="datetimepicker">
-                                                <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
+                                            <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                data-td-toggle="datetimepicker">
+                                                <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
+                                                        class="path2"></span></i>
                                             </span>
-                                            <span v-if="errors_date && errors_date.date" v-text="errors_date.date" class="text-danger"></span>
+                                            <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                class="text-danger"></span>
                                         </div>
-                                        <div class="d-flex justify-content-end align-items-center gap-5">
+                                        <div class="d-flex gap-5">
                                             <div>
-                                                <button type="button" @click="addAds" class="btn btn-primary w-150px">เพิ่ม
-                                                    ADS</button>
+                                                <button class="btn btn-primary" @click="addAds">เพิ่ม Ads</button>
+                                            </div>
+                                            <div v-if="dataAds.length > 0">
+                                                <button class="btn btn-success w-100px"
+                                                    @click="savePage">บันทึก</button>
                                             </div>
                                         </div>
                                     </div>
@@ -214,13 +213,6 @@
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <thead>
                                                 <tr class="fw-bold fs-5">
-                                                    <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
-                                                            <i class="bi-calendar3"></i>
-                                                            <span>วันที่</span>
-                                                        </div>
-                                                    </th>
                                                     <th class="min-w-200px align-middle">
                                                         <div
                                                             class="d-flex justify-content-start gap-5 align-items-center pointer">
@@ -306,88 +298,102 @@
                                             <tbody class="fs-6">
                                                 <template v-for="(item, index) in dataAds">
                                                     <tr>
-                                                        <td class="align-middle min-w-100px text-break">
-                                                            <!-- <span v-text="utilsConvDate(item.date)"></span> -->
-                                                            <div class="w-150px input-group align-items-center" id="kt_td_picker_start" data-td-target-input="nearest"
-                                                                data-td-target-toggle="nearest">
-                                                                <input :id="'kt_td_picker_start_input_'+index" type="text" class="form-control w-200px"
-                                                                    data-td-target="#kt_td_picker_start" />
-                                                            </div>
-                                                            <span v-if="errors[index] && errors[index].date" v-text="errors[index].date" class="text-danger"></span>
-                                                        </td>
                                                         <td class="align-middle min-w-200px text-break">
-                                                            <div class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.name, index, 'name')"
-                                                                    @keyup.enter="focusNext('name', index + 1)" v-model="item.name" :ref="'name_' + index"
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px"
+                                                                    @keyup.enter="focusNext('name', index + 1)"
+                                                                    v-model="item.name" :ref="'name_' + index"
                                                                     :class="{'border-danger': errors[index]?.name}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break">
-                                                            <div class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.product, index, 'product')"
-                                                                    @keyup.enter="focusNext('product', index + 1)" v-model="item.product" :ref="'product_' + index"
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px"
+                                                                    @keyup.enter="focusNext('product', index + 1)"
+                                                                    v-model="item.product" :ref="'product_' + index"
                                                                     :class="{'border-danger': errors[index]?.product}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <select class="form-select" data-control="select2" :id="'select_status_'+index" :name="'select_status_'+index"
-                                                                    v-model="item.status"
+                                                                <select class="form-select" data-control="select2"
+                                                                    :id="'select_status_'+index"
+                                                                    :name="'select_status_'+index" v-model="item.status"
                                                                     data-placeholder="Select Status">
                                                                     <option></option>
                                                                     <option value="active">เปิดการใช้งาน</option>
                                                                     <option value="inactive">ปิดการใช้งาน</option>
                                                                 </select>
                                                             </div>
-                                                            <span v-if="errors[index] && errors[index].status" v-text="errors[index].status" class="text-danger"></span>
+                                                            <span v-if="errors[index] && errors[index].status"
+                                                                v-text="errors[index].status"
+                                                                class="text-danger"></span>
                                                             <!-- <span v-if="item.status === 'active'"
                                                                 v-text="'เปิดการใช้งาน'"></span>
                                                             <span v-else v-text="'ปิดการใช้งาน'"></span> -->
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div class="d-flex justify-content-center align-items-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.total_cost, index, 'total_cost')"
-                                                                    @keyup.enter="focusNext('total_cost', index + 1)" v-model="item.total_cost" :ref="'total_cost_' + index"
+                                                                    @keyup.enter="focusNext('total_cost', index + 1)"
+                                                                    v-model="item.total_cost"
+                                                                    :ref="'total_cost_' + index"
                                                                     :class="{'border-danger': errors[index]?.total_cost}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break text-center">
-                                                            <div class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end" @keyup.enter="focusNext('budget', index + 1)"
-                                                                    @input="handleInputN(item.budget, index, 'budget')" v-model="item.budget" :ref="'budget_' + index"
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @keyup.enter="focusNext('budget', index + 1)"
+                                                                    @input="handleInputN(item.budget, index, 'budget')"
+                                                                    v-model="item.budget" :ref="'budget_' + index"
                                                                     :class="{'border-danger': errors[index]?.budget}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break text-center">
-                                                            <div class="d-flex justify-content-center align-items-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-150px text-end"
                                                                     @keyup.enter="focusNext('total_shop_income', index + 1)"
-                                                                    @input="handleInputN(item.total_shop_income, index, 'total_shop_income')" v-model="item.total_shop_income"
-                                                                    :ref="'total_shop_income_' + index" :class="{'border-danger': errors[index]?.total_shop_income}" />
+                                                                    @input="handleInputN(item.total_shop_income, index, 'total_shop_income')"
+                                                                    v-model="item.total_shop_income"
+                                                                    :ref="'total_shop_income_' + index"
+                                                                    :class="{'border-danger': errors[index]?.total_shop_income}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break text-center">
-                                                            <div class="d-flex justify-content-center align-items-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.cost_per_purchase, index, 'cost_per_purchase')"
-                                                                    @keyup.enter="focusNext('cost_per_purchase', index + 1)" v-model="item.cost_per_purchase"
-                                                                    :ref="'cost_per_purchase_' + index" :class="{'border-danger': errors[index]?.cost_per_purchase}" />
+                                                                    @keyup.enter="focusNext('cost_per_purchase', index + 1)"
+                                                                    v-model="item.cost_per_purchase"
+                                                                    :ref="'cost_per_purchase_' + index"
+                                                                    :class="{'border-danger': errors[index]?.cost_per_purchase}" />
                                                             </div>
                                                         </td>
 
                                                         <td class="align-middle min-w-50px text-break">
-                                                            <div class="d-flex justify-content-center align-items-center"></div>
-                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.purchase, index, 'purchase')"
-                                                                    @keyup.enter="focusNext('purchase', index + 1)" v-model="item.purchase" :ref="'purchase_' + index"
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px"
+                                                                    @keyup.enter="focusNext('purchase', index + 1)"
+                                                                    v-model="item.purchase" :ref="'purchase_' + index"
                                                                     :class="{'border-danger': errors[index]?.purchase}" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break">
-                                                            <div class="d-flex justify-content-center align-items-center"></div>
-                                                                <input type="text" class="form-control w-150px" @input="handleInputN(item.note, index, 'note')"
-                                                                    @keyup.enter="focusNext('note', index + 1)" v-model="item.note" :ref="'note_' + index"
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px"
+                                                                    @keyup.enter="focusNext('note', index + 1)"
+                                                                    v-model="item.note" :ref="'note_' + index"
                                                                     :class="{'border-danger': errors[index]?.note}" />
                                                             </div>
                                                         </td>
