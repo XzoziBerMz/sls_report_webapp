@@ -30,7 +30,7 @@
                 currentCostPages: 1,
                 itemsCostPerPage: 10,
                 totalCostItems: 0,
-                column_cost_order_by: "p_timestamp",
+                column_cost_order_by: "p_date",
                 cost_order_sort: "desc",
             }
         },
@@ -167,7 +167,7 @@
             editAds(data) {
                 const self = this;
                 $('#kt_modal_1').modal('show');
-                self.dataEddit = { ...data} || [];
+                self.dataEddit = { ...data } || [];
                 $('#status-select').val(self.dataEddit.status).trigger('change')
                 self.date_time = $("#kt_datepicker_1").flatpickr({
                     dateFormat: "Y-m-d",
@@ -181,7 +181,7 @@
             },
             async updateData() {
                 const self = this;
-              
+
                 try {
                     showLoading();
                     let data = self.dataEddit

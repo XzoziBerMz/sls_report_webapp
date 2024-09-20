@@ -253,12 +253,12 @@
                                                 <thead>
                                                     <tr class="fw-bold fs-4 ">
                                                         <th class="min-w-100px">
-                                                            <div @click="sortCostTable('p_timestamp')"
+                                                            <div @click="sortCostTable('p_date')"
                                                                 class="d-flex justify-content-around align-items-center pointer">
                                                                 <i class="bi-calendar3"></i>
                                                                 <span>วันที่</span>
                                                                 <i class="bi-chevron-down"
-                                                                    :class="getCostSortIcon('p_timestamp')"></i>
+                                                                    :class="getCostSortIcon('p_date')"></i>
                                                             </div>
                                                         </th>
                                                         <th class="min-w-200px">
@@ -306,7 +306,7 @@
                                                     <template v-for="item in data_ads_cost">
                                                         <tr>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="utilsConvDate(item.p_timestamp)"></span>
+                                                                <span v-text="utilsConvDate(item.p_date)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-200px text-break">
                                                                 <span v-text="item.shop_name"></span>
