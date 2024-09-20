@@ -257,6 +257,7 @@
           add_fee: "",
           added_income: "",
           total_income: "",
+          date: self.valueDate_time || "",
           timestamp: self.valueDate_time || "",
         };
 
@@ -304,10 +305,12 @@
 
       validateFields() {
         this.errors = [];
+        this.errors_date = {};
         let isValid = true;
 
         this.data_channel.forEach((item, index) => {
           let error = {};
+          let error_date = {};
 
           if (!item.add_fee) {
             error.add_fee = true;
@@ -330,12 +333,13 @@
               isValid = false;
             }
           }
-          if (!item.date) {
-            error.date = "กรุณาเลือก วันที่";
+          if (!this.valueDate_time) {
+            error_date.date = "กรุณาเลือก วันที่";
             isValid = false;
-          }
+          } 
 
           this.errors[index] = error;
+          this.errors_date = error_date;
         });
         console.log(
           "🚀 ~ this.dataEditStars.forEach ~ this.errors:",
