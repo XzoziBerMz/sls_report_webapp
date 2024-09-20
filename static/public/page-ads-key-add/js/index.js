@@ -96,6 +96,7 @@
         flatpickr_dp_from_date: null,
         errors: [],
         dateDefault: null,
+        valueDate_time: null,
       };
     },
     computed: {
@@ -173,29 +174,52 @@
                 ":" +
                 self.dateDefault.getSeconds(), // แปลง date ให้เป็นรูปแบบ 'YYYY-MM-DD HH:MM:SS'
             }));
-            console.log(
-              "🚀 ~ DefaultData ~ self.data_channel:",
-              self.data_channel
-            );
-            this.$nextTick(() => {
-              self.data_channel.forEach((item, index) => {
-                const selectorPayment = "#kt_td_picker_start_input_" + index;
+            $("#kt_td_picker_date_input").flatpickr({
+              altInput: true,
+              altFormat: "d/m/Y",
+              dateFormat: "Y-m-d",
+              onChange: async function (selectedDates, dateStr, instance) {
 
-                self.set_date_time = $(
-                  "#kt_td_picker_start_input_" + index
-                ).flatpickr({
-                  altInput: true,
-                  altFormat: "d/m/Y",
-                  dateFormat: "Y-m-d",
-                  onChange: async function (selectedDates, dateStr, instance) {
-                    item.timestamp = instance.formatDate(
-                      selectedDates[0],
-                      "Y-m-d"
-                    ); // Update date in form data
-                  },
+                self.data_channel.forEach((item, index) => {
+                  const selectedDate = selectedDates[0];
+                  const currentTime = new Date();
+
+                  const year = instance.formatDate(selectedDate, "Y");
+                  const month = instance.formatDate(selectedDate, "m");
+                  const day = instance.formatDate(selectedDate, "d");
+
+                  const hours = currentTime.getHours().toString().padStart(2, '0');
+                  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+                  const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                  item.timestamp = formattedDateTime;
+                  self.valueDate_time = formattedDateTime
                 });
-                self.set_date_time.setDate(item.date);
-              });
+
+                console.log("🚀 ~ self.dataAds.forEach ~ self.valueDate_time:", self.valueDate_time)
+              }
+            });
+            this.$nextTick(() => {
+              // self.data_channel.forEach((item, index) => {
+              //   const selectorPayment = "#kt_td_picker_start_input_" + index;
+
+              //   self.set_date_time = $(
+              //     "#kt_td_picker_start_input_" + index
+              //   ).flatpickr({
+              //     altInput: true,
+              //     altFormat: "d/m/Y",
+              //     dateFormat: "Y-m-d",
+              //     onChange: async function (selectedDates, dateStr, instance) {
+              //       item.timestamp = instance.formatDate(
+              //         selectedDates[0],
+              //         "Y-m-d"
+              //       ); // Update date in form data
+              //     },
+              //   });
+              //   self.set_date_time.setDate(item.date);
+              // });
             });
           }
         } catch (error) {
@@ -211,7 +235,20 @@
           nextInput.focus(); // ถ้าเป็น element เดียว
         }
       },
+      handleInputN(value, index, field) {
+        let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
 
+        // แยกทศนิยมออก
+        const decimalParts = formattedValue.split('.');
+
+        // ตรวจสอบว่าแยกได้มากกว่าสองส่วนหรือไม่ (มากกว่า 1 จุดทศนิยม)
+        if (decimalParts.length > 2) {
+          formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+        }
+
+        // กำหนดค่าที่ถูกต้องกลับไปที่ฟิลด์
+        this.data_channel[index][field] = formattedValue;
+      },
       addAds() {
         const self = this;
         let data = {
@@ -220,6 +257,7 @@
           add_fee: "",
           added_income: "",
           total_income: "",
+          timestamp: self.valueDate_time || "",
         };
 
         self.data_channel.push(data);
@@ -339,10 +377,10 @@
           if (response.data.code === 200) {
             closeLoading();
 
-            // Msg("บันทึกสำเร็จ", "success");
-            // setTimeout(function () {
-            //   window.location.reload();
-            // }, 2000);
+            Msg("บันทึกสำเร็จ", "success");
+            setTimeout(function () {
+              window.location.reload();
+            }, 2000);
           }
         } catch (error) {
           console.warn("Error loading data:", error);
@@ -388,22 +426,22 @@
           this.errors[index][field] = ""; // Clear the error for the specific item and field
         }
       },
-      handleInputN(index, field) {
-        let value = this.data_channel[index][field];
+      // handleInputN(index, field) {
+      //   let value = this.data_channel[index][field];
 
-        // Clear the general error (optional)
-        if (this.errors[field]) {
-          this.errors[field] = "";
-        }
+      //   // Clear the general error (optional)
+      //   if (this.errors[field]) {
+      //     this.errors[field] = "";
+      //   }
 
-        // Regex to validate numeric or percentage input
-        const regex = /^[0-9]*\.?[0-9]*%?$/;
+      //   // Regex to validate numeric or percentage input
+      //   const regex = /^[0-9]*\.?[0-9]*%?$/;
 
-        // If the value doesn't match the regex, slice off the last character
-        if (!regex.test(value)) {
-          this.data_channel[index][field] = value.slice(0, -1);
-        }
-      },
+      //   // If the value doesn't match the regex, slice off the last character
+      //   if (!regex.test(value)) {
+      //     this.data_channel[index][field] = value.slice(0, -1);
+      //   }
+      // },
     },
 
     mounted: function () {

@@ -116,15 +116,35 @@
                                         </div> -->
 
                                 <div class="card p-10 pt-5">
-                                    <div class="d-flex justify-content-end align-items-center mt-5">
-                                        <button type="button" @click="addAds" class="btn btn-primary w-150px">เพิ่ม
-                                            ADS</button>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                            data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                            <div>
+                                                <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
+                                                    :</span>
+                                            </div>
+                                            <input id="kt_td_picker_date_input" type="text" class="form-control w-200px"
+                                                data-td-target="#kt_td_picker_start" />
+                                            <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                data-td-toggle="datetimepicker">
+                                                <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
+                                                        class="path2"></span></i>
+                                            </span>
+                                            <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                class="text-danger"></span>
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-center gap-5">
+                                            <div>
+                                                <button type="button" @click="addAds"
+                                                    class="btn btn-primary w-150px">เพิ่ม
+                                                    ADS</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="table-responsive border rounded-4 mt-5">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <thead>
                                                 <tr class="fs-6 ">
-                                                    <th></th>
                                                     <th></th>
                                                     <th class="text-end" v-text="formatNumber(AddFee)"></th>
                                                     <th class="text-end" v-text="formatNumber(AddIncome)"></th>
@@ -133,7 +153,7 @@
                                                         v-text="formatPercentage(AddFee, AddTotal) || '0.00%'"></th>
                                                 </tr>
                                                 <tr class="fw-bold fs-4 ">
-                                                    <th>วันที่</th>
+                                                    <!-- <th>วันที่</th> -->
                                                     <th>ร้าน</th>
                                                     <th class="text-end">ค่าแอด</th>
                                                     <th class="text-end">รายได้แอด</th>
@@ -144,14 +164,18 @@
                                             <tbody class="fs-6">
                                                 <template v-for="(item, index) in data_channel" :key="index">
                                                     <tr>
-                                                        <td class="align-middle">
-                                                            <div class="w-150px input-group align-items-center" id="kt_td_picker_start_date" data-td-target-input="nearest"
+                                                        <!-- <td class="align-middle">
+                                                            <div class="w-150px input-group align-items-center"
+                                                                id="kt_td_picker_start_date"
+                                                                data-td-target-input="nearest"
                                                                 data-td-target-toggle="nearest">
-                                                                <input :id="'kt_td_picker_start_input_'+index" type="text" class="form-control w-200px"
+                                                                <input :id="'kt_td_picker_start_input_'+index"
+                                                                    type="text" class="form-control w-200px"
                                                                     data-td-target="#kt_td_picker_start" />
                                                             </div>
-                                                            <span v-if="errors[index] && errors[index].date" v-text="errors[index].date" class="text-danger"></span>
-                                                        </td>
+                                                            <span v-if="errors[index] && errors[index].date"
+                                                                v-text="errors[index].date" class="text-danger"></span>
+                                                        </td> -->
                                                         <td class="align-middle">
                                                             <span v-if="!item.new_data" v-text="item.shop_name"></span>
                                                             <div v-else>
@@ -171,23 +195,29 @@
                                                         </td>
                                                         <td class="align-middle">
                                                             <div>
-                                                                <input type="text" class="form-control text-end" :class="{'border-danger': errors[index]?.add_fee}"
-                                                                    v-model="item.add_fee" 
-                                                                    @keydown.enter="focusNext('add_fee', index + 1)" :ref="'add_fee_' + index" />
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.add_fee}"
+                                                                    v-model="item.add_fee" @input="handleInputN(item.add_fee, index, 'add_fee')"
+                                                                    @keydown.enter="focusNext('add_fee', index + 1)"
+                                                                    :ref="'add_fee_' + index" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle">
                                                             <div>
-                                                                <input type="text" class="form-control text-end" :class="{'border-danger': errors[index]?.added_income}"
-                                                                    v-model="item.added_income"
-                                                                    @keydown.enter="focusNext('added_income', index + 1)" :ref="'added_income_' + index" />
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.added_income}"
+                                                                    v-model="item.added_income" @input="handleInputN(item.added_income, index, 'added_income')"
+                                                                    @keydown.enter="focusNext('added_income', index + 1)"
+                                                                    :ref="'added_income_' + index" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle">
                                                             <div>
-                                                                <input type="text" class="form-control text-end" :class="{'border-danger': errors[index]?.total_income}"
-                                                                    v-model="item.total_income"
-                                                                    @keydown.enter="focusNext('total_income', index + 1)" :ref="'total_income_' + index" />
+                                                                <input type="text" class="form-control text-end"
+                                                                    :class="{'border-danger': errors[index]?.total_income}"
+                                                                    v-model="item.total_income" @input="handleInputN(item.total_income, index, 'total_income')"
+                                                                    @keydown.enter="focusNext('total_income', index + 1)"
+                                                                    :ref="'total_income_' + index" />
                                                             </div>
                                                         </td>
 
@@ -240,7 +270,7 @@
 <script>
     window.csrfToken = {{.csrf_token }};
     window.pageAction = {{.page_action }};
-    </script>
+</script>
 {{- template "resource-js" -}}
 <script src="/page-ads-key-add/js/services.js" type="module"> </script>
 <script src="/page-ads-key-add/js/index.js" type="module"> </script>
