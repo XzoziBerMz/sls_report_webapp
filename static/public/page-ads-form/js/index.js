@@ -297,11 +297,11 @@
                         error.name = true;
                         isValid = false;
                     }
-                    if (!item.total_cost === "") {
+                    if (item.total_cost === "") {
                         error.total_cost = true;
                         isValid = false;
                     }
-                    if (!item.budget === "") {
+                    if (item.budget === "") {
                         error.budget = true;
                         isValid = false;
                     }
@@ -313,7 +313,7 @@
                         error.total_shop_income = true;
                         isValid = false;
                     }
-                    if (!item.cost_per_purchase === "") {
+                    if (item.cost_per_purchase === "") {
                         error.cost_per_purchase = true;
                         isValid = false;
                     }

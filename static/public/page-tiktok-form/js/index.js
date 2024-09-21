@@ -192,6 +192,7 @@
 
                 // กำหนดค่าที่ถูกต้องกลับไปที่ฟิลด์
                 this.dataAds[index][field] = formattedValue;
+                console.log("🚀 ~ handleInputN ~ this.dataAds[index][field]:", this.dataAds[index][field])
             },
             created() {
                 // Set start_at to one day before the current date
@@ -312,19 +313,19 @@
                         isValid = false;
                     }
 
-                    if (!item.total_cost === "") {
+                    if (item.total_cost === "") {
                         error.total_cost = true;
                         isValid = false;
                     }
-                    if (!item.budget === "") {
+                    if (item.budget === "") {
                         error.budget = true;
                         isValid = false;
                     }
-                    if (!item.total_shop_income === "") {
+                    if (item.total_shop_income === "") {
                         error.total_shop_income = true;
                         isValid = false;
                     }
-                    if (!item.cost_per_purchase === "") {
+                    if (item.cost_per_purchase === "") {
                         error.cost_per_purchase = true;
                         isValid = false;
                     }
