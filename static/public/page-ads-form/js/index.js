@@ -31,8 +31,8 @@
                 start_date_time: null,
                 end_date_time: null,
                 data_status: [
-                    { id: 'active', name: 'เปิดใช้งาน' },
-                    { id: 'inactive', name: 'ปิดใช้งาน' },
+                    { id: 'เปิดใช้งาน', name: 'เปิดใช้งาน' },
+                    { id: 'ปิดใช้งาน', name: 'ปิดใช้งาน' },
                 ]
             }
         },
@@ -50,19 +50,6 @@
                 try {
                     await self.created()
                     await self.loadData()
-
-                    self.dataAds.forEach((item, index) => {
-                        const selectorPayment = '#kt_td_picker_start_input_' + index;
-                        self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
-                            altInput: true,
-                            altFormat: "d/m/Y",
-                            dateFormat: "Y-m-d",
-                            onChange: async function (selectedDates, dateStr, instance) {
-                                item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
-                            },
-                        });
-                        self.set_date_time.setDate(item.date)
-                    })
 
                     try {
                         const req = await services.getProduct(self.token_header)
@@ -94,19 +81,7 @@
 
                             self.$nextTick(() => {
 
-                                self.dataAds.forEach((item, index) => {
-                                    const selectorPayment = '#kt_td_picker_start_input_' + index;
-                                    self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
-                                        altInput: true,
-                                        altFormat: "d/m/Y",
-                                        dateFormat: "Y-m-d",
-                                        onChange: async function (selectedDates, dateStr, instance) {
-                                            item.date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
-                                        },
-                                    });
-                                    self.set_date_time.setDate(item.date)
-                                })
-
+                             
                                 self.dataAds.forEach((item, index) => {
                                     const selectorPayment = '#select_status_' + index;
                                     if (!$(selectorPayment).data('select2')) {
@@ -174,6 +149,7 @@
                             $(selectorPayment).on("change.custom", async function () {
                                 const selectedValue = $(this).val(); // Get the selected value
                                 item.status = selectedValue || 10
+                                console.log("self.data_status", self.dataAds)
                             })
                         })
                     })
@@ -321,11 +297,11 @@
                         error.name = true;
                         isValid = false;
                     }
-                    if (!item.total_cost) {
+                    if (!item.total_cost === "") {
                         error.total_cost = true;
                         isValid = false;
                     }
-                    if (!item.budget) {
+                    if (!item.budget === "") {
                         error.budget = true;
                         isValid = false;
                     }
@@ -333,11 +309,11 @@
                         error.product = true;
                         isValid = false;
                     }
-                    if (!item.total_shop_income) {
+                    if (item.total_shop_income === "") {
                         error.total_shop_income = true;
                         isValid = false;
                     }
-                    if (!item.cost_per_purchase) {
+                    if (!item.cost_per_purchase === "") {
                         error.cost_per_purchase = true;
                         isValid = false;
                     }
@@ -353,11 +329,10 @@
                         error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
-                    if (!item.status) {
-                        error.status = "กรุณาเลือก สถานะ"
+                    if (!item.status || (item.status !== 'เปิดใช้งาน' && item.status !== 'ปิดใช้งาน')) {
+                        error.status = "กรุณาเลือกสถานะ";
                         isValid = false;
                     }
-
                     this.errors[index] = error;
                     this.errors_date = error_date;
                 });

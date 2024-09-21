@@ -332,8 +332,8 @@
                         error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     } 
-                    if (!item.status || item.status !== 'เปิดใช้งาน' || item.status !== 'ปิดใช้งาน') {
-                        error.status = "กรุณาเลือก สถานะ"
+                    if (!item.status || (item.status !== 'เปิดใช้งาน' && item.status !== 'ปิดใช้งาน')) {
+                        error.status = "กรุณาเลือกสถานะ";
                         isValid = false;
                     }
 
