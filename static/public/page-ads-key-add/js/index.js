@@ -106,6 +106,9 @@
             self.data_channel = req.data.data;
             self.data_channel = req.data.data.map((item) => ({
               ...item,
+              ads_fee: "", // Assign new property
+              ads_income: "", // Assign new property
+              ads_total_income: "", // Assign new property
               timestamp:
                 self.dateDefault.toISOString().split("T")[0] +
                 " " +
@@ -278,7 +281,7 @@
           if (!this.valueDate_time) {
             error_date.date = "กรุณาเลือก วันที่";
             isValid = false;
-          } 
+          }
 
           this.errors[index] = error;
           this.errors_date = error_date;
@@ -345,7 +348,7 @@
         console.log("🚀 ~ clearError ~ this.errors:", this.errors);
         this.errors[index][field] = null;
       },
-     
+
       handleInput(index, field) {
         if (this.errors[index]) {
           this.errors[index][field] = ""; // Clear the error for the specific item and field
@@ -360,7 +363,7 @@
         this.end_date_time = formattedDate + ' 23:59:59';
         console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
       },
-     
+
     },
 
     mounted: function () {
