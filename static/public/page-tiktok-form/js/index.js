@@ -32,8 +32,8 @@
                 start_date_time: null,
                 end_date_time: null,
                 data_status: [
-                    { id: 'active', name: 'เปิดใช้งาน' },
-                    { id: 'inactive', name: 'ปิดใช้งาน' },
+                    { id: 'เปิดใช้งาน', name: 'เปิดใช้งาน' },
+                    { id: 'ปิดใช้งาน', name: 'ปิดใช้งาน' },
                 ],
                 valueDate_time: null,
             }
@@ -312,19 +312,19 @@
                         isValid = false;
                     }
 
-                    if (!item.total_cost) {
+                    if (!item.total_cost === "") {
                         error.total_cost = true;
                         isValid = false;
                     }
-                    if (!item.budget) {
+                    if (!item.budget === "") {
                         error.budget = true;
                         isValid = false;
                     }
-                    if (!item.total_shop_income) {
+                    if (!item.total_shop_income === "") {
                         error.total_shop_income = true;
                         isValid = false;
                     }
-                    if (!item.cost_per_purchase) {
+                    if (!item.cost_per_purchase === "") {
                         error.cost_per_purchase = true;
                         isValid = false;
                     }
@@ -332,7 +332,7 @@
                         error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     } 
-                    if (!item.status) {
+                    if (!item.status || item.status !== 'เปิดใช้งาน' || item.status !== 'ปิดใช้งาน') {
                         error.status = "กรุณาเลือก สถานะ"
                         isValid = false;
                     }
@@ -369,13 +369,20 @@
                         // console.log("Insert failed for data:", data);
                         Msg("บันทึกไม่สำเร็จ", 'error');
                         return;
+                    } else {
+                        closeLoading();
+                        Msg("บันทึกสำเร็จ", 'success');
+                        Swal.fire({
+                            title: 'บันทึกสำเร็จ',
+                            icon: 'success',
+                            confirmButtonText: 'ตกลง'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload();
+                            }
+                        });
                     }
 
-                    closeLoading();
-                    Msg("บันทึกสำเร็จ", 'success');
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
 
                 } else {
                     console.log("Form validation failed.");

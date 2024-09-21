@@ -16,7 +16,7 @@
   function getShop(body = {}, token) {
     return axios({
       method: "post",
-      url: basepath + `/api/v1/shop/list`,
+      url: basepath + `/api/v1/ads/cost/filter`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       data: { ...body },

@@ -21,88 +21,19 @@
           add_fee: "",
           added_income: "",
         },
-        dataEditStars: [
-          {
-            id: 1,
-            shop_name: "ป้าวปั้น",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 2,
-            shop_name: "คีโด789",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 3,
-            shop_name: "ฟู๊ด",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 4,
-            shop_name: "มีมง",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 5,
-            shop_name: "ลิสเติ้ล",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 6,
-            shop_name: "somchai",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 7,
-            shop_name: "TT2",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 8,
-            shop_name: "TT4",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 9,
-            shop_name: "TT5",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-          {
-            id: 10,
-            shop_name: "TT6",
-            add_fee: "",
-            added_income: "",
-            total_income: "",
-          },
-        ],
+        dataEditStars: [],
         flatpickr_dp_from_date: null,
         errors: [],
         dateDefault: null,
         valueDate_time: null,
+        start_date_time: null,
+        end_date_time: null,
       };
     },
     computed: {
       AddFee() {
         const sum = this.data_channel.reduce(
-          (sum, item) => sum + parseFloat(item.add_fee || 0),
+          (sum, item) => sum + parseFloat(item.ads_fee || 0),
           0
         );
         // return sum.toFixed(2);
@@ -110,14 +41,14 @@
       },
       AddIncome() {
         const sum = this.data_channel.reduce(
-          (sum, item) => sum + parseFloat(item.added_income || 0),
+          (sum, item) => sum + parseFloat(item.ads_income || 0),
           0
         );
         return sum;
       },
       AddTotal() {
         const sum = this.data_channel.reduce(
-          (sum, item) => sum + parseFloat(item.total_income || 0),
+          (sum, item) => sum + parseFloat(item.ads_total_income || 0),
           0
         );
         return sum;
@@ -159,7 +90,17 @@
 
         self.dateDefault = new Date();
         try {
-          let data = {};
+          let data = {
+            "search": "",
+            // "start_at": "2023-01-01",
+            // "end_at": "2024-08-15",
+            "start_at": self.start_date_time,
+            "end_at": self.end_date_time,
+            "page": 1,
+            "per_page": 10,
+            "order": "shop_name",
+            "order_by": "desc"
+          };
           const req = await services.getShop(data, self.token_header);
           if (req.data.code === 200) {
             self.data_channel = req.data.data;
@@ -255,9 +196,9 @@
         let data = {
           new_data: true,
           shop_name: "",
-          add_fee: "",
-          added_income: "",
-          total_income: "",
+          ads_fee: "",
+          ads_income: "",
+          ads_total_income: "",
           date: self.valueDate_time || "",
           timestamp: self.valueDate_time || "",
         };
@@ -313,18 +254,18 @@
           let error = {};
           let error_date = {};
 
-          if (!item.add_fee) {
-            error.add_fee = true;
+          if (item.ads_fee === "") {
+            error.ads_fee = true;
             isValid = false;
           }
 
-          if (!item.added_income) {
-            error.added_income = true;
+          if (item.ads_income === "") {
+            error.ads_income = true;
             isValid = false;
           }
 
-          if (!item.total_income) {
-            error.total_income = true;
+          if (item.ads_total_income === "") {
+            error.ads_total_income = true;
             isValid = false;
           }
 
@@ -374,9 +315,9 @@
           data.data.forEach((item, index) => {
             delete item.id;
             item.timestamp = this.getCurrentDateFormatted();
-            item.ads_fee = parseFloat(item.add_fee);
-            item.ads_income = parseFloat(item.added_income);
-            item.ads_total_income = parseFloat(item.total_income);
+            item.ads_fee = parseFloat(item.ads_fee);
+            item.ads_income = parseFloat(item.ads_income);
+            item.ads_total_income = parseFloat(item.ads_total_income);
           });
           const response = await services.getInsertAsd(data, this.token_header);
           if (response.data.code === 200) {
@@ -404,54 +345,27 @@
         console.log("🚀 ~ clearError ~ this.errors:", this.errors);
         this.errors[index][field] = null;
       },
-      // restrictToNumbers(index, field) {
-      //     // อนุญาตให้กรอกตัวเลขและจุดทศนิยม โดยจะยอมให้มีเพียงจุดเดียว
-      //     this.dataEditStars[index][field] = this.dataEditStars[index][field].replace(/[^0-9.]/g, '');
-
-      //     // แบ่งข้อมูลตามจุดทศนิยม
-      //     let parts = this.dataEditStars[index][field].split('.');
-
-      //     // จัดรูปแบบส่วนที่เป็นจำนวนเต็มให้มีคอมม่า (1,000,000)
-      //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-
-      //     // ถ้ามีจุดทศนิยม ให้จำกัดตัวเลขหลังจุดทศนิยมไม่เกิน 2 ตำแหน่ง
-      //     if (parts.length > 1) {
-      //         parts[1] = parts[1].substring(0, 2); // จำกัดให้มีทศนิยม 2 ตำแหน่ง
-      //     }
-
-      //     // รวมส่วนจำนวนเต็มกับทศนิยมกลับเข้าไป
-      //     this.dataEditStars[index][field] = parts.join('.');
-
-      //     // เรียกใช้ฟังก์ชัน validateFields
-      //     this.validateFields();
-      // },
-
+     
       handleInput(index, field) {
         if (this.errors[index]) {
           this.errors[index][field] = ""; // Clear the error for the specific item and field
         }
       },
-      // handleInputN(index, field) {
-      //   let value = this.data_channel[index][field];
-
-      //   // Clear the general error (optional)
-      //   if (this.errors[field]) {
-      //     this.errors[field] = "";
-      //   }
-
-      //   // Regex to validate numeric or percentage input
-      //   const regex = /^[0-9]*\.?[0-9]*%?$/;
-
-      //   // If the value doesn't match the regex, slice off the last character
-      //   if (!regex.test(value)) {
-      //     this.data_channel[index][field] = value.slice(0, -1);
-      //   }
-      // },
+      created() {
+        // Set start_at to one day before the current date
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - 1);
+        const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+        this.start_date_time = formattedDate + ' 00:00:00';
+        this.end_date_time = formattedDate + ' 23:59:59';
+        console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
+      },
+     
     },
 
     mounted: function () {
       let self = this;
-      // self.loadData();
+      self.created();
       self.DefaultData();
       console.log("ok");
     },

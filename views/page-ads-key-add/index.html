@@ -45,76 +45,7 @@
                                         <h1 class="fs-1 fw-bolder">ค่าโฆษณา</h1>
                                     </div>
                                 </div>
-                                <!-- <div class="col">
-
-                                            <div class="card p-10 mt-3 ">
-                                                <div>
-                                                    <h1 v-text="item.shop_name"></h1>
-                                                </div>
-                                                <div class="row mt-5">
-                                                    <div class="col-6">
-                                                        <div class="fv-row mb-10">
-                                                            <label class="fw-semibold required fs-4 mb-2">วันที่</label>
-                                                            <div class="input-group w-100" id="kt_td_picker_simple"
-                                                                data-td-target-input="nearest"
-                                                                data-td-target-toggle="nearest">
-                                                                <input :id="'kt_td_picker_basic_input'+index"
-                                                                    type="text" class="form-control" v-model="item.timestamp"
-                                                                    @input="handleInput(index, 'timestamp')" />
-                                                                <span class="input-group-text"
-                                                                    data-td-target="#kt_td_picker_basic"
-                                                                    data-td-toggle="datetimepicker"><i
-                                                                        class="ki-duotone ki-calendar fs-2"><span
-                                                                            class="path1"></span><span
-                                                                            class="path2"></span></i></span>
-                                                            </div>
-                                                            <span v-if="errors[index] && errors[index].date"
-                                                                v-text="errors[index].date" class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-6">
-                                                        <div class="fv-row mb-10">
-                                                            <label class="required fw-semibold fs-4 mb-2">ค่าแอด</label>
-                                                            <input type="text" :name="'add_fee'+index" :id="'add_fee'+index"
-                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                                v-model="item.add_fee"
-                                                                @input="handleInputN(index, 'add_fee')" />
-                                                            <span v-if="errors[index] && errors[index].add_fee"
-                                                                v-text="errors[index].add_fee"
-                                                                class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="fv-row mb-10">
-                                                            <label
-                                                                class="required fw-semibold fs-4 mb-2">รายได้แอด</label>
-                                                            <input type="text" :name="'added_income'+index" :id="'added_income'+index"
-                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                                v-model="item.added_income"
-                                                                @input="handleInputN(index,'added_income')" />
-                                                            <span v-if="errors[index] && errors[index].added_income"
-                                                                v-text="errors[index].added_income"
-                                                                class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="fv-row mb-10">
-                                                            <label
-                                                                class="required fw-semibold fs-4 mb-2">รายได้รวม</label>
-                                                            <input type="text" :name="'total_income'+index" :id="'total_income'+index"
-                                                                class="form-control form-control mb-3 mb-lg-0 h-50px"
-                                                                v-model="item.total_income"
-                                                                @input="handleInputN(index,'total_income')" />
-                                                            <span v-if="errors[index] && errors[index].added_income"
-                                                                v-text="errors[index].added_income"
-                                                                class="text-danger"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
-
+                               
                                 <div class="card p-10 pt-5">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="fv-row">
@@ -191,9 +122,9 @@
                                                                 <input type="text" class="form-control"
                                                                     :class="{'border-danger': errors[index]?.shop_name}"
                                                                     v-model="item.shop_name" />
-                                                                <span v-if="errors[index] && errors[index].shop_name"
+                                                                <!-- <span v-if="errors[index] && errors[index].shop_name"
                                                                     v-text="errors[index].shop_name"
-                                                                    class="text-danger"></span>
+                                                                    class="text-danger"></span> -->
                                                             </div>
                                                             <!-- <input type="text" class="form-control text-end"
                                                                     :class="{'border-danger': errors[index]?.shop_name}"
@@ -202,31 +133,31 @@
                                                         <td class="align-middle">
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
-                                                                    :class="{'border-danger': errors[index]?.add_fee}"
-                                                                    v-model="item.add_fee"
-                                                                    @input="handleInputN(item.add_fee, index, 'add_fee')"
-                                                                    @keydown.enter="focusNext('add_fee', index + 1)"
-                                                                    :ref="'add_fee_' + index" />
+                                                                    :class="{'border-danger': errors[index]?.ads_fee}"
+                                                                    v-model="item.ads_fee"
+                                                                    @input="handleInputN(item.ads_fee, index, 'ads_fee')"
+                                                                    @keydown.enter="focusNext('ads_fee', index + 1)"
+                                                                    :ref="'ads_fee_' + index" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle">
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
-                                                                    :class="{'border-danger': errors[index]?.added_income}"
-                                                                    v-model="item.added_income"
-                                                                    @input="handleInputN(item.added_income, index, 'added_income')"
-                                                                    @keydown.enter="focusNext('added_income', index + 1)"
-                                                                    :ref="'added_income_' + index" />
+                                                                    :class="{'border-danger': errors[index]?.ads_income}"
+                                                                    v-model="item.ads_income"
+                                                                    @input="handleInputN(item.ads_income, index, 'ads_income')"
+                                                                    @keydown.enter="focusNext('ads_income', index + 1)"
+                                                                    :ref="'ads_income_' + index" />
                                                             </div>
                                                         </td>
                                                         <td class="align-middle">
                                                             <div>
                                                                 <input type="text" class="form-control text-end"
-                                                                    :class="{'border-danger': errors[index]?.total_income}"
-                                                                    v-model="item.total_income"
-                                                                    @input="handleInputN(item.total_income, index, 'total_income')"
-                                                                    @keydown.enter="focusNext('total_income', index + 1)"
-                                                                    :ref="'total_income_' + index" />
+                                                                    :class="{'border-danger': errors[index]?.ads_total_income}"
+                                                                    v-model="item.ads_total_income"
+                                                                    @input="handleInputN(item.ads_total_income, index, 'ads_total_income')"
+                                                                    @keydown.enter="focusNext('ads_total_income', index + 1)"
+                                                                    :ref="'ads_total_income_' + index" />
                                                             </div>
                                                         </td>
 
@@ -234,7 +165,7 @@
                                                             <div class="text-end"
                                                                 :class="{'d-flex gap-3 justify-content-end align-items-center': item.new_data}">
                                                                 <span class=""
-                                                                    v-text="formatPercentage(item.add_fee, item.total_income) || '0.00%'"></span>
+                                                                    v-text="formatPercentage(item.ads_fee, item.ads_total_income) || '0.00%'"></span>
                                                                 <i v-if="item.new_data"
                                                                     class="text-danger bi-trash pointer"
                                                                     @click="deleteAds(index)"></i>

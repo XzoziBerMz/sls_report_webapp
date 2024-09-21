@@ -42,7 +42,7 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="fs-1 fw-bolder">
-                                        <span>Tiktok Form</span>
+                                        <span>Ads Tiktok Form</span>
                                     </div>
                                     <!-- <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
                                         data-td-target-input="nearest" data-td-target-toggle="nearest">
@@ -197,8 +197,8 @@
                                                                     :name="'select_status_'+index" v-model="item.status"
                                                                     data-placeholder="Select Status">
                                                                     <option></option>
-                                                                    <option value="active">เปิดการใช้งาน</option>
-                                                                    <option value="inactive">ปิดการใช้งาน</option>
+                                                                    <option value="เปิดใช้งาน" class="text-success">เปิดใช้งาน</option>
+                                                                    <option value="ปิดใช้งาน" class="text-danger">ปิดใช้งาน</option>
                                                                 </select>
                                                             </div>
                                                             <span v-if="errors[index] && errors[index].status"
