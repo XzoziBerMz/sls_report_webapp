@@ -87,7 +87,7 @@
                         "customer_name": this.form.nameproduct,
                         "product": this.form.product,
                         "order_no": this.form.orderNumber,
-                        "user": this.form.nameproduct,  // Assuming 'user' is the same as 'nameproduct'
+                        // "user": 'hello',
                         "p_date": formattedDate,
                         "chanel": this.form.channel,
                         "note": this.form.remark
