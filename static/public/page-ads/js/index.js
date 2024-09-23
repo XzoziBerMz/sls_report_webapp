@@ -20,13 +20,16 @@
                 data_ads: [],
                 data_ads_cost: [],
                 data_tiktok_live: [],
+                data_facebook: [],
                 dataEddit: {},
 
                 modal_titles: "",
                 modal_session: "",
 
                 data_ads_tt: [],
+                data_cost_shop: [],
                 data_shop_tt: [],
+                data_ads_fb: [],
 
                 startDate: null,
                 endDate: null,
@@ -45,6 +48,7 @@
                 totalCostItems: 0,
                 column_cost_order_by: "p_date",
                 cost_order_sort: "desc",
+                filter_cost_shop: [],
 
                 currentTiktokPages: 1,
                 itemsTiktokPerPage: 10,
@@ -52,6 +56,13 @@
                 column_tiktok_order_by: "p_timestamp",
                 tiktok_order_sort: "desc",
                 filter_shop_tt: [],
+
+                currentFacebookPages: 1,
+                itemsFacebookPerPage: 10,
+                totalFacebookItems: 0,
+                column_facebook_order_by: "p_date",
+                facebook_order_sort: "desc",
+                filter_ads_fb: [],
             }
         },
         computed: {
@@ -63,6 +74,9 @@
             },
             totalTiktokPages() {
                 return Math.ceil(this.totalTiktokItems / this.itemsTiktokPerPage);
+            },
+            totalFacebookPages() {
+                return Math.ceil(this.totalFacebookItems / this.itemsFacebookPerPage);
             },
             pages() {
                 const pages = [];
@@ -100,6 +114,18 @@
 
                 return pages;
             },
+            pagesFacebook() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentFacebookPages - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalFacebookPages, startPage + maxPages - 1);
+
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+
+                return pages;
+            },
             AdsFee() {
                 return this.data_ads_cost.reduce((sum, item) => sum + parseFloat(item.ads_fee || 0), 0);
             },
@@ -120,6 +146,7 @@
                     await self.getAds();
                     await self.getAdsCost();
                     await self.getTiktok();
+                    await self.getFacebook();
                 } catch (error) {
                     console.log("🚀 ~ init ~ error:", error)
                 } finally {
@@ -132,6 +159,16 @@
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsCostPerPage = selectedValue || 10
                         await self.getAdsCost();
+                    })
+                    $('#page_size_live_select').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsTiktokPerPage = selectedValue || 10
+                        await self.getTiktok();
+                    })
+                    $('#page_size_facebook_select').on("change.custom", async function () {
+                        const selectedValue = $(this).val(); // Get the selected value
+                        self.itemsFacebookPerPage = selectedValue || 10
+                        await self.getFacebook();
                     })
 
                     self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
@@ -215,6 +252,7 @@
                 await self.getAds();
                 await self.getAdsCost();
                 await self.getTiktok();
+                await self.getFacebook();
             },
             formatNumber(number) {
                 if (typeof number === 'number') {
@@ -265,6 +303,11 @@
                 if (page < 1 || page > this.totalTiktokPages) return;
                 this.currentTiktokPages = page;
                 this.getTiktok();
+            },
+            changeFacebookPage(page) {
+                if (page < 1 || page > this.totalFacebookPages) return;
+                this.currentFacebookPages = page;
+                this.getFacebook();
             },
 
             async sortTable(column) {
@@ -323,6 +366,25 @@
                     return "bi-chevron-down";  // Default down icon
                 }
                 return self.tiktok_order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
+            async sortFacebookTable(column) {
+                if (this.column_facebook_order_by === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.facebook_order_sort = this.facebook_order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_facebook_order_by = column;
+                    this.facebook_order_sort = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.getFacebook();
+            },
+            getFacebookSortIcon(column) {
+                const self = this;
+                if (self.column_facebook_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.facebook_order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
 
             editAds(data) {
@@ -392,9 +454,11 @@
                     let formattedDateend =
                         self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
                     let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    const productNames = self.filter_cost_shop.map((item) => item.name);
                     let data = {
                         "search": "",
                         // "ref_default": 1,
+                        "shops": productNames || [],
                         "start_at": formattedStartDate || formattedDate,
                         "end_at": formattedEndDate || formattedDate,
                         "page": self.currentCostPages,
@@ -459,6 +523,46 @@
 
                 }
             },
+            getFacebook: async function () {
+                const self = this;
+                try {
+                    showLoading();
+                    let formattedDatestart =
+                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedDateend =
+                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
+                    const statusName = self.filter_ads_fb.length > 0 ? self.filter_ads_fb[0].name : null;
+                    let data = {
+                        "search": "",
+                        // "ref_default": 1,
+                        "status": statusName || "",
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        "page": self.currentFacebookPages,
+                        "per_page": parseInt(self.itemsFacebookPerPage) || 10,
+                        "order": self.column_facebook_order_by,
+                        "order_by": self.facebook_order_sort
+                    }
+                    const response = await services.getFacebook(data, self.token_header)
+                    if (response.data.code === 200) {
+                        self.data_facebook = response.data.data || [];
+                        self.totalFacebookItems = response.data.total;
+                        // console.log(response.data.data)
+                        closeLoading();
+
+                    }
+
+                } catch (err) {
+                    closeLoading();
+                    Msg("errorMsg", 'error');
+
+                } finally {
+
+                }
+            },
 
             async filterModal(value, tableSession) {
                 const self = this;
@@ -489,59 +593,22 @@
                         console.log("🚀 ~ filterModal ~ error:", error);
                     }
                 } else if (tableSession === 2) {
-                    if (value === "ชื่อสินค้า") {
-                        try {
-                            const req = await services.getmanual(self.token_header);
-                            self.data_products_2 = req.data.data.map((item) => {
-                                const existingProduct = self.filter_products_2.find(
-                                    (prod) => prod.name === item
-                                );
+                    try {
+                        const req = await services.getShopCost(self.token_header);
+                        self.data_cost_shop = req.data.data.map((item) => {
+                            const existingProduct = self.filter_cost_shop.find(
+                                (prod) => prod.name === item
+                            );
 
-                                return {
-                                    check_value: existingProduct
-                                        ? existingProduct.check_value
-                                        : false,
-                                    name: item,
-                                };
-                            });
-                        } catch (error) {
-                            console.log("🚀 ~ filterModal ~ error:", error);
-                        }
-                    } else if (value === "ช่องทาง") {
-                        try {
-                            const req = await services.getChannelAll(self.token_header);
-                            self.data_channel_2 = req.data.data.map((item) => {
-                                const existingProduct = self.filter_channel_2.find(
-                                    (prod) => prod.name === item);
-
-                                return {
-                                    check_value: existingProduct
-                                        ? existingProduct.check_value
-                                        : false,
-                                    name: item
-                                };
-                            });
-                        } catch (error) {
-                            console.log("🚀 ~ filterModal ~ error:", error);
-                        }
-                    } else {
-                        try {
-                            const req = await services.getusermanual(self.token_header);
-                            self.data_users_2 = req.data.data.map((item) => {
-                                const existingProduct = self.filter_users_2.find(
-                                    (prod) => prod.name === item
-                                );
-
-                                return {
-                                    check_value: existingProduct
-                                        ? existingProduct.check_value
-                                        : false,
-                                    name: item,
-                                };
-                            });
-                        } catch (error) {
-                            console.log("🚀 ~ filterModal ~ error:", error);
-                        }
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
                     }
                 } else if (tableSession === 3) {
                     try {
@@ -561,6 +628,28 @@
                     } catch (error) {
                         console.log("🚀 ~ filterModal ~ error:", error);
                     }
+                } else if (tableSession === 4) {
+                    try {
+                        // const req = await services.getProduct(self.token_header);
+                        let data_status = [
+                            "เปิดใช้งาน",
+                            "ปิดใช้งาน"
+                        ]
+                        self.data_ads_fb = data_status.map((item) => {
+                            const existingProduct = self.filter_ads_fb.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
                 }
             },
             closeModalFilter() {
@@ -568,11 +657,11 @@
                 if (this.modal_session === 1) {
                     this.data_ads_tt = [];
                 } else if (this.modal_session === 2) {
-                    this.data_products_2 = [];
-                    this.data_channel_2 = [];
-                    this.data_users_2 = [];
+                    this.data_cost_shop = [];
                 } else if (this.modal_session === 3) {
                     this.data_shop_tt = [];
+                } else if (this.modal_session === 4) {
+                    this.data_ads_fb = [];
                 }
             },
             resetCheckValue() {
@@ -581,15 +670,11 @@
                 if (self.modal_session === 1) {
                     this.data_ads_tt.forEach((item) => (item.check_value = false));
                 } else if (self.modal_session === 2) {
-                    if (self.modal_titles === "ชื่อสินค้า") {
-                        this.data_products_2.forEach((item) => (item.check_value = false));
-                    } else if (self.modal_titles === "ช่องทาง") {
-                        this.data_channel_2.forEach((item) => (item.check_value = false));
-                    } else {
-                        this.data_users_2.forEach((item) => (item.check_value = false));
-                    }
+                    this.data_cost_shop.forEach((item) => (item.check_value = false));
                 } else if (self.modal_session === 3) {
                     this.data_shop_tt.forEach((item) => (item.check_value = false));
+                } else if (self.modal_session === 4) {
+                    this.data_ads_fb.forEach((item) => (item.check_value = false));
                 }
             },
             async saveFilter() {
@@ -614,31 +699,18 @@
                     self.data_ads_tt.forEach((item) =>
                         addOrRemoveItem(self.filter_ads_tt, item)
                     );
-                    console.log("🚀 ~ saveFilter ~ self.filter_ads_tt:", self.filter_ads_tt)
                     self.data_ads_tt = [];
                     $("#filter_model").modal("hide");
 
                     await self.getAds();
                 } else if (self.modal_session === 2) {
-                    if (self.modal_titles === "ชื่อสินค้า") {
-                        self.data_products_2.forEach((item) =>
-                            addOrRemoveItem(self.filter_products_2, item)
-                        );
-                    } else if (self.modal_titles === "ช่องทาง") {
-                        self.data_channel_2.forEach((item) =>
-                            addOrRemoveItem(self.filter_channel_2, item)
-                        );
-                    } else {
-                        self.data_users_2.forEach((item) =>
-                            addOrRemoveItem(self.filter_users_2, item)
-                        );
-                    }
-                    self.data_products_2 = [];
-                    self.data_channel_2 = [];
-                    self.data_users_2 = [];
+                    self.data_cost_shop.forEach((item) =>
+                        addOrRemoveItem(self.filter_cost_shop, item)
+                    );
+                    self.data_cost_shop = [];
                     $("#filter_model").modal("hide");
 
-                    await self.loadDataProductChannel();
+                    await self.getAdsCost();
                 } else if (self.modal_session === 3) {
                     self.data_shop_tt.forEach((item) =>
                         addOrRemoveItem(self.filter_shop_tt, item)
@@ -647,12 +719,26 @@
                     $("#filter_model").modal("hide");
 
                     await self.getTiktok();
+                } else if (self.modal_session === 4) {
+                    self.data_ads_fb.forEach((item) =>
+                        addOrRemoveItem(self.filter_ads_fb, item)
+                    );
+                    self.data_ads_fb = [];
+                    $("#filter_model").modal("hide");
+
+                    await self.getFacebook();
                 }
             },
-            selectCheckValue(selectedIndex) {
-                this.data_ads_tt.forEach((item, index) => {
-                    item.check_value = index === selectedIndex;
-                });
+            selectCheckValue(selectedIndex, sessionValue) {
+                if (sessionValue === 'tt') {
+                    this.data_ads_tt.forEach((item, index) => {
+                        item.check_value = index === selectedIndex;
+                    });
+                } else {
+                    this.data_ads_fb.forEach((item, index) => {
+                        item.check_value = index === selectedIndex;
+                    });
+                }
             }
 
         },

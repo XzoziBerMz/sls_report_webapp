@@ -66,6 +66,7 @@ func main() {
 	app.Get("/details-add", render.DetailsAddPage)
 	app.Get("/tiktok-live", render.TiktokLivePage)
 	app.Get("/tiktok-form", render.TiktokFormPage)
+	app.Get("/fb-form", render.FacebookFormPage)
 	app.Get("/report-tiktoklive", render.ReportTiktokLivePage)
 
 	app.Listen(":8000")
