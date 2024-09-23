@@ -15,7 +15,7 @@
 			id="#kt_aside_menu" data-kt-menu="true">
 
 			<div class="menu-item menu-sub-indention menu-accordion"
-				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
+				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'report-tiktoklive' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'report-tiktoklive' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
 				data-kt-menu-trigger="click">
 				<a href="#" class="menu-link py-3">
 					<span class="menu-icon">
@@ -26,7 +26,7 @@
 					<span class="menu-arrow"></span>
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
-					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order'}">
+					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'report-tiktoklive' || currentPage === 'video' || currentPage === 'key-order'}">
 					<div class="menu-item" :class="{active:currentPage === 'dashboard'}">
 						<a href="/dashboard" class="menu-link py-3">
 							<span class="menu-bullet">
@@ -46,7 +46,7 @@
 					<div class="menu-item" :class="{active:currentPage === 'report-tiktoklive'}">
 						<a href="/report-tiktoklive" class="menu-link py-3">
 							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i>
+								<i class="bi-tiktok"></i>
 							</span>
 							<span class="menu-title">รายงาน TikTok Live</span>
 						</a>
@@ -56,7 +56,7 @@
 							<span class="menu-bullet">
 								<i class="bi-cash-coin"></i>
 							</span>
-							<span class="menu-title">รายงาน ค่าโฆษณา</span>
+							<span class="menu-title">รายงาน Ads detail</span>
 						</a>
 					</div>
 			

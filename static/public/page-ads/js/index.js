@@ -19,19 +19,39 @@
                 token_header: token_header || '',
                 data_ads: [],
                 data_ads_cost: [],
+                data_tiktok_live: [],
                 dataEddit: {},
+
+                modal_titles: "",
+                modal_session: "",
+
+                data_ads_tt: [],
+                data_shop_tt: [],
+
+                startDate: null,
+                endDate: null,
+                startDate_status: false,
+                endDate_status: false,
 
                 currentPages: 1,
                 itemsPerPage: 10,
                 totalItems: 0,
-                column_order_by: "date",
+                column_order_by: "p_date",
                 order_sort: "desc",
+                filter_ads_tt: [],
 
                 currentCostPages: 1,
                 itemsCostPerPage: 10,
                 totalCostItems: 0,
                 column_cost_order_by: "p_date",
                 cost_order_sort: "desc",
+
+                currentTiktokPages: 1,
+                itemsTiktokPerPage: 10,
+                totalTiktokItems: 0,
+                column_tiktok_order_by: "p_timestamp",
+                tiktok_order_sort: "desc",
+                filter_shop_tt: [],
             }
         },
         computed: {
@@ -40,6 +60,9 @@
             },
             totalCostPages() {
                 return Math.ceil(this.totalCostItems / this.itemsCostPerPage);
+            },
+            totalTiktokPages() {
+                return Math.ceil(this.totalTiktokItems / this.itemsTiktokPerPage);
             },
             pages() {
                 const pages = [];
@@ -57,7 +80,19 @@
                 const pages = [];
                 const maxPages = 5;
                 const startPage = Math.max(1, this.currentCostPages - Math.floor(maxPages / 2));
-                const endPage = Math.min(this.totalPages, startPage + maxPages - 1);
+                const endPage = Math.min(this.totalCostPages, startPage + maxPages - 1);
+
+                for (let page = startPage; page <= endPage; page++) {
+                    pages.push(page);
+                }
+
+                return pages;
+            },
+            pagesTiktok() {
+                const pages = [];
+                const maxPages = 5;
+                const startPage = Math.max(1, this.currentTiktokPages - Math.floor(maxPages / 2));
+                const endPage = Math.min(this.totalTiktokPages, startPage + maxPages - 1);
 
                 for (let page = startPage; page <= endPage; page++) {
                     pages.push(page);
@@ -84,6 +119,7 @@
                 try {
                     await self.getAds();
                     await self.getAdsCost();
+                    await self.getTiktok();
                 } catch (error) {
                     console.log("🚀 ~ init ~ error:", error)
                 } finally {
@@ -97,7 +133,88 @@
                         self.itemsCostPerPage = selectedValue || 10
                         await self.getAdsCost();
                     })
+
+                    self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
+                        static: true,
+                        enableTime: false,
+                        disableMobile: "true",
+                        dateFormat: "Y-m-d",
+                        altFormat: "d/m/Y",
+                        altInput: true,
+                        maxDate: "today",
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            if (selectedDates.length) {
+                                const selectedDate = selectedDates[0];
+
+                                // Format the date to YYYY-MM-DD in local time zone
+                                const year = selectedDate.getFullYear();
+                                const month = String(selectedDate.getMonth() + 1).padStart(
+                                    2,
+                                    "0"
+                                );
+                                const day = String(selectedDate.getDate()).padStart(2, "0");
+
+                                self.startDate = `${year}-${month}-${day}`;
+                                self.startDate_status = true;
+
+                                // Set minDate for the end date picker to prevent selecting earlier dates
+                                self.flatpickr_dp_end_date.set("minDate", self.startDate);
+                                if (
+                                    self.endDate &&
+                                    new Date(self.startDate) > new Date(self.endDate)
+                                ) {
+                                    // Reset the input field for end date and clear the value
+                                    self.flatpickr_dp_end_date.clear();
+                                    self.endDate = ""; // Reset the variable holding end date
+                                }
+
+                                await self.DefaultData();
+                            }
+                        },
+                    });
+
+                    self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
+                        static: true,
+                        enableTime: false,
+                        disableMobile: "true",
+                        dateFormat: "Y-m-d",
+                        altFormat: "d/m/Y",
+                        altInput: true,
+                        maxDate: "today",
+                        onChange: async function (selectedDates, dateStr, instance) {
+                            if (selectedDates.length) {
+                                const selectedDate = selectedDates[0];
+
+                                // Format the date to YYYY-MM-DD in local time zone
+                                const year = selectedDate.getFullYear();
+                                const month = String(selectedDate.getMonth() + 1).padStart(
+                                    2,
+                                    "0"
+                                );
+                                const day = String(selectedDate.getDate()).padStart(2, "0");
+
+                                self.endDate = `${year}-${month}-${day}`;
+                                self.endDate_status = true;
+
+                                await self.DefaultData();
+                            }
+                        },
+                    });
+
+                    const currentDate = new Date();
+                    const formattedDate = currentDate
+                        .toISOString()
+                        .slice(0, 10)
+                        .replace("T", " ");
+                    self.startDate = formattedDate;
+                    self.endDate = formattedDate;
                 }
+            },
+            async DefaultData() {
+                const self = this;
+                await self.getAds();
+                await self.getAdsCost();
+                await self.getTiktok();
             },
             formatNumber(number) {
                 if (typeof number === 'number') {
@@ -111,8 +228,28 @@
                 return percentage.toFixed(2) + '%';
             },
             formatDate(date) {
-                const options = { day: '2-digit', month: 'short', year: 'numeric' };
-                return date.toLocaleDateString('en-US', options);
+                const d = new Date(date);
+                const day = String(d.getDate()).padStart(2, "0");
+
+                const englishMonthsAbbrev = [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                ];
+
+                const month = englishMonthsAbbrev[d.getMonth()];
+                const year = d.getFullYear();
+
+                return `${day} ${month} ${year}`;
             },
             changePage(page) {
                 if (page < 1 || page > this.totalPages) return;
@@ -123,6 +260,11 @@
                 if (page < 1 || page > this.totalCostPages) return;
                 this.currentCostPages = page;
                 this.getAdsCost();
+            },
+            changeTiktokPage(page) {
+                if (page < 1 || page > this.totalTiktokPages) return;
+                this.currentTiktokPages = page;
+                this.getTiktok();
             },
 
             async sortTable(column) {
@@ -163,6 +305,25 @@
                 }
                 return self.cost_order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
             },
+            async sortTiktokTable(column) {
+                if (this.column_tiktok_order_by === column) {
+                    // สลับทิศทางการเรียงลำดับ
+                    this.tiktok_order_sort = this.tiktok_order_sort === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // กำหนดคอลัมน์ใหม่และตั้งค่าเรียงลำดับเป็น 'asc'
+                    this.column_tiktok_order_by = column;
+                    this.tiktok_order_sort = 'asc';
+                }
+                // เรียกฟังก์ชันเพื่อดึงข้อมูลหรืออัปเดตตาราง
+                await this.getTiktok();
+            },
+            getTiktokSortIcon(column) {
+                const self = this;
+                if (self.column_tiktok_order_by !== column) {
+                    return "bi-chevron-down";  // Default down icon
+                }
+                return self.tiktok_order_sort === "asc" ? "bi-chevron-up" : "bi-chevron-down";
+            },
 
             editAds(data) {
                 const self = this;
@@ -179,34 +340,26 @@
                 });
                 self.date_time.setDate(self.dataEddit.date);
             },
-            async updateData() {
-                const self = this;
-
-                try {
-                    showLoading();
-                    let data = self.dataEddit
-                    data.budget = parseFloat(data.budget);
-                    data.cost_per_purchase = parseFloat(data.cost_per_purchase);
-                    data.total_shop_income = parseFloat(data.total_shop_income);
-                    data.total_cost = parseFloat(data.total_cost);
-                    const response = await services.updateData(data, self.token_header);
-
-                    if (response.data.code === 200) {
-                        await self.getAds();
-                        $('#kt_modal_1').modal('hide');
-                    }
-                } catch (error) {
-                    closeLoading();
-                    console.log("🚀 ~ updateData ~ error:", error)
-                }
-            },
             getAds: async function () {
                 const self = this;
                 try {
                     showLoading();
+                    let formattedDatestart =
+                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedDateend =
+                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
+                    // const statusName = self.filter_ads_tt.map((item) => item.name);
+                    const statusName = self.filter_ads_tt.length > 0 ? self.filter_ads_tt[0].name : null;
+
                     let data = {
                         "search": "",
                         // "ref_default": 1,
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        "status": statusName || "",
                         "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage) || 10,
                         "order": self.column_order_by,
@@ -216,7 +369,7 @@
                     if (response.data.code === 200) {
                         self.data_ads = response.data.data || [];
                         self.totalItems = response.data.total;
-                        console.log(response.data.data)
+                        // console.log(response.data.data)
                         closeLoading();
 
                     }
@@ -233,9 +386,17 @@
                 const self = this;
                 try {
                     showLoading();
+                    let formattedDatestart =
+                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedDateend =
+                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
                     let data = {
                         "search": "",
                         // "ref_default": 1,
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
                         "page": self.currentCostPages,
                         "per_page": parseInt(self.itemsCostPerPage) || 10,
                         "order": self.column_cost_order_by,
@@ -245,7 +406,7 @@
                     if (response.data.code === 200) {
                         self.data_ads_cost = response.data.data || [];
                         self.totalCostItems = response.data.total;
-                        console.log(response.data.data)
+                        // console.log(response.data.data)
                         closeLoading();
 
                     }
@@ -257,6 +418,241 @@
                 } finally {
 
                 }
+            },
+            getTiktok: async function () {
+                const self = this;
+                try {
+                    showLoading();
+                    let formattedDatestart =
+                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+                    let formattedDateend =
+                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
+                    const productNames = self.filter_shop_tt.map((item) => item.name);
+                    let data = {
+                        "search": "",
+                        // "ref_default": 1,
+                        "shops": productNames || [],
+                        "start_at": formattedStartDate || formattedDate,
+                        "end_at": formattedEndDate || formattedDate,
+                        "page": self.currentTiktokPages,
+                        "per_page": parseInt(self.itemsTiktokPerPage) || 10,
+                        "order": self.column_tiktok_order_by,
+                        "order_by": self.tiktok_order_sort
+                    }
+                    const response = await services.getTiktokLive(data, self.token_header)
+                    if (response.data.code === 200) {
+                        self.data_tiktok_live = response.data.data || [];
+                        self.totalTiktokItems = response.data.total;
+                        // console.log(response.data.data)
+                        closeLoading();
+
+                    }
+
+                } catch (err) {
+                    closeLoading();
+                    Msg("errorMsg", 'error');
+
+                } finally {
+
+                }
+            },
+
+            async filterModal(value, tableSession) {
+                const self = this;
+                self.modal_titles = value;
+                self.modal_session = tableSession;
+                $("#filter_model").modal("show");
+
+                if (tableSession === 1) {
+                    try {
+                        // const req = await services.getProduct(self.token_header);
+                        let data_status = [
+                            "เปิดใช้งาน",
+                            "ปิดใช้งาน"
+                        ]
+                        self.data_ads_tt = data_status.map((item) => {
+                            const existingProduct = self.filter_ads_tt.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                } else if (tableSession === 2) {
+                    if (value === "ชื่อสินค้า") {
+                        try {
+                            const req = await services.getmanual(self.token_header);
+                            self.data_products_2 = req.data.data.map((item) => {
+                                const existingProduct = self.filter_products_2.find(
+                                    (prod) => prod.name === item
+                                );
+
+                                return {
+                                    check_value: existingProduct
+                                        ? existingProduct.check_value
+                                        : false,
+                                    name: item,
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error);
+                        }
+                    } else if (value === "ช่องทาง") {
+                        try {
+                            const req = await services.getChannelAll(self.token_header);
+                            self.data_channel_2 = req.data.data.map((item) => {
+                                const existingProduct = self.filter_channel_2.find(
+                                    (prod) => prod.name === item);
+
+                                return {
+                                    check_value: existingProduct
+                                        ? existingProduct.check_value
+                                        : false,
+                                    name: item
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error);
+                        }
+                    } else {
+                        try {
+                            const req = await services.getusermanual(self.token_header);
+                            self.data_users_2 = req.data.data.map((item) => {
+                                const existingProduct = self.filter_users_2.find(
+                                    (prod) => prod.name === item
+                                );
+
+                                return {
+                                    check_value: existingProduct
+                                        ? existingProduct.check_value
+                                        : false,
+                                    name: item,
+                                };
+                            });
+                        } catch (error) {
+                            console.log("🚀 ~ filterModal ~ error:", error);
+                        }
+                    }
+                } else if (tableSession === 3) {
+                    try {
+                        let data = {};
+                        const req = await services.getShopTT(self.token_header);
+                        self.data_shop_tt = req.data.data.map((item) => {
+                            const existingProduct = self.filter_shop_tt.find(
+                                (prod) => prod.name === item
+                            );
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                }
+            },
+            closeModalFilter() {
+                $("#filter_model").modal("hide");
+                if (this.modal_session === 1) {
+                    this.data_ads_tt = [];
+                } else if (this.modal_session === 2) {
+                    this.data_products_2 = [];
+                    this.data_channel_2 = [];
+                    this.data_users_2 = [];
+                } else if (this.modal_session === 3) {
+                    this.data_shop_tt = [];
+                }
+            },
+            resetCheckValue() {
+                const self = this;
+
+                if (self.modal_session === 1) {
+                    this.data_ads_tt.forEach((item) => (item.check_value = false));
+                } else if (self.modal_session === 2) {
+                    if (self.modal_titles === "ชื่อสินค้า") {
+                        this.data_products_2.forEach((item) => (item.check_value = false));
+                    } else if (self.modal_titles === "ช่องทาง") {
+                        this.data_channel_2.forEach((item) => (item.check_value = false));
+                    } else {
+                        this.data_users_2.forEach((item) => (item.check_value = false));
+                    }
+                } else if (self.modal_session === 3) {
+                    this.data_shop_tt.forEach((item) => (item.check_value = false));
+                }
+            },
+            async saveFilter() {
+                const self = this;
+
+                function addOrRemoveItem(filterArray, item) {
+                    const index = filterArray.findIndex(
+                        (existingItem) => existingItem.name === item.name
+                    );
+                    if (item.check_value) {
+                        if (index === -1) {
+                            filterArray.push(item);
+                        }
+                    } else {
+                        if (index !== -1) {
+                            filterArray.splice(index, 1);
+                        }
+                    }
+                }
+
+                if (self.modal_session === 1) {
+                    self.data_ads_tt.forEach((item) =>
+                        addOrRemoveItem(self.filter_ads_tt, item)
+                    );
+                    console.log("🚀 ~ saveFilter ~ self.filter_ads_tt:", self.filter_ads_tt)
+                    self.data_ads_tt = [];
+                    $("#filter_model").modal("hide");
+
+                    await self.getAds();
+                } else if (self.modal_session === 2) {
+                    if (self.modal_titles === "ชื่อสินค้า") {
+                        self.data_products_2.forEach((item) =>
+                            addOrRemoveItem(self.filter_products_2, item)
+                        );
+                    } else if (self.modal_titles === "ช่องทาง") {
+                        self.data_channel_2.forEach((item) =>
+                            addOrRemoveItem(self.filter_channel_2, item)
+                        );
+                    } else {
+                        self.data_users_2.forEach((item) =>
+                            addOrRemoveItem(self.filter_users_2, item)
+                        );
+                    }
+                    self.data_products_2 = [];
+                    self.data_channel_2 = [];
+                    self.data_users_2 = [];
+                    $("#filter_model").modal("hide");
+
+                    await self.loadDataProductChannel();
+                } else if (self.modal_session === 3) {
+                    self.data_shop_tt.forEach((item) =>
+                        addOrRemoveItem(self.filter_shop_tt, item)
+                    );
+                    self.data_shop_tt = [];
+                    $("#filter_model").modal("hide");
+
+                    await self.getTiktok();
+                }
+            },
+            selectCheckValue(selectedIndex) {
+                this.data_ads_tt.forEach((item, index) => {
+                    item.check_value = index === selectedIndex;
+                });
             }
 
         },
@@ -299,7 +695,7 @@
             this.currentDate = this.formatDate(new Date());
             //    self.getPokemon()
             await self.init()
-            console.log("ok")
+            // console.log("ok")
         }
 
 
