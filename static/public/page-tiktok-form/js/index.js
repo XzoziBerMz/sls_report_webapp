@@ -89,26 +89,25 @@
                         dateFormat: "Y-m-d",
                         onChange: async function (selectedDates, dateStr, instance) {
 
+                            const selectedDate = selectedDates[0];
+                            const currentTime = new Date();
+
+                            const year = instance.formatDate(selectedDate, "Y");
+                            const month = instance.formatDate(selectedDate, "m");
+                            const day = instance.formatDate(selectedDate, "d");
+
+                            const hours = currentTime.getHours().toString().padStart(2, '0');
+                            const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                            const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+                            const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+                            self.valueDate_time = formattedDateTime
                             self.dataAds.forEach((item, index) => {
-                                const selectedDate = selectedDates[0];
-                                const currentTime = new Date();
-
-                                const year = instance.formatDate(selectedDate, "Y");
-                                const month = instance.formatDate(selectedDate, "m");
-                                const day = instance.formatDate(selectedDate, "d");
-
-                                const hours = currentTime.getHours().toString().padStart(2, '0');
-                                const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-                                const seconds = currentTime.getSeconds().toString().padStart(2, '0');
-
-                                const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
                                 item.p_date = formattedDateTime;
                                 item.date = formattedDateTime;
-                                self.valueDate_time = formattedDateTime
                             });
-
-                            console.log("🚀 ~ self.dataAds.forEach ~ self.valueDate_time:", self.valueDate_time)
+                            
                         }
                     });
                     $("#kt_td_picker_start_input").flatpickr({
@@ -197,7 +196,7 @@
             created() {
                 // Set start_at to one day before the current date
                 const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate()- 1);
+                currentDate.setDate(currentDate.getDate() - 1);
                 const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
                 this.start_date_time = formattedDate + ' 00:00:00';
                 this.end_date_time = formattedDate + ' 23:59:59';
@@ -332,7 +331,7 @@
                     if (!this.valueDate_time) {
                         error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
-                    } 
+                    }
                     if (!item.status || (item.status !== 'เปิดใช้งาน' && item.status !== 'ปิดใช้งาน')) {
                         error.status = "กรุณาเลือกสถานะ";
                         isValid = false;

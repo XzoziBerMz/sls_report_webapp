@@ -135,6 +135,64 @@
             totalAdsIncome() {
                 return this.data_ads_cost.reduce((sum, item) => sum + parseFloat(item.ads_total_income || 0), 0);
             },
+            TTTotal() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.total_cost || 0), 0);
+            },
+            TTBudget() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.budget || 0), 0);
+            },
+            TTTotal_Incom() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.total_shop_income || 0), 0);
+            },
+            TTCost_Per() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.cost_per_purchase || 0), 0);
+            },
+            LiveTotal() {
+                return this.data_tiktok_live.reduce((sum, item) => sum + parseFloat(item.total_cost || 0), 0);
+            },
+            LiveIncome() {
+                return this.data_tiktok_live.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
+            },
+            FbTotal() {
+                return this.data_facebook.reduce((sum, item) => sum + parseFloat(item.total_cost || 0), 0);
+            },
+            FbBudget() {
+                return this.data_facebook.reduce((sum, item) => sum + parseFloat(item.budget || 0), 0);
+            },
+            FbTotal_Incom() {
+                return this.data_facebook.reduce((sum, item) => sum + parseFloat(item.total_shop_income || 0), 0);
+            },
+            FbCost_Per() {
+                return this.data_facebook.reduce((sum, item) => sum + parseFloat(item.cost_per_purchase || 0), 0);
+            },
+            tiktokStartItem() {
+                return (this.currentPages - 1) * this.itemsPerPage + 1;
+            },
+            tiktokEndItem() {
+                const end = this.currentPages * this.itemsPerPage;
+                return end > this.totalItems ? this.totalItems : end;
+            },
+            costStartItem() {
+                return (this.currentCostPages - 1) * this.itemsCostPerPage + 1;
+            },
+            costEndItem() {
+                const end = this.currentCostPages * this.itemsCostPerPage;
+                return end > this.totalCostItems ? this.totalCostItems : end;
+            },
+            liveStartItem() {
+                return (this.currentTiktokPages - 1) * this.itemsTiktokPerPage + 1;
+            },
+            liveEndItem() {
+                const end = this.currentTiktokPages * this.itemsTiktokPerPage;
+                return end > this.totalTiktokItems ? this.totalTiktokItems : end;
+            },
+            fbStartItem() {
+                return (this.currentFacebookPages - 1) * this.itemsFacebookPerPage + 1;
+            },
+            fbEndItem() {
+                const end = this.currentFacebookPages * this.itemsFacebookPerPage;
+                return end > this.totalFacebookItems ? this.totalFacebookItems : end;
+            },
 
         },
         methods: {
@@ -153,21 +211,25 @@
                     $('#page_size_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsPerPage = selectedValue || 10
+                        self.currentPages = 1
                         await self.getAds();
                     })
                     $('#page_size_cost_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsCostPerPage = selectedValue || 10
+                        self.currentCostPages = 1
                         await self.getAdsCost();
                     })
                     $('#page_size_live_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsTiktokPerPage = selectedValue || 10
+                        self.currentTiktokPages = 1
                         await self.getTiktok();
                     })
                     $('#page_size_facebook_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsFacebookPerPage = selectedValue || 10
+                        self.currentFacebookPages = 1
                         await self.getFacebook();
                     })
 

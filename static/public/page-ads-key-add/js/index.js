@@ -123,25 +123,23 @@
               altFormat: "d/m/Y",
               dateFormat: "Y-m-d",
               onChange: async function (selectedDates, dateStr, instance) {
+                const selectedDate = selectedDates[0];
+                const currentTime = new Date();
 
+                const year = instance.formatDate(selectedDate, "Y");
+                const month = instance.formatDate(selectedDate, "m");
+                const day = instance.formatDate(selectedDate, "d");
+
+                const hours = currentTime.getHours().toString().padStart(2, '0');
+                const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+                const seconds = currentTime.getSeconds().toString().padStart(2, '0');
+
+                const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 self.data_channel.forEach((item, index) => {
-                  const selectedDate = selectedDates[0];
-                  const currentTime = new Date();
-
-                  const year = instance.formatDate(selectedDate, "Y");
-                  const month = instance.formatDate(selectedDate, "m");
-                  const day = instance.formatDate(selectedDate, "d");
-
-                  const hours = currentTime.getHours().toString().padStart(2, '0');
-                  const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-                  const seconds = currentTime.getSeconds().toString().padStart(2, '0');
-
-                  const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
                   item.timestamp = formattedDateTime;
                   item.date = formattedDateTime;
-                  self.valueDate_time = formattedDateTime
                 });
+                self.valueDate_time = formattedDateTime
 
                 console.log("🚀 ~ self.dataAds.forEach ~ self.valueDate_time:", self.valueDate_time)
               }

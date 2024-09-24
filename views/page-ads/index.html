@@ -225,17 +225,21 @@
                                                                     <span v-else v-text="'ปิดการใช้งาน'"
                                                                         class="text-danger"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-100px text-break">
+                                                                <td
+                                                                    class="align-middle min-w-100px text-center text-break">
                                                                     <span v-text="formatNumber(item.total_cost)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-100px text-break">
+                                                                <td
+                                                                    class="align-middle min-w-100px text-center text-break">
                                                                     <span v-text="formatNumber(item.budget)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-150px text-break">
+                                                                <td
+                                                                    class="align-middle min-w-150px text-center text-break">
                                                                     <span
                                                                         v-text="formatNumber(item.total_shop_income)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-200px text-break">
+                                                                <td
+                                                                    class="align-middle min-w-200px text-center text-break">
                                                                     <span
                                                                         v-text="formatNumber(item.cost_per_purchase)"></span>
                                                                 </td>
@@ -245,18 +249,50 @@
                                                             </tr>
                                                         </template>
                                                     </tbody>
+                                                    <tfoot class="border-top border-1 fs-6">
+                                                        <tr>
+                                                            <td class="align-middle text-break"></td>
+                                                            <td class="align-middle text-break"></td>
+                                                            <td class="align-middle text-break"></td>
+                                                            <td class="align-middle text-break"></td>
+                                                            <td class="align-middle text-break text-center"
+                                                                v-text="formatNumber(TTTotal)">
+                                                            </td>
+                                                            <td class="align-middle text-break text-center"
+                                                                v-text="formatNumber(TTBudget)"></td>
+                                                            <td class="align-middle text-break text-center"
+                                                                v-text="formatNumber(TTTotal_Incom)"></td>
+                                                            <td class="align-middle text-break text-center"
+                                                                v-text="formatNumber(TTCost_Per)"></td>
+                                                            <td class="align-middle text-break"></td>
+                                                            <td class="align-middle text-break"></td>
+                                                        </tr>
+                                                    </tfoot>
                                                 </table>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div>
-                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                        data-control="select2" id="page_size_select"
-                                                        name="page_size_select">
-                                                        <option value="10" selected>10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
+                                                <div class="d-flex">
+                                                    <div>
+                                                        <select class="form-select w-80px h-35px"
+                                                            data-hide-search="true" data-control="select2"
+                                                            id="page_size_select" name="page_size_select">
+                                                            <option value="10" selected>10</option>
+                                                            <option value="20">20</option>
+                                                            <option value="50">50</option>
+                                                            <option value="100">100</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="d-flex align-items-end ms-5">
+                                                        <span>
+                                                            กำลังแสดง
+                                                            <span v-text="tiktokStartItem"></span>
+                                                            ถึง
+                                                            <span v-text="tiktokEndItem"></span>
+                                                            จาก
+                                                            <span v-text="totalItems"></span> รายการ
+                                                            <span v-if="totalItems > 10"></span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <ul class="pagination">
                                                     <li :class="['page-item', { disabled: currentPages === 1 }]"
@@ -384,15 +420,28 @@
                                             </table>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <div>
-                                                <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                    data-control="select2" id="page_size_cost_select"
-                                                    name="page_size_cost_select">
-                                                    <option value="10" selected>10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        data-control="select2" id="page_size_cost_select"
+                                                        name="page_size_cost_select">
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-end ms-5">
+                                                    <span>
+                                                        กำลังแสดง
+                                                        <span v-text="costStartItem"></span>
+                                                        ถึง
+                                                        <span v-text="costEndItem"></span>
+                                                        จาก
+                                                        <span v-text="totalCostItems"></span> รายการ
+                                                        <span v-if="totalCostItems > 10"></span>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentCostPages === 1 }]"
@@ -470,10 +519,12 @@
                                                                 <span v-text="utilsConvDate(item.p_timestamp)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-200px text-break">
-                                                                <span v-text="formatNumber(item.total_cost)"></span>
+                                                                <span class="ps-10"
+                                                                    v-text="formatNumber(item.total_cost)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="formatNumber(item.total_income)"></span>
+                                                                <span class="ps-10"
+                                                                    v-text="formatNumber(item.total_income)"></span>
                                                             </td>
                                                             <td class="align-middle min-w-100px text-break">
                                                                 <span v-text="formatNumber(item.shop_name)"></span>
@@ -481,18 +532,44 @@
                                                         </tr>
                                                     </template>
                                                 </tbody>
+                                                <tfoot class="border-top border-1 fs-6">
+                                                    <tr>
+                                                        <td class="align-middle min-w-200px text-break"></td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span class="ps-10" v-text="formatNumber(LiveTotal)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span class="ps-10"
+                                                                v-text="formatNumber(LiveIncome)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-200px text-break"></td>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <div>
-                                                <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                    data-control="select2" id="page_size_live_select"
-                                                    name="page_size_live_select">
-                                                    <option value="10" selected>10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
+                                            <div class="d-flex">
+                                                <div>
+                                                    <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                        data-control="select2" id="page_size_live_select"
+                                                        name="page_size_live_select">
+                                                        <option value="10" selected>10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                                <div class="d-flex align-items-end ms-5">
+                                                    <span>
+                                                        กำลังแสดง
+                                                        <span v-text="liveStartItem"></span>
+                                                        ถึง
+                                                        <span v-text="liveEndItem"></span>
+                                                        จาก
+                                                        <span v-text="totalTiktokItems"></span> รายการ
+                                                        <span v-if="totalTiktokItems > 10"></span>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <ul class="pagination">
                                                 <li :class="['page-item', { disabled: currentTiktokPages === 1 }]"
@@ -661,16 +738,16 @@
                                                             <span v-else v-text="'ปิดการใช้งาน'"
                                                                 class="text-danger"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle min-w-100px text-break text-center">
                                                             <span v-text="formatNumber(item.total_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle min-w-100px text-break text-center">
                                                             <span v-text="formatNumber(item.budget)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-150px text-break">
+                                                        <td class="align-middle min-w-150px text-break text-center">
                                                             <span v-text="formatNumber(item.total_shop_income)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break">
+                                                        <td class="align-middle min-w-200px text-break text-center">
                                                             <span v-text="formatNumber(item.cost_per_purchase)"></span>
                                                         </td>
                                                         <td class="align-middle min-w-100px text-break">
@@ -682,18 +759,46 @@
                                                     </tr>
                                                 </template>
                                             </tbody>
+                                            <tfoot class="border-top border-1 fs-6">
+                                                <tr>
+                                                    <td class="align-middle text-break"></td>
+                                                    <td class="align-middle text-break"></td>
+                                                    <td class="align-middle text-break"></td>
+                                                    <td class="align-middle text-break"></td>
+                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbTotal)">
+                                                    </td>
+                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbBudget)"></td>
+                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbTotal_Incom)"></td>
+                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbCost_Per)"></td>
+                                                    <td class="align-middle text-break"></td>
+                                                    <td class="align-middle text-break"></td>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <div>
-                                            <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                data-control="select2" id="page_size_facebook_select"
-                                                name="page_size_facebook_select">
-                                                <option value="10" selected>10</option>
-                                                <option value="20">20</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>
+                                        <div class="d-flex">
+                                            <div>
+                                                <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                    data-control="select2" id="page_size_facebook_select"
+                                                    name="page_size_facebook_select">
+                                                    <option value="10" selected>10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                            <div class="d-flex align-items-end ms-5">
+                                                <span>
+                                                    กำลังแสดง
+                                                    <span v-text="fbStartItem"></span>
+                                                    ถึง
+                                                    <span v-text="fbEndItem"></span>
+                                                    จาก
+                                                    <span v-text="totalFacebookItems"></span> รายการ
+                                                    <span v-if="totalFacebookItems > 10"></span>
+                                                </span>
+                                            </div>
                                         </div>
                                         <ul class="pagination">
                                             <li :class="['page-item', { disabled: currentFacebookPages === 1 }]"
@@ -742,7 +847,8 @@
                                             <div class="align-middle pe-3">
                                                 <div class="form-check form-check-solid">
                                                     <input class="form-check-input" type="radio"
-                                                        :checked="item.check_value" @change="selectCheckValue(index, 'tt')"
+                                                        :checked="item.check_value"
+                                                        @change="selectCheckValue(index, 'tt')"
                                                         :id="'check_product' + index" name="check_product" />
                                                     <label class="form-check-label text-dark" for="check_product"
                                                         v-text="item.name"></label>
@@ -780,9 +886,12 @@
                                         <template v-for="(item, index) in data_ads_fb">
                                             <div class="align-middle pe-3">
                                                 <div class="form-check form-check-solid">
-                                                    <input class="form-check-input" type="radio" :checked="item.check_value" @change="selectCheckValue(index, 'fb')"
+                                                    <input class="form-check-input" type="radio"
+                                                        :checked="item.check_value"
+                                                        @change="selectCheckValue(index, 'fb')"
                                                         :id="'check_product' + index" name="check_product" />
-                                                    <label class="form-check-label text-dark" for="check_product" v-text="item.name"></label>
+                                                    <label class="form-check-label text-dark" for="check_product"
+                                                        v-text="item.name"></label>
                                                 </div>
                                             </div>
                                         </template>
