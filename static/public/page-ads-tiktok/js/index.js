@@ -66,7 +66,19 @@
 
                 // Generate an array of pages to be displayed
                 return Array.from({ length: (endPage - startPage + 1) }, (_, i) => startPage + i);
-            }
+            },
+            TotalAll() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.total_cost || 0), 0);
+            },
+            TotalBudget() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.budget || 0), 0);
+            },
+            TotalIncome() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.total_shop_income || 0), 0);
+            },
+            CostPer() {
+                return this.data_ads.reduce((sum, item) => sum + parseFloat(item.cost_per_purchase || 0), 0);
+            },
         },
         methods: {
             ...window.webUtils.method || {},

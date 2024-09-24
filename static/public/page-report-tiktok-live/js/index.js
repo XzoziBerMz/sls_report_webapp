@@ -70,67 +70,18 @@
 
                 // Generate an array of pages to be displayed
                 return Array.from({ length: (endPage - startPage + 1) }, (_, i) => startPage + i);
-            }
+            },
+            TotalAll() {
+                return this.dataOrderManual.reduce((sum, item) => sum + parseFloat(item.total_cost || 0), 0);
+            },
+            TotalIncome() {
+                return this.dataOrderManual.reduce((sum, item) => sum + parseFloat(item.total_income || 0), 0);
+            },
         },
         methods: {
             ...window.webUtils.method || {},
             async init() {
                 let self = this
-
-                // self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
-                //     static: true,
-                //     enableTime: false,
-                //     disableMobile: "true",
-                //     dateFormat: "Y-m-d",
-                //     altFormat: "d/m/Y",
-                //     altInput: true,
-                //     maxDate: 'today',
-                //     onChange: async function (selectedDates, dateStr, instance) {
-                //         if (selectedDates.length) {
-                //             const selectedDate = selectedDates[0];
-
-                //             // Format the date to YYYY-MM-DD in local time zone
-                //             const year = selectedDate.getFullYear();
-                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                //             const day = String(selectedDate.getDate()).padStart(2, '0');
-
-                //             self.startDate = `${year}-${month}-${day}`;
-                //             console.log("🚀 ~ self.startDate:", self.startDate);
-                //             self.startDate_status = true;
-
-                //             // Set minDate for the end date picker to prevent selecting earlier dates
-                //             self.flatpickr_dp_end_date.set("minDate", self.startDate);
-
-                //             await self.loadData();
-                //         }
-                //     },
-                // });
-
-                // self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
-                //     static: true,
-                //     enableTime: false,
-                //     disableMobile: "true",
-                //     dateFormat: "Y-m-d",
-                //     altFormat: "d/m/Y",
-                //     altInput: true,
-                //     maxDate: 'today',
-                //     onChange: async function (selectedDates, dateStr, instance) {
-                //         if (selectedDates.length) {
-                //             const selectedDate = selectedDates[0];
-
-                //             // Format the date to YYYY-MM-DD in local time zone
-                //             const year = selectedDate.getFullYear();
-                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                //             const day = String(selectedDate.getDate()).padStart(2, '0');
-
-                //             self.endDate = `${year}-${month}-${day}`;
-                //             console.log("🚀 ~ self.endDate:", self.endDate);
-                //             self.endDate_status = true;
-
-                //             await self.loadData();
-                //         }
-                //     },
-                // });
 
                 const fromDatePicker = $("#kt_td_picker_start_input").flatpickr({
                     dateFormat: "d/m/Y",
@@ -169,9 +120,12 @@
                         await self.loadData();
                     }
                 });
-
-
-
+            },
+            formatNumber(number) {
+                if (typeof number === "number") {
+                    return number.toLocaleString(); // Format number with commas
+                }
+                return number; // Return as is if not a number
             },
             async DefaultData() {
                 const self = this;
