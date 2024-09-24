@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
     {{- template "resource-css" -}}
-    <link rel="stylesheet" href="/page-report-tiktok-live/css/index.css">
+    <link rel="stylesheet" href="/page-ads-tiktok/css/index.css">
     <!--end::custom css for this page-->
     <script>
         const basepath = "{{.Basepath}}";
@@ -39,9 +39,9 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
-                                <h1 class="fs-1 fw-bolder">รายงาน TikTok Live</h1>
+                                <h1 class="fs-1 fw-bolder">รายงาน Ads TikTok</h1>
                                 <div class="card p-10 mt-3 w-100">
-                                    <div class="d-flex justify-content-end gap-5 align-items-center">
+                                    <div class="d-flex justify-content-end gap-5">
 
                                         <div class="d-flex gap-5">
                                             <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
@@ -89,7 +89,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="table-responsive border rounded-4 mt-3">
+                                    <!-- <div class="table-responsive border rounded-4 mt-3">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <tr class="fw-bold fs-4">
                                                 <th class="min-w-100px align-middle">
@@ -161,12 +161,158 @@
 
                                             </tbody>
                                         </table>
+                                    </div> -->
+
+                                    <div class="table-responsive border rounded-4 mt-3">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fw-bold fs-5">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div @click="sortTable('date')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-calendar3"></i>
+                                                            <span>วันที่</span>
+                                                            <i class="bi-chevron-down" :class="getSortIcon('date')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div @click="sortTable('name')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-type flex-shrink-1"></i>
+                                                            <div class="row w-100 ms-2">
+                                                                <span>ชื่อ</span>
+                                                                <span>ADS</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down" :class="getSortIcon('name')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div @click="sortTable('product')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-type"></i>
+                                                            <div class="row">
+                                                                <span>สินค้า</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('product')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex gap-3 align-items-center">
+                                                            <div @click="sortTable('status')"
+                                                                class="d-flex w-100 justify-content-around align-items-center pointer">
+                                                                <i class="bi-toggles"></i>
+                                                                <div class="row">
+                                                                    <span>สถานะ</span>
+                                                                </div>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('status')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('สถานะ')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div @click="sortTable('total_cost')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row ms-2">
+                                                                <span>ค่าใช้จ่ายทั้งหมด</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('total_cost')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div @click="sortTable('budget')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>งบประมาณ</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('budget')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div @click="sortTable('total_shop_income')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>รายได้รวม(ร้านค้า)</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('total_shop_income')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div @click="sortTable('cost_per_purchase')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-cash-stack"></i>
+                                                            <div class="row">
+                                                                <span>ต้นทุนต่อการซื้อ(ร้านค้า)</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('cost_per_purchase')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div @click="sortTable('note')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>โน๊ต</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down" :class="getSortIcon('note')"></i>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <template v-for="item in data_ads">
+                                                    <tr>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span v-text="utilsConvDate(item.p_date)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-200px text-break">
+                                                            <span v-text="item.name"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span v-text="item.product"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <span
+                                                                v-if="item.status === 'เปิดใช้งาน' || item.status === 'active'"
+                                                                v-text="'เปิดใช้งาน'" class="text-success"></span>
+                                                            <span v-else v-text="'ปิดการใช้งาน'"
+                                                                class="text-danger"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span v-text="formatNumber(item.total_cost)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span v-text="formatNumber(item.budget)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-150px text-break">
+                                                            <span v-text="formatNumber(item.total_shop_income)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-200px text-break">
+                                                            <span v-text="formatNumber(item.cost_per_purchase)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-150px text-break">
+                                                            <span v-text="item.note"></span>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <select class="form-select w-80px h-35px" v-model="perPage"
-                                                @change="loadData">
-                                                <option value="10">10</option>
+                                            <select class="form-select w-80px h-35px" id="page_size_select"
+                                                data-control="select2" data-hide-search="true" name="page_size_select">
+                                                <option value="10" selected>10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
@@ -215,47 +361,15 @@
 
                                 <div class="modal-body">
                                     <div class="d-flex gap-5 flex-wrap">
-
-                                        <template v-if="modal_titles === 'ชื่อสินค้า'"
-                                            v-for="(item, index) in data_products_2">
-                                            <div class="align-middle pe-3">
-                                                <div class="form-check form-check-solid">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        :checked="item.check_value" v-model="item.check_value"
-                                                        :id="'check_product' + index" :name="'check_product' + index" />
-                                                    <label class="form-check-label text-dark"
-                                                        :for="'check_product' + index" v-text="item.name"></label>
-                                                </div>
+                                        <template v-for="(item, index) in data_products_2">
+                                        <div class="align-middle pe-3">
+                                            <div class="form-check form-check-solid">
+                                                <input class="form-check-input" type="radio" :checked="item.check_value" @change="selectCheckValue(index)"
+                                                    :id="'check_product' + index" name="check_product" />
+                                                <label class="form-check-label text-dark" for="check_product" v-text="item.name"></label>
                                             </div>
+                                        </div>
                                         </template>
-
-                                        <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
-                                        <template v-else-if="modal_titles === 'ช่องทาง'"
-                                            v-for="(item, index) in data_channel_2">
-                                            <div class="align-middle pe-3">
-                                                <div class="form-check form-check-solid">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        :checked="item.check_value" v-model="item.check_value"
-                                                        :id="'check_channel' + index" :name="'check_channel' + index" />
-                                                    <label class="form-check-label text-dark"
-                                                        :for="'check_channel' + index" v-text="item.name"></label>
-                                                </div>
-                                            </div>
-                                        </template>
-
-                                        <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
-                                        <template v-else v-for="(item, index) in data_users_2">
-                                            <div class="align-middle pe-3">
-                                                <div class="form-check form-check-solid">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        :checked="item.check_value" v-model="item.check_value"
-                                                        :id="'check_users' + index" :name="'check_users' + index" />
-                                                    <label class="form-check-label text-dark"
-                                                        :for="'check_users' + index" v-text="item.name"></label>
-                                                </div>
-                                            </div>
-                                        </template>
-
                                     </div>
                                 </div>
 
@@ -275,14 +389,13 @@
         </div>
 
     </div>
-    </div>
 </body>
 <script>
     window.csrfToken = {{.csrf_token }};
     window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
-<script src="/page-report-tiktok-live/js/services.js" type="module"> </script>
-<script src="/page-report-tiktok-live/js/index.js" type="module"> </script>
+<script src="/page-ads-tiktok/js/services.js" type="module"> </script>
+<script src="/page-ads-tiktok/js/index.js" type="module"> </script>
 
 </html>

@@ -15,7 +15,7 @@
 			id="#kt_aside_menu" data-kt-menu="true">
 
 			<div class="menu-item menu-sub-indention menu-accordion"
-				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'report-tiktoklive' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'report-tiktoklive' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
+				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'report-tiktoklive' || currentPage === 'ads_tiktok' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'ads_tiktok' || currentPage === 'report-tiktoklive' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
 				data-kt-menu-trigger="click">
 				<a href="#" class="menu-link py-3">
 					<span class="menu-icon">
@@ -26,7 +26,7 @@
 					<span class="menu-arrow"></span>
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
-					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'details-add' || currentPage === 'report-tiktoklive' || currentPage === 'video' || currentPage === 'key-order'}">
+					:class="{show:currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'ads_tiktok' || currentPage === 'details-add' || currentPage === 'report-tiktoklive' || currentPage === 'video' || currentPage === 'key-order'}">
 					<div class="menu-item" :class="{active:currentPage === 'dashboard'}">
 						<a href="/dashboard" class="menu-link py-3">
 							<span class="menu-bullet">
@@ -41,6 +41,14 @@
 								<i class="bi-badge-ad"></i>
 							</span>
 							<span class="menu-title">รายงานภาพรวม ADS</span>
+						</a>
+					</div>
+					<div class="menu-item" :class="{active:currentPage === 'ads_tiktok'}">
+						<a href="/ads-tiktok" class="menu-link py-3">
+							<span class="menu-bullet">
+								<i class="bi-badge-ad"></i>
+							</span>
+							<span class="menu-title">รายงาน Ads tiktok</span>
 						</a>
 					</div>
 					<div class="menu-item" :class="{active:currentPage === 'report-tiktoklive'}">

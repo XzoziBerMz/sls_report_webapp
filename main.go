@@ -64,6 +64,7 @@ func main() {
 	app.Get("/negative-details", render.NegativeDetailsPage)
 	app.Get("/key-ads", render.AdsKeyAddPage)
 	app.Get("/details-add", render.DetailsAddPage)
+	app.Get("/ads-tiktok", render.AdsTiktokPage)
 	app.Get("/tiktok-live", render.TiktokLivePage)
 	app.Get("/tiktok-form", render.TiktokFormPage)
 	app.Get("/fb-form", render.FacebookFormPage)
