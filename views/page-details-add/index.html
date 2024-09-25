@@ -65,7 +65,7 @@
                     </div>
 
                     <div>
-                      <select class="form-select w-250px" data-control="select2" data-placeholder="เลือกร้าน"
+                      <select class="form-select h-40px w-250px" data-control="select2" data-placeholder="เลือกร้าน"
                         id="select_search" multiple="multiple"></select>
                     </div>
                   </div>
@@ -75,7 +75,7 @@
                       <div class="table-responsive border rounded-4">
                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                           <thead>
-                            <tr class="fs-6">
+                            <tr class="fw-bold">
                               <th class="align-middle min-w-100px text-break"></th>
                               <th class="align-middle min-w-200px text-break"></th>
                               <th class="align-middle min-w-100px text-break fw-medium" v-text="formatNumber(AdsFee)">
@@ -87,7 +87,7 @@
                               <th class="align-middle min-w-100px text-break fw-medium"
                                 v-text="formatPercentage(AdsFee, totalAdsIncome) || '0.00%'"></th>
                             </tr>
-                            <tr class="fw-bold fs-4">
+                            <tr class="fw-bold fs-5">
                               <th class="min-w-100px">
                                 <div @click="sortTable('p_date')"
                                   class="d-flex justify-content-around align-items-center">
