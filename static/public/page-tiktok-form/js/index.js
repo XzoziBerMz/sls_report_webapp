@@ -196,7 +196,7 @@
             created() {
                 // Set start_at to one day before the current date
                 const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() - 1);
+                currentDate.setDate(currentDate.getDate() - 2);
                 const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
                 this.start_date_time = formattedDate + ' 00:00:00';
                 this.end_date_time = formattedDate + ' 23:59:59';

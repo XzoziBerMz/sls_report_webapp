@@ -17,7 +17,7 @@
 			<div class="menu-item menu-sub-indention menu-accordion"
 				:class="{ hover: currentPage === 'ads' || currentPage === 'dashboard' || currentPage === 'report-tiktoklive' || currentPage === 'ads_tiktok' || currentPage === 'details-add' || currentPage === 'video' || currentPage === 'key-order', show: currentPage === 'ads' || currentPage === 'details-add' || currentPage === 'ads_tiktok' || currentPage === 'report-tiktoklive' || currentPage === 'dashboard' || currentPage === 'video' || currentPage === 'key-order' }"
 				data-kt-menu-trigger="click">
-				<a href="#" class="menu-link py-3">
+				<a href="#" class="menu-link fs-4 fw-bold py-3">
 					<span class="menu-icon">
 						<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span
 								class="path2"></span><span class="path3"></span><span class="path4"></span></i>
@@ -67,7 +67,7 @@
 							<span class="menu-title">รายงาน Ads detail</span>
 						</a>
 					</div>
-			
+
 					<div class="menu-item" :class="{active:currentPage === 'video'}">
 						<a href="/video" class="menu-link py-3">
 							<span class="menu-bullet">
@@ -89,7 +89,7 @@
 			<div class="menu-item menu-sub-indention menu-accordion"
 				:class="{ hover: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' }"
 				data-kt-menu-trigger="click">
-				<a href="#" class="menu-link py-3">
+				<a href="#" class="menu-link fs-4 fw-bold py-3">
 					<span class="menu-icon">
 						<i class="bi-file-earmark-text fs-4"></i>
 					</span>
@@ -98,86 +98,119 @@
 				</a>
 				<div class="menu-sub menu-sub-accordion pt-3"
 					:class="{show: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
-					<div class="menu-item" :class="{active:currentPage === 'fb_form'}">
-						<a href="/fb-form" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i>
+
+					<div class="menu-item menu-sub-indention menu-accordion" data-kt-menu-trigger="click"
+						:class="{ hover: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live', show: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live'}">
+						<a href="#" class="menu-link fs-6 fw-bold py-3">
+							<span class="menu-icon">
+								<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span
+										class="path2"></span><span class="path3"></span><span class="path4"></span></i>
 							</span>
-							<span class="menu-title">Facebook Ads</span>
+							<span class="menu-title">ทีม ADS</span>
+							<span class="menu-arrow"></span>
 						</a>
+						<div class="menu-sub menu-sub-accordion pt-3">
+							<!--begin::Menu item-->
+							<div class="menu-item" :class="{active:currentPage === 'fb_form'}">
+								<a href="/fb-form" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-cash-coin"></i>
+									</span>
+									<span class="menu-title">Facebook Ads</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'key-ads'}">
+								<a href="/key-ads" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-cash-coin"></i>
+									</span>
+									<span class="menu-title">ค่าโฆษณา</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'tiktok_form'}">
+								<a href="/tiktok-form" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-cash-coin"></i>
+									</span>
+									<span class="menu-title">TikTok Ads</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'tiktok_live'}">
+								<a href="/tiktok-live" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-cash-coin"></i>
+									</span>
+									<span class="menu-title">TikTok Live</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'campaign_form'}">
+								<a href="/campaign-form" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-megaphone"></i>
+									</span>
+									<span class="menu-title">แคมเปญ</span>
+								</a>
+							</div>
+
+						</div>
 					</div>
-					<div class="menu-item" :class="{active:currentPage === 'key-ads'}">
-						<a href="/key-ads" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i>
+					<div class="menu-item menu-sub-indention menu-accordion" data-kt-menu-trigger="click"
+						:class="{ hover: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
+						<a href="#" class="menu-link fs-6 fw-bold py-3">
+							<span class="menu-icon">
+								<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span
+										class="path2"></span><span class="path3"></span><span class="path4"></span></i>
 							</span>
-							<span class="menu-title">ค่าโฆษณา</span>
+							<span class="menu-title">ทีม Admin</span>
+							<span class="menu-arrow"></span>
 						</a>
+						<div class="menu-sub menu-sub-accordion pt-3">
+							<!--begin::Menu item-->
+							<div class="menu-item" :class="{active:currentPage === 'chat'}">
+								<a href="/chat" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-chat-dots"></i>
+									</span>
+									<span class="menu-title">แชท</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'key-clip'}">
+								<a href="/key-clip" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-play-btn"></i>
+									</span>
+									<span class="menu-title">คลิปวีดิโอ</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'product-order'}">
+								<a href="/product-order" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-basket"></i>
+									</span>
+									<span class="menu-title">ทำรายการ</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'negativ-review'}">
+								<a href="/negativ-review" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-star"></i>
+									</span>
+									<span class="menu-title">รีวิว เชิงลบ</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'negative-details'}">
+								<a href="/negative-details" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-list-stars"></i>
+									</span>
+									<span class="menu-title">รายละเอียด เชิงลบ</span>
+								</a>
+							</div>
+						</div>
 					</div>
-					<div class="menu-item" :class="{active:currentPage === 'tiktok_form'}">
-						<a href="/tiktok-form" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i>
-							</span>
-							<span class="menu-title">TikTok Ads</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'tiktok_live'}">
-						<a href="/tiktok-live" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-cash-coin"></i>
-							</span>
-							<span class="menu-title">TikTok Live</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'campaign_form'}">
-						<a href="/campaign-form" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-megaphone"></i>
-							</span>
-							<span class="menu-title">แคมเปญ</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'chat'}">
-						<a href="/chat" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-chat-dots"></i>
-							</span>
-							<span class="menu-title">แชท</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'key-clip'}">
-						<a href="/key-clip" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-play-btn"></i>
-							</span>
-							<span class="menu-title">คลิปวีดิโอ</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'product-order'}">
-						<a href="/product-order" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-basket"></i>
-							</span>
-							<span class="menu-title">ทำรายการ</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'negativ-review'}">
-						<a href="/negativ-review" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-star"></i>
-							</span>
-							<span class="menu-title">รีวิว เชิงลบ</span>
-						</a>
-					</div>
-					<div class="menu-item" :class="{active:currentPage === 'negative-details'}">
-						<a href="/negative-details" class="menu-link py-3">
-							<span class="menu-bullet">
-								<i class="bi-list-stars"></i>
-							</span>
-							<span class="menu-title">รายละเอียด เชิงลบ</span>
-						</a>
-					</div>
+
+
+
 				</div>
 			</div>
 		</div>

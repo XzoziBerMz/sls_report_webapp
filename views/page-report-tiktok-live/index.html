@@ -77,16 +77,22 @@
                                                             class="path1"></span><span class="path2"></span></i>
                                                 </span>
                                             </div>
+
+                                        </div>
+                                        <div>
+                                            <select class="form-select h-40px min-w-250px" data-control="select2"
+                                                data-placeholder="เลือกร้าน" id="select_search"
+                                                multiple="multiple"></select>
                                         </div>
 
-                                        <div class="position-relative">
+                                        <!-- <div class="position-relative">
                                             <div class="input-container">
                                                 <input type="text" class="form-control form-control-5 form-control-lg"
                                                     v-model="serach_value" @blur="handleBlur()"
                                                     @keyup.enter="handleSearch" placeholder="ค้นหา.." />
                                                 <i class="bi bi-search" @click="handleSearch"></i>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                     <div class="table-responsive border rounded-4 mt-3">
@@ -156,9 +162,11 @@
                                                     <tr>
                                                         <td class="text-start align-middle"
                                                             v-text="utilsConvDate(item.p_timestamp)"></td>
-                                                        <td class="text-start align-middle" v-text="formatNumber(item.total_cost)">
+                                                        <td class="text-start align-middle"
+                                                            v-text="formatNumber(item.total_cost)">
                                                         </td>
-                                                        <td class="text-start align-middle" v-text="formatNumber(item.total_income)">
+                                                        <td class="text-start align-middle"
+                                                            v-text="formatNumber(item.total_income)">
                                                         </td>
                                                         <td class="text-start align-middle" v-text="item.shop_name">
                                                         </td>

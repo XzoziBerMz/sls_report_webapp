@@ -88,7 +88,9 @@
             $("#select_search").on("change.custom", async function () {
               const values = $(this).select2("data") || [];
               const name = values?.[0]?.text || "";
-              self.serach_value = name;
+              const selectedNames = values.map((item) => item.text);
+              console.log("🚀 ~ selectedNames:", selectedNames)
+              self.serach_value = selectedNames;
               await self.loadDataAdd();
             });
           }
@@ -230,7 +232,8 @@
           let data = {
             start_at: self.startDate,
             end_at: self.endDate,
-            search: self.serach_value,
+            search: "",
+            shops: self.serach_value || [],
             page: self.currentPages,
             per_page: parseInt(self.itemsPerPage || 10),
             order: self.column_order_by,

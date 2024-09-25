@@ -28,7 +28,7 @@
                 order_no: "",
                 chanel: "",
                 note: "",
-                serach_value: '',
+                serach_value: [],
                 startFormDate: null,
                 endFormDate: null,
                 modal_titles: "",
@@ -41,6 +41,7 @@
                 filter_products_2: [],
                 filter_channel_2: [],
                 filter_users_2: [],
+                data_shop_select: []
             }
         },
 
@@ -120,6 +121,36 @@
                         await self.loadData();
                     }
                 });
+
+                try {
+                    // let data = {};
+                    const req = await services.getChannelAll(self.token_header);
+                    if (req.data.code === 200) {
+                        self.data_shop_select = req.data.data || [];
+                        $("#select_search")
+                            .select2({
+                                allowClear: true,
+                                width: "100%",
+                                data: self.data_shop_select.map((item) => ({
+                                    id: item,
+                                    text: item,
+                                })),
+                            })
+                            .val(null)
+                            .trigger("change");
+
+                        $("#select_search").on("change.custom", async function () {
+                            const values = $(this).select2("data") || [];
+                            const name = values?.[0]?.text || "";
+                            const selectedNames = values.map((item) => item.text);
+                            console.log("🚀 ~ selectedNames:", selectedNames)
+                            self.serach_value = selectedNames;
+                            await self.loadData();
+                        });
+                    }
+                } catch (error) {
+                    console.log("🚀 ~ DefaultData ~ error:", error);
+                }
             },
             formatNumber(number) {
                 if (typeof number === "number") {
@@ -176,9 +207,10 @@
                         shops: channelNames || [],
                         "start_at":  self.startFormDate,
                         "end_at":self.endFormDate,
-                        "search": self.serach_value,
+                        "search": "",
+                        "shops": self.serach_value,
                         "page": self.currentPages,
-                        per_page: +self.perPage,
+                        "per_page": self.perPage,
                         "order": self.column_order_by,
                         "order_by": self.order_sort
                     };

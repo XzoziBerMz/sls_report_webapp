@@ -100,12 +100,12 @@
                                                     <thead>
                                                         <tr class="fw-bold fs-5">
                                                             <th class="min-w-100px align-middle">
-                                                                <div @click="sortTable('date')"
+                                                                <div @click="sortTable('p_date')"
                                                                     class="d-flex justify-content-around align-items-center pointer">
                                                                     <i class="bi-calendar3"></i>
                                                                     <span>วันที่</span>
                                                                     <i class="bi-chevron-down"
-                                                                        :class="getSortIcon('date')"></i>
+                                                                        :class="getSortIcon('p_date')"></i>
                                                                 </div>
                                                             </th>
                                                             <th class="min-w-200px align-middle">
@@ -207,17 +207,16 @@
                                                     <tbody class="fs-6">
                                                         <template v-for="item in data_ads">
                                                             <tr>
-                                                                <td class="align-middle min-w-100px text-break">
+                                                                <td class="align-middle  text-break">
                                                                     <span v-text="utilsConvDate(item.p_date)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-200px text-break">
+                                                                <td class="align-middle  text-break">
                                                                     <span v-text="item.name"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-100px text-break">
+                                                                <td class="align-middle  text-break">
                                                                     <span v-text="item.product"></span>
                                                                 </td>
-                                                                <td
-                                                                    class="align-middle min-w-100px text-break text-center">
+                                                                <td class="align-middle  text-break text-center">
                                                                     <span
                                                                         v-if="item.status === 'เปิดใช้งาน' || item.status === 'active'"
                                                                         v-text="'เปิดใช้งาน'"
@@ -225,31 +224,27 @@
                                                                     <span v-else v-text="'ปิดการใช้งาน'"
                                                                         class="text-danger"></span>
                                                                 </td>
-                                                                <td
-                                                                    class="align-middle min-w-100px text-center text-break">
+                                                                <td class="align-middle  text-center text-break">
                                                                     <span v-text="formatNumber(item.total_cost)"></span>
                                                                 </td>
-                                                                <td
-                                                                    class="align-middle min-w-100px text-center text-break">
+                                                                <td class="align-middle  text-center text-break">
                                                                     <span v-text="formatNumber(item.budget)"></span>
                                                                 </td>
-                                                                <td
-                                                                    class="align-middle min-w-150px text-center text-break">
+                                                                <td class="align-middle  text-center text-break">
                                                                     <span
                                                                         v-text="formatNumber(item.total_shop_income)"></span>
                                                                 </td>
-                                                                <td
-                                                                    class="align-middle min-w-200px text-center text-break">
+                                                                <td class="align-middle  text-center text-break">
                                                                     <span
                                                                         v-text="formatNumber(item.cost_per_purchase)"></span>
                                                                 </td>
-                                                                <td class="align-middle min-w-150px text-break">
+                                                                <td class="align-middle  text-break">
                                                                     <span v-text="item.note"></span>
                                                                 </td>
                                                             </tr>
                                                         </template>
                                                     </tbody>
-                                                    <tfoot class="border-top border-1 fs-6">
+                                                    <tfoot class="border-top border-1 fs-6 fw-bold">
                                                         <tr>
                                                             <td class="align-middle text-break"></td>
                                                             <td class="align-middle text-break"></td>
@@ -263,7 +258,7 @@
                                                             <td class="align-middle text-break text-center"
                                                                 v-text="formatNumber(TTTotal_Incom)"></td>
                                                             <td class="align-middle text-break text-center"
-                                                                v-text="formatNumber(TTCost_Per)"></td>
+                                                                v-text="formatNumber(TTTotal/TTCost_Per)"></td>
                                                             <td class="align-middle text-break"></td>
                                                             <td class="align-middle text-break"></td>
                                                         </tr>
@@ -402,7 +397,7 @@
                                                         </tr>
                                                     </template>
                                                 </tbody>
-                                                <tfoot class="border-top border-1 fs-6">
+                                                <tfoot class="border-top border-1 fs-6 fw-bold">
                                                     <tr>
                                                         <td class="align-middle min-w-100px text-break"></td>
                                                         <td class="align-middle min-w-200px text-break"></td>
@@ -515,34 +510,34 @@
                                                 <tbody class="fs-6">
                                                     <template v-for="item in data_tiktok_live">
                                                         <tr>
-                                                            <td class="align-middle min-w-100px text-break">
+                                                            <td class="align-middle text-break">
                                                                 <span v-text="utilsConvDate(item.p_timestamp)"></span>
                                                             </td>
-                                                            <td class="align-middle min-w-200px text-break">
+                                                            <td class="align-middle text-break">
                                                                 <span class="ps-10"
                                                                     v-text="formatNumber(item.total_cost)"></span>
                                                             </td>
-                                                            <td class="align-middle min-w-100px text-break">
+                                                            <td class="align-middle text-break">
                                                                 <span class="ps-10"
                                                                     v-text="formatNumber(item.total_income)"></span>
                                                             </td>
-                                                            <td class="align-middle min-w-100px text-break">
-                                                                <span v-text="formatNumber(item.shop_name)"></span>
+                                                            <td class="align-middle text-break">
+                                                                <span v-text="item.shop_name"></span>
                                                             </td>
                                                         </tr>
                                                     </template>
                                                 </tbody>
-                                                <tfoot class="border-top border-1 fs-6">
+                                                <tfoot class="border-top border-1 fs-6 fw-bold">
                                                     <tr>
-                                                        <td class="align-middle min-w-200px text-break"></td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break"></td>
+                                                        <td class="align-middle text-break">
                                                             <span class="ps-10" v-text="formatNumber(LiveTotal)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span class="ps-10"
                                                                 v-text="formatNumber(LiveIncome)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break"></td>
+                                                        <td class="align-middle text-break"></td>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -722,54 +717,58 @@
                                             <tbody class="fs-6">
                                                 <template v-for="item in data_facebook">
                                                     <tr>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="utilsConvDate(item.p_date)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="item.name"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="item.product"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span
                                                                 v-if="item.status === 'เปิดใช้งาน' || item.status === 'active'"
                                                                 v-text="'เปิดใช้งาน'" class="text-success"></span>
                                                             <span v-else v-text="'ปิดการใช้งาน'"
                                                                 class="text-danger"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.total_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.budget)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-150px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.total_shop_income)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.cost_per_purchase)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="item.target_group"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="item.note"></span>
                                                         </td>
                                                     </tr>
                                                 </template>
                                             </tbody>
-                                            <tfoot class="border-top border-1 fs-6">
+                                            <tfoot class="border-top border-1 fs-6 fw-bold">
                                                 <tr>
                                                     <td class="align-middle text-break"></td>
                                                     <td class="align-middle text-break"></td>
                                                     <td class="align-middle text-break"></td>
                                                     <td class="align-middle text-break"></td>
-                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbTotal)">
+                                                    <td class="align-middle text-break text-center"
+                                                        v-text="formatNumber(FbTotal)">
                                                     </td>
-                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbBudget)"></td>
-                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbTotal_Incom)"></td>
-                                                    <td class="align-middle text-break text-center" v-text="formatNumber(FbCost_Per)"></td>
+                                                    <td class="align-middle text-break text-center"
+                                                        v-text="formatNumber(FbBudget)"></td>
+                                                    <td class="align-middle text-break text-center"
+                                                        v-text="formatNumber(FbTotal_Incom)"></td>
+                                                    <td class="align-middle text-break text-center"
+                                                        v-text="formatNumber(FbCost_Per)"></td>
                                                     <td class="align-middle text-break"></td>
                                                     <td class="align-middle text-break"></td>
                                                 </tr>
