@@ -48,6 +48,42 @@ func CampaignFormPage(c *fiber.Ctx) error {
 		"Basepath": basepath,
 	}, c)
 }
+func CampaignTiktokPage(c *fiber.Ctx) error {
+	cookie := c.Cookies("token")
+	if cookie == "" {
+		log.Println("token cookie not found")
+		return c.Redirect("/login")
+	}
+	basepath := c.Locals("Basepath").(string)
+	return Render("page-campaign-tt/index", fiber.Map{
+		"title": "auth",
+		"Basepath": basepath,
+	}, c)
+}
+func CampaignLazadaPage(c *fiber.Ctx) error {
+	cookie := c.Cookies("token")
+	if cookie == "" {
+		log.Println("token cookie not found")
+		return c.Redirect("/login")
+	}
+	basepath := c.Locals("Basepath").(string)
+	return Render("page-campaign-lz/index", fiber.Map{
+		"title": "auth",
+		"Basepath": basepath,
+	}, c)
+}
+func CampaignShopeePage(c *fiber.Ctx) error {
+	cookie := c.Cookies("token")
+	if cookie == "" {
+		log.Println("token cookie not found")
+		return c.Redirect("/login")
+	}
+	basepath := c.Locals("Basepath").(string)
+	return Render("page-campaign-sp/index", fiber.Map{
+		"title": "auth",
+		"Basepath": basepath,
+	}, c)
+}
 
 func ChatPage(c *fiber.Ctx) error {
 	cookie := c.Cookies("token")
