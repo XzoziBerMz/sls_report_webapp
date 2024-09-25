@@ -69,8 +69,8 @@
         let self = this;
 
         try {
-          let data = {};
-          const req = await services.getShop(data, self.token_header);
+          // let data = {};
+          const req = await services.getShop(self.token_header);
           if (req.data.code === 200) {
             self.data_shop = req.data.data || [];
             $("#select_search")
@@ -78,8 +78,8 @@
                 allowClear: true,
                 width: "100%",
                 data: self.data_shop.map((item) => ({
-                  id: item.shop_id,
-                  text: item.shop_name,
+                  id: item,
+                  text: item,
                 })),
               })
               .val(null)
