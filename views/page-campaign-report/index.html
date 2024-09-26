@@ -1,0 +1,283 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-campaign-report/css/index.css">
+    <!--end::custom css for this page-->
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fs-1 fw-bolder">
+                                        <span>รายงาน แคมเปญ <span v-text="value_channel"></span></span>
+                                    </div>
+                                    <!-- <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                        data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                        <div>
+                                            <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
+                                                :</span>
+                                        </div>
+                                        <input id="kt_td_picker_start_input" type="text" class="form-control w-200px"
+                                            data-td-target="#kt_td_picker_start" />
+                                        <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                            data-td-toggle="datetimepicker">
+                                            <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
+                                                    class="path2"></span></i>
+                                        </span>
+                                    </div> -->
+                                </div>
+
+                                <div class="card p-5 mt-5">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <label class="fw-semibold fs-5 mb-2">Channel</label>
+                                            <div>
+                                                <select class="form-select w-250px" data-control="select2"
+                                                    id="select_channel" name="select_channel" data-hide-search="true"
+                                                    data-placeholder="เลือก Channel">
+                                                    <option></option>
+                                                    <option value="CHANNEL_TIKTOK">Tiktok</option>
+                                                    <option value="CHANNEL_LAZADA">Lazada</option>
+                                                    <option value="CHANNEL_SHOPEE">Shopee</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-5">
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control h-40px w-200px"
+                                                    data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text h-40px"
+                                                    data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+
+                                            <!-- <div class="w-250px me-5 fv-row">
+                                                <label class="py-2">วันที่</label>
+                                                <div class="position-relative d-flex flatpickr-input-container">
+                                                    <input class="form-control cursor-pointer h-50px"
+                                                        type="date" id="kt_td_picker_start_input"
+                                                        name="kt_td_picker_start_input" />
+                                                    <label
+                                                        class="position-absolute text-center align-self-center cursor-pointer ico-flatpickr-clear d-none">
+                                                        <i class="bi bi-x fs-2"></i>
+                                                    </label>
+                                                    <label
+                                                        class="position-absolute text-end align-self-center cursor-pointer"
+                                                        for="kt_td_picker_start_input" style="margin-left: -5px">
+                                                        <svg width="22" height="25" viewBox="0 0 22 25" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M0 22.6562C0 23.9502 1.0498 25 2.34375 25H19.5312C20.8252 25 21.875 23.9502 21.875 22.6562V9.375H0V22.6562ZM15.625 13.0859C15.625 12.7637 15.8887 12.5 16.2109 12.5H18.1641C18.4863 12.5 18.75 12.7637 18.75 13.0859V15.0391C18.75 15.3613 18.4863 15.625 18.1641 15.625H16.2109C15.8887 15.625 15.625 15.3613 15.625 15.0391V13.0859ZM15.625 19.3359C15.625 19.0137 15.8887 18.75 16.2109 18.75H18.1641C18.4863 18.75 18.75 19.0137 18.75 19.3359V21.2891C18.75 21.6113 18.4863 21.875 18.1641 21.875H16.2109C15.8887 21.875 15.625 21.6113 15.625 21.2891V19.3359ZM9.375 13.0859C9.375 12.7637 9.63867 12.5 9.96094 12.5H11.9141C12.2363 12.5 12.5 12.7637 12.5 13.0859V15.0391C12.5 15.3613 12.2363 15.625 11.9141 15.625H9.96094C9.63867 15.625 9.375 15.3613 9.375 15.0391V13.0859ZM9.375 19.3359C9.375 19.0137 9.63867 18.75 9.96094 18.75H11.9141C12.2363 18.75 12.5 19.0137 12.5 19.3359V21.2891C12.5 21.6113 12.2363 21.875 11.9141 21.875H9.96094C9.63867 21.875 9.375 21.6113 9.375 21.2891V19.3359ZM3.125 13.0859C3.125 12.7637 3.38867 12.5 3.71094 12.5H5.66406C5.98633 12.5 6.25 12.7637 6.25 13.0859V15.0391C6.25 15.3613 5.98633 15.625 5.66406 15.625H3.71094C3.38867 15.625 3.125 15.3613 3.125 15.0391V13.0859ZM3.125 19.3359C3.125 19.0137 3.38867 18.75 3.71094 18.75H5.66406C5.98633 18.75 6.25 19.0137 6.25 19.3359V21.2891C6.25 21.6113 5.98633 21.875 5.66406 21.875H3.71094C3.38867 21.875 3.125 21.6113 3.125 21.2891V19.3359ZM19.5312 3.125H17.1875V0.78125C17.1875 0.351562 16.8359 0 16.4062 0H14.8438C14.4141 0 14.0625 0.351562 14.0625 0.78125V3.125H7.8125V0.78125C7.8125 0.351562 7.46094 0 7.03125 0H5.46875C5.03906 0 4.6875 0.351562 4.6875 0.78125V3.125H2.34375C1.0498 3.125 0 4.1748 0 5.46875V7.8125H21.875V5.46875C21.875 4.1748 20.8252 3.125 19.5312 3.125Z"
+                                                                fill="#464E5F" />
+                                                        </svg>
+                                                    </label>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control h-40px w-200px"
+                                                    data-td-target="#kt_td_picker_end" />
+                                                <span class="input-group-text h-40px"
+                                                    data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <select class="form-select min-w-300px" data-control="select2"
+                                                    multiple="multiple" id="select_name" name="select_name"
+                                                    data-placeholder="เลือก Name">
+                                                    <template v-for="item in dataName">
+                                                        <option value=""></option>
+                                                        <option :value="item.name" v-text="item.name"></option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="fv-row">
+                                                <label class="required fw-semibold fs-4 mb-2">วันที่</label>
+                                                <div class="input-group w-100" id="kt_td_picker_simple"
+                                                    data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                    <input id="kt_td_picker_date_input" type="text"
+                                                        class="form-control w-200px"
+                                                        data-td-target="#kt_td_picker_start" />
+                                                    <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                        data-td-toggle="datetimepicker">
+                                                        <i class="ki-duotone ki-calendar fs-2"><span
+                                                                class="path1"></span><span class="path2"></span></i>
+                                                    </span>
+                                                </div>
+                                                <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                    class="text-danger"></span>
+                                            </div> -->
+                                    </div>
+                                    <div class="table-responsive border rounded-4 mt-5">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fw-bold fs-5">
+                                                    <th class="min-w-200px align-middle" rowspan="2">
+                                                        <span>Campaign Name</span>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle text-center p-2"
+                                                        :colspan="dataShop.length">
+                                                        <span v-text="value_channel"></span>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>Start</span>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>End</span>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>Type</span>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle text-center" rowspan="2">
+                                                        <span>Remark</span>
+                                                    </th>
+                                                </tr>
+                                                <tr class="sub-header fw-bold fs-5">
+                                                    <template v-for="item in dataShop">
+                                                        <th class="text-center align-middle p-2"
+                                                            v-text="item.shop_name">
+                                                        </th>
+                                                    </template>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <template v-for="(item, index) in dataAds" ::key="index">
+                                                    <tr>
+                                                        <td class="align-middle min-w-200px text-break">
+                                                            <span v-text="item.campaign_name"></span>
+                                                        </td>
+                                                        <template v-for="(list, IdxList) in item.details"
+                                                            :key="IdxList">
+                                                            <td class="align-middle min-w-100px text-break text-center">
+                                                                <div
+                                                                    class="d-flex justify-content-center align-items-center">
+                                                                    <div v-if="list.is_join === true"
+                                                                        class="p-1 d-flex justify-content-center bg-light-success align-items-center w-100px border border-success border-2 rounded-pill">
+                                                                        <span class="text-success">Yes</span>
+                                                                    </div>
+                                                                    <div v-else
+                                                                        class="p-1 d-flex justify-content-center align-items-center w-100px bg-light-danger border border-danger border-2 rounded-pill">
+                                                                        <span class="text-danger">No</span>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </template>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <span v-text="utilsConvDate(item.start_date)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <span v-text="utilsConvDate(item.end_date)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-150px text-break text-center">
+                                                            <span v-text="item.type"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-150px text-break">
+                                                            <span v-text="item.remark"></span>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <select class="form-select w-80px h-35px" data-hide-search="true"
+                                                id="page_size_select" name="page_size_select" data-control="select2"
+                                                v-model="itemsPerPage">
+                                                <option value="10" selected>10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                        <ul class="pagination">
+                                            <li :class="['page-item', { disabled: currentPages === 1 }]"
+                                                @click="changePage(currentPages - 1)">
+                                                <p class="page-link"><i class="previous"></i></p>
+                                            </li>
+                                            <li v-for="page in pages" :key="page"
+                                                :class="['page-item', { active: currentPages === page && page !== '...' }]"
+                                                @click="changePage(page)">
+                                                <p class="page-link" v-if="page !== '...'" v-text="page"></p>
+                                                <span v-if="page === '...'">...</span>
+                                            </li>
+                                            <li :class="['page-item', { disabled: currentPages === totalPages }]"
+                                                @click="changePage(currentPages + 1)">
+                                                <p class="page-link"><i class="next"></i></p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-campaign-report/js/services.js" type="module"> </script>
+<script src="/page-campaign-report/js/index.js" type="module"> </script>
+
+</html>

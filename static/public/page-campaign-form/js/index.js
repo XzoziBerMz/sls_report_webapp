@@ -270,6 +270,7 @@
 
                     if (req.data.code !== 200) {
                         // console.log("Insert failed for data:", data);
+                        closeLoading();
                         Msg("บันทึกไม่สำเร็จ", 'error');
                         return;
                     } else {

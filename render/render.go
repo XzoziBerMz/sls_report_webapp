@@ -48,6 +48,18 @@ func CampaignFormPage(c *fiber.Ctx) error {
 		"Basepath": basepath,
 	}, c)
 }
+func CampaignReportPage(c *fiber.Ctx) error {
+	cookie := c.Cookies("token")
+	if cookie == "" {
+		log.Println("token cookie not found")
+		return c.Redirect("/login")
+	}
+	basepath := c.Locals("Basepath").(string)
+	return Render("page-campaign-report/index", fiber.Map{
+		"title": "auth",
+		"Basepath": basepath,
+	}, c)
+}
 func CampaignFormOldPage(c *fiber.Ctx) error {
 	cookie := c.Cookies("token")
 	if cookie == "" {
