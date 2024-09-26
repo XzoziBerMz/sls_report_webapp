@@ -1,0 +1,259 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-sweetbrand/css/index.css">
+    <!--end::custom css for this page-->
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fs-1 fw-bolder">
+                                        <span>Sweetbrand Form</span>
+                                    </div>
+                                    <!-- <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                        data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                        <div>
+                                            <span class="fs-14  align-middle" style="margin-right: 10px;">วันที่
+                                                :</span>
+                                        </div>
+                                        <input id="kt_td_picker_start_input" type="text" class="form-control w-200px"
+                                            data-td-target="#kt_td_picker_start" />
+                                        <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                            data-td-toggle="datetimepicker">
+                                            <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span
+                                                    class="path2"></span></i>
+                                        </span>
+                                    </div> -->
+                                </div>
+
+                                <div class="card p-5 mt-5">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="fv-row">
+                                            <label class="required fw-semibold fs-4 mb-2">วันที่</label>
+                                            <div class="input-group w-100" id="kt_td_picker_simple"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <input id="kt_td_picker_date_input" type="text"
+                                                    class="form-control w-200px" data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+                                            <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                class="text-danger"></span>
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-center gap-5">
+                                            <div>
+                                                <button class="btn btn-primary" @click="addAds">เพิ่ม Sweetbrand</button>
+                                            </div>
+                                            <div v-if="dataAds.length > 0">
+                                                <button class="btn btn-success w-100px"
+                                                    @click="savePage">บันทึก</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive border rounded-4 mt-5">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <tr class="fw-bold fs-5">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row ms-2">
+                                                                <span>ค่า Ads Tiktok</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>Tiktok</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>ค่า ADS Shopee</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>Shopee</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>ค่า ADS Laz</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>Laz</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row">
+                                                                <span>total</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <template v-for="(item, index) in dataAds">
+                                                    <tr>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @input="handleInputN(item.ads_tiktok_cost, index, 'ads_tiktok_cost')"
+                                                                    @keyup.enter="focusNext('ads_tiktok_cost', index + 1)"
+                                                                    v-model="item.ads_tiktok_cost"
+                                                                    :ref="'ads_tiktok_cost_' + index"
+                                                                    :class="{'border-danger': errors[index]?.ads_tiktok_cost}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @input="handleInputN(item.tiktok, index, 'tiktok')"
+                                                                    @keyup.enter="focusNext('tiktok', index + 1)"
+                                                                    v-model="item.tiktok" :ref="'tiktok_' + index"
+                                                                    :class="{'border-danger': errors[index]?.tiktok}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @keyup.enter="focusNext('ads_shopee_cost', index + 1)"
+                                                                    @input="handleInputN(item.ads_shopee_cost, index, 'ads_shopee_cost')"
+                                                                    v-model="item.ads_shopee_cost"
+                                                                    :ref="'ads_shopee_cost_' + index"
+                                                                    :class="{'border-danger': errors[index]?.ads_shopee_cost}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @keyup.enter="focusNext('shopee', index + 1)"
+                                                                    @input="handleInputN(item.shopee, index, 'shopee')"
+                                                                    v-model="item.shopee" :ref="'shopee_' + index"
+                                                                    :class="{'border-danger': errors[index]?.shopee}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @input="handleInputN(item.ads_lazada_cost, index, 'ads_lazada_cost')"
+                                                                    @keyup.enter="focusNext('ads_lazada_cost', index + 1)"
+                                                                    v-model="item.ads_lazada_cost"
+                                                                    :ref="'ads_lazada_cost_' + index"
+                                                                    :class="{'border-danger': errors[index]?.ads_lazada_cost}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
+                                                                <input type="text" class="form-control w-150px text-end"
+                                                                    @input="handleInputN(item.lazada, index, 'lazada')"
+                                                                    @keyup.enter="focusNext('lazada', index + 1)"
+                                                                    v-model="item.lazada"
+                                                                    :ref="'lazada_' + index"
+                                                                    :class="{'border-danger': errors[index]?.lazada}" />
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center gap-5">
+                                                                <span v-text="formatNumber(total_cost)"></span>
+                                                                <!-- <input type="text" class="form-control w-150px text-end"
+                                                                    @input="handleInputN(item.lazada, index, 'lazada')"
+                                                                    @keyup.enter="focusNext('lazada', index + 1)"
+                                                                    v-model="total_cost" :ref="'lazada_' + index"
+                                                                    :class="{'border-danger': errors[index]?.lazada}" /> -->
+                                                                <i class="text-danger bi-trash pointer"
+                                                                    @click="deleteAds(index)"></i>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-sweetbrand/js/services.js" type="module"> </script>
+<script src="/page-sweetbrand/js/index.js" type="module"> </script>
+
+</html>
