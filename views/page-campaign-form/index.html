@@ -189,7 +189,7 @@
                                                                 v-text="errors[index].end_date"
                                                                 class="text-danger"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-150px text-break text-center">
+                                                        <td class="align-middle min-w-150px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
                                                                 <select class="form-select" data-control="select2"
@@ -206,6 +206,7 @@
                                                                         Live</option>
                                                                 </select>
                                                             </div>
+                                                            <span v-if="errors[index] && errors[index].type" v-text="errors[index].type" class="text-danger"></span>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break">
                                                             <!-- <div

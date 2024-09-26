@@ -26,6 +26,7 @@
                 end_date_time: null,
                 valueDate_time: null,
                 value_channel: "",
+                value_channel_id: "",
             }
         },
         computed: {
@@ -52,6 +53,7 @@
                         const selectedValue = $(this).find("option:selected").text(); // Get the selected value
                         const selectedId = $(this).val();
                         self.value_channel = selectedValue || ''
+                        self.value_channel_id = selectedId || ''
 
                         try {
                             let data = {
@@ -176,7 +178,7 @@
                 let data = {
                     "new_ads": true,
                     "campaign_name": "",
-                    "channel_id": "",
+                    "channel_id": self.value_channel_id,
                     "details": self.dataShop.map(shop => ({
                         "shop_name": shop.shop_name,
                         "is_join": 'false'
@@ -218,7 +220,7 @@
                     }
 
                     if (!item.type) {
-                        error.type = true;
+                        error.type = "กรุณาเลือก Tyype";
                         isValid = false;
                     }
                     if (!item.start_date) {
@@ -249,7 +251,7 @@
             async savePage() {
                 const self = this;
                 if (self.validateForm()) {
-                   
+                   showLoading();
                     let dataAds = {
                         data: self.dataAds || []
                     }
