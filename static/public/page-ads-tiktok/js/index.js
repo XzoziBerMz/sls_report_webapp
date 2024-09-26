@@ -131,8 +131,11 @@
                 })
             },
             formatNumber(number) {
+                if (isNaN(number) || !isFinite(number)) {
+                    return "0"; // แสดงค่าเป็น 0
+                }
                 if (typeof number === 'number') {
-                    return number.toLocaleString(); // Format number with commas
+                    return number.toLocaleString(); // จัดรูปแบบตัวเลขให้มีคอมม่า
                 }
                 return number; // Return as is if not a number
             },

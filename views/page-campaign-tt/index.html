@@ -42,7 +42,7 @@
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="fs-1 fw-bolder">
-                                        <span>แคมเปญ Tiktok</span>
+                                        <span>แคมเปญ <span v-text="value_channel"></span></span>
                                     </div>
                                     <!-- <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
                                         data-td-target-input="nearest" data-td-target-toggle="nearest">
@@ -62,21 +62,43 @@
 
                                 <div class="card p-5 mt-5">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <div class="fv-row">
-                                            <label class="required fw-semibold fs-4 mb-2">วันที่</label>
-                                            <div class="input-group w-100" id="kt_td_picker_simple" data-td-target-input="nearest"
-                                                data-td-target-toggle="nearest">
-                                                <input id="kt_td_picker_date_input" type="text" class="form-control w-200px"
-                                                    data-td-target="#kt_td_picker_start" />
-                                                <span class="input-group-text" data-td-target="#kt_td_picker_basic" data-td-toggle="datetimepicker">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                                </span>
-                                            </div>
-                                            <span v-if="errors_date && errors_date.date" v-text="errors_date.date" class="text-danger"></span>
-                                        </div>
-                                        <div class="d-flex justify-content-end align-items-center gap-5">
+                                        <div class="d-flex gap-5">
                                             <div>
-                                                <button class="btn btn-primary" @click="addAds">เพิ่ม Tiktok</button>
+                                                <label class="required fw-semibold fs-4 mb-2">Channel</label>
+                                                <div>
+                                                    <select class="form-select w-200px" data-control="select2"
+                                                        id="select_channel" name="select_channel"
+                                                        data-hide-search="true" data-placeholder="เลือก Channel">
+                                                        <option></option>
+                                                        <option value="CHANNEL_TIKTOK">Tiktok</option>
+                                                        <option value="CHANNEL_LAZADA">Lazada</option>
+                                                        <option value="CHANNEL_SHOPEE">Shopee</option>
+                                                    </select>
+                                                </div>
+                                                <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                    class="text-danger"></span>
+                                            </div>
+                                            <div class="fv-row">
+                                                <label class="required fw-semibold fs-4 mb-2">วันที่</label>
+                                                <div class="input-group w-100" id="kt_td_picker_simple"
+                                                    data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                    <input id="kt_td_picker_date_input" type="text"
+                                                        class="form-control w-200px"
+                                                        data-td-target="#kt_td_picker_start" />
+                                                    <span class="input-group-text" data-td-target="#kt_td_picker_basic"
+                                                        data-td-toggle="datetimepicker">
+                                                        <i class="ki-duotone ki-calendar fs-2"><span
+                                                                class="path1"></span><span class="path2"></span></i>
+                                                    </span>
+                                                </div>
+                                                <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
+                                                    class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-center gap-5"
+                                            v-if="value_channel">
+                                            <div>
+                                                <button class="btn btn-primary" @click="addAds">เพิ่ม <span v-text="value_channel"></span></button>
                                             </div>
                                             <div v-if="dataAds.length > 0">
                                                 <button class="btn btn-success w-100px"
@@ -84,95 +106,41 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive border rounded-4 mt-5">
+                                    <div class="table-responsive border rounded-4 mt-5" v-show="value_channel">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <thead>
                                                 <tr class="fw-bold fs-5">
-                                                    <!-- <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
-                                                            <i class="bi-calendar3"></i>
-                                                            <span>วันที่</span>
-                                                        </div>
-                                                    </th> -->
-                                                    <th class="min-w-200px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-start gap-5 align-items-center pointer">
-                                                            <i class="bi-type flex-shrink-1"></i>
-                                                            <div class="row w-100">
-                                                                <span>ชื่อ</span>
-                                                                <span>ADS</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-200px align-middle" rowspan="2">
+                                                        <span>Campaign Name</span>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-start gap-5 align-items-center pointer">
-                                                            <i class="bi-type"></i>
-                                                            <div class="row">
-                                                                <span>สินค้า</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-100px align-middle text-center p-2"
+                                                        :colspan="dataShop.length">
+                                                        <span v-text="value_channel"></span>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
-                                                            <i class="bi-toggles"></i>
-                                                            <div class="row">
-                                                                <span>สถานะ</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>Start</span>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
-                                                            <i class="bi-cash-stack"></i>
-                                                            <div class="row ms-2">
-                                                                <span>ค่าใช้จ่ายทั้งหมด</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>End</span>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-around align-items-center pointer">
-                                                            <i class="bi-cash-stack"></i>
-                                                            <div class="row">
-                                                                <span>งบประมาณ</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-100px align-middle text-center" rowspan="2">
+                                                        <span>Type</span>
                                                     </th>
-                                                    <th class="min-w-150px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-around align-items-center pointer">
-                                                            <i class="bi-cash-stack"></i>
-                                                            <div class="row">
-                                                                <span>รายได้รวม(ร้านค้า)</span>
-                                                            </div>
-                                                        </div>
+                                                    <th class="min-w-150px align-middle text-center" rowspan="2">
+                                                        <span>Remark</span>
                                                     </th>
-                                                    <th class="min-w-200px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-around align-items-center pointer">
-                                                            <i class="bi-cash-stack"></i>
-                                                            <div class="row">
-                                                                <span>ต้นทุนต่อการซื้อ(ร้านค้า)</span>
-                                                            </div>
-                                                        </div>
-                                                    </th>
-                                                    <th class="min-w-150px align-middle">
-                                                        <div
-                                                            class="d-flex justify-content-start align-items-center pointer">
-                                                            <div class="row">
-                                                                <span>โน๊ต</span>
-                                                            </div>
-                                                        </div>
-                                                    </th>
+                                                </tr>
+                                                <tr class="sub-header fw-bold fs-5">
+                                                    <template v-for="item in dataShop">
+                                                        <th class="text-center align-middle p-2"
+                                                            v-text="item.shop_name">
+                                                        </th>
+                                                    </template>
                                                 </tr>
                                             </thead>
                                             <tbody class="fs-6">
-                                                <template v-for="(item, index) in dataAds">
+                                                <template v-for="(item, index) in dataAds" ::key="index">
                                                     <tr>
-
                                                         <td class="align-middle min-w-200px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
@@ -181,33 +149,24 @@
                                                                     :class="{'border-danger': errors[index]?.name}" />
                                                             </div>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px "
-                                                                    v-model="item.product"
-                                                                    :class="{'border-danger': errors[index]?.product}" />
-                                                            </div>
-                                                        </td>
-                                                        <td class="align-middle min-w-100px text-break">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
-                                                                <select class="form-select" data-control="select2"
-                                                                    :id="'select_status_'+index"
-                                                                    :name="'select_status_'+index" v-model="item.status"
-                                                                    data-placeholder="Select Status">
-                                                                    <option></option>
-                                                                    <option value="เปิดใช้งาน" class="text-success">เปิดใช้งาน</option>
-                                                                    <option value="ปิดใช้งาน" class="text-danger">ปิดใช้งาน</option>
-                                                                </select>
-                                                            </div>
-                                                            <span v-if="errors[index] && errors[index].status"
-                                                                v-text="errors[index].status"
-                                                                class="text-danger"></span>
-                                                            <!-- <span v-if="item.status === 'active'"
-                                                                v-text="'เปิดการใช้งาน'"></span>
-                                                            <span v-else v-text="'ปิดการใช้งาน'"></span> -->
-                                                        </td>
+                                                        <template v-for="(list, IdxList) in dataShop" :key="IdxList">
+                                                            <td class="align-middle min-w-100px text-break">
+                                                                <div
+                                                                    class="d-flex justify-content-center align-items-center">
+                                                                    <select class="form-select" data-control="select2"
+                                                                        data-hide-search="true"
+                                                                        :id="'select_status_shop_'+index+'_'+IdxList"
+                                                                        :name="'select_status_shop_'+index+'_'+IdxList"
+                                                                        data-placeholder="Select Status">
+                                                                        <option></option>
+                                                                        <option value="yes">
+                                                                            Yes</option>
+                                                                        <option value="no">
+                                                                            No</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </template>
                                                         <td class="align-middle min-w-100px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
@@ -232,23 +191,19 @@
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
-                                                                    @keyup.enter="focusNext('total_shop_income', index + 1)"
-                                                                    @input="handleInputN(item.total_shop_income, index, 'total_shop_income')"
-                                                                    v-model="item.total_shop_income"
-                                                                    :ref="'total_shop_income_' + index"
-                                                                    :class="{'border-danger': errors[index]?.total_shop_income}" />
-                                                            </div>
-                                                        </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
-                                                            <div
-                                                                class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
-                                                                    @input="handleInputN(item.cost_per_purchase, index, 'cost_per_purchase')"
-                                                                    @keyup.enter="focusNext('cost_per_purchase', index + 1)"
-                                                                    v-model="item.cost_per_purchase"
-                                                                    :ref="'cost_per_purchase_' + index"
-                                                                    :class="{'border-danger': errors[index]?.cost_per_purchase}" />
+                                                                <select class="form-select" data-control="select2"
+                                                                    data-hide-search="true"
+                                                                    :id="'select_type_shop_'+index"
+                                                                    :name="'select_type_shop_'+index"
+                                                                    data-placeholder="เลือก Type">
+                                                                    <option></option>
+                                                                    <option value="campaign">
+                                                                        Campaign</option>
+                                                                    <option value="coupon">
+                                                                        Coupon</option>
+                                                                    <option value="live">
+                                                                        Live</option>
+                                                                </select>
                                                             </div>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break">
@@ -262,7 +217,7 @@
                                                             </div> -->
                                                             <div class="text-end"
                                                                 :class="{'d-flex gap-3 justify-content-start align-items-center': item.new_ads}">
-                                                                <input type="text" class="form-control w-150px"
+                                                                <input type="text" class="form-control w-100"
                                                                     v-model="item.note" />
                                                                 <i v-if="item.new_ads"
                                                                     class="text-danger bi-trash pointer"

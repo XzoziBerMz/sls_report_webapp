@@ -323,9 +323,6 @@
                 if (typeof number === 'number') {
                     return number.toLocaleString(); // จัดรูปแบบตัวเลขให้มีคอมม่า
                 }
-                if (typeof number === 'number') {
-                    return number.toLocaleString(); // Format number with commas
-                }
                 return number; // Return as is if not a number
             },
             formatPercentage(fee, totalIncome) {

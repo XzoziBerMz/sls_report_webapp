@@ -37,6 +37,7 @@
                     { id: 'ปิดใช้งาน', name: 'ปิดใช้งาน' },
                 ],
                 valueDate_time: null,
+                value_channel: "",
             }
         },
         computed: {
@@ -51,8 +52,8 @@
                 let self = this
 
                 try {
-                    await self.created()
-                    await self.loadData()
+                    // await self.created()
+                    // await self.loadData()
                     self.dataAds.forEach((item, index) => {
                         const selectorPayment = '#kt_td_picker_start_input_' + index;
                         self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
@@ -67,13 +68,9 @@
                     })
 
                     try {
-                        const req = await services.getProduct(self.token_header)
-                        self.dataProduct = req.data.data || []
-                    } catch (error) {
-                        console.log("🚀 ~ init ~ error:", error)
-                    }
-                    try {
-                        let data = {}
+                        let data = {
+                            "channel_id": "CHANNEL_TIKTOK"
+                        }
                         const req = await services.getShop(data, self.token_header)
                         self.dataShop = req.data.data || []
                     } catch (error) {
@@ -84,91 +81,44 @@
                     console.log("🚀 ~ init ~ error:", error)
                 } finally {
 
-                    $("#kt_td_picker_date_input").flatpickr({
-                        altInput: true,
-                        altFormat: "d/m/Y",
-                        dateFormat: "Y-m-d",
-                        onChange: async function (selectedDates, dateStr, instance) {
+                    $('#select_channel').on("change.custom", async function () {
+                        showLoading();
+                        const selectedValue = $(this).find("option:selected").text(); // Get the selected value
+                        const selectedId = $(this).val();
+                        console.log("🚀 ~ selectedValue:", selectedValue)
+                        self.value_channel = selectedValue || ''
 
-                            const selectedDate = selectedDates[0];
-                            const currentTime = new Date();
-
-                            const year = instance.formatDate(selectedDate, "Y");
-                            const month = instance.formatDate(selectedDate, "m");
-                            const day = instance.formatDate(selectedDate, "d");
-
-                            const hours = currentTime.getHours().toString().padStart(2, '0');
-                            const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-                            const seconds = currentTime.getSeconds().toString().padStart(2, '0');
-
-                            const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-                            self.valueDate_time = formattedDateTime
-                            self.dataAds.forEach((item, index) => {
-                                item.p_date = formattedDateTime;
-                                item.date = formattedDateTime;
-                            });
-                            
+                        try {
+                            let data = {
+                                "channel_id": selectedId || ''
+                            }
+                            const req = await services.getShop(data, self.token_header)
+                            self.dataShop = req.data.data || []
+                            await self.initSelectTable()
+                            closeLoading()
+                        } catch (error) {
+                            console.log("🚀 ~ init ~ error:", error)
+                            closeLoading()
                         }
-                    });
-                    $("#kt_td_picker_start_input").flatpickr({
-                        altInput: true,
-                        altFormat: "d/m/Y",
-                        dateFormat: "Y-m-d",
-                        onChange: async function (selectedDates, dateStr, instance) {
-                            self.start_date_time = instance.formatDate(selectedDates[0], "Y-m-d" + ' 00:00:00'); // Update date in form data
-                            self.end_date_time = instance.formatDate(selectedDates[0], "Y-m-d" + ' 23:59:59'); // Update date in form data
+                    })
 
-                            self.dataAds = [];
-                            await self.loadData()
+                    
+                }
+            },
+            initSelectTable() {
+                const self = this
+                self.$nextTick(() => {
 
-                            self.$nextTick(() => {
-
-                                // self.dataAds.forEach((item, index) => {
-                                //     const selectorPayment = '#kt_td_picker_start_input_' + index;
-                                //     self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
-                                //         altInput: true,
-                                //         altFormat: "d/m/Y",
-                                //         dateFormat: "Y-m-d",
-                                //         onChange: async function (selectedDates, dateStr, instance) {
-                                //             item.p_date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
-                                //         },
-                                //     });
-                                //     // self.set_date_time.setDate(item.p_date)
-                                // })
-
-                                self.dataAds.forEach((item, index) => {
-                                    const selectorPayment = '#select_status_' + index;
-                                    if (!$(selectorPayment).data('select2')) {
-                                        $(selectorPayment).select2({
-                                            placeholder: "Select Status",
-                                            width: '100%',
-                                            data: self.data_status.map(
-                                                (item) => ({ id: item.id, text: item.name })
-                                            ),
-                                        });
-                                    }
-                                    $(selectorPayment).on("change.custom", async function () {
-                                        const selectedValue = $(this).val(); // Get the selected value
-                                        console.log("🚀 ~ selectedValue:", self.dataAds)
-                                        item.status = selectedValue || 10
-                                    })
-                                })
-                            })
-                        },
-                    });
-
-                    self.$nextTick(() => {
-
-                        self.dataAds.forEach((item, index) => {
-                            const selectorPayment = '#select_status_' + index;
+                    self.dataAds.forEach((item, index) => {
+                        self.dataShop.forEach((list, Idx) => {
+                            const selectorPayment = '#select_status_shop_' + index + '_' + Idx;
                             if (!$(selectorPayment).data('select2')) {
                                 $(selectorPayment).select2({
                                     placeholder: "Select Status",
                                     width: '100%',
-                                    data: self.data_status.map(
-                                        (item) => ({ id: item.id, text: item.name })
-                                    ),
+                                    // data: self.data_status.map(
+                                    //     (item) => ({ id: item.id, text: item.name })
+                                    // ),
                                 });
                             }
                             $(selectorPayment).on("change.custom", async function () {
@@ -176,8 +126,17 @@
                                 item.status = selectedValue || 10
                             })
                         })
+                        const selectorPayment = '#select_type_shop_' + index;
+
+                        $(selectorPayment).select2({
+                            placeholder: "Select Status",
+                            width: '100%',
+                            // data: self.data_status.map(
+                            //     (item) => ({ id: item.id, text: item.name })
+                            // ),
+                        });
                     })
-                }
+                })
             },
             handleInputN(value, index, field) {
                 let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
@@ -215,7 +174,6 @@
                 const self = this;
                 let data = {
                     "new_ads": true,
-                    "shop_name": "",
                     "name": "",
                     "product": "",
                     "total_cost": "",
