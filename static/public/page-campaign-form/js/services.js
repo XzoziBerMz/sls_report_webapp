@@ -3,7 +3,7 @@
     const endpoint = {
         get_product: `/api/v1/product/list`,
         get_shop: `/api/v1/shop/list`,
-        insert_data: `/api/v1/ads/tiktok/insert`,
+        insert_data: `/api/v1/campaign/v2/insert-multiple`,
         update_data: `/api/v1/ads/update`,
         get_ads: `/api/v1/ads/tiktok/filter`,
     }

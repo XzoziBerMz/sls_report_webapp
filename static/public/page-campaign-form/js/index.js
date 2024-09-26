@@ -19,23 +19,11 @@
                 dataShop: [],
                 dataAds: [],
                 token_header: token_header || '',
-                form: {
-                    name: '',
-                    total_cost: '',
-                    budget: '',
-                    total_income: '',
-                    cost_per_purchase: '',
-                    purchase: '',
-                    note: '',
-                },
                 errors: {},
                 errors_date: {},
+                errors_channel: {},
                 start_date_time: null,
                 end_date_time: null,
-                data_status: [
-                    { id: 'เปิดใช้งาน', name: 'เปิดใช้งาน' },
-                    { id: 'ปิดใช้งาน', name: 'ปิดใช้งาน' },
-                ],
                 valueDate_time: null,
                 value_channel: "",
             }
@@ -54,28 +42,6 @@
                 try {
                     // await self.created()
                     // await self.loadData()
-                    self.dataAds.forEach((item, index) => {
-                        const selectorPayment = '#kt_td_picker_start_input_' + index;
-                        self.set_date_time = $("#kt_td_picker_start_input_" + index).flatpickr({
-                            altInput: true,
-                            altFormat: "d/m/Y",
-                            dateFormat: "Y-m-d",
-                            onChange: async function (selectedDates, dateStr, instance) {
-                                item.p_date = instance.formatDate(selectedDates[0], "Y-m-d"); // Update date in form data
-                            },
-                        });
-                        // self.set_date_time.setDate(item.p_date)
-                    })
-
-                    try {
-                        let data = {
-                            "channel_id": "CHANNEL_TIKTOK"
-                        }
-                        const req = await services.getShop(data, self.token_header)
-                        self.dataShop = req.data.data || []
-                    } catch (error) {
-                        console.log("🚀 ~ init ~ error:", error)
-                    }
 
                 } catch (error) {
                     console.log("🚀 ~ init ~ error:", error)
@@ -85,7 +51,6 @@
                         showLoading();
                         const selectedValue = $(this).find("option:selected").text(); // Get the selected value
                         const selectedId = $(this).val();
-                        console.log("🚀 ~ selectedValue:", selectedValue)
                         self.value_channel = selectedValue || ''
 
                         try {
@@ -93,7 +58,30 @@
                                 "channel_id": selectedId || ''
                             }
                             const req = await services.getShop(data, self.token_header)
+                            self.dataAds = []
+                            self.dataAds = [
+                                {
+                                    "new_ads": true,
+                                    "campaign_name": "",
+                                    "channel_id": selectedId,
+                                    "details": [],
+                                    "start_date": "",
+                                    "end_date": "",
+                                    "type": "",
+                                    "remark": "",
+                                }
+                            ]
                             self.dataShop = req.data.data || []
+                            self.dataAds = self.dataAds.map(ad => {
+                                return {
+                                    ...ad,
+                                    details: self.dataShop.map(shop => ({
+                                        shop_name: shop.shop_name,
+                                        is_join: 'false',  // ตั้งค่า default สำหรับ status เป็นค่าว่างหรือค่าอื่น ๆ
+                                    }))
+                                };
+                            });
+                            // console.log("🚀 ~ self.dataAds:", self.dataAds)
                             await self.initSelectTable()
                             closeLoading()
                         } catch (error) {
@@ -102,65 +90,78 @@
                         }
                     })
 
-                    
+
                 }
             },
             initSelectTable() {
                 const self = this
                 self.$nextTick(() => {
 
+                    console.log(self.dataAds)
                     self.dataAds.forEach((item, index) => {
-                        self.dataShop.forEach((list, Idx) => {
+                        item.details.forEach((list, Idx) => {
                             const selectorPayment = '#select_status_shop_' + index + '_' + Idx;
                             if (!$(selectorPayment).data('select2')) {
                                 $(selectorPayment).select2({
                                     placeholder: "Select Status",
                                     width: '100%',
-                                    // data: self.data_status.map(
-                                    //     (item) => ({ id: item.id, text: item.name })
-                                    // ),
+                                    minimumResultsForSearch: Infinity,
                                 });
                             }
                             $(selectorPayment).on("change.custom", async function () {
                                 const selectedValue = $(this).val(); // Get the selected value
-                                item.status = selectedValue || 10
+                                // item.details[Idx].is_join = selectedValue ? JSON.parse(selectedValue) : '';
+                                item.details[Idx].is_join = selectedValue !== null ? selectedValue : false;
                             })
+                            $(selectorPayment).val(item.details[Idx].is_join).trigger('change')
                         })
-                        const selectorPayment = '#select_type_shop_' + index;
+                        const selectorType = '#select_type_shop_' + index;
 
-                        $(selectorPayment).select2({
+                        $(selectorType).select2({
                             placeholder: "Select Status",
                             width: '100%',
-                            // data: self.data_status.map(
-                            //     (item) => ({ id: item.id, text: item.name })
-                            // ),
+                            minimumResultsForSearch: Infinity,
+                        });
+                        $(selectorType).on("change.custom", async function () {
+                            const selectedValue = $(this).val() // Get the selected value
+                            item.type = selectedValue;
+                        })
+                        $(selectorType).val(item.type).trigger('change')
+
+                        const selectorDateStart = '#kt_datepicker_start_' + index;
+                        const selectorDateEnd = '#kt_datepicker_end_' + index;
+
+                        let startDatePicker = $(selectorDateStart).flatpickr({
+                            altInput: true,
+                            altFormat: "d/m/Y",
+                            dateFormat: "Y-m-d",
+                            altFormat: "d/m/Y",
+                            altInput: true,
+                            onChange: async function (selectedDates, dateStr, instance) {
+
+                                item.start_date = instance.formatDate(selectedDates[0], "Y-m-d");
+
+                                endDatePicker.set('minDate', selectedDates[0]);
+                                // $(selectorDateEnd).set('minDate', selectedDates[0]);
+                                if (item.end_date && new Date(item.end_date) < new Date(item.start_date)) {
+                                    item.end_date = ""; // Reset end_date if it is less than start_date
+                                }
+                            }
+                        });
+                        let endDatePicker = $(selectorDateEnd).flatpickr({
+                            altInput: true,
+                            altFormat: "d/m/Y",
+                            dateFormat: "Y-m-d",
+                            altFormat: "d/m/Y",
+                            altInput: true,
+                            onChange: async function (selectedDates, dateStr, instance) {
+
+                                item.end_date = instance.formatDate(selectedDates[0], "Y-m-d");
+
+                            }
                         });
                     })
                 })
-            },
-            handleInputN(value, index, field) {
-                let formattedValue = `${value}`.replace(/[^0-9.]/g, ""); // ลบอักขระที่ไม่ต้องการ
-
-                // แยกทศนิยมออก
-                const decimalParts = formattedValue.split('.');
-
-                // ตรวจสอบว่าแยกได้มากกว่าสองส่วนหรือไม่ (มากกว่า 1 จุดทศนิยม)
-                if (decimalParts.length > 2) {
-                    formattedValue = decimalParts[0] + '.' + decimalParts.slice(1).join('');
-                }
-
-                // กำหนดค่าที่ถูกต้องกลับไปที่ฟิลด์
-                this.dataAds[index][field] = formattedValue;
-                console.log("🚀 ~ handleInputN ~ this.dataAds[index][field]:", this.dataAds[index][field])
-            },
-            created() {
-                // Set start_at to one day before the current date
-                const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() - 2);
-                const formattedDate = currentDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-                this.start_date_time = formattedDate + ' 00:00:00';
-                this.end_date_time = formattedDate + ' 23:59:59';
-                console.log("🚀 ~ created ~ this.searchData.start_at:", this.start_date_time)
             },
             focusNext(column, nextIndex) {
                 const nextInput = this.$refs[column + '_' + nextIndex];
@@ -170,53 +171,25 @@
                     nextInput.focus(); // ถ้าเป็น element เดียว
                 }
             },
-            addAds() {
+            async addAds() {
                 const self = this;
                 let data = {
                     "new_ads": true,
-                    "name": "",
-                    "product": "",
-                    "total_cost": "",
-                    "budget": "",
-                    "total_shop_income": "",
-                    "cost_per_purchase": "",
-                    "purchase": "",
-                    "note": "",
-                    "ref_default": 1,
-                    "date": self.valueDate_time,
-                    "p_date": self.valueDate_time
+                    "campaign_name": "",
+                    "channel_id": "",
+                    "details": self.dataShop.map(shop => ({
+                        "shop_name": shop.shop_name,
+                        "is_join": 'false'
+                    })) || [],
+                    "start_date": "",
+                    "end_date": "",
+                    "type": "",
+                    "remark": "",
                 }
                 self.dataAds.push(data)
+                await self.initSelectTable()
 
-                self.$nextTick(() => {
 
-                    self.dataAds.forEach((item, index) => {
-                        const selectorPayment = '#select_status_' + index;
-                        if (!$(selectorPayment).data('select2')) {
-                            $(selectorPayment).select2({
-                                placeholder: "Select Status",
-                                width: '100%',
-                                data: self.data_status.map(
-                                    (item) => ({ id: item.id, text: item.name })
-                                ),
-                            });
-                        }
-                        $(selectorPayment).on("change.custom", async function () {
-                            const selectedValue = $(this).val(); // Get the selected value
-                            item.status = selectedValue || 10
-                        })
-
-                        const selectorDate = '#kt_td_picker_start_input_' + index;
-                        $(selectorDate).flatpickr({
-                            altInput: true,
-                            altFormat: "d/m/Y",
-                            dateFormat: "Y-m-d",
-                            onChange: async function (selectedDates, dateStr, instance) {
-                                item.p_date = instance.formatDate(selectedDates[0], "Y-m-d" + ' 00:00:00'); // Update date in form data
-                            },
-                        });
-                    })
-                })
             },
             deleteAds(index) {
                 this.dataAds.splice(index, 1);
@@ -227,78 +200,48 @@
                 }
                 return number; // Return as is if not a number
             },
-            async loadData() {
-                const self = this;
-                try {
-                    showLoading();
-                    let data = {
-                        "search": "",
-                        // "ref_default": 1,
-                        "page": 1,
-                        "per_page": 50,
-                        "start_at": self.start_date_time,
-                        "end_at": self.end_date_time,
-                        "order": "",
-                        "order_by": "desc"
-                    }
-                    const req = await services.getAds(data, self.token_header)
-                    if (req.data.code === 200) {
-                        closeLoading();
-                        self.errors = {};
-                        self.dataAds = req.data.data || []
-                    }
-                } catch (error) {
-                    closeLoading();
-                    console.log("🚀 ~ loadData ~ error:", error)
-                }
-            },
+           
             validateForm() {
                 this.errors = {};
                 this.errors_date = {};
+                this.errors_channel = {};
                 let isValid = true;
 
                 this.dataAds.forEach((item, index) => {
                     let error = {};
                     let error_date = {};
+                    let error_channel = {};
 
-                    if (!item.name) {
-                        error.name = true;
-                        isValid = false;
-                    }
-
-                    if (!item.product) {
-                        error.product = true;
+                    if (!item.campaign_name) {
+                        error.campaign_name = true;
                         isValid = false;
                     }
 
-                    if (item.total_cost === "") {
-                        error.total_cost = true;
+                    if (!item.type) {
+                        error.type = true;
                         isValid = false;
                     }
-                    if (item.budget === "") {
-                        error.budget = true;
+                    if (!item.start_date) {
+                        error.start_date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
-                    if (item.total_shop_income === "") {
-                        error.total_shop_income = true;
+                    if (!item.end_date) {
+                        error.end_date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
-                    if (item.cost_per_purchase === "") {
-                        error.cost_per_purchase = true;
+
+                    if (!this.value_channel) {
+                        error_channel.error_channel = "กรุณาเลือก Channel";
                         isValid = false;
                     }
-                    if (!this.valueDate_time) {
-                        error_date.date = "กรุณาเลือก วันที่";
-                        isValid = false;
-                    }
-                    if (!item.status || (item.status !== 'เปิดใช้งาน' && item.status !== 'ปิดใช้งาน')) {
-                        error.status = "กรุณาเลือกสถานะ";
-                        isValid = false;
-                    }
+                    // if (!this.valueDate_time) {
+                    //     error_date.date = "กรุณาเลือก วันที่";
+                    //     isValid = false;
+                    // }
 
                     this.errors[index] = error;
-                    this.errors_date = error_date;
-                    console.log("🚀 ~ this.dataAds.forEach ~ this.errors_date:", this.errors_date)
+                    // this.errors_date = error_date;
+                    this.errors_channel = error_channel;
                 });
 
                 return isValid;
@@ -306,15 +249,14 @@
             async savePage() {
                 const self = this;
                 if (self.validateForm()) {
-                    const currentDate = new Date();
-                    currentDate.setDate(currentDate.getDate() + 1);
-                    const formattedDate = currentDate.toISOString().split('T')[0];
-
-
+                   
                     let dataAds = {
                         data: self.dataAds || []
                     }
                     dataAds.data.forEach((data, index) => {
+                        data.details.forEach((list, Idx) => {
+                            list.is_join = (list.is_join === "true")
+                        })
                         data.total_cost = Number(data.total_cost) || 0;
                         data.budget = Number(data.budget) || 0;
                         data.total_shop_income = Number(data.total_shop_income) || 0;
@@ -330,7 +272,6 @@
                         return;
                     } else {
                         closeLoading();
-                        Msg("บันทึกสำเร็จ", 'success');
                         Swal.fire({
                             title: 'บันทึกสำเร็จ',
                             icon: 'success',
@@ -341,7 +282,6 @@
                             }
                         });
                     }
-
 
                 } else {
                     console.log("Form validation failed.");

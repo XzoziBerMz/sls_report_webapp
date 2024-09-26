@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
     {{- template "resource-css" -}}
-    <link rel="stylesheet" href="/page-campaign-tt/css/index.css">
+    <link rel="stylesheet" href="/page-campaign-form/css/index.css">
     <!--end::custom css for this page-->
     <script>
         const basepath = "{{.Basepath}}";
@@ -75,10 +75,10 @@
                                                         <option value="CHANNEL_SHOPEE">Shopee</option>
                                                     </select>
                                                 </div>
-                                                <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
-                                                    class="text-danger"></span>
+                                                <span v-if="errors_channel && errors_channel.date"
+                                                    v-text="errors_channel.date" class="text-danger"></span>
                                             </div>
-                                            <div class="fv-row">
+                                            <!-- <div class="fv-row">
                                                 <label class="required fw-semibold fs-4 mb-2">วันที่</label>
                                                 <div class="input-group w-100" id="kt_td_picker_simple"
                                                     data-td-target-input="nearest" data-td-target-toggle="nearest">
@@ -93,12 +93,13 @@
                                                 </div>
                                                 <span v-if="errors_date && errors_date.date" v-text="errors_date.date"
                                                     class="text-danger"></span>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="d-flex justify-content-end align-items-center gap-5"
                                             v-if="value_channel">
                                             <div>
-                                                <button class="btn btn-primary" @click="addAds">เพิ่ม <span v-text="value_channel"></span></button>
+                                                <button class="btn btn-primary" @click="addAds">เพิ่ม <span
+                                                        v-text="value_channel"></span></button>
                                             </div>
                                             <div v-if="dataAds.length > 0">
                                                 <button class="btn btn-success w-100px"
@@ -145,48 +146,48 @@
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-100 "
-                                                                    v-model="item.name"
-                                                                    :class="{'border-danger': errors[index]?.name}" />
+                                                                    v-model="item.campaign_name"
+                                                                    :class="{'border-danger': errors[index]?.campaign_name}" />
                                                             </div>
                                                         </td>
-                                                        <template v-for="(list, IdxList) in dataShop" :key="IdxList">
+                                                        <template v-for="(list, IdxList) in item.details"
+                                                            :key="IdxList">
                                                             <td class="align-middle min-w-100px text-break">
                                                                 <div
                                                                     class="d-flex justify-content-center align-items-center">
-                                                                    <select class="form-select" data-control="select2"
-                                                                        data-hide-search="true"
+                                                                    <select class="form-select text-center"
+                                                                        data-control="select2" data-hide-search="true"
                                                                         :id="'select_status_shop_'+index+'_'+IdxList"
                                                                         :name="'select_status_shop_'+index+'_'+IdxList"
                                                                         data-placeholder="Select Status">
                                                                         <option></option>
-                                                                        <option value="yes">
+                                                                        <option value="true">
                                                                             Yes</option>
-                                                                        <option value="no">
+                                                                        <option value="false">
                                                                             No</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
                                                         </template>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle min-w-100px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
-                                                                    @input="handleInputN(item.total_cost, index, 'total_cost')"
-                                                                    @keyup.enter="focusNext('total_cost', index + 1)"
-                                                                    v-model="item.total_cost"
-                                                                    :ref="'total_cost_' + index"
-                                                                    :class="{'border-danger': errors[index]?.total_cost}" />
+                                                                <input class="form-control" placeholder="Pick a date"
+                                                                    :id="'kt_datepicker_start_'+index" />
                                                             </div>
+                                                            <span v-if="errors[index] && errors[index].start_date"
+                                                                v-text="errors[index].start_date"
+                                                                class="text-danger"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle min-w-100px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
-                                                                <input type="text" class="form-control w-150px text-end"
-                                                                    @keyup.enter="focusNext('budget', index + 1)"
-                                                                    @input="handleInputN(item.budget, index, 'budget')"
-                                                                    v-model="item.budget" :ref="'budget_' + index"
-                                                                    :class="{'border-danger': errors[index]?.budget}" />
+                                                                <input class="form-control" placeholder="Pick a date"
+                                                                    :id="'kt_datepicker_end_'+index" />
                                                             </div>
+                                                            <span v-if="errors[index] && errors[index].end_date"
+                                                                v-text="errors[index].end_date"
+                                                                class="text-danger"></span>
                                                         </td>
                                                         <td class="align-middle min-w-150px text-break text-center">
                                                             <div
@@ -197,11 +198,11 @@
                                                                     :name="'select_type_shop_'+index"
                                                                     data-placeholder="เลือก Type">
                                                                     <option></option>
-                                                                    <option value="campaign">
+                                                                    <option value="Campaign">
                                                                         Campaign</option>
-                                                                    <option value="coupon">
+                                                                    <option value="Coupon">
                                                                         Coupon</option>
-                                                                    <option value="live">
+                                                                    <option value="Live">
                                                                         Live</option>
                                                                 </select>
                                                             </div>
@@ -247,7 +248,7 @@
     window.pageAction = {{.page_action }};
 </script>
 {{- template "resource-js" -}}
-<script src="/page-campaign-tt/js/services.js" type="module"> </script>
-<script src="/page-campaign-tt/js/index.js" type="module"> </script>
+<script src="/page-campaign-form/js/services.js" type="module"> </script>
+<script src="/page-campaign-form/js/index.js" type="module"> </script>
 
 </html>
