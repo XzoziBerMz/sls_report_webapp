@@ -192,7 +192,7 @@
             addAds() {
                 const self = this;
                 let data = {
-                    "p_date": "",
+                    "p_date": self.valueDate_time,
                     "ads_tiktok_cost": "",
                     "tiktok": "",
                     "ads_shopee_cost": "",
@@ -297,6 +297,7 @@
                         data: self.dataAds || []
                     }
                     dataAds.data.forEach((data, index) => {
+                        data.valueDate_time = self.valueDate_time;
                         data.ads_tiktok_cost = Number(data.ads_tiktok_cost) || 0;
                         data.tiktok = Number(data.tiktok) || 0;
                         data.ads_shopee_cost = Number(data.ads_shopee_cost) || 0;
