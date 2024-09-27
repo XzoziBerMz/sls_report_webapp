@@ -52,11 +52,8 @@
             total_cost() {
                 return this.dataAds.reduce((sum, item) => {
                     return sum +
-                        (parseFloat(item.ads_tiktok_cost) || 0) +
                         (parseFloat(item.tiktok) || 0) +
-                        (parseFloat(item.ads_shopee_cost) || 0) +
                         (parseFloat(item.shopee) || 0) +
-                        (parseFloat(item.ads_lazada_cost) || 0) +
                         (parseFloat(item.lazada) || 0);
                 }, 0);
             }
