@@ -49,7 +49,7 @@
             }
         },
         computed: {
-            total_cost() {
+            total_cost(index) {
                 return this.dataAds.reduce((sum, item) => {
                     return sum +
                         (parseFloat(item.tiktok) || 0) +
@@ -232,11 +232,19 @@
             deleteAds(index) {
                 this.dataAds.splice(index, 1);
             },
+            calculateTotal(item) {
+                return (parseFloat(item.tiktok) || 0) +
+                    (parseFloat(item.shopee) || 0) +
+                    (parseFloat(item.lazada) || 0);
+            },
             formatNumber(number) {
-                if (typeof number === 'number') {
-                    return number.toLocaleString(); // Format number with commas
+                if (isNaN(number) || !isFinite(number)) {
+                    return "0"; // แสดงค่าเป็น 0
                 }
-                return number; // Return as is if not a number
+                if (typeof number === 'number') {
+                    return number.toLocaleString(); // จัดรูปแบบตัวเลขให้มีคอมม่า
+                }
+                return number;
             },
             validateForm() {
                 this.errors = {};

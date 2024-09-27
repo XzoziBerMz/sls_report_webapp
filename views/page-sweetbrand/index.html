@@ -219,7 +219,8 @@
                                                         <td class="align-middle min-w-100px text-break text-center">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center gap-5">
-                                                                <span v-text="formatNumber(total_cost)"></span>
+                                                                <!-- <span v-text="formatNumber(total_cost)"></span> -->
+                                                                <span v-text="formatNumber(calculateTotal(item))"></span>
                                                                 <!-- <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.lazada, index, 'lazada')"
                                                                     @keyup.enter="focusNext('lazada', index + 1)"
