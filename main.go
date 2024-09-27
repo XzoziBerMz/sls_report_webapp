@@ -55,6 +55,7 @@ func main() {
 	app.Get("/campaign-form", render.CampaignFormPage)
 	app.Get("/campaign-report", render.CampaignReportPage)
 	app.Get("/sweetbrand-form", render.SweetbrandFormPage)
+	app.Get("/sweetbrand-report", render.SweetbrandReportPage)
 	app.Get("/chat", render.ChatPage)
 	// app.Post("/get-pokemon", handlers.GetPokemonApiHandler)
 	app.Get("/dashboard", render.DashboardNewPage)
