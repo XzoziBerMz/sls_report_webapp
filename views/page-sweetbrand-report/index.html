@@ -39,60 +39,79 @@
                     <div class="d-flex flex-column flex-column-fluid">
                         <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
                             <div id="kt_app_toolbar_container" class="app-container container-fluid">
-                                <h1 class="fs-1 fw-bolder">รายงาน น้ำตาล</h1>
+                                <h1 class="fs-1 fw-bolder">รายงาน Product Campaign</h1>
                                 <div class="card p-10 mt-3 w-100">
-                                    <div class="d-flex justify-content-end gap-5">
-
-                                        <div class="d-flex gap-5">
-                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
-                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                <div>
-                                                    <span class="fs-14  align-middle"
-                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
-                                                </div>
-                                                <input id="kt_td_picker_start_input" type="text"
-                                                    class="form-control h-40px w-200px"
-                                                    data-td-target="#kt_td_picker_start" />
-                                                <span class="input-group-text h-40px"
-                                                    data-td-target="#kt_td_picker_basic"
-                                                    data-td-toggle="datetimepicker">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span
-                                                            class="path1"></span><span class="path2"></span></i>
-                                                </span>
-                                            </div>
-
-                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
-                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                                <div>
-                                                    <span class="fs-14  align-middle"
-                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
-                                                </div>
-                                                <input id="kt_td_picker_end_input" type="text"
-                                                    class="form-control h-40px w-200px"
-                                                    data-td-target="#kt_td_picker_end" />
-                                                <span class="input-group-text h-40px"
-                                                    data-td-target="#kt_td_picker_basic"
-                                                    data-td-toggle="datetimepicker">
-                                                    <i class="ki-duotone ki-calendar fs-2"><span
-                                                            class="path1"></span><span class="path2"></span></i>
-                                                </span>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <label class="fw-semibold fs-4 mb-2">สินค้า</label>
+                                            <div>
+                                                <select class="form-select w-300px" data-control="select2"
+                                                    id="select_product" name="select_product" data-hide-search="true"
+                                                    data-placeholder="เลือก สินค้า" multiple="multiple">
+                                                    <option></option>
+                                                    <template v-for="item in dataProduct">
+                                                            <option :value="item.id" v-text="item.product_name"></option>
+                                                    </template>
+                                                </select>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-end gap-5">
 
-                                        <div class="position-relative">
-                                            <div class="input-container">
-                                                <input type="text" class="form-control form-control-5 form-control-lg"
-                                                    v-model="serach_value" @blur="handleBlur()"
-                                                    @keyup.enter="handleSearch" placeholder="ค้นหา.." />
-                                                <i class="bi bi-search" @click="handleSearch"></i>
+                                            <div class="d-flex gap-5">
+                                                <div class="w-350px input-group align-items-center"
+                                                    id="kt_td_picker_start" data-td-target-input="nearest"
+                                                    data-td-target-toggle="nearest">
+                                                    <div>
+                                                        <span class="fs-14  align-middle"
+                                                            style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                    </div>
+                                                    <input id="kt_td_picker_start_input" type="text"
+                                                        class="form-control h-40px w-200px"
+                                                        data-td-target="#kt_td_picker_start" />
+                                                    <span class="input-group-text h-40px"
+                                                        data-td-target="#kt_td_picker_basic"
+                                                        data-td-toggle="datetimepicker">
+                                                        <i class="ki-duotone ki-calendar fs-2"><span
+                                                                class="path1"></span><span class="path2"></span></i>
+                                                    </span>
+                                                </div>
+
+                                                <div class="w-350px input-group align-items-center"
+                                                    id="kt_td_picker_end" data-td-target-input="nearest"
+                                                    data-td-target-toggle="nearest">
+                                                    <div>
+                                                        <span class="fs-14  align-middle"
+                                                            style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                    </div>
+                                                    <input id="kt_td_picker_end_input" type="text"
+                                                        class="form-control h-40px w-200px"
+                                                        data-td-target="#kt_td_picker_end" />
+                                                    <span class="input-group-text h-40px"
+                                                        data-td-target="#kt_td_picker_basic"
+                                                        data-td-toggle="datetimepicker">
+                                                        <i class="ki-duotone ki-calendar fs-2"><span
+                                                                class="path1"></span><span class="path2"></span></i>
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
 
+                                            <div class="position-relative">
+                                                <div class="input-container">
+                                                    <input type="text"
+                                                        class="form-control form-control-5 form-control-lg"
+                                                        v-model="serach_value" @blur="handleBlur()"
+                                                        @keyup.enter="handleSearch" placeholder="ค้นหา.." />
+                                                    <i class="bi bi-search" @click="handleSearch"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div class="table-responsive border rounded-4 mt-3">
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <thead>
                                                 <tr class="fw-bold">
+                                                    <td></td>
                                                     <td></td>
                                                     <td class="text-center">
                                                         <span v-text="formatNumber(TotalAdsTiktok)"></span>
@@ -113,7 +132,8 @@
                                                         <span v-text="formatNumber(TotalLazada)"></span>
                                                     </td>
                                                     <td class="text-center">
-                                                        <span v-text="formatNumber(TotalTiktok+TotalShopee+TotalLazada)"></span>
+                                                        <span
+                                                            v-text="formatNumber(TotalTiktok+TotalShopee+TotalLazada)"></span>
                                                     </td>
                                                 </tr>
                                                 <tr class="fw-bold fs-5">
@@ -124,6 +144,17 @@
                                                             <span>วันที่</span>
                                                             <i class="bi-chevron-down"
                                                                 :class="getSortIcon('p_date')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-100px align-middle">
+                                                        <div @click="sortTable('product_id')"
+                                                            class="d-flex justify-content-around align-items-center pointer">
+                                                            <i class="bi-bag"></i>
+                                                            <div class="row ms-2">
+                                                                <span>สินค้า</span>
+                                                            </div>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('product_id')"></i>
                                                         </div>
                                                     </th>
                                                     <th class="min-w-100px align-middle">
@@ -203,6 +234,9 @@
                                                         <td class="align-middle min-w-100px text-break">
                                                             <span v-text="utilsConvDate(item.p_date)"></span>
                                                         </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <span v-text="item.product_detail?.product_name"></span>
+                                                        </td>
                                                         <td class="align-middle min-w-100px text-break text-center">
                                                             <span v-text="formatNumber(item.ads_tiktok_cost)"></span>
                                                         </td>
@@ -222,7 +256,8 @@
                                                             <span v-text="formatNumber(item.lazada)"></span>
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break text-center">
-                                                            <span v-text="formatNumber(item.tiktok + item.shopee + item.lazada)"></span>
+                                                            <span
+                                                                v-text="formatNumber(item.tiktok + item.shopee + item.lazada)"></span>
                                                         </td>
                                                     </tr>
                                                 </template>

@@ -19,6 +19,7 @@
                 dataAds: [
                     {
                         "p_date": "",
+                        "product_id": "",
                         "ads_tiktok_cost": '',
                         "tiktok": '',
                         "ads_shopee_cost": '',
@@ -93,12 +94,12 @@
                         // self.set_date_time.setDate(item.p_date)
                     })
 
-                    // try {
-                    //     const req = await services.getProduct(self.token_header)
-                    //     self.dataProduct = req.data.data || []
-                    // } catch (error) {
-                    //     console.log("🚀 ~ init ~ error:", error)
-                    // }
+                    try {
+                        const req = await services.getProduct(self.token_header)
+                        self.dataProduct = req.data.data || []
+                    } catch (error) {
+                        console.log("🚀 ~ init ~ error:", error)
+                    }
                     // try {
                     //     let data = {}
                     //     const req = await services.getShop(data, self.token_header)
@@ -134,21 +135,21 @@
                     });
 
                     self.$nextTick(() => {
-
+                        console.log('a;sldkasld', self.dataProduct)
                         self.dataAds.forEach((item, index) => {
-                            const selectorPayment = '#select_status_' + index;
+                            const selectorPayment = '#select_product_' + index;
                             if (!$(selectorPayment).data('select2')) {
                                 $(selectorPayment).select2({
-                                    placeholder: "Select Status",
+                                    placeholder: "Select Product",
                                     width: '100%',
-                                    data: self.data_status.map(
-                                        (item) => ({ id: item.id, text: item.name })
+                                    data: self.dataProduct.map(
+                                        (item) => ({ id: item.id, text: item.product_name })
                                     ),
                                 });
                             }
                             $(selectorPayment).on("change.custom", async function () {
                                 const selectedValue = $(this).val(); // Get the selected value
-                                item.status = selectedValue || 10
+                                item.product_id = selectedValue || 10
                             })
                         })
                     })
@@ -190,6 +191,7 @@
                 const self = this;
                 let data = {
                     "p_date": self.valueDate_time,
+                    "product_id": "",
                     "ads_tiktok_cost": "",
                     "tiktok": "",
                     "ads_shopee_cost": "",
@@ -202,19 +204,19 @@
                 self.$nextTick(() => {
 
                     self.dataAds.forEach((item, index) => {
-                        const selectorPayment = '#select_status_' + index;
+                        const selectorPayment = '#select_product_' + index;
                         if (!$(selectorPayment).data('select2')) {
                             $(selectorPayment).select2({
-                                placeholder: "Select Status",
+                                placeholder: "Select Product",
                                 width: '100%',
-                                data: self.data_status.map(
-                                    (item) => ({ id: item.id, text: item.name })
+                                data: self.dataProduct.map(
+                                    (item) => ({ id: item.id, text: item.product_name })
                                 ),
                             });
                         }
                         $(selectorPayment).on("change.custom", async function () {
                             const selectedValue = $(this).val(); // Get the selected value
-                            item.status = selectedValue || 10
+                            item.product_id = selectedValue || 10
                         })
 
                         const selectorDate = '#kt_td_picker_start_input_' + index;
@@ -255,6 +257,10 @@
                     let error = {};
                     let error_date = {};
 
+                    if (item.product_id === "") {
+                        error.product = 'กรุณาเลือก สินค้า';
+                        isValid = false;
+                    }
                     if (item.ads_tiktok_cost === "") {
                         error.ads_tiktok_cost = true;
                         isValid = false;
@@ -283,7 +289,7 @@
                         error_date.date = "กรุณาเลือก วันที่";
                         isValid = false;
                     }
-                   
+
                     this.errors[index] = error;
                     this.errors_date = error_date;
                 });
@@ -292,6 +298,7 @@
             },
             async savePage() {
                 const self = this;
+                console.log(self.dataAds)
                 if (self.validateForm()) {
                     const currentDate = new Date();
                     currentDate.setDate(currentDate.getDate() + 1);

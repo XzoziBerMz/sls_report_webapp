@@ -13,6 +13,14 @@
       headers: { "x-auth-token": token },
     });
   }
+  function getProduct(token) {
+    return axios({
+      method: 'get',
+      url: basepath + `/api/v1/ads/sweet/brand/product/filter`,
+      // data: {...body},
+      headers: { "x-auth-token": token },
+    });
+  }
   function getmanual(token) {
     return axios({
       method: "get",
@@ -45,7 +53,7 @@
 
 
   const services = {
-   
+    getProduct,
     getOrderManual,
     getmanual,
     getChannelAll,

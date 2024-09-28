@@ -79,7 +79,8 @@
                                         </div>
                                         <div class="d-flex justify-content-end align-items-center gap-5">
                                             <div>
-                                                <button class="btn btn-primary" @click="addAds">เพิ่ม Sweetbrand</button>
+                                                <button class="btn btn-primary" @click="addAds">เพิ่ม
+                                                    Sweetbrand</button>
                                             </div>
                                             <div v-if="dataAds.length > 0">
                                                 <button class="btn btn-success w-100px"
@@ -91,6 +92,14 @@
                                         <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
                                             <thead>
                                                 <tr class="fw-bold fs-5">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div
+                                                            class="d-flex justify-content-center gap-5 align-items-center pointer">
+                                                            <div class="row ms-2">
+                                                                <span>สินค้า</span>
+                                                            </div>
+                                                        </div>
+                                                    </th>
                                                     <th class="min-w-100px align-middle">
                                                         <div
                                                             class="d-flex justify-content-center gap-5 align-items-center pointer">
@@ -155,6 +164,23 @@
                                                         <td class="align-middle min-w-100px text-break">
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center">
+                                                                <select class="form-select" data-control="select2"
+                                                                    :id="'select_product_'+index"
+                                                                    :name="'select_product_'+index"
+                                                                    data-placeholder="Select Product">
+                                                                    <option value=""></option>
+                                                                    <template v-for="product in dataProduct">
+                                                                            <option :value="product.id" v-text="product.product_name"></option>
+                                                                    </template>
+                                                                </select>
+                                                            </div>
+                                                            <span v-if="errors[index] && errors[index].product"
+                                                                v-text="errors[index].product"
+                                                                class="text-danger"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center">
                                                                 <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.ads_tiktok_cost, index, 'ads_tiktok_cost')"
                                                                     @keyup.enter="focusNext('ads_tiktok_cost', index + 1)"
@@ -211,8 +237,7 @@
                                                                 <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.lazada, index, 'lazada')"
                                                                     @keyup.enter="focusNext('lazada', index + 1)"
-                                                                    v-model="item.lazada"
-                                                                    :ref="'lazada_' + index"
+                                                                    v-model="item.lazada" :ref="'lazada_' + index"
                                                                     :class="{'border-danger': errors[index]?.lazada}" />
                                                             </div>
                                                         </td>
@@ -220,7 +245,8 @@
                                                             <div
                                                                 class="d-flex justify-content-center align-items-center gap-5">
                                                                 <!-- <span v-text="formatNumber(total_cost)"></span> -->
-                                                                <span v-text="formatNumber(calculateTotal(item))"></span>
+                                                                <span
+                                                                    v-text="formatNumber(calculateTotal(item))"></span>
                                                                 <!-- <input type="text" class="form-control w-150px text-end"
                                                                     @input="handleInputN(item.lazada, index, 'lazada')"
                                                                     @keyup.enter="focusNext('lazada', index + 1)"

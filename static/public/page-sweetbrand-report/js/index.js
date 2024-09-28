@@ -18,6 +18,7 @@
                 filtered: [],
                 dataOrder: [],
                 data_ads: [],
+                dataProduct: [],
                 perPage: 10,
                 totalPages: 1,
                 sortField: 'user',
@@ -37,6 +38,7 @@
                 token_header: token_header || '',
                 data_products_2: [],
                 filter_products_2: [],
+                valueProduct: [],
             }
         },
 
@@ -90,6 +92,13 @@
             ...window.webUtils.method || {},
             async init() {
                 let self = this
+                try {
+                    const req = await services.getProduct(self.token_header)
+                    self.dataProduct = req.data.data || []
+                } catch (error) {
+                    console.log("🚀 ~ init ~ error:", error)
+                }
+
                 await self.loadData();
 
                 const fromDatePicker = $("#kt_td_picker_start_input").flatpickr({
@@ -130,6 +139,13 @@
                     }
                 });
 
+                $('#select_product').on("change.custom", async function () {
+                    const values = $(this).select2("data") || [];
+                    const selectedNames = values.map((item) => item.id);
+                    self.valueProduct = selectedNames || []
+                    await self.loadData();
+                });
+
                 $('#page_size_select').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.perPage = selectedValue || 10
@@ -159,6 +175,7 @@
                         "start_at": self.startFormDate,
                         "end_at": self.endFormDate,
                         "search": self.serach_value,
+                        "product_ids": self.valueProduct || [],
                         "page": parseInt(self.currentPages),
                         "per_page": parseInt(self.perPage),
                         "order": self.column_order_by,

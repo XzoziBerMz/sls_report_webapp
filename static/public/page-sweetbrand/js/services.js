@@ -1,7 +1,7 @@
 
 (function ($, window, axios) {
     const endpoint = {
-        get_product: `/api/v1/product/list`,
+        get_product: `/api/v1/ads/sweet/brand/product/list`,
         get_shop: `/api/v1/shop/list`,
         insert_data: `/api/v1/ads/sweet/brand/insert`,
         update_data: `/api/v1/ads/update`,
