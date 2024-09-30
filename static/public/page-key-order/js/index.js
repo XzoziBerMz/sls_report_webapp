@@ -40,6 +40,7 @@
                 filter_products_2: [],
                 filter_channel_2: [],
                 filter_users_2: [],
+                SelectTotalItems: 0
             }
         },
 
@@ -209,6 +210,13 @@
                         await self.loadData();
                     }
                 });
+
+                $('#page_size_select').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.perPage = selectedValue || 10
+                    self.currentPages = 1
+                    await self.loadData();
+                })
                 // self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
                 //     static: true,
                 //     enableTime: true,
@@ -264,8 +272,8 @@
                         chanel: self.chanel || '',
                         note: self.note || '',
                         user: self.user || '',
-                        "start_at":  self.startFormDate,
-                        "end_at":self.endFormDate,
+                        "start_at": self.startFormDate,
+                        "end_at": self.endFormDate,
                         page: self.currentPages,
                         per_page: +self.perPage,
                         "order": self.column_order_by,
@@ -278,6 +286,7 @@
                     const response = responseGetOrderManual?.data || {};
                     this.dataOrderManual = response.data || [];
                     const totalItems = response.total || 0;
+                    self.SelectTotalItems = response.total || 0;
                     this.totalPages = Math.ceil(totalItems / +this.perPage);
                     closeLoading()
                 } catch (error) {

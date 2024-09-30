@@ -22,6 +22,7 @@
         column_order_by: "p_timestamp",
         order_sort: "desc",
         data_shop: [],
+        SelectTotalItems: 0
       };
     },
     computed: {
@@ -170,6 +171,14 @@
             }
           },
         });
+
+        $('#page_size_add').on("change.custom", async function () {
+          const selectedValue = $(this).val(); // Get the selected value
+          self.itemsPerPage = selectedValue || 10
+          self.currentPages = 1
+          await self.loadDataAdd();
+        })
+
       },
       changePage(page) {
         if (page < 1 || page > this.totalPages) return;
@@ -266,15 +275,15 @@
       },
     },
     watch: {
-      itemsPerPage: {
-        deep: true,
-        async handler(newValue) {
-          console.log("🚀 ~ handler ~ newValue:", newValue);
-          this.currentPages = 1;
+      // itemsPerPage: {
+      //   deep: true,
+      //   async handler(newValue) {
+      //     console.log("🚀 ~ handler ~ newValue:", newValue);
+      //     this.currentPages = 1;
 
-          await this.loadDataOrder();
-        },
-      },
+      //     await this.loadDataOrder();
+      //   },
+      // },
     },
     mounted: function () {
       let self = this;

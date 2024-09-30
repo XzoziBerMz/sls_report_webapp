@@ -41,7 +41,8 @@
                 filter_products_2: [],
                 filter_channel_2: [],
                 filter_users_2: [],
-                data_shop_select: []
+                data_shop_select: [],
+                SelectTotalItems: 0
             }
         },
 
@@ -121,6 +122,13 @@
                         await self.loadData();
                     }
                 });
+
+                $('#page_size_select').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.perPage = selectedValue || 10
+                    self.currentPages = 1
+                    await self.loadData();
+                })
 
                 try {
                     // let data = {};
@@ -210,7 +218,7 @@
                         "search": "",
                         "shops": self.serach_value,
                         "page": self.currentPages,
-                        "per_page": self.perPage,
+                        "per_page": parseInt(self.perPage),
                         "order": self.column_order_by,
                         "order_by": self.order_sort
                     };
@@ -218,6 +226,7 @@
                     const response = responseGetOrderManual?.data || {};
                     self.dataOrderManual = response.data || [];
                     const totalItems = response.total || 0;
+                    self.SelectTotalItems = response.total || 0;
                     self.totalPages = Math.ceil(totalItems / +self.perPage);
                     closeLoading();
                 } catch (error) {
@@ -379,10 +388,10 @@
         mounted: function () {
             const self = this
 
+            self.init();
             self.loadData();
             self.DefaultData();
 
-            self.init();
             console.log("Component mounted and data loaded");
         }
     });

@@ -37,6 +37,7 @@
                 token_header: token_header || '',
                 data_products_2: [],
                 filter_products_2: [],
+                SelectTotalItems: 0
             }
         },
 
@@ -127,6 +128,7 @@
                 $('#page_size_select').on("change.custom", async function () {
                     const selectedValue = $(this).val(); // Get the selected value
                     self.perPage = selectedValue || 10
+                    self.currentPages = 1
                     await self.loadData();
                 })
             },
@@ -163,6 +165,7 @@
                     const response = responseGetOrderManual?.data || {};
                     self.data_ads = response.data || [];
                     const totalItems = response.total || 0;
+                    self.SelectTotalItems = response.total || 0;
                     self.totalPages = Math.ceil(totalItems / +self.perPage);
                     closeLoading();
                 } catch (error) {

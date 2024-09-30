@@ -178,12 +178,13 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <select class="form-select w-80px h-35px" v-model="perPage"
-                                                @change="loadData">
+                                            <select class="form-select w-100px h-35px" id="page_size_select"
+                                                data-hide-search="true" data-control="select2" name="page_size_select">
                                                 <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
+                                                <option :value="SelectTotalItems">ทั้งหมด</option>
                                             </select>
 
                                         </div>

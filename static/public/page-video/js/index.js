@@ -107,6 +107,7 @@
                     $('#page_size_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsPerPage = selectedValue || 10
+                        self.currentPages = 1
                         await self.loadDataOrder();
                     })
                 } catch (error) {
@@ -334,15 +335,7 @@
 
         },
         watch: {
-            itemsPerPage: {
-                deep: true,
-                async handler(newValue) {
-                    console.log("🚀 ~ handler ~ newValue:", newValue)
-                    this.currentPages = 1
-
-                    await this.loadDataOrder();
-                }
-            }
+           
         },
         mounted: function () {
             let self = this

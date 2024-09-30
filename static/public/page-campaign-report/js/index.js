@@ -143,7 +143,7 @@
                     $('#page_size_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsPerPage = selectedValue || 10
-                        self.currentPage = 1
+                        self.currentPages = 1
                         await self.loadData();
                     })
 

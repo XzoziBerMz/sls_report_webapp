@@ -144,7 +144,8 @@
                                                             <div class="d-flex w-100 justify-content-between align-items-center"
                                                                 @click="sortTable('user')">
                                                                 <span>ผู้ลงบันทึก</span>
-                                                                <i class="bi-chevron-down" :class="getSortIcon('user')"></i>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('user')"></i>
                                                             </div>
                                                             <div class="flex-shrink-1">
                                                                 <i @click="filterModal('ผู้ลงบันทึก')"
@@ -251,13 +252,13 @@
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <div>
-                                            <select class="form-select w-80px h-35px" data-hide-search="true"
-                                                id="page_size_select" name="page_size_select" data-control="select2"
-                                                v-model="itemsPerPage">
-                                                <option value="10" selected>10</option>
+                                            <select class="form-select w-100px h-35px" data-hide-search="true"
+                                                id="page_size_select" name="page_size_select" data-control="select2">
+                                                <option value="10">10</option>
                                                 <option value="20">20</option>
                                                 <option value="50">50</option>
                                                 <option value="100">100</option>
+                                                <option :value="totalItems">ทั้งหมด</option>
                                             </select>
                                         </div>
                                         <ul class="pagination">
