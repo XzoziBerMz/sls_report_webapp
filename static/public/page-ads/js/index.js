@@ -300,13 +300,26 @@
                         },
                     });
 
-                    const currentDate = new Date();
-                    const formattedDate = currentDate
-                        .toISOString()
-                        .slice(0, 10)
-                        .replace("T", " ");
-                    self.startDate = formattedDate;
-                    self.endDate = formattedDate;
+                    let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                    currentDateStart.setDate(currentDateStart.getDate() - 1); // ย้อนวันที่ 1 วัน
+
+                    let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                    // ถ้า endDate ไม่มีค่า ใช้วันที่ปัจจุบัน
+                    let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                    currentDateEnd.setDate(currentDateEnd.getDate() - 1); // ย้อนวันที่ 1 วัน
+                    let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+
+                    // const currentDate = new Date();
+                    // currentDate.setDate(currentDate.getDate() - 1);
+                    // const formattedDate = currentDate
+                    //     .toISOString()
+                    //     .slice(0, 10)
+                    //     .replace("T", " ");
+                    self.startDate = formattedStartDate;
+                    self.endDate = formattedEndDate;
                 }
             },
             async DefaultData() {
@@ -471,34 +484,50 @@
                 const self = this;
                 try {
                     showLoading();
-                    let formattedDatestart =
-                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
-                    let formattedDateend =
-                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let formattedStartDate = null;
+                    let formattedEndDate = null;
 
-                    // const statusName = self.filter_ads_tt.map((item) => item.name);
+                    if (self.startDate_status === false) {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        currentDateStart.setDate(currentDateStart.getDate() - 1); // ย้อนวันที่ 1 วัน
+
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        // ถ้า endDate ไม่มีค่า ใช้วันที่ปัจจุบัน
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        currentDateEnd.setDate(currentDateEnd.getDate() - 1); // ย้อนวันที่ 1 วัน
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    } else {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    }
+
                     const statusName = self.filter_ads_tt.length > 0 ? self.filter_ads_tt[0].name : null;
 
                     let data = {
                         "search": "",
-                        // "ref_default": 1,
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
+                        "start_at": formattedStartDate || self.startDate,
+                        "end_at": formattedEndDate || self.endDate,
                         "status": statusName || "",
                         "page": self.currentPages,
                         "per_page": parseInt(self.itemsPerPage) || 10,
                         "order": self.column_order_by,
                         "order_by": self.order_sort
                     }
-                    const response = await services.getAdsApi(data, self.token_header)
+
+                    const response = await services.getAdsApi(data, self.token_header);
+
                     if (response.data.code === 200) {
                         self.data_ads = response.data.data || [];
                         self.totalItems = response.data.total;
-                        // console.log(response.data.data)
                         closeLoading();
-
                     }
 
                 } catch (err) {
@@ -513,19 +542,38 @@
                 const self = this;
                 try {
                     showLoading();
-                    let formattedDatestart =
-                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
-                    let formattedDateend =
-                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let formattedStartDate = null;
+                    let formattedEndDate = null;
+
+                    if (self.startDate_status === false) {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        currentDateStart.setDate(currentDateStart.getDate() - 1); // ย้อนวันที่ 1 วัน
+
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        // ถ้า endDate ไม่มีค่า ใช้วันที่ปัจจุบัน
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        currentDateEnd.setDate(currentDateEnd.getDate() - 1); // ย้อนวันที่ 1 วัน
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    } else {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    }
+
                     const productNames = self.filter_cost_shop.map((item) => item.name);
                     let data = {
                         "search": "",
                         // "ref_default": 1,
                         "shops": productNames || [],
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
+                        "start_at": formattedStartDate || self.startDate,
+                        "end_at": formattedEndDate || self.endDate,
                         "page": self.currentCostPages,
                         "per_page": parseInt(self.itemsCostPerPage) || 10,
                         "order": self.column_cost_order_by,
@@ -552,20 +600,38 @@
                 const self = this;
                 try {
                     showLoading();
-                    let formattedDatestart =
-                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
-                    let formattedDateend =
-                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let formattedStartDate = null;
+                    let formattedEndDate = null;
+
+                    if (self.startDate_status === false) {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        currentDateStart.setDate(currentDateStart.getDate() - 1); // ย้อนวันที่ 1 วัน
+
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        // ถ้า endDate ไม่มีค่า ใช้วันที่ปัจจุบัน
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        currentDateEnd.setDate(currentDateEnd.getDate() - 1); // ย้อนวันที่ 1 วัน
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    } else {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    }
 
                     const productNames = self.filter_shop_tt.map((item) => item.name);
                     let data = {
                         "search": "",
                         // "ref_default": 1,
                         "shops": productNames || [],
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
+                        "start_at": formattedStartDate || self.startDate,
+                        "end_at": formattedEndDate || self.endDate,
                         "page": self.currentTiktokPages,
                         "per_page": parseInt(self.itemsTiktokPerPage) || 10,
                         "order": self.column_tiktok_order_by,
@@ -592,20 +658,39 @@
                 const self = this;
                 try {
                     showLoading();
-                    let formattedDatestart =
-                        self.startDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedStartDate = `${formattedDatestart} 00:00:00`;
-                    let formattedDateend =
-                        self.endDate || new Date().toISOString().slice(0, 10); // Ensure you have a default value
-                    let formattedEndDate = `${formattedDateend} 23:59:59`;
+                    let formattedStartDate = null;
+                    let formattedEndDate = null;
+
+                    if (self.startDate_status === false) {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        currentDateStart.setDate(currentDateStart.getDate() - 1); // ย้อนวันที่ 1 วัน
+
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        // ถ้า endDate ไม่มีค่า ใช้วันที่ปัจจุบัน
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        currentDateEnd.setDate(currentDateEnd.getDate() - 1); // ย้อนวันที่ 1 วัน
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    } else {
+                        let currentDateStart = self.startDate ? new Date(self.startDate) : new Date();
+                        let formattedDatestart = currentDateStart.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedStartDate = `${formattedDatestart} 00:00:00`;
+
+                        let currentDateEnd = self.endDate ? new Date(self.endDate) : new Date();
+                        let formattedDateend = currentDateEnd.toISOString().slice(0, 10); // ฟอร์แมต YYYY-MM-DD
+                        formattedEndDate = `${formattedDateend} 23:59:59`;
+                    }
+
 
                     const statusName = self.filter_ads_fb.length > 0 ? self.filter_ads_fb[0].name : null;
                     let data = {
                         "search": "",
                         // "ref_default": 1,
                         "status": statusName || "",
-                        "start_at": formattedStartDate || formattedDate,
-                        "end_at": formattedEndDate || formattedDate,
+                        "start_at": formattedStartDate || self.startDate,
+                        "end_at": formattedEndDate || self.endDate,
                         "page": self.currentFacebookPages,
                         "per_page": parseInt(self.itemsFacebookPerPage) || 10,
                         "order": self.column_facebook_order_by,
