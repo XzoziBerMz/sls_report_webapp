@@ -163,6 +163,11 @@
                 }
                 return number; // Return as is if not a number
             },
+            formatPercentage(ads, total) {
+                if (total === 0) return '0.00%';
+                const percentage = (ads / total) * 100;
+                return percentage.toFixed(2) + '%';
+            },
             async DefaultData() {
                 const self = this;
 
