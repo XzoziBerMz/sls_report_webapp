@@ -133,6 +133,10 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <span
+                                                            v-text="formatNumber(TotalAdsTiktok+TotalAdsShopee+TotalAdsLazada)"></span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span
                                                             v-text="formatNumber(TotalTiktok+TotalShopee+TotalLazada)"></span>
                                                     </td>
                                                     <td class="text-center">
@@ -228,7 +232,10 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle text-center">
-                                                        <span>Total</span>
+                                                        <span>ค่าแอด</span>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle text-center">
+                                                        <span>รายได้รวม</span>
                                                     </th>
                                                     <th class="min-w-200px align-middle text-center">
                                                         <span>เปอร์เซ็นต์</span>
@@ -264,9 +271,13 @@
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break text-center">
                                                             <span
-                                                                v-text="formatNumber(item.tiktok + item.shopee + item.lazada)"></span>
+                                                                v-text="formatNumber(item.ads_tiktok_cost + item.ads_shopee_cost + item.ads_lazada_cost)"></span>
                                                         </td>
                                                         <td class="align-middle min-w-200px text-break text-center">
+                                                            <span
+                                                                v-text="formatNumber(item.tiktok + item.shopee + item.lazada)"></span>
+                                                        </td>
+                                                        <td class="align-middle min-w-100px text-break text-center">
                                                             <span
                                                                 v-text="formatPercentage(item.ads_tiktok_cost + item.ads_shopee_cost + item.ads_lazada_cost, item.tiktok + item.shopee + item.lazada)"></span>
                                                         </td>
