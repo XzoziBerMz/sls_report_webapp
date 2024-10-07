@@ -130,7 +130,8 @@
                                 self.endFormDate = ""; // Reset the variable holding end date
                             }
 
-                            await self.loadDataOrder();
+                            $('#page_size_select').val(10).trigger('change');
+                            // await self.loadDataOrder();
                         }
                     });
 
@@ -148,7 +149,8 @@
                                 self.startFormDate = ""; // Reset the variable holding start date
                             }
 
-                            await self.loadDataOrder();
+                            $('#page_size_select').val(10).trigger('change');
+                            // await self.loadDataOrder();
                         }
                     });
                 }
@@ -324,7 +326,8 @@
                 self.data_users = []
                 $('#filter_model').modal('hide')
 
-                await self.loadDataOrder()
+                $('#page_size_select').val(10).trigger('change');
+                // await self.loadDataOrder()
             },
             closeModalFilter() {
                 $('#filter_model').modal('hide')

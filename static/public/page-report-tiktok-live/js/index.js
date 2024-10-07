@@ -101,7 +101,8 @@
                             self.endFormDate = ""; // Reset the variable holding end date
                         }
 
-                        await self.loadData();
+                        // await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
                     }
                 });
 
@@ -119,7 +120,8 @@
                             self.startFormDate = ""; // Reset the variable holding start date
                         }
 
-                        await self.loadData();
+                        // await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
                     }
                 });
 
@@ -153,7 +155,9 @@
                             const selectedNames = values.map((item) => item.text);
                             console.log("🚀 ~ selectedNames:", selectedNames)
                             self.serach_value = selectedNames;
-                            await self.loadData();
+                            $('#page_size_select').val(10).trigger('change');
+
+                            // await self.loadData();
                         });
                     }
                 } catch (error) {
@@ -374,7 +378,8 @@
                 self.data_users_2 = [];
                 $("#filter_model").modal("hide");
 
-                await self.loadData();
+                $('#page_size_select').val(10).trigger('change');
+                // await self.loadData();
 
             },
             closeModalFilter() {

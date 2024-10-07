@@ -92,7 +92,8 @@
               const selectedNames = values.map((item) => item.text);
               console.log("🚀 ~ selectedNames:", selectedNames)
               self.serach_value = selectedNames;
-              await self.loadDataAdd();
+              $('#page_size_add').val(10).trigger('change');
+              // await self.loadDataAdd();
             });
           }
         } catch (error) {
@@ -138,7 +139,8 @@
               // Set minDate for the end date picker to prevent selecting earlier dates
               self.flatpickr_dp_end_date.set("minDate", self.startDate);
 
-              await self.loadDataAdd();
+              $('#page_size_add').val(10).trigger('change');
+              // await self.loadDataAdd();
             }
           },
         });
@@ -167,7 +169,8 @@
               console.log("🚀 ~ self.endDate:", self.endDate);
               self.endDate_status = true;
 
-              await self.loadDataAdd();
+              $('#page_size_add').val(10).trigger('change');
+              // await self.loadDataAdd();
             }
           },
         });

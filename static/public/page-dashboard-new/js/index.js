@@ -379,7 +379,13 @@
                 self.endDate = ""; // Reset the variable holding end date
               }
 
-              await self.DefaultData();
+              // await self.DefaultData();
+              $('#page_size_select_review_script').val(10).trigger('change');
+              $('#page_size_select_review').val(10).trigger('change');
+              $('#page_size_select_review2').val(10).trigger('change');
+              $('#page_size_select_order').val(10).trigger('change');
+              await self.loadChannel();
+              await self.loadDailySum();
             }
           },
         });
@@ -407,7 +413,13 @@
               self.endDate = `${year}-${month}-${day}`;
               self.endDate_status = true;
 
-              await self.DefaultData();
+              // await self.DefaultData();
+              $('#page_size_select_review_script').val(10).trigger('change');
+              $('#page_size_select_review').val(10).trigger('change');
+              $('#page_size_select_review2').val(10).trigger('change');
+              $('#page_size_select_order').val(10).trigger('change');
+              await self.loadChannel();
+              await self.loadDailySum();
             }
           },
         });
@@ -1182,7 +1194,8 @@
           self.data_users = [];
           $("#filter_model").modal("hide");
 
-          await self.loadDataClip();
+          $('#page_size_select_review_script').val(10).trigger('change');
+          // await self.loadDataClip();
         } else if (self.modal_session === 2) {
           if (self.modal_titles === "ชื่อสินค้า") {
             self.data_products_2.forEach((item) =>
@@ -1202,7 +1215,8 @@
           self.data_users_2 = [];
           $("#filter_model").modal("hide");
 
-          await self.loadDataProductChannel();
+          $('#page_size_select_order').val(10).trigger('change');
+          // await self.loadDataProductChannel();
         } else if (self.modal_session === 3) {
           if (self.modal_titles === "ร้าน") {
             self.data_products_3.forEach((item) =>
@@ -1222,7 +1236,8 @@
           self.data_users_3 = [];
           $("#filter_model").modal("hide");
 
-          await self.loadDataReview();
+          $('#page_size_select_review').val(10).trigger('change');
+          // await self.loadDataReview();
         } else {
           if (self.modal_titles === "ช่องทาง") {
             self.data_channel_4.forEach((item) =>
@@ -1247,7 +1262,8 @@
           self.data_star_4 = [];
           $("#filter_model").modal("hide");
 
-          await self.loadDataReviewTb2();
+          $('#page_size_select_review2').val(10).trigger('change');
+          // await self.loadDataReviewTb2();
         }
       },
 

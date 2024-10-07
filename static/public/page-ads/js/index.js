@@ -212,10 +212,8 @@
                         const selectedValue = $(this).val(); // Get the selected value
                         self.itemsPerPage = selectedValue || 10
                         self.currentPages = 1
-                        console.log("🚀 ~ self.startDate:", self.startDate)
                         self.startDate_status = true
                         await self.getAds();
-                        console.log("🚀 ~ self.startDate (after getAds):", self.startDate)
                     })
                     $('#page_size_cost_select').on("change.custom", async function () {
                         const selectedValue = $(this).val(); // Get the selected value
@@ -273,7 +271,12 @@
                                     self.endDate = ""; // Reset the variable holding end date
                                 }
 
-                                await self.DefaultData();
+                                // await self.DefaultData();
+
+                                $('#page_size_select').val(10).trigger('change');
+                                $('#page_size_cost_select').val(10).trigger('change');
+                                $('#page_size_live_select').val(10).trigger('change');
+                                $('#page_size_facebook_select').val(10).trigger('change');
                             }
                         },
                     });
@@ -301,7 +304,11 @@
                                 self.endDate = `${year}-${month}-${day}`;
                                 self.endDate_status = true;
 
-                                await self.DefaultData();
+                                // await self.DefaultData();
+                                $('#page_size_select').val(10).trigger('change');
+                                $('#page_size_cost_select').val(10).trigger('change');
+                                $('#page_size_live_select').val(10).trigger('change');
+                                $('#page_size_facebook_select').val(10).trigger('change');
                             }
                         },
                     });
@@ -847,7 +854,8 @@
                     self.data_ads_tt = [];
                     $("#filter_model").modal("hide");
 
-                    await self.getAds();
+                    $('#page_size_select').val(10).trigger('change');
+                    // await self.getAds();
                 } else if (self.modal_session === 2) {
                     self.data_cost_shop.forEach((item) =>
                         addOrRemoveItem(self.filter_cost_shop, item)
@@ -855,7 +863,8 @@
                     self.data_cost_shop = [];
                     $("#filter_model").modal("hide");
 
-                    await self.getAdsCost();
+                    $('#page_size_cost_select').val(10).trigger('change');
+                    // await self.getAdsCost();
                 } else if (self.modal_session === 3) {
                     self.data_shop_tt.forEach((item) =>
                         addOrRemoveItem(self.filter_shop_tt, item)
@@ -863,7 +872,8 @@
                     self.data_shop_tt = [];
                     $("#filter_model").modal("hide");
 
-                    await self.getTiktok();
+                    $('#page_size_live_select').val(10).trigger('change');
+                    // await self.getTiktok();
                 } else if (self.modal_session === 4) {
                     self.data_ads_fb.forEach((item) =>
                         addOrRemoveItem(self.filter_ads_fb, item)
@@ -871,7 +881,8 @@
                     self.data_ads_fb = [];
                     $("#filter_model").modal("hide");
 
-                    await self.getFacebook();
+                    $('#page_size_facebook_select').val(10).trigger('change');
+                    // await self.getFacebook();
                 }
             },
             selectCheckValue(selectedIndex, sessionValue) {

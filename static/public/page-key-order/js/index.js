@@ -76,61 +76,7 @@
             ...window.webUtils.method || {},
             async init() {
                 let self = this
-
-                // self.flatpickr_dp_from_date = $("#kt_td_picker_start_input").flatpickr({
-                //     static: true,
-                //     enableTime: false,
-                //     disableMobile: "true",
-                //     dateFormat: "Y-m-d",
-                //     altFormat: "d/m/Y",
-                //     altInput: true,
-                //     maxDate: 'today',
-                //     onChange: async function (selectedDates, dateStr, instance) {
-                //         if (selectedDates.length) {
-                //             const selectedDate = selectedDates[0];
-
-                //             // Format the date to YYYY-MM-DD in local time zone
-                //             const year = selectedDate.getFullYear();
-                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                //             const day = String(selectedDate.getDate()).padStart(2, '0');
-
-                //             self.startDate = `${year}-${month}-${day}`;
-                //             console.log("🚀 ~ self.startDate:", self.startDate);
-                //             self.startDate_status = true;
-
-                //             // Set minDate for the end date picker to prevent selecting earlier dates
-                //             self.flatpickr_dp_end_date.set("minDate", self.startDate);
-
-                //             await self.loadData();
-                //         }
-                //     },
-                // });
-
-                // self.flatpickr_dp_end_date = $("#kt_td_picker_end_input").flatpickr({
-                //     static: true,
-                //     enableTime: false,
-                //     disableMobile: "true",
-                //     dateFormat: "Y-m-d",
-                //     altFormat: "d/m/Y",
-                //     altInput: true,
-                //     maxDate: 'today',
-                //     onChange: async function (selectedDates, dateStr, instance) {
-                //         if (selectedDates.length) {
-                //             const selectedDate = selectedDates[0];
-
-                //             // Format the date to YYYY-MM-DD in local time zone
-                //             const year = selectedDate.getFullYear();
-                //             const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-                //             const day = String(selectedDate.getDate()).padStart(2, '0');
-
-                //             self.endDate = `${year}-${month}-${day}`;
-                //             console.log("🚀 ~ self.endDate:", self.endDate);
-                //             self.endDate_status = true;
-
-                //             await self.loadData();
-                //         }
-                //     },
-                // });
+                await self.loadData();
 
                 const fromDatePicker = $("#kt_td_picker_start_input").flatpickr({
                     dateFormat: "d/m/Y",
@@ -148,7 +94,8 @@
                             self.endFormDate = ""; // Reset the variable holding end date
                         }
 
-                        await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
+                        // await self.loadData();
                     }
                 });
 
@@ -166,9 +113,17 @@
                             self.startFormDate = ""; // Reset the variable holding start date
                         }
 
-                        await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
+                        // await self.loadData();
                     }
                 });
+
+                $('#page_size_select').on("change.custom", async function () {
+                    const selectedValue = $(this).val(); // Get the selected value
+                    self.perPage = selectedValue || 10
+                    self.currentPages = 1
+                    await self.loadData();
+                })
 
             },
             async DefaultData() {
@@ -211,12 +166,7 @@
                     }
                 });
 
-                $('#page_size_select').on("change.custom", async function () {
-                    const selectedValue = $(this).val(); // Get the selected value
-                    self.perPage = selectedValue || 10
-                    self.currentPages = 1
-                    await self.loadData();
-                })
+                
                 // self.flatpickr_dp_from_date = $("#kt_td_picker_basic_input").flatpickr({
                 //     static: true,
                 //     enableTime: true,
@@ -228,24 +178,12 @@
                 //     },
                 // });
             },
-            async DefaultDataTO() {
-                const self = this;
-                // self.flatpickr_dp_to_date = $("#kt_td_picker_basic_input_to").flatpickr({
-                //     static: true,
-                //     enableTime: true,
-                //     disableMobile: "true",
-                //     dateFormat: "d/m/Y",
-                //     onChange: function (selectedDates, dateStr, instance) {
-                //         self.to_date = dateStr; // Update to_date
-                //         self.loadData();         // Trigger data loading
-                //     },
-                // });
-            },
-
+        
             handleSearch() {
                 // Reset pagination to the first page when a new search is triggered
                 this.currentPages = 1;
-                this.loadData();
+                $('#page_size_select').val(10).trigger('change');
+                // this.loadData();
             },
             handleBlur() {
                 // Trigger search when the input loses focus
@@ -436,7 +374,8 @@
                 self.data_users_2 = [];
                 $("#filter_model").modal("hide");
 
-                await self.loadData();
+                $('#page_size_select').val(10).trigger('change');
+                // await self.loadData();
 
             },
             closeModalFilter() {
@@ -448,9 +387,6 @@
 
         },
         mounted: function () {
-            this.loadData();
-            this.DefaultData();
-            this.DefaultDataTO();
             this.init();
             console.log("Component mounted and data loaded");
         }

@@ -118,7 +118,8 @@
                             self.endFormDate = ""; // Reset the variable holding end date
                         }
 
-                        await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
+                        // await self.loadData();
                     }
                 });
 
@@ -136,7 +137,8 @@
                             self.startFormDate = ""; // Reset the variable holding start date
                         }
 
-                        await self.loadData();
+                        $('#page_size_select').val(10).trigger('change');
+                        // await self.loadData();
                     }
                 });
 
@@ -144,7 +146,8 @@
                     const values = $(this).select2("data") || [];
                     const selectedNames = values.map((item) => item.id);
                     self.valueProduct = selectedNames || []
-                    await self.loadData();
+                    $('#page_size_select').val(10).trigger('change');
+                    // await self.loadData();
                 });
 
                 $('#page_size_select').on("change.custom", async function () {
@@ -202,7 +205,8 @@
             handleSearch() {
                 // Reset pagination to the first page when a new search is triggered
                 this.currentPages = 1;
-                this.loadData();
+                $('#page_size_select').val(10).trigger('change');
+                // this.loadData();
             },
             handleBlur() {
                 // Trigger search when the input loses focus

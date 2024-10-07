@@ -119,7 +119,8 @@
                             self.dataShop.sort((a, b) => a.shop_name.localeCompare(b.shop_name));
                             
                             // await self.initSelectTable()
-                            await self.loadData()
+                            $('#page_size_select').val(10).trigger('change');
+                            // await self.loadData()?
 
                             self.dataAds.forEach(ad => {
                                 ad.details.sort((a, b) => a.shop_name.localeCompare(b.shop_name));
@@ -135,7 +136,8 @@
                         const values = $(this).select2("data") || [];
                         const selectedNames = values.map((item) => item.text);
                         self.serach_value_name = selectedNames;
-                        await self.loadData()
+                        $('#page_size_select').val(10).trigger('change');
+                        // await self.loadData()
 
                     })
                     $('#select_channel').val(self.value_channel_id).trigger('change')
@@ -164,7 +166,8 @@
                                 self.endFormDate = ""; // Reset the variable holding end date
                             }
 
-                            await self.loadData();
+                            $('#page_size_select').val(10).trigger('change');
+                            // await self.loadData();
                         }
                     });
 
@@ -187,7 +190,8 @@
                                 self.startFormDate = ""; // Reset the variable holding start date
                             }
 
-                            await self.loadData();
+                            $('#page_size_select').val(10).trigger('change');
+                            // await self.loadData();
                         }
                     });
                 }

@@ -154,7 +154,7 @@
                                                                 :class="getSortIcon('p_date')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
+                                                    <th class="min-w-200px align-middle">
                                                         <div @click="sortTable('product_id')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-bag"></i>
@@ -165,7 +165,7 @@
                                                                 :class="getSortIcon('product_id')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
+                                                    <th class="min-w-150px align-middle">
                                                         <div @click="sortTable('ads_tiktok_cost')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-cash-stack"></i>
@@ -176,7 +176,7 @@
                                                                 :class="getSortIcon('ads_tiktok_cost')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-100px align-middle">
+                                                    <th class="min-w-150px align-middle">
                                                         <div @click="sortTable('tiktok')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-cash-stack"></i>
@@ -198,7 +198,7 @@
                                                                 :class="getSortIcon('ads_shopee_cost')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-200px align-middle">
+                                                    <th class="min-w-150px align-middle">
                                                         <div @click="sortTable('shopee')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-cash-stack"></i>
@@ -209,7 +209,7 @@
                                                                 :class="getSortIcon('shopee')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-200px align-middle">
+                                                    <th class="min-w-150px align-middle">
                                                         <div @click="sortTable('ads_lazada_cost')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-cash-stack"></i>
@@ -220,7 +220,7 @@
                                                                 :class="getSortIcon('ads_lazada_cost')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-200px align-middle">
+                                                    <th class="min-w-150px align-middle">
                                                         <div @click="sortTable('lazada')"
                                                             class="d-flex justify-content-around align-items-center pointer">
                                                             <i class="bi-cash-stack"></i>
@@ -231,13 +231,13 @@
                                                                 :class="getSortIcon('lazada')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-200px align-middle text-center">
+                                                    <th class="min-w-150px align-middle text-center">
                                                         <span>ค่าแอด</span>
                                                     </th>
-                                                    <th class="min-w-200px align-middle text-center">
+                                                    <th class="min-w-150px align-middle text-center">
                                                         <span>รายได้รวม</span>
                                                     </th>
-                                                    <th class="min-w-200px align-middle text-center">
+                                                    <th class="min-w-100px align-middle text-center">
                                                         <span>เปอร์เซ็นต์</span>
                                                     </th>
                                                 </tr>
@@ -245,39 +245,39 @@
                                             <tbody class="fs-6">
                                                 <template v-for="item in data_ads">
                                                     <tr>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="utilsConvDate(item.p_date)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break">
+                                                        <td class="align-middle text-break">
                                                             <span v-text="item.product_detail?.product_name"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.ads_tiktok_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.tiktok)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-150px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.ads_shopee_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.shopee)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.ads_lazada_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span v-text="formatNumber(item.lazada)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span
                                                                 v-text="formatNumber(item.ads_tiktok_cost + item.ads_shopee_cost + item.ads_lazada_cost)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-200px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span
                                                                 v-text="formatNumber(item.tiktok + item.shopee + item.lazada)"></span>
                                                         </td>
-                                                        <td class="align-middle min-w-100px text-break text-center">
+                                                        <td class="align-middle text-break text-center">
                                                             <span
                                                                 v-text="formatPercentage(item.ads_tiktok_cost + item.ads_shopee_cost + item.ads_lazada_cost, item.tiktok + item.shopee + item.lazada)"></span>
                                                         </td>
