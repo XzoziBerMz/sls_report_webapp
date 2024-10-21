@@ -184,10 +184,12 @@
                         let data = {
                             customer_name: this.form.nameTT || "",
                             phone_no: this.form.phone_number || "",
-                            case_detail: this.form.additional_notes || "",
+                            // case_detail: this.form.additional_notes || "",
+                            case_detail: this.form.note || "",
                             channel: this.form.channel || "", // Use 'chanel' instead of 'channel' to match backend
                             product: this.form.product || "",
-                            note: this.form.note || "",
+                            // note: this.form.note || "",
+                            note: this.form.additional_notes || "",
                             action: this.form.editstars || "",
                             date: formattedDate || ""
                         };
