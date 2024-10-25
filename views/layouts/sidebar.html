@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			<div class="menu-item menu-sub-indention menu-accordion"
-				:class="{ hover: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'sweetbrand_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' }"
+				:class="{ hover: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'sweetbrand_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' || currentPage === 'kol_form', show: currentPage === 'fb_form' || currentPage === 'key-ads' || currentPage === 'campaign_form' || currentPage === 'tiktok_form' || currentPage === 'tiktok_live' || currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' || currentPage === 'kol_form' }"
 				data-kt-menu-trigger="click">
 				<a href="#" class="menu-link fs-4 fw-bold py-3">
 					<span class="menu-icon">
@@ -178,7 +178,7 @@
 						</div>
 					</div>
 					<div class="menu-item menu-sub-indention menu-accordion" data-kt-menu-trigger="click"
-						:class="{ hover: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details', show: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details'}">
+						:class="{ hover: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' || currentPage === 'kol_form', show: currentPage === 'chat' || currentPage === 'key-clip' || currentPage === 'product-order' || currentPage === 'negativ-review' || currentPage === 'negative-details' || currentPage === 'kol_form'}">
 						<a href="#" class="menu-link fs-6 fw-bold py-3">
 							<span class="menu-icon">
 								<i class="ki-duotone ki-chart-simple-2 fs-3"><span class="path1"></span><span
@@ -227,6 +227,14 @@
 										<i class="bi-list-stars"></i>
 									</span>
 									<span class="menu-title">รายละเอียด เชิงลบ</span>
+								</a>
+							</div>
+							<div class="menu-item" :class="{active:currentPage === 'kol_form'}">
+								<a href="/kol-form" class="menu-link py-3">
+									<span class="menu-bullet">
+										<i class="bi-tiktok"></i>
+									</span>
+									<span class="menu-title">kol</span>
 								</a>
 							</div>
 						</div>

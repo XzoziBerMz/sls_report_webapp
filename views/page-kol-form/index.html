@@ -1,0 +1,185 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-kol-form/css/index.css">
+    <!--end::custom css for this page-->
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <h1 class="fs-1 fw-bolder">KOL</h1>
+                                <div class="card p-10 mt-3 w-100">
+                                    <div id="kt_docs_formvalidation_text" fv-id="validator_form">
+                                        <div>
+                                            <div class="row row-cols-3 mt-5">
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label for=""
+                                                            class="form-label required fw-semibold fs-4">วันที่</label>
+                                                        <input class="form-control h-45px" placeholder="Pick a date"
+                                                            id="kt_datepicker_1" name="kt_datepicker_1" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="required fw-semibold fs-4 mb-2">ชื่อ KOL</label>
+                                                        <input type="text" name="name_kol" id="name_kol"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="required fw-semibold fs-4 mb-2">ช่องทาง
+                                                            TikTok</label>
+                                                        <input type="text" name="channel" id="channel"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-2 mt-5" id="form-information" style="display: none;">
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">-</label>
+                                                        <input type="text" name="text_free" id="text_free"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">ที่อยู่</label>
+                                                        <input type="text" name="address" id="address"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">เบอร์โทรติดต่อ</label>
+                                                        <input type="text" name="phone_number" id="phone_number" @input="restrictToNumbers()"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">VDO 1</label>
+                                                        <input type="text" name="vdo_1" id="vdo_1"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">เจนโค้ค</label>
+                                                        <input type="text" name="gen_code" id="gen_code"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">VD</label>
+                                                        <input type="text" name="vd_text" id="vd_text"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="required fw-semibold fs-4 mb-2">สถานะการ</label>
+                                                        <select class="form-select h-45px" name="select_status"
+                                                            id="select_status" data-control="select2"
+                                                            data-placeholder="เลือก สถานะการ" data-hide-search="true">
+                                                            <option></option>
+                                                            <option value="contacted">ติดต่อได้</option>
+                                                            <option value="not_contacted">ติดต่อไม่ได้</option>
+                                                            <option value="reject">ปฏิเสธ</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label
+                                                            class="required fw-semibold fs-4 mb-2">รับสินค้าแล้ว</label>
+                                                        <select class="form-select h-45px" name="select_product"
+                                                            id="select_product" data-control="select2"
+                                                            data-placeholder="เลือก รับสินค้าแล้ว"
+                                                            data-hide-search="true">
+                                                            <option></option>
+                                                            <option value="clip_done">ทำคลิปแล้ว</option>
+                                                            <option value="wait_clip">รอทำคลิป</option>
+                                                            <option value="wait_address">รอที่อยู่</option>
+                                                            <option value="wait_rate">รอเรท</option>
+                                                            <option value="wait_gen_code">รอเจนโค้ด</option>
+                                                            <option value="wait_gen_new_code">รอเจนใหม่</option>
+                                                            <option value="new_clip">ทำคลิปใหม่</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="fv-row mb-7">
+                                                        <label class="fw-semibold fs-4 mb-2">หมายเหตุ</label>
+                                                        <input type="text" name="remark" id="remark"
+                                                            class="form-control h-45px mb-3 mb-lg-0" placeholder="" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <button @click="onSave" class="btn btn-primary w-25" id="insert_btn">
+                                                    <span class="indicator-label">เพิ่ม</span>
+                                                </button>
+                                                <button @click="onUpdate" class="btn btn-primary w-25" style="display: none;" id="update_btn">
+                                                    <span class="indicator-label">บันทึก</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-kol-form/js/services.js" type="module"> </script>
+<script src="/page-kol-form/js/index.js" type="module"> </script>
+
+</html>

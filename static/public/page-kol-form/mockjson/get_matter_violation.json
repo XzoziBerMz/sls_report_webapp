@@ -1,0 +1,19 @@
+{
+    "code": "success",
+    "message": "success",
+    "data": [
+        {
+            "code": "1",
+            "name": "ทดสอบ"
+        },
+        {
+            "code": "2",
+            "name": "SOY วานิลลา"
+        },
+        {
+            "code": "3",
+            "name": "อริน"
+        }
+    ],
+    "total": 100
+}
