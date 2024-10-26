@@ -132,14 +132,14 @@
                                                                 :class="getSortIcon('tiktok_channel_url')"></i>
                                                         </div>
                                                     </th>
-                                                    <th class="min-w-200px align-middle">
+                                                    <!-- <th class="min-w-200px align-middle">
                                                         <div class="d-flex w-100 justify-content-between align-items-center"
                                                             @click="sortTable('kol_status')">
                                                             <span>-</span>
                                                             <i class="bi-chevron-down"
                                                                 :class="getSortIcon('kol_status')"></i>
                                                         </div>
-                                                    </th>
+                                                    </th> -->
                                                     <th class="min-w-200px align-middle">
                                                         <div class="d-flex w-100 justify-content-between align-items-center"
                                                             @click="sortTable('address')">
@@ -183,7 +183,7 @@
                                                     <th class="min-w-150px align-middle">
                                                         <div class="d-flex w-100 justify-content-between align-items-center"
                                                             @click="sortTable('contact_status')">
-                                                            <span>สถานะการ</span>
+                                                            <span>สถานะ</span>
                                                             <i class="bi-chevron-down"
                                                                 :class="getSortIcon('contact_status')"></i>
                                                         </div>
@@ -203,6 +203,14 @@
                                                             <i class="bi-chevron-down" :class="getSortIcon('note')"></i>
                                                         </div>
                                                     </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('created_by')">
+                                                            <span>ผู้ดูแล</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('created_by')"></i>
+                                                        </div>
+                                                    </th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -217,8 +225,8 @@
                                                             <a :href="item.tiktok_channel_url" target="_blank"
                                                                 v-text="item.tiktok_channel_url"></a>
                                                         </td>
-                                                        <td class="text-start align-middle" v-text="item.kol_status">
-                                                        </td>
+                                                        <!-- <td class="text-start align-middle" v-text="item.kol_status">
+                                                        </td> -->
                                                         <td class="text-start align-middle" v-text="item.address">
                                                         </td>
                                                         <td class="text-start align-middle"
@@ -242,6 +250,8 @@
                                                             v-text="displayProductStatus(item.product_status)">
                                                         </td>
                                                         <td class="text-start align-middle" v-text="item.note">
+                                                        </td>
+                                                        <td class="text-center align-middle" v-text="item.created_by">
                                                         </td>
                                                         <td class="align-middle">
                                                             <div class="d-flex justify-content-center gap-3">
@@ -317,53 +327,62 @@
                                             <span v-text="data_edit.date"></span>
                                         </div>
                                         <div class="col d-flex gap-2">
-                                            <span class="fw-bolder ">ชื่อ KOL: </span><span v-text="data_edit.name_kol"></span>
+                                            <span class="fw-bolder ">ชื่อ KOL: </span><span
+                                                v-text="data_edit.name_kol"></span>
                                         </div>
                                     </div>
                                     <div class="col d-flex gap-2 fs-4 mt-2">
-                                        <span class="fw-bolder ">ช่องทาง TikTok: </span><a :href="data_edit.tiktok_channel_url"
+                                        <span class="fw-bolder ">ช่องทาง TikTok: </span><a
+                                            :href="data_edit.tiktok_channel_url"
                                             v-text="data_edit.tiktok_channel_url"></a>
                                     </div>
-                                    <div class="row row-cols-2 g-4 mt-3" id="kt_docs_formvalidation_text" fv-id="validator_form">
+                                    <div class="row row-cols-2 g-4 mt-3" id="kt_docs_formvalidation_text"
+                                        fv-id="validator_form">
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">-</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.kol_status"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.kol_status" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">ที่อยู่</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.address"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.address" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">เบอร์ติดต่อ</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.contact_number"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.contact_number" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">VDO 1</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.video_link"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.video_link" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">เจนโค้ด</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.gen_code"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.gen_code" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">VD</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.vd_code"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.vd_code" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="fv-row">
-                                                <label class="required form-label">สถานะการ</label>
+                                                <label class="required form-label">สถานะ</label>
                                                 <select class="form-select h-45px" name="select_status"
                                                     id="select_status" data-control="select2"
                                                     data-placeholder="เลือก สถานะการ" data-hide-search="true">
@@ -394,7 +413,8 @@
                                         <div class="col">
                                             <div class="">
                                                 <label class="form-label">หมายเหตุ</label>
-                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.note"/>
+                                                <input type="text" class="form-control" placeholder=""
+                                                    v-model="data_edit.note" />
                                             </div>
                                         </div>
                                     </div>
