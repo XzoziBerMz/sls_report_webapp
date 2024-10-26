@@ -1,0 +1,530 @@
+<html lang="en">
+
+<head>
+    <title>{{.WebAppPageTitle}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/media/logos/favicon-thpost.ico" />
+    {{- template "resource-css" -}}
+    <link rel="stylesheet" href="/page-kol-report/css/index.css">
+    <!--end::custom css for this page-->
+    <script>
+        const basepath = "{{.Basepath}}";
+    </script>
+
+</head>
+
+<body id="kt_app_body" class="background-page" data-kt-app-layout="light-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="false" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+
+    <div class=" d-flex justify-content-center align-items-center flex-column gap-2 login-box" id="kt_app_root">
+        <div class="app-page w-100  flex-column flex-column-fluid " id="kt_app_page">
+            <!-- HEADER -->
+            <div id="kt_app_header" class="app-header bg-4461F2">
+                {{- template "header" . -}}
+            </div>
+            <!-- HEADER -->
+
+            <div class="app-wrapper  flex-column flex-row-fluid" id="kt_app_wrapper">
+                <div id="kt_app_sidebar" class="app-sidebar flex-column " data-kt-drawer="true"
+                    data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: true}"
+                    data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start"
+                    data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+                    {{- template "sidebar" . -}}
+                </div>
+
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <div class="d-flex flex-column flex-column-fluid">
+                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6 px-3">
+                            <div id="kt_app_toolbar_container" class="app-container container-fluid">
+                                <h1 class="fs-1 fw-bolder">ติดตาม KOL</h1>
+                                <div class="card p-10 mt-3 w-100">
+                                    <div class="d-flex justify-content-end gap-5 align-items-center">
+
+                                        <div class="d-flex gap-5">
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_start"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่เริ่มต้น :</span>
+                                                </div>
+                                                <input id="kt_td_picker_start_input" type="text"
+                                                    class="form-control h-40px w-200px"
+                                                    data-td-target="#kt_td_picker_start" />
+                                                <span class="input-group-text h-40px"
+                                                    data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+
+                                            <div class="w-350px input-group align-items-center" id="kt_td_picker_end"
+                                                data-td-target-input="nearest" data-td-target-toggle="nearest">
+                                                <div>
+                                                    <span class="fs-14  align-middle"
+                                                        style="margin-right: 10px;">วันที่สิ้นสุด :</span>
+                                                </div>
+                                                <input id="kt_td_picker_end_input" type="text"
+                                                    class="form-control h-40px w-200px"
+                                                    data-td-target="#kt_td_picker_end" />
+                                                <span class="input-group-text h-40px"
+                                                    data-td-target="#kt_td_picker_basic"
+                                                    data-td-toggle="datetimepicker">
+                                                    <i class="ki-duotone ki-calendar fs-2"><span
+                                                            class="path1"></span><span class="path2"></span></i>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                        <!-- <div>
+                                            <select class="form-select h-40px min-w-250px" data-control="select2"
+                                                data-placeholder="เลือกร้าน" id="select_search"
+                                                multiple="multiple"></select>
+                                        </div> -->
+
+                                        <div class="position-relative">
+                                            <div class="input-container">
+                                                <input type="text" class="form-control form-control-5 form-control-lg"
+                                                    v-model="serach_value" @blur="handleBlur()"
+                                                    @keyup.enter="handleSearch" placeholder="ค้นหา.." />
+                                                <i class="bi bi-search" @click="handleSearch"></i>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="table-responsive border rounded-4 mt-3">
+                                        <table class="table table-row-dashed table-row-gray-300 gy-6 gs-7 mb-0">
+                                            <thead>
+                                                <!-- <tr class="fw-bold">
+                                                    <td></td>
+                                                    <td v-text="formatNumber(TotalAll)"></td>
+                                                    <td v-text="formatNumber(TotalIncome)"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr> -->
+                                                <tr class="fw-bold fs-5">
+                                                    <th class="min-w-100px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('p_date')">
+                                                            <span>วันที่</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('p_date')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('name_kol')">
+                                                            <span>
+                                                                ชื่อ KOL</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('name_kol')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('tiktok_channel_url')">
+                                                            <span>
+                                                                ช่องทาง TikTok</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('tiktok_channel_url')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('kol_status')">
+                                                            <span>-</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('kol_status')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('address')">
+                                                            <span>ที่อยู่</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('address')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('contact_number')">
+                                                            <span>เบอร์ติดต่อ</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('contact_number')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('video_link')">
+                                                            <span>VDO 1</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('video_link')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('gen_code')">
+                                                            <span>เจนโค้ด</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('gen_code')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('vd_code')">
+                                                            <span>VD</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('vd_code')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('contact_status')">
+                                                            <span>สถานะการ</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('contact_status')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-150px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('product_status')">
+                                                            <span>รับสินค้าแล้ว</span>
+                                                            <i class="bi-chevron-down"
+                                                                :class="getSortIcon('product_status')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th class="min-w-200px align-middle">
+                                                        <div class="d-flex w-100 justify-content-between align-items-center"
+                                                            @click="sortTable('note')">
+                                                            <span>หมายเหตุ</span>
+                                                            <i class="bi-chevron-down" :class="getSortIcon('note')"></i>
+                                                        </div>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-6">
+                                                <template v-for="(item, index) in dataOrderManual" :key="index">
+                                                    <tr>
+                                                        <td class="text-start align-middle"
+                                                            v-text="utilsConvDate(item.date)"></td>
+                                                        <td class="text-start align-middle" v-text="item.name_kol">
+                                                        </td>
+                                                        <td class="text-start align-middle">
+                                                            <a :href="item.tiktok_channel_url" target="_blank"
+                                                                v-text="item.tiktok_channel_url"></a>
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.kol_status">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.address">
+                                                        </td>
+                                                        <td class="text-start align-middle"
+                                                            v-text="item.contact_number">
+                                                        </td>
+
+                                                        <td class="text-start align-middle">
+                                                            <a :href="item.video_link" target="_blank"
+                                                                v-text="item.video_link"></a>
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.gen_code">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.vd_code">
+                                                        </td>
+                                                        <td :class="getContactStatusClass(item.contact_status)"
+                                                            class="text-center fw-bolder align-middle"
+                                                            v-text="displayContactStatus(item.contact_status)">
+                                                        </td>
+                                                        <td :class="getStatusClass(item.product_status)"
+                                                            class="text-center fw-bolder align-middle"
+                                                            v-text="displayProductStatus(item.product_status)">
+                                                        </td>
+                                                        <td class="text-start align-middle" v-text="item.note">
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="d-flex justify-content-center gap-3">
+                                                                <button class="btn btn-warning"
+                                                                    @click="onEditData(item)">แก้ไข</button>
+                                                                <button class="btn btn-primary"
+                                                                    @click="onLogData(item.id)">ดู</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <select class="form-select w-100px h-35px" id="page_size_select"
+                                                data-hide-search="true" data-control="select2" name="page_size_select">
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <option :value="SelectTotalItems">ทั้งหมด</option>
+                                            </select>
+
+                                        </div>
+                                        <ul class="pagination">
+                                            <li class="page-item" :class="{ disabled: currentPages === 1 }">
+                                                <a href="#" class="page-link"
+                                                    @click.prevent="goToPage(currentPages - 1)">
+                                                    <i class="previous"></i>
+                                                </a>
+                                            </li>
+                                            <li class="page-item" v-for="page in paginationRange" :key="page"
+                                                :class="{ active: currentPages === page }">
+                                                <a href="#" class="page-link" @click.prevent="goToPage(page)"
+                                                    v-text="page"></a>
+                                            </li>
+                                            <li class="page-item" :class="{ disabled: currentPages === totalPages }">
+                                                <a href="#" class="page-link"
+                                                    @click.prevent="goToPage(currentPages + 1)">
+                                                    <i class="next"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" tabindex="-1" id="kt_modal_edit">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title">แก้ไข KOL</h3>
+
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                        data-bs-dismiss="modal" aria-label="Close">
+                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                                class="path2"></span></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="row row-cols-2 fs-4">
+                                        <div class="col d-flex gap-2">
+                                            <span class="fw-bolder ">วันที่: </span>
+                                            <span v-text="data_edit.date"></span>
+                                        </div>
+                                        <div class="col d-flex gap-2">
+                                            <span class="fw-bolder ">ชื่อ KOL: </span><span v-text="data_edit.name_kol"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex gap-2 fs-4 mt-2">
+                                        <span class="fw-bolder ">ช่องทาง TikTok: </span><a :href="data_edit.tiktok_channel_url"
+                                            v-text="data_edit.tiktok_channel_url"></a>
+                                    </div>
+                                    <div class="row row-cols-2 g-4 mt-3" id="kt_docs_formvalidation_text" fv-id="validator_form">
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">-</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.kol_status"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">ที่อยู่</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.address"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">เบอร์ติดต่อ</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.contact_number"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">VDO 1</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.video_link"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">เจนโค้ด</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.gen_code"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">VD</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.vd_code"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="fv-row">
+                                                <label class="required form-label">สถานะการ</label>
+                                                <select class="form-select h-45px" name="select_status"
+                                                    id="select_status" data-control="select2"
+                                                    data-placeholder="เลือก สถานะการ" data-hide-search="true">
+                                                    <option></option>
+                                                    <option value="contacted">ติดต่อได้</option>
+                                                    <option value="not_contacted">ติดต่อไม่ได้</option>
+                                                    <option value="reject">ปฏิเสธ</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="fv-row">
+                                                <label class="required form-label">รับสินค้าแล้ว</label>
+                                                <select class="form-select h-45px" name="select_product"
+                                                    id="select_product" data-control="select2"
+                                                    data-placeholder="เลือก รับสินค้าแล้ว" data-hide-search="true">
+                                                    <option></option>
+                                                    <option value="clip_done">ทำคลิปแล้ว</option>
+                                                    <option value="wait_clip">รอทำคลิป</option>
+                                                    <option value="wait_address">รอที่อยู่</option>
+                                                    <option value="wait_rate">รอเรท</option>
+                                                    <option value="wait_gen_code">รอเจนโค้ด</option>
+                                                    <option value="wait_gen_new_code">รอเจนใหม่</option>
+                                                    <option value="new_clip">ทำคลิปใหม่</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="">
+                                                <label class="form-label">หมายเหตุ</label>
+                                                <input type="text" class="form-control" placeholder="" v-model="data_edit.note"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+                                    <button type="button" class="btn btn-primary" @click="onSaveEdit">บันทึก</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" tabindex="-1" id="kt_modal_log">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title" id="staticBackdropLabel">ประวัติการแก้ไข</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row" v-if="datLog.length !== 0">
+                                        <div class="col-6">
+                                            <h3>ข้อมูลเก่า</h3>
+                                        </div>
+                                        <div class="col-6">
+                                            <h3>ข้อมูลใหม่</h3>
+                                        </div>
+                                    </div>
+                                    <div v-if="datLog.length === 0">
+                                        <h1 class="h1 text-center">ไม่มีข้อมูลการแก้ไข</h1>
+                                    </div>
+                                    <template v-for="(logItem, logIndex) in datLog" :key="logItem.id">
+                                        <div class="row row-cols-2 pb-3">
+                                            <template v-for="(item, index) in logItem.data_json" :key="index">
+                                                <div class="col mb-3">
+                                                    <div class="">
+                                                        <span class="fs-5 text-dark fw-bolder">ชื่อ: </span>
+                                                        <span class="fs-5" v-text="item.user"></span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="fs-5 text-dark fw-bolder"
+                                                            v-text="item.field_name + ': '"></span>
+                                                        <span v-if="item.field_code === 'contact_status'" class="fs-5"
+                                                            v-text="displayContactStatus(item.old)"></span>
+                                                        <span v-else-if="item.field_code === 'product_status'"
+                                                            class="fs-5" v-text="displayProductStatus(item.old)"></span>
+                                                        <span v-else class="fs-5" v-text="item.old"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col mb-3">
+                                                    <div class="d-flex gap-3">
+                                                        <div class="">
+                                                            <span class="fs-5 text-dark fw-bolder">ชื่อ: </span>
+                                                            <span class="fs-5" v-text="item.user"></span>
+                                                        </div>
+                                                        <div class="">
+                                                            <span class="fs-5 text-dark fw-bolder">วันที่: </span>
+                                                            <span class="fs-5"
+                                                                v-text="utilsConvDate(item.created_at.slice(0, 10))"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <span class="fs-5 text-dark fw-bolder"
+                                                            v-text="item.field_name + ': '"></span>
+                                                        <span v-if="item.field_code === 'contact_status'" class="fs-5"
+                                                            v-text="displayContactStatus(item.new)"></span>
+                                                        <span v-else-if="item.field_code === 'product_status'"
+                                                            class="fs-5" v-text="displayProductStatus(item.new)"></span>
+                                                        <span v-else class="fs-5" v-text="item.new"></span>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <hr class="m-0 mb-3" />
+                                    </template>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <div>
+                                            <select class="form-select w-100px h-35px" data-hide-search="true"
+                                                id="page_size_log" name="page_size_log" data-control="select2">
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                                <option :value="totallog">ทั้งหมด</option>
+                                            </select>
+                                        </div>
+                                        <ul class="pagination">
+                                            <li :class="['page-item', { disabled: currentPagelog === 1 }]"
+                                                @click="changePageLog(currentPagelog - 1)">
+                                                <span class="page-link"><i class="previous"></i></span>
+                                            </li>
+                                            <li v-for="pagelog in pagesLog" :key="pagelog"
+                                                :class="['page-item', { active: currentPagelog === pagelog && pagelog !== '...' }]"
+                                                @click="changePageLog(pagelog)">
+                                                <span class="page-link" v-if="pagelog !== '...'"
+                                                    v-text="pagelog"></span>
+                                                <span v-if="pagelog === '...'">...</span>
+                                            </li>
+                                            <li :class="['page-item', { disabled: currentPagelog === totalPageLog }]"
+                                                @click="changePageLog(currentPagelog + 1)">
+                                                <span class="page-link"><i class="next"></i></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+<script>
+    window.csrfToken = {{.csrf_token }};
+    window.pageAction = {{.page_action }};
+</script>
+{{- template "resource-js" -}}
+<script src="/page-kol-report/js/services.js" type="module"> </script>
+<script src="/page-kol-report/js/index.js" type="module"> </script>
+
+</html>

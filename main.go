@@ -74,6 +74,7 @@ func main() {
 	app.Get("/fb-form", render.FacebookFormPage)
 	app.Get("/report-tiktoklive", render.ReportTiktokLivePage)
 
+	app.Get("/kol-report", render.KolReportPage)
 	app.Get("/kol-form", render.KolFormPage)
 
 	app.Listen(":8000")

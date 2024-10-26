@@ -104,7 +104,7 @@
                                 "date": self.FormDate,
                                 "name_kol": $('#name_kol').val() || "",
                                 "tiktok_channel_url": $('#channel').val() || "",
-                                "kol_status": "active",
+                                "kol_status": $('#text_free').val() || "",
                                 "address": $('#address').val() || "",
                                 "contact_number": $('#phone_number').val() || "",
                                 "video_link": $('#vdo_1').val() || "",
@@ -117,11 +117,15 @@
                             }
                             const req = await services.updateData(data, self.token_header)
                             if (req.status === 200) {
-                                Msg("บันทึกสำเร็จ", 'success');
-                                setTimeout(function () {
-                                    window.location.reload();
-                                }, 2000)
-
+                                Swal.fire({
+                                    title: 'บันทึกสำเร็จ',
+                                    icon: 'success',
+                                    confirmButtonText: 'ตกลง'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
                             }
                         } catch (error) {
                             console.log("🚀 ~ error:", error)
