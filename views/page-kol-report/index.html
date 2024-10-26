@@ -181,19 +181,33 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-150px align-middle">
-                                                        <div class="d-flex w-100 justify-content-between align-items-center"
-                                                            @click="sortTable('contact_status')">
-                                                            <span>สถานะ</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('contact_status')"></i>
+                                                        <div
+                                                            class="d-flex w-100 justify-content-between align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('contact_status')">
+                                                                <span>สถานะ</span>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('contact_status')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('contact_status', 'สถานะ')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
                                                         </div>
                                                     </th>
                                                     <th class="min-w-150px align-middle">
-                                                        <div class="d-flex w-100 justify-content-between align-items-center"
-                                                            @click="sortTable('product_status')">
-                                                            <span>รับสินค้าแล้ว</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('product_status')"></i>
+                                                        <div
+                                                            class="d-flex w-100 justify-content-between align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('product_status')">
+                                                                <span>รับสินค้าแล้ว</span>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('product_status')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('product_status', 'รับสินค้าแล้ว')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
                                                         </div>
                                                     </th>
                                                     <th class="min-w-200px align-middle">
@@ -204,11 +218,18 @@
                                                         </div>
                                                     </th>
                                                     <th class="min-w-150px align-middle">
-                                                        <div class="d-flex w-100 justify-content-between align-items-center"
-                                                            @click="sortTable('created_by')">
-                                                            <span>ผู้ดูแล</span>
-                                                            <i class="bi-chevron-down"
-                                                                :class="getSortIcon('created_by')"></i>
+                                                        <div
+                                                            class="d-flex w-100 justify-content-between align-items-center">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center"
+                                                                @click="sortTable('created_by')">
+                                                                <span>ผู้ดูแล</span>
+                                                                <i class="bi-chevron-down"
+                                                                    :class="getSortIcon('created_by')"></i>
+                                                            </div>
+                                                            <div class="flex-shrink-1">
+                                                                <i @click="filterModal('created_at', 'ผู้ดูแล')"
+                                                                    class="pointer bi-funnel"></i>
+                                                            </div>
                                                         </div>
                                                     </th>
                                                     <th></th>
@@ -525,6 +546,75 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" tabindex="-1" id="filter_model">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" v-text="modal_titles_sub"></h3>
+
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+                                        @click="closeModalFilter">
+                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span
+                                                class="path2"></span></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="d-flex gap-5 flex-wrap">
+
+                                        <template v-if="modal_titles === 'contact_status'"
+                                            v-for="(item, index) in data_contact">
+                                            <div class="align-middle pe-3">
+                                                <div class="form-check form-check-solid">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        :checked="item.check_value" v-model="item.check_value"
+                                                        :id="'check_product' + index" :name="'check_product' + index" />
+                                                    <label class="form-check-label text-dark"
+                                                        :for="'check_product' + index" v-text="displayContactStatus(item.name)"></label>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Loop data_channel เมื่อ modal_titles เป็น 'ช่องทาง' -->
+                                        <template v-else-if="modal_titles === 'product_status'"
+                                            v-for="(item, index) in data_products">
+                                            <div class="align-middle pe-3">
+                                                <div class="form-check form-check-solid">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        :checked="item.check_value" v-model="item.check_value"
+                                                        :id="'check_channel' + index" :name="'check_channel' + index" />
+                                                    <label class="form-check-label text-dark"
+                                                        :for="'check_channel' + index" v-text="displayProductStatus(item.name)"></label>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Loop data_user เมื่อ modal_titles เป็นค่าอื่น ๆ -->
+                                        <template v-else v-for="(item, index) in data_users">
+                                            <div class="align-middle pe-3">
+                                                <div class="form-check form-check-solid">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        :checked="item.check_value" v-model="item.check_value"
+                                                        :id="'check_users' + index" :name="'check_users' + index" />
+                                                    <label class="form-check-label text-dark"
+                                                        :for="'check_users' + index" v-text="item.name"></label>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger"
+                                        @click="resetCheckValue">รีเซ็ต</button>
+                                    <button type="button" class="btn btn-primary" @click="saveFilter">บันทึก</button>
                                 </div>
                             </div>
                         </div>

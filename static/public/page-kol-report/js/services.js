@@ -14,10 +14,28 @@
     });
   }
 
-  function getChannelAll(token) {
+  function getStatus(token) {
     return axios({
       method: "get",
-      url: basepath + `/api/v1/tiktok-live/list-shop`,
+      url: basepath + `/api/v1/kol/list-contact-status`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+  function getProduct(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/kol/list-product-status`,
+      // url: endpoint.getKeyReview,
+      // url: basePath + endpoint.getKeyReview,
+      headers: { "x-auth-token": token },
+    });
+  }
+  function getUsers(token) {
+    return axios({
+      method: "get",
+      url: basepath + `/api/v1/kol/list-user`,
       // url: endpoint.getKeyReview,
       // url: basePath + endpoint.getKeyReview,
       headers: { "x-auth-token": token },
@@ -49,7 +67,9 @@
   const services = {
    
     getOrderManual,
-    getChannelAll,
+    getStatus,
+    getProduct,
+    getUsers,
     getlog,
     updateData,
   };

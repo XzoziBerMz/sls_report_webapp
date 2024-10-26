@@ -26,6 +26,7 @@
                 startFormDate: null,
                 endFormDate: null,
                 modal_titles: "",
+                modal_titles_sub: "",
                 column_order_by: "p_date",
                 order_sort: "desc",
                 token_header: token_header || '',
@@ -37,6 +38,12 @@
                 itemsPerPageLog: 10,
                 id_log: '',
                 data_edit: {},
+                data_users: [],
+                data_products: [],
+                data_contact: [],
+                filter_products: [],
+                filter_contact: [],
+                filter_users: [],
             }
         },
 
@@ -193,7 +200,15 @@
                 try {
                     showLoading();
 
+                    const productNames = self.filter_products.map((item) => item.name);
+                    const contactNames = self.filter_contact.map((item) => item.name);
+                    const usersNames = self.filter_users.map((item) => item.name);
+
                     let data = {
+                        "kol_status": [],
+                        "product_status": productNames || [],
+                        "contact_status": contactNames || [],
+                        "user": usersNames || [],
                         "start_at": self.startFormDate,
                         "end_at": self.endFormDate,
                         "search": self.serach_value,
@@ -383,6 +398,122 @@
                 );
                 
                 return validator;
+            },
+
+            async filterModal(value, title) {
+                const self = this;
+                self.modal_titles = value
+                self.modal_titles_sub = title
+                $('#filter_model').modal('show')
+                if (value === "contact_status") {
+                    try {
+                        const req = await services.getStatus(self.token_header);
+                        self.data_contact = req.data.data.map((item) => {
+                            const existingProduct = self.filter_contact.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                } else if (value === "product_status") {
+                    try {
+                        const req = await services.getProduct(self.token_header);
+                        self.data_products = req.data.data.map((item) => {
+                            const existingProduct = self.filter_products.find(
+                                (prod) => prod.name === item);
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                } else {
+                    try {
+                        const req = await services.getUsers(self.token_header);
+                        self.data_users = req.data.data.map((item) => {
+                            const existingProduct = self.filter_users.find(
+                                (prod) => prod.name === item
+                            );
+
+                            return {
+                                check_value: existingProduct
+                                    ? existingProduct.check_value
+                                    : false,
+                                name: item,
+                            };
+                        });
+                    } catch (error) {
+                        console.log("🚀 ~ filterModal ~ error:", error);
+                    }
+                }
+
+            },
+            resetCheckValue() {
+                const self = this
+
+                if (self.modal_titles === "contact_status") {
+                    this.data_contact.forEach((item) => (item.check_value = false));
+                } else if (self.modal_titles === "product_status") {
+                    this.data_products.forEach((item) => (item.check_value = false));
+                } else {
+                    this.data_users.forEach((item) => (item.check_value = false));
+                }
+            },
+            async saveFilter() {
+                const self = this
+
+                function addOrRemoveItem(filterArray, item) {
+                    const index = filterArray.findIndex(existingItem => existingItem.name === item.name);
+                    if (item.check_value) {
+                        if (index === -1) {
+                            filterArray.push(item);
+                        }
+                    } else {
+                        if (index !== -1) {
+                            filterArray.splice(index, 1);
+                        }
+                    }
+                }
+                if (self.modal_titles === "contact_status") {
+                    self.data_contact.forEach((item) =>
+                        addOrRemoveItem(self.filter_contact, item)
+                    );
+                } else if (self.modal_titles === "product_status") {
+                    self.data_products.forEach((item) =>
+                        addOrRemoveItem(self.filter_products, item)
+                    );
+                } else {
+                    self.data_users.forEach((item) =>
+                        addOrRemoveItem(self.filter_users, item)
+                    );
+                }
+                self.data_products = [];
+                self.data_contact = [];
+                self.data_users = [];
+                $("#filter_model").modal("hide");
+
+                $('#page_size_select').val(10).trigger('change');
+                // await self.loadData();
+
+            },
+            closeModalFilter() {
+                $('#filter_model').modal('hide')
+                this.data_contact = [];
+                this.data_products = [];
+                this.data_users = [];
             }
 
         },
