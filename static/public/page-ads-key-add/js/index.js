@@ -92,12 +92,10 @@
         try {
           let data = {
             "search": "",
-            // "start_at": "2023-01-01",
-            // "end_at": "2024-08-15",
             "start_at": self.start_date_time,
             "end_at": self.end_date_time,
             "page": 1,
-            "per_page": 10,
+            "per_page": 1000,
             "order": "shop_name",
             "order_by": "desc"
           };
